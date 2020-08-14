@@ -357,8 +357,10 @@ body.sticky .sidebar-toggle {
   border-spacing: 0;
   display: block;
   margin-bottom: 1rem;
-  overflow: auto;
+  /* overflow: auto; */
   width: 100%;
+  font-size:small;
+
 }
 .markdown-section th {
   border: 1px solid #686868;
