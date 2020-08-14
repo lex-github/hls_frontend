@@ -1121,43 +1121,22 @@ app -> panel : уведомление авторов по полученной �
 В случае, если пользователь следит за тренировками, то у него формируются графики прогресса. 
 Формула прогресса для графика Суперкомпенсации:
 
-<code>
+```
 \frac{n!}{k!(n-k)!} = \binom{n}{k}
-</code>
+
+```
 
 Формула построения графика Макроцикла:
+
 Формула построения графика Мезоцикла:
 
-
 ![](/i/ui/svg/12.profile.svg)
+
+Редактирование профиля вызыавется черех контекстное меню вверху экрана.
 ![](/i/ui/svg/12.1profileEdit.svg)
+
+Выход из профиля на устройстве, редактирование. Удаление профиля — выносится на обсуждение.
 ![](/i/ui/svg/12.1profileEditPopup.svg)
-
-
-## 5. Трекинг данных пользователя
-
-![](i/ui/svg/6.added_info_of_dream_day.svg)
-![](i/ui/svg/6.added_info_of_dream_night.svg)
-![](i/ui/svg/9.6.added_info_of_sleep.svg)
-
-![](i/ui/svg/8.added_info_of_nutrition.svg)
-![](i/ui/svg/9.added_info_of_training.svg)
-
-![](i/ui/svg/8.5.1.added_info_of_nutrition_storyAnabolicTraining.svg)
-![](i/ui/svg/8.5.2.added_info_of_nutrition_storyCatabolicTraining.svg)
-![](i/ui/svg/8.5.2.1.added_info_of_nutrition_storyCatabolicTraining.svg)
-
-![](i/ui/svg/8.5.added_info_of_nutrition_story.svg)
-![](i/ui/svg/8.1.added_info_of_nutrition.svg)
-![](i/ui/svg/8.2.added_info_of_nutrition.svg)
-![](i/ui/svg/8.3.added_info_of_nutrition.svg)
-![](i/ui/svg/8.4.added_info_of_nutrition.svg)
-![](i/ui/svg/8.1.added_info_of_nutrition.svg)
-![](i/ui/svg/9.1.added_info_of_training.svg)
-
-![](i/ui/svg/9.2.added_info_of_training.svg)
-![](i/ui/9.5.added_info_of_training.png)
-![](i/ui/9.6.added_info_of_training.png)
 
 
 
@@ -1219,10 +1198,39 @@ app -> panel : уведомление авторов по полученной �
 
 ![](/i/ui/svg/13.stats_general_2.svg)
 
+--- Меридиан ---
+
+
 ## Униерсальные экраны с объяснениями разделов и функций приложения
 
 ```
 ```
+
+## 5. Трекинг данных пользователя
+
+![](i/ui/svg/6.added_info_of_dream_day.svg)
+![](i/ui/svg/6.added_info_of_dream_night.svg)
+![](i/ui/svg/9.6.added_info_of_sleep.svg)
+
+![](i/ui/svg/8.added_info_of_nutrition.svg)
+![](i/ui/svg/9.added_info_of_training.svg)
+
+![](i/ui/svg/8.5.1.added_info_of_nutrition_storyAnabolicTraining.svg)
+![](i/ui/svg/8.5.2.added_info_of_nutrition_storyCatabolicTraining.svg)
+![](i/ui/svg/8.5.2.1.added_info_of_nutrition_storyCatabolicTraining.svg)
+
+![](i/ui/svg/8.5.added_info_of_nutrition_story.svg)
+![](i/ui/svg/8.1.added_info_of_nutrition.svg)
+![](i/ui/svg/8.2.added_info_of_nutrition.svg)
+![](i/ui/svg/8.3.added_info_of_nutrition.svg)
+![](i/ui/svg/8.4.added_info_of_nutrition.svg)
+![](i/ui/svg/8.1.added_info_of_nutrition.svg)
+![](i/ui/svg/9.1.added_info_of_training.svg)
+
+![](i/ui/svg/9.2.added_info_of_training.svg)
+![](i/ui/9.5.added_info_of_training.png)
+![](i/ui/9.6.added_info_of_training.png)
+
 
 ## 5.3 Мои замеры
 
