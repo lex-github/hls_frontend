@@ -759,9 +759,14 @@ p.p {
   color:
   #ff294d;
   font-family: 'IBM Plex Mono';
-  font-size: medium;
+  /* font-size: medium; */
   font-weight: 400;
 }
+
+.markdown-section td em {
+  font-size: small;
+}
+
 .markdown-section code {
   background-color: #282828;
   border-radius: 2px;
