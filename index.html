@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Документация проекта: «Просто, ЗОЖ»</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Требования к разработке, дизайну, тестированию, приёмке и эксплуатации всего IT-комплекса">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="styles/dark.css">
+  <style>
+    /* Plugin: Zoom Image
+    ============================================================================= */
+    :root {
+        --zoomimage-overlay-background:#272821f0;
+    }
+    
+    .medium-zoom-overlay 
+    {background-color: #000000 !important}
+    </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '',
+      repo: '',
+      search: 'auto', // default
+    search : [
+      '/',            // => /README.md
+    ],
+    // complete configuration parameters
+    plantuml: {
+          skin: 'classic',
+    },
+    loadSidebar: true,
+    alias: {
+      '/.*/_sidebar.md': '/_sidebar.md'
+    },
+    pagination: {
+    previousText: 'Назад',
+    nextText: 'Вперед',
+    crossChapter: true
+  },
+  search: {
+    maxAge: 86400000,
+    placeholder: 'Поиск',
+    noData: 'Ничего не найдено',
+  }
+
+  }
+  </script>
+
+<script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
+<script src="//unpkg.com/docsify-plantuml/dist/docsify-plantuml.min.js"></script>
+<script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+<script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+<script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+<!-- PDFObject.js is a required dependency of this plugin -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script> 
+<!-- This is the source code of the pdf embed plugin -->
+<script src="path-to-file/docsify-pdf-embed.js"></script>
+<!-- or use this if you are not hosting the file yourself -->
+<script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+
+<!-- CDN files for docsify-katex -->
+<script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+<!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
+
+</body>
+</html>
