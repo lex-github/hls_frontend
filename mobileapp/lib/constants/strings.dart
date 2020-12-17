@@ -28,12 +28,14 @@ const errorFormText = 'Fix all form errors';
 const errorImageText = 'Upload an image';
 const errorEmailOrPhoneText = 'Введите корректную электронную почту или телефон';
 
-// auth form
+// auth screens
 const authLoginLabel = 'Телефон/e-mail';
 const authPasswordLabel = 'Пароль';
 const authRegisterButtonLabel = 'Регистрация';
 const authLoginButtonLabel = 'Вход';
 const authPasswordForgotLabel = 'Забыли пароль?';
+const authReset1Text = 'Введите свою электронную\nпочту или телефон';
+const authReset2Text = 'Мы отправим вам ссылку для\nсброса пароля';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';

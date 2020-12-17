@@ -8,7 +8,7 @@ part of 'user_model.dart';
 
 UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return UserData()
-    ..id = json['id'] as int
+    ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUri = json['imageUri'] as String
     ..name = json['name'] as String

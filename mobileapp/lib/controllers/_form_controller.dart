@@ -165,6 +165,8 @@ abstract class FormController extends GetxController {
 
   // methods
 
+  bool validate() => _key.currentState.validate();
+
   void submitHandler() async {
     // hide keyboard
     // FocusScopeNode currentFocus = FocusScope.of(context);
@@ -177,7 +179,7 @@ abstract class FormController extends GetxController {
     if (isAwaiting) return showConfirm(title: requestWaitingText);
 
     // if form is not valid abort
-    if (!_key.currentState.validate()) return;
+    if (!validate()) return;
 
     // awaiting for server response to login attempt
     isAwaiting = true;
@@ -219,7 +221,12 @@ class FormControllerState {
   // working with focus
   final _hasFocus = false.obs;
   get hasFocus => _hasFocus.value;
-  set hasFocus(bool x) => _hasFocus.value = x;
+  set hasFocus(bool x) => _hasFocus.value != x ? _hasFocus.value = x : null;
+
+  // working with value
+  final _hasValue = false.obs;
+  get hasValue => _hasValue.value;
+  set hasValue(bool x) => _hasValue.value != x ? _hasValue.value = x : null;
 
   // working with value
   dynamic _value;
@@ -227,6 +234,7 @@ class FormControllerState {
   set value(x) => setValue(x);
   setValue(x, {bool shouldUpdate = true}) {
     _value = x;
+    hasValue = value != null && (value is String ? value.length != 0 : true);
     if (shouldUpdate && controller != null) {
       final String value = _toRepresentation(x);
 

@@ -1,4 +1,3 @@
-import 'package:get/instance_manager.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/controllers/_form_controller.dart';
 import 'package:hls/helpers/dialog.dart';
@@ -7,7 +6,8 @@ import 'package:hls/services/auth_service.dart';
 
 class AuthFormController extends FormController {
   bool get shouldShowForm => ((AuthService auth) =>
-      auth.isInit && !auth.isAuthenticated)(Get.find<AuthService>());
+      auth.isInit && !auth.isAuthenticated)(AuthService.i);
+  bool get isInit => AuthService.i.isInit;
 
   @override
   List<FormConfig> get config => [
@@ -30,9 +30,9 @@ class AuthFormController extends FormController {
   onSubmitResponse(bool isSuccess) {
     print('AuthFormController.onSubmitResponse '
         'success: $isSuccess '
-        'authenticated: ${Get.find<AuthService>().isAuthenticated}');
+        'authenticated: ${AuthService.isAuth}');
 
-    if (isSuccess && !Get.find<AuthService>().isAuthenticated)
+    if (isSuccess && !AuthService.isAuth)
       return showConfirm(title: errorGenericText);
   }
 }

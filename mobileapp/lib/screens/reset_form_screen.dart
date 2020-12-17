@@ -3,10 +3,7 @@ import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' as B;
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
-import 'package:hls/constants/values.dart';
-import 'package:hls/controllers/auth_form_controller.dart';
 import 'package:hls/controllers/reset_form_controller.dart';
-import 'package:hls/helpers/dialog.dart';
 import 'package:hls/screens/_form_screen.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -25,25 +22,24 @@ class ResetFormScreen<T extends ResetFormController> extends FormScreen<T> {
         final isKeyboardVisible = controller.isKeyboardVisible;
 
         return Container(
-            padding: Padding.content,
+            padding: EdgeInsets.symmetric(
+                horizontal: _formPadding, vertical: Padding.content.top),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              if (!isKeyboardVisible)
-                Image(
-                    width: Get.mediaQuery.size.width,
-                    fit: BoxFit.fitWidth,
-                    title: 'login'),
+              if (!isKeyboardVisible) ...[
+                TextSecondaryAlt(authReset1Text, textAlign: TextAlign.center),
+                VerticalMediumSpace(),
+                TextSecondaryAlt(authReset2Text, textAlign: TextAlign.center),
+                VerticalBigSpace(),
+              ],
               VerticalMediumSpace(),
-              Container(
-                  key: _key,
-                  padding: EdgeInsets.symmetric(horizontal: _formPadding),
-                  child: Input<T>(field: 'login')),
+              Container(key: _key, child: Input<T>(field: 'login')),
               VerticalMediumSpace(),
               if (!isKeyboardVisible) ...[
                 VerticalBigSpace(),
                 Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: _formPadding + Size.horizontalMedium),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: Size.horizontalMedium),
                     child: B.Button(
                         onPressed: _loginHandler, title: authLoginButtonLabel))
               ]

@@ -149,7 +149,8 @@ class Input<T extends FormController> extends GetView<T> {
         cursorColor: Colors.primary,
         decoration: _getInputDecoration(
             controller: controller,
-            hasFocus: controller.getState(field).hasFocus,
+            shouldHighlight: controller.getState(field).hasFocus ||
+                controller.getState(field).hasValue,
             field: field,
             contentPadding: contentPadding,
             isErrorVisible: isErrorVisible,
@@ -344,7 +345,7 @@ FormFieldValidator _composeValidator(
 InputDecoration _getInputDecoration(
         {FormController controller,
         String field,
-        bool hasFocus = false,
+        bool shouldHighlight = false,
         String prefixImage,
         Widget leading,
         String suffixImage,
@@ -387,7 +388,7 @@ InputDecoration _getInputDecoration(
             : M.TextStyle(height: 0, fontSize: 0),
         labelStyle:
             //isDisabled ? TextStyle.primary.copyWith(color: Colors.disabled) :
-            hasFocus
+            shouldHighlight
                 ? TextStyle.primary.copyWith(color: Colors.primary, height: .9)
                 : TextStyle.primary.copyWith(color: Colors.icon, height: .9),
         focusColor: Colors.primary,

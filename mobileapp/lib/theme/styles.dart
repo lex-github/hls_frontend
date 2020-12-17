@@ -65,8 +65,11 @@ class Size {
   static double get icon => ratio(iconSize);
   static double get iconBig => ratio(iconBigSize);
   static double get iconHuge => ratio(iconHugeSize);
+
+  static double get bar => ratio(barHeight);
   static double get avatar => ratio(avatarSize);
   static double get fab => ratio(fabSize);
+  static double get buttonCentral => ratio(buttonCentralSize);
 
   static double get horizontalTiny => width(horizontalTinyPadding);
   static double get horizontalSmall => width(horizontalSmallPadding);
@@ -97,7 +100,7 @@ class Colors {
   static const black = M.Colors.black;
   static const white = M.Colors.white;
 
-  static const shadow = M.Color(0x66000000);
+  static const shadow = M.Color(0x222f2d3e);
   static const icon = Colors.light;
 
   // text

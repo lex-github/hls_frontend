@@ -14,15 +14,16 @@ const defaultItemsPerPage = 20;
 const timeoutDuration = Duration(seconds: 5);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
+const submenuAnimationDuration = Duration(milliseconds: 300);
 
 // forms
 const defaultErrorMaxLines = 3;
 const minPasswordLength = 8;
 
 // routes
-const authRoute = 'auth';
-const resetRoute = 'reset';
-const homeRoute = 'home';
+const authRoute = '/auth';
+const resetRoute = '/reset';
+const homeRoute = '/home';
 
 // styles related
 const elevation = 5.0;
@@ -47,8 +48,11 @@ const iconSmallSize = 15.0;
 const iconSize = 25.0;
 const iconBigSize = 35.0;
 const iconHugeSize = 45.0;
+
+const barHeight = 75.0;
 const avatarSize = 150.0;
 const fabSize = 56.0;
+const buttonCentralSize = fabSize;
 
 const horizontalTinyPadding = 5.0;
 const horizontalSmallPadding = 10.0;
@@ -64,14 +68,22 @@ const verticalBigPadding = 35.0;
 
 const screenShadowSpreadRadius = 5.0;
 const screenShadowBlurRadius = 7.0;
-const screenShadowOffset = const Offset(-5, 0);
+const screenShadowOffset = const Offset(-5, -5);
 
-final innerShadowColor = Colors.primary.withOpacity(.6);
+final innerShadowColor = Colors.primary.withOpacity(.4);
 const innerShadowBlurCoefficient = 8.0;
 const innerShadowHorizontalOffsetCoefficient = 20.0;
 const innerShadowVerticalOffsetCoefficient = 15.0;
 
-final outerShadowColor = Colors.primary.withOpacity(.6);
-const outerShadowBlurCoefficient = 8.0;
-const outerShadowHorizontalOffsetCoefficient = 30.0;
-const outerShadowVerticalOffsetCoefficient = 30.0;
+final outerShadowColor = Colors.primary.withOpacity(.2);
+const outerShadowBlurCoefficient = 12.0;
+const outerShadowHorizontalOffsetCoefficient = 15.0;
+const outerShadowVerticalOffsetCoefficient = 15.0;
+
+const panelShadowBlurRadius = 20.0;
+const panelShadowHorizontalOffset = 0.0;
+const panelShadowVerticalOffset = 5.0;
+
+const submenuBlurStrength = 3.0;
+const submenuBlurVerticalCoefficient = 2;
+const submenuDistance = 150;

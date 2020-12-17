@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart' hide Router;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/navigation/router.dart';
 import 'package:hls/services/_http_service.dart';
 import 'package:hls/services/auth_service.dart';
+import 'package:hls/services/settings_service.dart';
 import 'package:hls/theme/theme_data.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -15,8 +17,8 @@ Future initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeDateFormatting(null, null);
+  await Get.put(SettingsService()).init();
   await Get.put(HttpService()).init();
-  await Get.put(AuthService()).init();
 }
 
 class HLS extends StatelessWidget {
@@ -28,12 +30,23 @@ class HLS extends StatelessWidget {
           releaseText: releaseRefreshText,
           refreshingText: activeRefreshText,
           completeText: completedRefreshText),
-      child: GetMaterialApp(
-          theme: theme(context),
-          defaultTransition: Transition.rightToLeftWithFade,
-          getPages: Router.routes,
-          initialRoute: Router.initial,
-          home: Router.home()));
+      child: GraphQLProvider(
+          client: ValueNotifier(GraphQLClient(
+              cache: InMemoryCache(),
+              link: HttpLink(uri: apiUri, headers: {
+                'Client-Token': apiTokenValue,
+                'Content-Type': 'application/json',
+                'Auth-Token': Get.find<SettingsService>().token
+              }))),
+          child: GetBuilder<AuthService>(
+                init: AuthService()..init(),
+                builder: (_) => GetMaterialApp(
+                    theme: theme(context),
+                    defaultTransition: Transition.rightToLeftWithFade,
+                    getPages: Router.routes,
+                    initialRoute: Router.initial,
+                    home: Router.home())
+          )));
 }
 
 class Test extends StatelessWidget {

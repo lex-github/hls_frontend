@@ -48,14 +48,17 @@ class Button extends StatelessWidget {
   // builders
 
   Widget _buildChild() => isLoading
-      ? Container(padding: padding, child: Loading())
+      ? Container(
+          padding: padding, child: Loading(color: color ?? Colors.primary))
       : child ?? icon ?? TextPrimary(title);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled
           ? null
           : () {
-              if (onPressed != null) onPressed();
+              if (onPressed != null)
+                Future.delayed(defaultAnimationDuration)
+                    .then((_) => onPressed());
               if (isLoading) return;
               if (isSwitch) onChanged(!isSelected);
             },
@@ -69,7 +72,9 @@ class Button extends StatelessWidget {
           ? null
           : (_) {
               if (isLoading) return;
-              if (!isSwitch) onChanged(false);
+              if (!isSwitch)
+                Future.delayed(defaultAnimationDuration)
+                    .then((_) => onChanged(false));
             },
       onTapCancel: isDisabled
           ? null
@@ -79,6 +84,7 @@ class Button extends StatelessWidget {
             },
       child: isSelected
           ? ButtonInner(
+              background: background,
               padding: padding,
               size: size,
               child: _buildChild(),
@@ -102,12 +108,18 @@ class Button extends StatelessWidget {
 }
 
 class ButtonInner extends StatelessWidget {
+  final Color background;
   final Widget child;
   final double size;
   final EdgeInsets padding;
   final bool isCircular;
 
-  ButtonInner({this.child, double size, this.padding, this.isCircular = true})
+  ButtonInner(
+      {this.background,
+      this.child,
+      double size,
+      this.padding,
+      this.isCircular = true})
       : this.size = size ?? Size.iconHuge;
 
   @override
@@ -128,7 +140,9 @@ class ButtonInner extends StatelessWidget {
         boxShadow: [
           BoxShadow(color: innerShadowColor),
           BoxShadow(
-              color: Colors.background, blurRadius: blurRadius, offset: offset)
+              color: background ?? Colors.background,
+              blurRadius: blurRadius,
+              offset: offset)
         ]);
 
     final center = Container(
@@ -223,7 +237,8 @@ class Clickable extends StatelessWidget {
           splashColor: splashColor,
           highlightColor: Colors.transparent,
           child: child,
-          onTap: onPressed,
+          onTap: () =>
+              Future.delayed(defaultAnimationDuration).then((_) => onPressed()),
           customBorder: border));
 
   @override

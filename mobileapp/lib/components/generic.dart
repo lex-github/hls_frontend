@@ -490,13 +490,34 @@ class TextPrimary extends StatelessWidget {
 class TextSecondary extends StatelessWidget {
   final String text;
   final double fontSize;
+  final TextAlign textAlign;
   final Color color;
 
-  TextSecondary(this.text, {this.fontSize, this.color});
+  TextSecondary(this.text,
+      {this.textAlign = TextAlign.left, this.fontSize, this.color});
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize));
+      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize),
+      textAlign: textAlign);
+}
+
+class TextSecondaryAlt extends StatelessWidget {
+  final String text;
+  final double fontSize;
+  final TextAlign textAlign;
+  final Color color;
+
+  TextSecondaryAlt(this.text,
+      {this.textAlign = TextAlign.left,
+      this.fontSize,
+      this.color = Colors.light});
+
+  @override
+  Widget build(BuildContext context) => Text(text.tr,
+      style: TextStyle.secondary.copyWith(
+          color: color, fontSize: fontSize, fontWeight: FontWeight.w500),
+      textAlign: textAlign);
 }
 
 class TextIndicator extends StatelessWidget {

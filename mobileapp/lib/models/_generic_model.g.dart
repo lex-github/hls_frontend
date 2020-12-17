@@ -8,7 +8,7 @@ part of '_generic_model.dart';
 
 GenericData _$GenericDataFromJson(Map<String, dynamic> json) {
   return GenericData()
-    ..id = json['id'] as int
+    ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUri = json['imageUri'] as String;
 }

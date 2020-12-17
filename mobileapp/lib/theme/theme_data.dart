@@ -9,7 +9,7 @@ final theme = (context) => ThemeData(
     primaryColor: Colors.primary,
     disabledColor: Colors.disabled,
     errorColor: Colors.failure,
-    splashColor: Colors.disabled,
+    splashColor: Colors.shadow,
     canvasColor: Colors.background,
 
     // appBar

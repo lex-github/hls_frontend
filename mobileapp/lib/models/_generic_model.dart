@@ -1,3 +1,4 @@
+import 'package:hls/helpers/convert.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/enums.dart';
 
@@ -5,6 +6,7 @@ part '_generic_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class GenericData extends GenericEnum {
+  @JsonKey(fromJson: toInt)
   int id;
   String title;
   String imageUri;
