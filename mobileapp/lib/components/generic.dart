@@ -14,6 +14,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/strings.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class Avatar extends StatelessWidget {
@@ -151,12 +152,16 @@ class Image extends StatelessWidget {
       double height,
       double size,
       this.color,
-      this.fit = BoxFit.scaleDown,
+      BoxFit fit,
       this.alignment = Alignment.center,
       this.builder,
       this.image,
       this.isLink = false})
       : assert(!title.isNullOrEmpty || image != null),
+        this.fit = fit ??
+            (width != null || height != null || size != null
+                ? BoxFit.contain
+                : BoxFit.scaleDown),
         this.width = width ?? size,
         this.height = height ?? size;
 
@@ -286,13 +291,10 @@ class Page extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.background,
           image: DecorationImage(
-            repeat: ImageRepeat.repeat,
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(hexagonOpacity), BlendMode.dstATop),
-            image: Svg('assets/hexagon.svg', size: Size.hexagon),
-            //fit: BoxFit.cover,
-          )),
-      //color: color ?? Colors.background,
+              repeat: ImageRepeat.repeat,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(hexagonOpacity), BlendMode.dstATop),
+              image: Svg('assets/hexagon.svg', size: Size.hexagon))),
       constraints: constraints ?? BoxConstraints.expand(),
       padding: padding ?? Padding.content,
       child: child);
@@ -309,6 +311,7 @@ class Screen extends StatelessWidget {
   final Color color;
   final bool shouldResize;
   final bool shouldHaveAppBar;
+  final bool shouldShowDrawer;
 
   Screen(
       {this.key,
@@ -320,6 +323,7 @@ class Screen extends StatelessWidget {
       this.color,
       this.shouldResize = false,
       this.shouldHaveAppBar = true,
+      this.shouldShowDrawer = false,
       @required Widget child,
       Widget footer,
       EdgeInsets padding})
@@ -348,20 +352,32 @@ class Screen extends StatelessWidget {
       ? leading
       : !Get.rawRoute.isFirst
           ? Center(
-              child: Button(
-                  isCircular: true,
-                  padding: Padding.tiny,
+              child: Clickable(
+                  child: Icon(Icons.arrow_back_ios, size: Size.icon),
+                  onPressed: Get.back))
+          : drawer != null || shouldShowDrawer
+              ? Center(
+                      child: Clickable(
+                          child: Icon(Icons.menu, size: Size.icon),
+                          onPressed: tabbarScaffoldKey.currentState.openDrawer))
+              : null;
+
+  Widget _buildLeadingButton() => leading != null
+      ? leading
+      : !Get.rawRoute.isFirst
+          ? Center(
+              child: CircularButton(
                   size: Size.iconBig,
                   icon: Icons.arrow_back_ios,
                   iconSize: Size.iconTiny,
                   onPressed: Get.back))
-          : drawer != null
-              ? Builder(
-                  builder: (context) => Center(
-                      child: Button(
-                          size: Size.iconBig,
-                          icon: Icons.error,
-                          onPressed: Scaffold.of(context).openDrawer)))
+          : drawer != null || shouldShowDrawer
+              ? Center(
+                  child: CircularButton(
+                      size: Size.iconBig,
+                      icon: Icons.menu,
+                      iconSize: Size.iconTiny,
+                      onPressed: Scaffold.of(Get.context).openDrawer))
               : null;
 
   @override
@@ -376,48 +392,50 @@ class Screen extends StatelessWidget {
                   offset: screenShadowOffset)
             ]),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle(
-                  //statusBarColor: Colors.success.withOpacity(.5)
-                  statusBarBrightness: Brightness.dark,
-                  statusBarIconBrightness: Brightness.light),
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                resizeToAvoidBottomInset: shouldResize,
-                resizeToAvoidBottomPadding: shouldResize,
-                primary: false,
-                appBar: shouldHaveAppBar
-                    ? AppBar(
-                        title: title,
-                        titleSpacing: 0,
-                        leading: _buildLeading(),
-                        actions: trailing != null
-                            ? [
-                                HorizontalSpace(),
-                                Center(child: trailing),
-                                HorizontalSpace()
-                              ]
-                            : null,
-                        leadingWidth: Size.iconBig + Size.horizontal * 2)
-                    : null,
-                drawer: drawer,
-                body: fab == null
-                    ? child
-                    : Stack(children: [
-                        child,
-                        if (!shouldHaveAppBar)
-                          Positioned(
-                              top: Size.vertical + Size.top,
-                              left: Size.horizontal,
-                              child: _buildLeading()),
-                        Positioned(
-                            bottom: Size.vertical,
-                            right: Size.horizontal,
-                            child: fab)
-                      ]),
-                //floatingActionButton: fab,
-                //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-              ),
-            ));
+                value: SystemUiOverlayStyle(
+                    //statusBarColor: Colors.success.withOpacity(.5)
+                    statusBarBrightness: Brightness.dark,
+                    statusBarIconBrightness: Brightness.light),
+                child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    resizeToAvoidBottomInset: shouldResize,
+                    resizeToAvoidBottomPadding: shouldResize,
+                    primary: false,
+                    appBar: shouldHaveAppBar
+                        ? PreferredSize(
+                            preferredSize: M.Size.fromHeight(
+                                Size.bar), // here the desired height
+                            child: AppBar(
+                                title: title,
+                                titleSpacing: 0,
+                                leading: _buildLeading(),
+                                actions: trailing != null
+                                    ? [
+                                        HorizontalSpace(),
+                                        Center(child: trailing),
+                                        HorizontalSpace()
+                                      ]
+                                    : null,
+                                leadingWidth: Size.icon + Size.horizontal * 2))
+                        : null,
+                    drawer: drawer,
+                    body: fab == null
+                        ? child
+                        : Stack(children: [
+                            child,
+                            if (!shouldHaveAppBar)
+                              Positioned(
+                                  top: Size.vertical + Size.top,
+                                  left: Size.horizontal,
+                                  child: _buildLeadingButton()),
+                            Positioned(
+                                bottom: Size.vertical,
+                                right: Size.horizontal,
+                                child: fab)
+                          ])
+                    //floatingActionButton: fab,
+                    //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                    )));
       });
 }
 

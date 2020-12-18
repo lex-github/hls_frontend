@@ -11,7 +11,6 @@ extension MapGetter on Map {
         return defaultValue;
 
       final result = this.get(key.removeAt(0), defaultValue: defaultValue);
-      print('$key: $result');
       if (key.length == 0)
         return result;
 

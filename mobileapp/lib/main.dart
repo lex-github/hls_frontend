@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/navigation/router.dart';
 import 'package:hls/services/_http_service.dart';
 import 'package:hls/services/auth_service.dart';
@@ -30,23 +31,26 @@ class HLS extends StatelessWidget {
           releaseText: releaseRefreshText,
           refreshingText: activeRefreshText,
           completeText: completedRefreshText),
-      child: GraphQLProvider(
+      child: Obx(() {
+        print('HLS.build token: ${SettingsService.i.token}');
+
+        return GraphQLProvider(
           client: ValueNotifier(GraphQLClient(
               cache: InMemoryCache(),
               link: HttpLink(uri: apiUri, headers: {
                 'Client-Token': apiTokenValue,
                 'Content-Type': 'application/json',
-                'Auth-Token': Get.find<SettingsService>().token
+                if (!SettingsService.i.token.isNullOrEmpty)
+                  'Auth-Token': SettingsService.i.token
               }))),
           child: GetBuilder<AuthService>(
-                init: AuthService()..init(),
-                builder: (_) => GetMaterialApp(
-                    theme: theme(context),
-                    defaultTransition: Transition.rightToLeftWithFade,
-                    getPages: Router.routes,
-                    initialRoute: Router.initial,
-                    home: Router.home())
-          )));
+              init: AuthService()..init(),
+              builder: (_) => GetMaterialApp(
+                  theme: theme(context),
+                  defaultTransition: Transition.rightToLeftWithFade,
+                  getPages: Router.routes,
+                  initialRoute: Router.initial,
+                  home: Router.home())));}));
 }
 
 class Test extends StatelessWidget {

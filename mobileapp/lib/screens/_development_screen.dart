@@ -9,8 +9,12 @@ class _DevelopmentChild extends StatelessWidget {
 }
 
 class DevelopmentScreen extends Screen {
-  DevelopmentScreen({Widget drawer, title})
-      : super(drawer: drawer, title: title, child: _DevelopmentChild());
+  DevelopmentScreen({title, Widget drawer, bool shouldShowDrawer = false})
+      : super(
+            title: title,
+            drawer: drawer,
+            shouldShowDrawer: shouldShowDrawer,
+            child: _DevelopmentChild());
 }
 
 class DevelopmentPage extends Page {

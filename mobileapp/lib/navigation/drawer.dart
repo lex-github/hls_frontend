@@ -1,17 +1,21 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/strings.dart';
+import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class AppDrawer extends StatelessWidget {
   Widget _buildItem(String title, String destination) => ListTile(
-      contentPadding: Padding.content,
+      //contentPadding: Padding.content,
       dense: true,
       title: TextPrimary(title),
       onTap: () => Get.offNamed(destination));
@@ -19,36 +23,50 @@ class AppDrawer extends StatelessWidget {
   // builders
 
   _buildHeader() {
-    final profile = Get.find<AuthService>().profile;
+    final profile = AuthService.i.profile;
 
     return profile == null
         ? Nothing()
         : Row(children: [
-            if (!profile.avatarUri.isNullOrEmpty) ...[
-              ButtonOuter(
-                  child: Image(
-                      title: '$siteUrl${trimLeading('/', profile.avatarUri)}',
-                      fit: BoxFit.cover),
-                  size: Size.iconHuge),
-              HLSpace()
-            ],
-            TextPrimary(profile.name, color: Colors.light)
+            // if (!profile.avatarUri.isNullOrEmpty) ...[
+            //   ButtonOuter(
+            //       child: Image(
+            //           title: '$siteUrl${trimLeading('/', profile.avatarUri)}',
+            //           fit: BoxFit.cover),
+            //       size: Size.iconHuge),
+            //   HLSpace()
+            // ],
+            // TextPrimary(profile.name, color: Colors.light)
           ]);
   }
 
   @override
-  Widget build(context) => Drawer(
+  Widget build(_) => BackdropFilter(
+      filter: ImageFilter.blur(
+          sigmaX: submenuBlurStrength,
+          sigmaY: submenuBlurStrength * submenuBlurVerticalCoefficient),
+      child: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: <Widget>[
         DrawerHeader(
-            padding: Padding.content,
+            padding: Padding.zero,
+            margin: Padding.zero,
             child: _buildHeader(),
             decoration: BoxDecoration(color: Colors.primary)),
         //_buildItem,
-        Divider(),
-        ListTile(
-            contentPadding: Padding.content,
-            dense: true,
-            title: TextPrimary(drawerLogoutLabel, color: Colors.failure),
-            onTap: Get.find<AuthService>().logout)
-      ]));
+        //Divider(),
+        Clickable(
+            splashColor: Colors.shadowLight,
+            onPressed: () {
+              Get.back();
+              Get.find<AuthService>().logout();
+            },
+            child: Container(
+                padding: Padding.content,
+                child: Row(children: [
+                  Icon(Icons.logout,
+                      size: Size.iconSmall, color: Colors.failure),
+                  HorizontalSmallSpace(),
+                  TextSecondaryAlt(drawerLogoutLabel, color: Colors.failure)
+                ])))
+      ])));
 }

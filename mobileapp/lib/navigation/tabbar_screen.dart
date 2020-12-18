@@ -3,13 +3,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide Colors, Image, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/navigation/drawer.dart';
 import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
 import 'package:hls/theme/styles.dart';
 
+final tabbarScaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'tabbarKey');
+
 class TabbarScreen extends StatefulWidget {
   final int index;
-  TabbarScreen({this.index = 2});
+  TabbarScreen({this.index = 0});
 
   @override
   _TabbarScreenState createState() => _TabbarScreenState();
@@ -18,13 +21,14 @@ class TabbarScreen extends StatefulWidget {
 class _TabbarScreenState extends State<TabbarScreen>
     with TickerProviderStateMixin {
   int get index => widget.index;
-  TabbarController get controller => Get.find<TabbarController>();
+  TabbarController get controller => Get.put(
+      TabbarController(index: index, length: _tabbarItems.length, vsync: this));
 
   final List<Widget> _tabbarBodies = <Widget>[
-    DevelopmentScreen(),
-    DevelopmentScreen(),
-    DevelopmentScreen(),
-    DevelopmentScreen()
+    DevelopmentScreen(shouldShowDrawer: true),
+    DevelopmentScreen(shouldShowDrawer: true),
+    DevelopmentScreen(shouldShowDrawer: true),
+    DevelopmentScreen(shouldShowDrawer: true)
   ];
 
   final List<AnimatedBottomNavigationBarItem> _tabbarItems = [
@@ -45,6 +49,9 @@ class _TabbarScreenState extends State<TabbarScreen>
 
   Widget _buildBody() => controller.isBarVisible
       ? Scaffold(
+          key: tabbarScaffoldKey,
+          drawer: AppDrawer(),
+          drawerScrimColor: Colors.shadow.withOpacity(.4),
           primary: false,
           resizeToAvoidBottomInset: false,
           resizeToAvoidBottomPadding: false,
@@ -53,33 +60,29 @@ class _TabbarScreenState extends State<TabbarScreen>
       : _buildTabbar();
 
   @override
-  Widget build(BuildContext context) => GetBuilder(
-      init: TabbarController(
-          index: index, length: _tabbarItems.length, vsync: this),
-      builder: (_) => controller.isSubmenuVisible
-          ? Stack(children: [
-              ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      Colors.transparent, BlendMode.saturation),
-                  child: _buildBody()),
-              GestureDetector(
-                  onTap: () => controller.toggleSubmenu(),
-                  child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                          sigmaX: submenuBlurStrength,
-                          sigmaY: submenuBlurStrength *
-                              submenuBlurVerticalCoefficient),
-                      child: Container(
-                          color: Colors.shadow.withOpacity(.4),
-                          width: Size.screenWidth,
-                          height: Size.screenHeight,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                _buildBar(
-                                    isSubmenuVisible:
-                                        controller.isSubmenuVisible)
-                              ]))))
-            ])
-          : _buildBody());
+  Widget build(BuildContext context) => Obx(() => controller.isSubmenuVisible
+      ? Stack(children: [
+          ColorFiltered(
+              colorFilter:
+                  ColorFilter.mode(Colors.transparent, BlendMode.saturation),
+              child: _buildBody()),
+          GestureDetector(
+              onTap: () => controller.toggleSubmenu(),
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                      sigmaX: submenuBlurStrength,
+                      sigmaY:
+                          submenuBlurStrength * submenuBlurVerticalCoefficient),
+                  child: Container(
+                      color: Colors.shadow.withOpacity(.4),
+                      width: Size.screenWidth,
+                      height: Size.screenHeight,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            _buildBar(
+                                isSubmenuVisible: controller.isSubmenuVisible)
+                          ]))))
+        ])
+      : _buildBody());
 }

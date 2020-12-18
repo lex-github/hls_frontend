@@ -65,6 +65,7 @@ class Size {
   static double get icon => ratio(iconSize);
   static double get iconBig => ratio(iconBigSize);
   static double get iconHuge => ratio(iconHugeSize);
+  static double get tabbarIcon => ratio(tabbarIconSize);
 
   static double get bar => ratio(barHeight);
   static double get avatar => ratio(avatarSize);
@@ -89,10 +90,11 @@ class Size {
 // colors
 class Colors {
   // component
-  static const background = M.Color(0xFF1F191A);
+  //static const background = M.Color(0xFF1F191A);
+  static const background = M.Color(0xFF1D1C1D);
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
-  static const failure = M.Color(0xFFED1C24);
+  static const failure = M.Color(0xFFD9134C);
   static const disabled = M.Color(0xFF555555);
   static const light = Colors.white;
 
@@ -100,12 +102,18 @@ class Colors {
   static const black = M.Colors.black;
   static const white = M.Colors.white;
 
-  static const shadow = M.Color(0x222f2d3e);
+  static const shadow = M.Color(0xFF121212);
+  static const shadowLight = M.Color(0x662f2d3e);
   static const icon = Colors.light;
 
   // text
   static const primaryText = Colors.light;
   static const secondaryText = Colors.disabled;
+
+  // project specific
+  static const schedule = M.Color(0xFF8416FF);
+  static const nutrition = M.Color(0xFF99E600);
+  static const exercise = M.Color(0xFFD70010);
 }
 
 // padding

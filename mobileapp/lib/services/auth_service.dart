@@ -18,7 +18,6 @@ class AuthService extends Service {
   // fields
 
   final _isInit = false.obs;
-  final _profile = Rx<UserData>(null);
 
   // getters
 
@@ -26,9 +25,14 @@ class AuthService extends Service {
   Map<String, String> get headers => {'Authorization': 'Token $token'};
 
   bool get isInit => _isInit.value;
+  bool get isAuthenticated => (profile?.id ?? 0) > 0;
+
+  // profile
+
+  final _profile = Rx<UserData>(null);
   UserData get profile => _profile.value;
   Rx<UserData> get profileReactive => _profile;
-  bool get isAuthenticated => (profile?.id ?? 0) > 0;
+  set profile(UserData value) => _profile.value = value;
 
   // get x implementation
 
@@ -65,6 +69,8 @@ class AuthService extends Service {
   }
 
   Future<UserData> retrieve() async {
+    if (SettingsService.i.token.isNullOrEmpty) return null;
+
     // this might be a bit bold
     while (Get.context == null) await Future.delayed(defaultAnimationDuration);
 
@@ -72,35 +78,26 @@ class AuthService extends Service {
     final result =
         await client.query(QueryOptions(documentNode: gql(currentUserQuery)));
 
-    print('AuthService.retrieve '
-        '\n\t${result.exception}'
-        '\n\t${result.data}');
+    // print('AuthService.retrieve '
+    //     '\n\t${result.exception}'
+    //     '\n\t${result.data}');
 
-    _profile.value = UserData.fromJson((result.data as Map).get('currentUser'));
+    if (!(result.data as Map).isNullOrEmpty)
+      _profile.value =
+          UserData.fromJson((result.data as Map).get('currentUser'));
 
     return profile;
-
-    // final HttpService service = Get.find();
-    // final response = await service
-    //     .request(HttpRequest(path: profileEndpoint, headers: headers));
-    // if (response.data != null)
-    //   _profile.value = UserData.fromJson(response.data);
-    //
-    // return response;
   }
 
-  Future<HttpResponse> logout() async {
-    return null;
-    // final HttpService service = Get.find();
-    // final response = await service.request(HttpRequest(
-    //   path: authEndpoint,
-    //   headers: headers,
-    //   method: RequestMethod.DELETE));
-    //
-    // final SettingsService settings = Get.find();
-    // settings.token = null;
-    // _profile.value = null;
-    //
-    // return response;
+  Future<bool> logout() async {
+    /// TODO: sign out mutation?
+    // GraphQLClient client = GraphQLProvider.of(Get.context).value;
+    // final result =
+    //     await client.mutate(MutationOptions(documentNode: gql(currentUserQuery)));
+
+    SettingsService.i.token = null;
+    _profile.value = null;
+
+    return true;
   }
 }

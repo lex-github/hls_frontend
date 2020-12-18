@@ -4,12 +4,41 @@ import 'package:flutter/rendering.dart';
 import 'package:get/state_manager.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/colors.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/theme/styles.dart';
+
+class CircularButton extends Button {
+  CircularButton(
+      {Function onPressed,
+      Function onLongPressed,
+      double size,
+      Color color = Colors.light,
+      Color background = Colors.primary,
+      Widget child,
+      String imageTitle,
+      icon,
+      iconSize})
+      : super(
+            onPressed: onPressed,
+            onLongPressed: onLongPressed,
+            isCircular: true,
+            size: size ?? Size.fab,
+            padding: Padding.zero,
+            color: color,
+            background: background,
+            child: child,
+            imageTitle: imageTitle,
+            icon: icon,
+            iconSize: iconSize);
+}
 
 class Button extends StatelessWidget {
   final Widget child;
   final Widget icon;
+  final Widget image;
   final String title;
+  final String imageTitle;
   final Color color;
   final Color background;
   final bool isSelected;
@@ -18,9 +47,9 @@ class Button extends StatelessWidget {
   final bool isDisabled;
   final bool isCircular;
   final Function onPressed;
+  final Function onLongPressed;
   final EdgeInsets padding;
   final double size;
-  final double iconSize;
 
   Button(
       {this.child,
@@ -28,29 +57,41 @@ class Button extends StatelessWidget {
       this.color,
       this.background,
       this.title,
+      this.imageTitle,
       this.isSelected = false,
       this.isSwitch = false,
       this.isLoading = false,
       this.isCircular = false,
       this.isDisabled = false,
       this.onPressed,
+      this.onLongPressed,
       EdgeInsets padding,
       double size,
       double iconSize})
       : this.size = size ?? Size.iconHuge,
-        this.iconSize = iconSize ?? ((size ?? Size.iconHuge) * .5),
         this.padding = padding ?? Padding.button,
         this.icon = icon != null
-            ? Icon(icon, color: color ?? Colors.icon, size: iconSize)
+            ? Icon(icon,
+                color: color ?? Colors.icon,
+                size: iconSize ?? ((size ?? Size.iconHuge) * .5))
             : null,
-        assert(child != null || icon != null || title != null);
+        this.image = !imageTitle.isNullOrEmpty
+            ? Image(
+                title: imageTitle,
+                color: color ?? Colors.icon,
+                size: iconSize ?? ((size ?? Size.iconHuge) * .5))
+            : null,
+        assert(child != null ||
+            icon != null ||
+            title != null ||
+            imageTitle != null);
 
   // builders
 
   Widget _buildChild() => isLoading
       ? Container(
           padding: padding, child: Loading(color: color ?? Colors.primary))
-      : child ?? icon ?? TextPrimary(title);
+      : child ?? icon ?? image ?? TextPrimary(title);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled
@@ -82,6 +123,7 @@ class Button extends StatelessWidget {
               if (isLoading) return;
               if (!isSwitch) onChanged(false);
             },
+      onLongPress: onLongPressed,
       child: isSelected
           ? ButtonInner(
               background: background,
@@ -138,7 +180,10 @@ class ButtonInner extends StatelessWidget {
             color: innerShadowColor,
             style: BorderStyle.solid),
         boxShadow: [
-          BoxShadow(color: innerShadowColor),
+          BoxShadow(
+              color: background != null
+                  ? background.darken(.1)
+                  : innerShadowColor),
           BoxShadow(
               color: background ?? Colors.background,
               blurRadius: blurRadius,
@@ -191,7 +236,7 @@ class ButtonOuter extends StatelessWidget {
                 borderRadius: radius,
                 border: Border.all(
                     width: borderWidth / 2,
-                    color: Colors.shadow.withOpacity(.01),
+                    color: Colors.shadowLight.withOpacity(.01),
                     style: BorderStyle.solid)),
             child: Container(
                 child: ClipRRect(
@@ -206,11 +251,13 @@ class ButtonOuter extends StatelessWidget {
                     boxShadow: [
                       if (isClickable)
                         BoxShadow(
-                            color: outerShadowColor,
+                            color: background != null
+                                ? background.withOpacity(.2)
+                                : outerShadowColor,
                             blurRadius: blurRadius,
                             offset: -offset),
                       BoxShadow(
-                          color: Colors.shadow,
+                          color: Colors.shadowLight,
                           blurRadius: blurRadius,
                           offset: offset)
                     ]))));
