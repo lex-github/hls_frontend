@@ -1,17 +1,13 @@
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
-import 'package:get/state_manager.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
-import 'package:hls/services/_http_service.dart';
-import 'package:hls/services/_service.dart';
+import 'package:hls/services/graphql_service.dart';
 import 'package:hls/services/settings_service.dart';
 
-class AuthService extends Service {
+class AuthService extends GraphqlService {
   static AuthService get i => Get.find<AuthService>();
   static bool get isAuth => i?.isAuthenticated ?? false;
 
@@ -21,7 +17,7 @@ class AuthService extends Service {
 
   // getters
 
-  String get token => Get.find<SettingsService>()?.token;
+  String get token => SettingsService.i.token;
   Map<String, String> get headers => {'Authorization': 'Token $token'};
 
   bool get isInit => _isInit.value;
@@ -58,34 +54,26 @@ class AuthService extends Service {
 
   // methods
 
-  Future<HttpResponse> login(Map<String, String> parameters) async {
-    return null;
-    // final HttpService service = Get.find();
-    // final response = await service.request(HttpRequest(
-    //     path: authEndpoint,
-    //     method: RequestMethod.POST,
-    //     parameters: parameters));
-    // return response;
+  Future<bool> login(Map<String, dynamic> parameters) async {
+    final data = await mutation(authSignInMutation, parameters: parameters);
+    if (data.isNullOrEmpty) return null;
+
+    final String token = data.get(['authSignIn', 'authToken']);
+    if (token.isNullOrEmpty) return false;
+
+    SettingsService.i.token = token;
+
+    profile = UserData.fromJson(data.get(['authSignIn', 'user']));
+    return profile != null;
   }
 
   Future<UserData> retrieve() async {
     if (SettingsService.i.token.isNullOrEmpty) return null;
 
-    // this might be a bit bold
-    while (Get.context == null) await Future.delayed(defaultAnimationDuration);
+    final data = await query(currentUserQuery);
+    if (data.isNullOrEmpty) return null;
 
-    GraphQLClient client = GraphQLProvider.of(Get.context).value;
-    final result =
-        await client.query(QueryOptions(documentNode: gql(currentUserQuery)));
-
-    // print('AuthService.retrieve '
-    //     '\n\t${result.exception}'
-    //     '\n\t${result.data}');
-
-    if (!(result.data as Map).isNullOrEmpty)
-      _profile.value =
-          UserData.fromJson((result.data as Map).get('currentUser'));
-
+    profile = UserData.fromJson(data.get('currentUser'));
     return profile;
   }
 
@@ -96,7 +84,7 @@ class AuthService extends Service {
     //     await client.mutate(MutationOptions(documentNode: gql(currentUserQuery)));
 
     SettingsService.i.token = null;
-    _profile.value = null;
+    profile = null;
 
     return true;
   }

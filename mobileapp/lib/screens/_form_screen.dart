@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Colors, Image, TextStyle;
+import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' as R;
 import 'package:get/get.dart';
@@ -72,27 +72,29 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
 class Button<T extends FormController> extends GetView<T> {
   final bool isCircular;
   final double size;
-  final Color color;
   final EdgeInsets padding;
   final IconData icon;
   final double iconSize;
+  final Color color;
 
-  Button(
-      {this.isCircular = false,
-      this.size,
-      this.color,
-      this.padding,
-      this.icon = Icons.check,
-      this.iconSize});
+  Button({
+    this.isCircular = true,
+    this.size,
+    this.padding,
+    this.icon = Icons.check,
+    this.iconSize,
+    this.color = Colors.light,
+  });
 
   @override
   Widget build(BuildContext context) => Obx(() => B.Button(
       isCircular: isCircular,
-      size: size,
-      background: controller.isValid ? color : Colors.failure,
-      padding: padding,
-      icon: icon,
-      iconSize: iconSize,
+      size: size ?? Size.fab,
+      background: controller.isValid ? Colors.primary : Colors.failure,
+      padding: padding ?? Padding.zero,
+      icon: icon ?? Icons.arrow_forward_ios,
+      iconSize: iconSize ?? Size.iconSmall,
+      color: color,
       isSelected: controller.isAwaiting,
       isLoading: controller.isAwaiting,
       isDisabled: !controller.isValid,

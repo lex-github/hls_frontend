@@ -72,53 +72,63 @@ class AuthFormScreen<T extends AuthFormController> extends FormScreen<T> {
             ]));
       });
 
+  // @override
+  // Widget buildScreen({Widget child}) => Screen(
+  //     fab: controller.shouldShowForm
+  //         ? Mutation(
+  //             options: MutationOptions(
+  //                 documentNode: gql(authSignInMutation),
+  //                 update: (Cache cache, QueryResult result) => cache,
+  //                 onCompleted: (result) {
+  //                   // print(
+  //                   //     '\n-----\nAuthFormScreen.buildScreen onCompleted: $result');
+  //
+  //                   final String token = (result as Map<String, dynamic>)
+  //                       .get(['authSignIn', 'authToken']);
+  //                   print('AuthFormScreen.buildScreen token: $token');
+  //                   if (token.isNullOrEmpty)
+  //                     return showConfirm(title: errorGenericText);
+  //
+  //                   SettingsService.i.token = token;
+  //
+  //                   AuthService.i.profile = UserData.fromJson((result as Map<String, dynamic>)
+  //                     .get(['authSignIn', 'user']));
+  //                 },
+  //                 onError: (error) {
+  //                   print(
+  //                     '\n-----\nAuthFormScreen.buildScreen onError: $error');
+  //
+  //                   if (!(error?.clientException?.message?.isNullOrEmpty ?? true))
+  //                     showConfirm(title: error.clientException.message);
+  //                 }),
+  //             builder: (run, result) => B.Button(
+  //                 onPressed: () {
+  //                   /// TODO: rewrite all of this shit
+  //                   controller.isDirty = true;
+  //                   if (!controller.validate()) return;
+  //
+  //                   run(controller.values);
+  //                 },
+  //                 isCircular: true,
+  //                 isSwitch: result.loading,
+  //                 isLoading: result.loading,
+  //                 isSelected: result.loading,
+  //                 size: Size.fab,
+  //                 color: Colors.light,
+  //                 background: Colors.primary,
+  //                 padding: Padding.zero,
+  //                 icon: Icons.arrow_forward_ios,
+  //                 iconSize: Size.iconSmall))
+  //         : Nothing(),
+  //     padding: Padding.zero,
+  //     shouldHaveAppBar: false,
+  //     leading: Nothing(),
+  //     child: child);
+
   @override
   Widget buildScreen({Widget child}) => Screen(
       fab: controller.shouldShowForm
-          ? Mutation(
-              options: MutationOptions(
-                  documentNode: gql(authSignInMutation),
-                  update: (Cache cache, QueryResult result) => cache,
-                  onCompleted: (result) {
-                    // print(
-                    //     '\n-----\nAuthFormScreen.buildScreen onCompleted: $result');
-
-                    final String token = (result as Map<String, dynamic>)
-                        .get(['authSignIn', 'authToken']);
-                    print('AuthFormScreen.buildScreen token: $token');
-                    if (token.isNullOrEmpty)
-                      return showConfirm(title: errorGenericText);
-
-                    SettingsService.i.token = token;
-
-                    AuthService.i.profile = UserData.fromJson((result as Map<String, dynamic>)
-                      .get(['authSignIn', 'user']));
-                  },
-                  onError: (error) {
-                    print(
-                      '\n-----\nAuthFormScreen.buildScreen onError: $error');
-
-                    if (!(error?.clientException?.message?.isNullOrEmpty ?? true))
-                      showConfirm(title: error.clientException.message);
-                  }),
-              builder: (run, result) => B.Button(
-                  onPressed: () {
-                    /// TODO: rewrite all of this shit
-                    controller.isDirty = true;
-                    if (!controller.validate()) return;
-
-                    run(controller.values);
-                  },
-                  isCircular: true,
-                  isSwitch: result.loading,
-                  isLoading: result.loading,
-                  isSelected: result.loading,
-                  size: Size.fab,
-                  color: Colors.light,
-                  background: Colors.primary,
-                  padding: Padding.zero,
-                  icon: Icons.arrow_forward_ios,
-                  iconSize: Size.iconSmall))
+          ? Button<T>()
           : Nothing(),
       padding: Padding.zero,
       shouldHaveAppBar: false,

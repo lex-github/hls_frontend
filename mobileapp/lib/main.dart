@@ -31,10 +31,7 @@ class HLS extends StatelessWidget {
           releaseText: releaseRefreshText,
           refreshingText: activeRefreshText,
           completeText: completedRefreshText),
-      child: Obx(() {
-        print('HLS.build token: ${SettingsService.i.token}');
-
-        return GraphQLProvider(
+      child: Obx(() => GraphQLProvider( // rebuild when token changes
           client: ValueNotifier(GraphQLClient(
               cache: InMemoryCache(),
               link: HttpLink(uri: apiUri, headers: {
@@ -50,7 +47,7 @@ class HLS extends StatelessWidget {
                   defaultTransition: Transition.rightToLeftWithFade,
                   getPages: Router.routes,
                   initialRoute: Router.initial,
-                  home: Router.home())));}));
+                  home: Router.home())))));
 }
 
 class Test extends StatelessWidget {

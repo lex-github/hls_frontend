@@ -357,9 +357,9 @@ class Screen extends StatelessWidget {
                   onPressed: Get.back))
           : drawer != null || shouldShowDrawer
               ? Center(
-                      child: Clickable(
-                          child: Icon(Icons.menu, size: Size.icon),
-                          onPressed: tabbarScaffoldKey.currentState.openDrawer))
+                  child: Clickable(
+                      child: Icon(Icons.menu, size: Size.icon),
+                      onPressed: tabbarScaffoldKey.currentState.openDrawer))
               : null;
 
   Widget _buildLeadingButton() => leading != null
@@ -368,6 +368,7 @@ class Screen extends StatelessWidget {
           ? Center(
               child: CircularButton(
                   size: Size.iconBig,
+                  background: Colors.transparent,
                   icon: Icons.arrow_back_ios,
                   iconSize: Size.iconTiny,
                   onPressed: Get.back))
@@ -375,6 +376,7 @@ class Screen extends StatelessWidget {
               ? Center(
                   child: CircularButton(
                       size: Size.iconBig,
+                      background: Colors.transparent,
                       icon: Icons.menu,
                       iconSize: Size.iconTiny,
                       onPressed: Scaffold.of(Get.context).openDrawer))

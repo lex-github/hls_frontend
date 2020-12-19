@@ -247,20 +247,21 @@ class ButtonOuter extends StatelessWidget {
                     color: background ?? Colors.background,
                     borderRadius: radius,
                     border: Border.all(
-                        width: borderWidth / 2, color: Colors.transparent),
-                    boxShadow: [
-                      if (isClickable)
-                        BoxShadow(
-                            color: background != null
-                                ? background.withOpacity(.2)
-                                : outerShadowColor,
-                            blurRadius: blurRadius,
-                            offset: -offset),
-                      BoxShadow(
-                          color: Colors.shadowLight,
-                          blurRadius: blurRadius,
-                          offset: offset)
-                    ]))));
+                        width: borderWidth / 2, color: background ?? Colors.primary),
+                    // boxShadow: [
+                    //   if (isClickable)
+                    //     BoxShadow(
+                    //         color: background != null
+                    //             ? background.withOpacity(.2)
+                    //             : outerShadowColor,
+                    //         blurRadius: blurRadius,
+                    //         offset: -offset),
+                    //   BoxShadow(
+                    //       color: Colors.shadowLight,
+                    //       blurRadius: blurRadius,
+                    //       offset: offset)
+                    // ]
+                ))));
   }
 }
 

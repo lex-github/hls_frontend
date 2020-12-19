@@ -8,6 +8,7 @@ class AuthFormController extends FormController {
   bool get shouldShowForm => ((AuthService auth) =>
       auth.isInit && !auth.isAuthenticated)(AuthService.i);
   bool get isInit => AuthService.i.isInit;
+  bool get isAwaiting => AuthService.i.isAwaiting;
 
   @override
   List<FormConfig> get config => [
@@ -22,17 +23,10 @@ class AuthFormController extends FormController {
   // form controller implementation
 
   @override
-  Future<bool> onSubmitRequest() async {
-    return false;
-  }
+  Future<bool> onSubmitRequest() async => AuthService.i.login(values);
 
   @override
-  onSubmitResponse(bool isSuccess) {
-    print('AuthFormController.onSubmitResponse '
-        'success: $isSuccess '
-        'authenticated: ${AuthService.isAuth}');
-
-    if (isSuccess && !AuthService.isAuth)
-      return showConfirm(title: errorGenericText);
-  }
+  onSubmitResponse(bool isSuccess) => isSuccess && !AuthService.isAuth
+      ? showConfirm(title: errorGenericText)
+      : null;
 }
