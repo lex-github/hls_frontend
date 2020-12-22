@@ -21,6 +21,7 @@ const userFields = '''
     name
     email
     phoneNumber
+    finishedDialogs
   }
 ''';
 
@@ -42,6 +43,37 @@ const String authSignInMutation = '''
       email: \$login 
       password: \$password 
       admin: false) {
+      authToken
+      user $userFields
+    }
+  }
+''';
+
+const String authSignOutMutation = '''
+  mutation {
+    authSignOut {
+      status
+    }
+  }
+''';
+
+const String authSendOtpMutation = '''
+  mutation (
+    \$phone: String!) {
+    authSendOtp(
+      phoneNumber: \$phone) {
+      status
+    }
+  }
+''';
+
+const String authVerifyOtpMutation = '''
+  mutation (
+    \$code: String!
+    \$phone: String!) {
+    authVerifyOtp(
+      code: \$code
+      phoneNumber: \$phone) {
       authToken
       user $userFields
     }

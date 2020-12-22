@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:hls/theme/styles.dart';
 
-const isDebug = false;
+const isDebug = true;
 
 // config
 const assetsDirectory = 'assets';
@@ -15,6 +15,7 @@ const timeoutDuration = Duration(seconds: 5);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
+const navigationTransitionDuration = Duration(milliseconds: 300);
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -23,6 +24,9 @@ const minPasswordLength = 8;
 // routes
 const authRoute = '/auth';
 const resetRoute = '/reset';
+const otpRequestRoute = '/otp-request';
+const otpVerifyRoute = '/otp-verify';
+const chatRoute = '/chat';
 const homeRoute = '/home';
 
 // styles related
@@ -71,7 +75,7 @@ const screenShadowSpreadRadius = 0.0;
 const screenShadowBlurRadius = 10.0;
 const screenShadowOffset = const Offset(-2, -2);
 
-final innerShadowColor = Colors.primary.withOpacity(.4);
+final innerShadowColor = Colors.primary.withOpacity(.75);
 const innerShadowBlurCoefficient = 8.0;
 const innerShadowHorizontalOffsetCoefficient = 20.0;
 const innerShadowVerticalOffsetCoefficient = 15.0;

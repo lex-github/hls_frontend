@@ -84,7 +84,8 @@ class Size {
   static double get vertical => height(verticalPadding);
   static double get verticalBig => height(verticalBigPadding);
 
-  static M.Size get hexagon => M.Size(ratio(hexagonWidth),ratio(hexagonHeight));
+  static M.Size get hexagon =>
+      M.Size(ratio(hexagonWidth), ratio(hexagonHeight));
 }
 
 // colors
@@ -128,7 +129,7 @@ class Padding {
   static get content => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.vertical);
   static get button => M.EdgeInsets.symmetric(
-    horizontal: Size.horizontal, vertical: Size.verticalSmall);
+      horizontal: Size.horizontal, vertical: Size.verticalSmall);
   static get tiny => M.EdgeInsets.all(Size.ratio(horizontalTinyPadding));
 }
 
@@ -138,6 +139,10 @@ class TextStyle {
       M.TextStyle(fontSize: Size.font, color: Colors.primaryText);
   static get secondary =>
       M.TextStyle(fontSize: Size.fontSmall, color: Colors.secondaryText);
+  static get title => M.TextStyle(
+      fontSize: Size.fontBig,
+      fontWeight: FontWeight.w500,
+      color: Colors.primaryText);
   static get indicator => M.TextStyle(
       fontSize: Size.fontHuge,
       fontWeight: FontWeight.bold,

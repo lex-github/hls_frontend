@@ -12,7 +12,7 @@ final tabbarScaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'tabbarKey');
 
 class TabbarScreen extends StatefulWidget {
   final int index;
-  TabbarScreen({this.index = 0});
+  TabbarScreen({Key key, this.index = 0}) : super(key: key);
 
   @override
   _TabbarScreenState createState() => _TabbarScreenState();

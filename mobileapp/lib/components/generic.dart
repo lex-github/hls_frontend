@@ -274,6 +274,8 @@ class ImageSvg extends StatelessWidget {
 }
 
 class Nothing extends StatelessWidget {
+  Nothing({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => SizedBox.shrink();
 }
@@ -332,7 +334,7 @@ class Screen extends StatelessWidget {
             ? null
             : title is Widget
                 ? title
-                : TextPrimary(title.toString()),
+                : TextPrimaryTitle(title.toString()),
         child = footer.isNotNull
             ? Column(children: [
                 Expanded(
@@ -351,35 +353,33 @@ class Screen extends StatelessWidget {
   Widget _buildLeading() => leading != null
       ? leading
       : !Get.rawRoute.isFirst
-          ? Center(
-              child: Clickable(
-                  child: Icon(Icons.arrow_back_ios, size: Size.icon),
-                  onPressed: Get.back))
+          ? Clickable(
+              child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+              onPressed: Get.back)
           : drawer != null || shouldShowDrawer
-              ? Center(
-                  child: Clickable(
-                      child: Icon(Icons.menu, size: Size.icon),
-                      onPressed: tabbarScaffoldKey.currentState.openDrawer))
+              ? Clickable(
+                  child: Icon(Icons.menu, size: Size.icon),
+                  onPressed: tabbarScaffoldKey.currentState.openDrawer)
               : null;
 
   Widget _buildLeadingButton() => leading != null
       ? leading
       : !Get.rawRoute.isFirst
-          ? Center(
-              child: CircularButton(
+          ? CircularButton(
+              size: Size.iconBig,
+              background: Colors.transparent,
+              borderColor: Colors.primary,
+              icon: Icons.arrow_back_ios,
+              iconSize: Size.iconTiny,
+              onPressed: Get.back)
+          : drawer != null || shouldShowDrawer
+              ? CircularButton(
                   size: Size.iconBig,
                   background: Colors.transparent,
-                  icon: Icons.arrow_back_ios,
+                  borderColor: Colors.primary,
+                  icon: Icons.menu,
                   iconSize: Size.iconTiny,
-                  onPressed: Get.back))
-          : drawer != null || shouldShowDrawer
-              ? Center(
-                  child: CircularButton(
-                      size: Size.iconBig,
-                      background: Colors.transparent,
-                      icon: Icons.menu,
-                      iconSize: Size.iconTiny,
-                      onPressed: Scaffold.of(Get.context).openDrawer))
+                  onPressed: () => Scaffold.of(Get.context).openDrawer())
               : null;
 
   @override
@@ -408,7 +408,15 @@ class Screen extends StatelessWidget {
                             preferredSize: M.Size.fromHeight(
                                 Size.bar), // here the desired height
                             child: AppBar(
-                                title: title,
+                                title: title == null
+                                    ? null
+                                    : _buildLeading() != null
+                                        ? title
+                                        : Row(children: [
+                                            if (_buildLeading() == null)
+                                              HorizontalSpace(),
+                                            title
+                                          ]),
                                 titleSpacing: 0,
                                 leading: _buildLeading(),
                                 actions: trailing != null
@@ -421,20 +429,22 @@ class Screen extends StatelessWidget {
                                 leadingWidth: Size.icon + Size.horizontal * 2))
                         : null,
                     drawer: drawer,
-                    body: fab == null
-                        ? child
-                        : Stack(children: [
-                            child,
-                            if (!shouldHaveAppBar)
-                              Positioned(
-                                  top: Size.vertical + Size.top,
-                                  left: Size.horizontal,
-                                  child: _buildLeadingButton()),
-                            Positioned(
-                                bottom: Size.vertical,
-                                right: Size.horizontal,
-                                child: fab)
-                          ])
+                    body: ((leading) =>
+                        fab == null && (leading == null || shouldHaveAppBar)
+                            ? child
+                            : Stack(children: [
+                                child,
+                                if (!shouldHaveAppBar && leading != null)
+                                  Positioned(
+                                      top: Size.vertical + Size.top,
+                                      left: Size.horizontal,
+                                      child: leading),
+                                if (fab != null)
+                                  Positioned(
+                                      bottom: Size.vertical,
+                                      right: Size.horizontal,
+                                      child: fab)
+                              ]))(_buildLeadingButton())
                     //floatingActionButton: fab,
                     //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                     )));
@@ -475,79 +485,68 @@ class TextError extends StatelessWidget {
   Widget build(BuildContext context) => Text(text.tr, style: TextStyle.error);
 }
 
-class TextActive extends StatelessWidget {
-  final String text;
-  final double fontSize;
-  final TextAlign textAlign;
-  final Color color;
-
-  TextActive(this.text,
-      {this.textAlign = TextAlign.left,
-      this.fontSize,
-      this.color = Colors.primary});
-
-  @override
-  Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
-}
+// class TextIndicator extends StatelessWidget {
+//   final String text;
+//
+//   TextIndicator(this.text);
+//
+//   @override
+//   Widget build(BuildContext context) =>
+//       Text(text.tr, style: TextStyle.indicator);
+// }
 
 class TextPrimary extends StatelessWidget {
   final String text;
-  final double fontSize;
-  final TextAlign textAlign;
+  final M.TextStyle style;
+  final double size;
+  final FontWeight weight;
+  final TextAlign align;
   final Color color;
 
   TextPrimary(this.text,
-      {this.textAlign = TextAlign.left, this.fontSize, this.color});
+      {this.style,
+      this.size,
+      this.weight,
+      this.align = TextAlign.left,
+      this.color});
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.primary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
+      style: TextStyle.primary
+          .merge(style)
+          .copyWith(color: color, fontSize: size, fontWeight: weight),
+      textAlign: align);
+}
+
+class TextPrimaryTitle extends TextPrimary {
+  TextPrimaryTitle(String text) : super(text, style: TextStyle.title);
+}
+
+class TextPrimaryHint extends TextPrimary {
+  TextPrimaryHint(String text, {Color color, TextAlign align = TextAlign.left})
+      : super(text, color: color, weight: FontWeight.w500);
 }
 
 class TextSecondary extends StatelessWidget {
   final String text;
-  final double fontSize;
-  final TextAlign textAlign;
+  final M.TextStyle style;
+  final double size;
+  final TextAlign align;
   final Color color;
 
   TextSecondary(this.text,
-      {this.textAlign = TextAlign.left, this.fontSize, this.color});
+      {this.style, this.size, this.align = TextAlign.left, this.color});
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
+      style: TextStyle.secondary
+          .merge(style)
+          .copyWith(color: color, fontSize: size),
+      textAlign: align);
 }
 
-class TextSecondaryAlt extends StatelessWidget {
-  final String text;
-  final double fontSize;
-  final TextAlign textAlign;
-  final Color color;
-
-  TextSecondaryAlt(this.text,
-      {this.textAlign = TextAlign.left,
-      this.fontSize,
-      this.color = Colors.light});
-
-  @override
-  Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(
-          color: color, fontSize: fontSize, fontWeight: FontWeight.w500),
-      textAlign: textAlign);
-}
-
-class TextIndicator extends StatelessWidget {
-  final String text;
-
-  TextIndicator(this.text);
-
-  @override
-  Widget build(BuildContext context) =>
-      Text(text.tr, style: TextStyle.indicator);
+class TextSecondaryActive extends TextSecondary {
+  TextSecondaryActive(String text) : super(text, color: Colors.primary);
 }
 
 class VerticalTinySpace extends SizedBox {

@@ -19,6 +19,7 @@ const timeoutExceptionText = 'Server fail to respond for {duration} seconds, try
 const errorRequiredText = 'Обязательно к заполнению';
 const errorNumericText = 'Field should be number';
 const errorMinLengthText = 'Field should be no less then {min} characters';
+const errorExactLengthText = 'Field should {length} characters';
 const errorDateText = 'Field should be date in format {format}';
 const errorTypeText = 'Field should be of type {type}';
 const errorEmailText = 'Field should be valid e-mail';
@@ -36,6 +37,17 @@ const authLoginButtonLabel = 'Вход';
 const authPasswordForgotLabel = 'Забыли пароль?';
 const authReset1Text = 'Введите свою электронную\nпочту или телефон';
 const authReset2Text = 'Мы отправим вам ссылку для\nсброса пароля';
+
+// otp screens
+const otpPhoneLabel = 'Телефон';
+const otpCodeLabel = 'Код из sms';
+
+// chat
+const chatWelcomeTitle = 'Приветствие';
+const chatNutritionTitle = 'Поговорим о еде';
+const chatLifestyleTitle = 'Поговорим о жизни';
+const chatMedicalTitle = 'Поговорим о здоровье';
+const chatPhysicalTitle = 'Физические параметры';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';

@@ -15,6 +15,7 @@ class CircularButton extends Button {
       double size,
       Color color = Colors.light,
       Color background = Colors.primary,
+      Color borderColor,
       Widget child,
       String imageTitle,
       icon,
@@ -27,6 +28,7 @@ class CircularButton extends Button {
             padding: Padding.zero,
             color: color,
             background: background,
+            borderColor: borderColor,
             child: child,
             imageTitle: imageTitle,
             icon: icon,
@@ -41,6 +43,7 @@ class Button extends StatelessWidget {
   final String imageTitle;
   final Color color;
   final Color background;
+  final Color borderColor;
   final bool isSelected;
   final bool isSwitch;
   final bool isLoading;
@@ -56,6 +59,7 @@ class Button extends StatelessWidget {
       IconData icon,
       this.color,
       this.background,
+      this.borderColor,
       this.title,
       this.imageTitle,
       this.isSelected = false,
@@ -127,12 +131,14 @@ class Button extends StatelessWidget {
       child: isSelected
           ? ButtonInner(
               background: background,
+              borderColor: borderColor,
               padding: padding,
               size: size,
               child: _buildChild(),
               isCircular: isCircular)
           : ButtonOuter(
               background: background ?? (isDisabled ? Colors.disabled : null),
+              borderColor: borderColor,
               padding: padding,
               size: size,
               child: _buildChild(),
@@ -151,6 +157,7 @@ class Button extends StatelessWidget {
 
 class ButtonInner extends StatelessWidget {
   final Color background;
+  final Color borderColor;
   final Widget child;
   final double size;
   final EdgeInsets padding;
@@ -158,6 +165,7 @@ class ButtonInner extends StatelessWidget {
 
   ButtonInner(
       {this.background,
+      this.borderColor,
       this.child,
       double size,
       this.padding,
@@ -177,15 +185,17 @@ class ButtonInner extends StatelessWidget {
         borderRadius: radius,
         border: Border.all(
             width: borderWidth,
-            color: innerShadowColor,
+            color: borderColor ?? innerShadowColor,
             style: BorderStyle.solid),
         boxShadow: [
           BoxShadow(
-              color: background != null
+              color: (background != null && background != Colors.transparent)
                   ? background.darken(.1)
                   : innerShadowColor),
           BoxShadow(
-              color: background ?? Colors.background,
+              color: (background != null && background != Colors.transparent)
+                  ? background
+                  : Colors.background,
               blurRadius: blurRadius,
               offset: offset)
         ]);
@@ -203,6 +213,7 @@ class ButtonInner extends StatelessWidget {
 
 class ButtonOuter extends StatelessWidget {
   final Color background;
+  final Color borderColor;
   final Widget child;
   final double size;
   final EdgeInsets padding;
@@ -211,6 +222,7 @@ class ButtonOuter extends StatelessWidget {
 
   ButtonOuter(
       {this.background,
+      this.borderColor,
       this.child,
       double size,
       this.padding,
@@ -223,9 +235,9 @@ class ButtonOuter extends StatelessWidget {
     final radius = isCircular
         ? BorderRadius.all(Radius.circular(size))
         : borderRadiusCircular;
-    final blurRadius = size / outerShadowBlurCoefficient;
-    final offset = Offset(size / outerShadowHorizontalOffsetCoefficient,
-        size / outerShadowVerticalOffsetCoefficient);
+    // final blurRadius = size / outerShadowBlurCoefficient;
+    // final offset = Offset(size / outerShadowHorizontalOffsetCoefficient,
+    //     size / outerShadowVerticalOffsetCoefficient);
 
     return MouseRegion(
         cursor: isClickable ? SystemMouseCursors.click : MouseCursor.defer,
@@ -244,23 +256,24 @@ class ButtonOuter extends StatelessWidget {
                     child: Container(
                         padding: padding, child: Center(child: child))),
                 decoration: BoxDecoration(
-                    color: background ?? Colors.background,
-                    borderRadius: radius,
-                    border: Border.all(
-                        width: borderWidth / 2, color: background ?? Colors.primary),
-                    // boxShadow: [
-                    //   if (isClickable)
-                    //     BoxShadow(
-                    //         color: background != null
-                    //             ? background.withOpacity(.2)
-                    //             : outerShadowColor,
-                    //         blurRadius: blurRadius,
-                    //         offset: -offset),
-                    //   BoxShadow(
-                    //       color: Colors.shadowLight,
-                    //       blurRadius: blurRadius,
-                    //       offset: offset)
-                    // ]
+                  color: background ?? Colors.background,
+                  borderRadius: radius,
+                  border: Border.all(
+                      width: borderWidth / 2,
+                      color: borderColor ?? background ?? Colors.primary),
+                  // boxShadow: [
+                  //   if (isClickable)
+                  //     BoxShadow(
+                  //         color: background != null
+                  //             ? background.withOpacity(.2)
+                  //             : outerShadowColor,
+                  //         blurRadius: blurRadius,
+                  //         offset: -offset),
+                  //   BoxShadow(
+                  //       color: Colors.shadowLight,
+                  //       blurRadius: blurRadius,
+                  //       offset: offset)
+                  // ]
                 ))));
   }
 }

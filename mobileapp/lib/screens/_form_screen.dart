@@ -24,7 +24,8 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
   T get initController;
   List<String> get nodes => controller?.fields;
   Map<String, PreferredSizeWidget Function(BuildContext)> get keyboards => null;
-  bool get displayArrows => true;
+  bool get tapOutsideToDismiss => true;
+  bool get displayArrows => false;
   bool get autoScroll => true;
   List<Widget Function(FocusNode)> get toolbarButtons => null;
 
@@ -41,7 +42,7 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
           child: Form(
               key: controller.key,
               child: KeyboardActions(
-                  //tapOutsideToDismiss: true,
+                  tapOutsideToDismiss: tapOutsideToDismiss,
                   //enable: _isKeyboardVisible,
                   //overscroll: 1,
                   autoScroll: autoScroll,

@@ -27,9 +27,9 @@ class ResetFormScreen<T extends ResetFormController> extends FormScreen<T> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               if (!isKeyboardVisible) ...[
-                TextSecondaryAlt(authReset1Text, textAlign: TextAlign.center),
+                TextPrimaryHint(authReset1Text, align: TextAlign.center),
                 VerticalMediumSpace(),
-                TextSecondaryAlt(authReset2Text, textAlign: TextAlign.center),
+                TextPrimaryHint(authReset2Text, align: TextAlign.center),
                 VerticalBigSpace(),
               ],
               VerticalMediumSpace(),
@@ -51,7 +51,6 @@ class ResetFormScreen<T extends ResetFormController> extends FormScreen<T> {
       fab: Button<T>(
           isCircular: true,
           size: Size.fab,
-          color: Colors.primary,
           icon: Icons.arrow_forward_ios,
           iconSize: Size.iconSmall),
       padding: Padding.zero,

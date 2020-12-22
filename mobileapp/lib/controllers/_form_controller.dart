@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
@@ -96,6 +95,7 @@ abstract class FormController extends GetxController {
   bool get shouldValidate => _isDirty.value;
   bool get isAwaiting => _isAwaiting.value;
   bool get isValid => shouldValidate ? _isValid.value : true;
+  bool get isValidIgnoreDirty => _isValid.value;
   bool get isKeyboardVisible => _isKeyboardVisible.value;
   bool get hasValidationErrors => false;
   FormValidationData get validation => null;
@@ -169,8 +169,13 @@ abstract class FormController extends GetxController {
 
   void submitHandler() async {
     // hide keyboard
-    // FocusScopeNode currentFocus = FocusScope.of(context);
-    // if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+    for (final field in fields) {
+      final node = getNode(field);
+      if (node != null && node.hasFocus) {
+        node.unfocus();
+        break;
+      }
+    }
 
     // form model marked as having input, autovalidation of fields will trigger
     isDirty = true;
