@@ -68,6 +68,7 @@ class Size {
   static double get tabbarIcon => ratio(tabbarIconSize);
 
   static double get bar => ratio(barHeight);
+  static double get chatBar => ratio(chatBarHeight);
   static double get avatar => ratio(avatarSize);
   static double get fab => ratio(fabSize);
   static double get buttonCentral => ratio(buttonCentralSize);
@@ -96,7 +97,7 @@ class Colors {
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
-  static const disabled = M.Color(0xFF555555);
+  static const disabled = M.Color(0xFF404040);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;
@@ -130,7 +131,11 @@ class Padding {
       horizontal: Size.horizontal, vertical: Size.vertical);
   static get button => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.verticalSmall);
-  static get tiny => M.EdgeInsets.all(Size.ratio(horizontalTinyPadding));
+
+  static get tiny => M.EdgeInsets.symmetric(
+      horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
+  static get small => M.EdgeInsets.symmetric(
+      horizontal: Size.horizontalSmall, vertical: Size.verticalSmall);
 }
 
 // styles

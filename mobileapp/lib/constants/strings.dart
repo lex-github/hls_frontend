@@ -48,6 +48,7 @@ const chatNutritionTitle = 'Поговорим о еде';
 const chatLifestyleTitle = 'Поговорим о жизни';
 const chatMedicalTitle = 'Поговорим о здоровье';
 const chatPhysicalTitle = 'Физические параметры';
+const chatInputLabel = 'Ответ';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';

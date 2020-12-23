@@ -69,7 +69,7 @@ class HomeSwitch extends StatelessWidget {
                     // return widget;
                   },
                   child: _buildScreen(currentIndex.value)),
-              if (currentIndex.value < _screens.length - 1)
+              if (false && currentIndex.value < _screens.length - 1)
                 Positioned(
                     right: Size.horizontal,
                     bottom: Size.vertical,

@@ -398,56 +398,59 @@ class Screen extends StatelessWidget {
                     //statusBarColor: Colors.success.withOpacity(.5)
                     statusBarBrightness: Brightness.dark,
                     statusBarIconBrightness: Brightness.light),
-                child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    resizeToAvoidBottomInset: shouldResize,
-                    resizeToAvoidBottomPadding: shouldResize,
-                    primary: false,
-                    appBar: shouldHaveAppBar
-                        ? PreferredSize(
-                            preferredSize: M.Size.fromHeight(
-                                Size.bar), // here the desired height
-                            child: AppBar(
-                                title: title == null
-                                    ? null
-                                    : _buildLeading() != null
-                                        ? title
-                                        : Row(children: [
-                                            if (_buildLeading() == null)
-                                              HorizontalSpace(),
-                                            title
-                                          ]),
-                                titleSpacing: 0,
-                                leading: _buildLeading(),
-                                actions: trailing != null
-                                    ? [
-                                        HorizontalSpace(),
-                                        Center(child: trailing),
-                                        HorizontalSpace()
-                                      ]
-                                    : null,
-                                leadingWidth: Size.icon + Size.horizontal * 2))
-                        : null,
-                    drawer: drawer,
-                    body: ((leading) =>
-                        fab == null && (leading == null || shouldHaveAppBar)
-                            ? child
-                            : Stack(children: [
-                                child,
-                                if (!shouldHaveAppBar && leading != null)
-                                  Positioned(
-                                      top: Size.vertical + Size.top,
-                                      left: Size.horizontal,
-                                      child: leading),
-                                if (fab != null)
-                                  Positioned(
-                                      bottom: Size.vertical,
-                                      right: Size.horizontal,
-                                      child: fab)
-                              ]))(_buildLeadingButton())
-                    //floatingActionButton: fab,
-                    //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                    )));
+                child: SafeArea(
+                    child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        resizeToAvoidBottomInset: shouldResize,
+                        resizeToAvoidBottomPadding: shouldResize,
+                        primary: false,
+                        appBar: shouldHaveAppBar
+                            ? PreferredSize(
+                                preferredSize: M.Size.fromHeight(
+                                    Size.bar), // here the desired height
+                                child: AppBar(
+                                    toolbarHeight: Size.bar,
+                                    title: title == null
+                                        ? null
+                                        : _buildLeading() != null
+                                            ? title
+                                            : Row(children: [
+                                                if (_buildLeading() == null)
+                                                  HorizontalSpace(),
+                                                title
+                                              ]),
+                                    titleSpacing: 0,
+                                    leading: _buildLeading(),
+                                    actions: trailing != null
+                                        ? [
+                                            HorizontalSpace(),
+                                            Center(child: trailing),
+                                            HorizontalSpace()
+                                          ]
+                                        : null,
+                                    leadingWidth:
+                                        Size.icon + Size.horizontal * 2))
+                            : null,
+                        drawer: drawer,
+                        body: ((leading) =>
+                            fab == null && (leading == null || shouldHaveAppBar)
+                                ? child
+                                : Stack(children: [
+                                    child,
+                                    if (!shouldHaveAppBar && leading != null)
+                                      Positioned(
+                                          top: Size.vertical + Size.top,
+                                          left: Size.horizontal,
+                                          child: leading),
+                                    if (fab != null)
+                                      Positioned(
+                                          bottom: Size.vertical,
+                                          right: Size.horizontal,
+                                          child: fab)
+                                  ]))(_buildLeadingButton())
+                        //floatingActionButton: fab,
+                        //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                        ))));
       });
 }
 

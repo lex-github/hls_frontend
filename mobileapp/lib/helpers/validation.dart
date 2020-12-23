@@ -161,17 +161,23 @@ final textValidator = MultiValidatorWithError([
   RequiredValidator(),
 ]);
 
-// auth form
+// auth
 final loginValidator =
     MultiValidatorWithError([RequiredValidator(), EmailOrPhoneValidator()]);
 final passwordValidator = MultiValidatorWithError(
     [RequiredValidator(), MinLengthValidator(min: minPasswordLength)]);
 
-// otp form
+// otp
 final phoneValidator =
     MultiValidatorWithError([RequiredValidator(), PhoneValidator()]);
 final codeValidator = MultiValidatorWithError([
   RequiredValidator(),
   //NumericValidator(),
   LengthMatchValidator(length: codeMaskPattern.length)
+]);
+
+// chat
+final getChatInputValidator = (String pattern) => MultiValidatorWithError([
+  RequiredValidator(),
+  PatternValidator(pattern, errorText: errorGenericText)
 ]);

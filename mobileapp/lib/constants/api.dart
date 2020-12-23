@@ -9,25 +9,34 @@ const apiHeaders = {
 
 // types
 
-const userFields = '''
-   {
-    data {
-      age
-      gender
-      weight
-    }
-    
-    id
-    name
-    email
-    phoneNumber
-    finishedDialogs
-  }
-''';
+const userFields = '{'
+  'data '
+  '{'
+    'age '
+    'gender '
+    'weight '
+  '} '
+  'id '
+  'name '
+  'email '
+  'phoneNumber '
+  'activeDialogId '
+  'finishedDialogs'
+  '}';
+
+const chatCardFields = '{'
+  'key '
+  'addons '
+  'questionType '
+  'questions '
+  'answers '
+  'style '
+  'results'
+  '}';
 
 // query
 
-const String currentUserQuery = '''
+const currentUserQuery = '''
   query {
     currentUser $userFields
   }
@@ -35,7 +44,7 @@ const String currentUserQuery = '''
 
 // mutations
 
-const String authSignInMutation = '''
+const authSignInMutation = '''
   mutation (
     \$login: String! 
     \$password: String!) {
@@ -49,7 +58,7 @@ const String authSignInMutation = '''
   }
 ''';
 
-const String authSignOutMutation = '''
+const authSignOutMutation = '''
   mutation {
     authSignOut {
       status
@@ -57,7 +66,7 @@ const String authSignOutMutation = '''
   }
 ''';
 
-const String authSendOtpMutation = '''
+const authSendOtpMutation = '''
   mutation (
     \$phone: String!) {
     authSendOtp(
@@ -67,7 +76,7 @@ const String authSendOtpMutation = '''
   }
 ''';
 
-const String authVerifyOtpMutation = '''
+const authVerifyOtpMutation = '''
   mutation (
     \$code: String!
     \$phone: String!) {
@@ -76,6 +85,29 @@ const String authVerifyOtpMutation = '''
       phoneNumber: \$phone) {
       authToken
       user $userFields
+    }
+  }
+''';
+
+const chatBotDialogStartMutation = '''
+  mutation (
+    \$name: String!) {
+    chatBotDialogStart(
+      name: \$name) {
+      dialogId
+      dialogStatus
+      nextCard $chatCardFields
+    }
+  }
+''';
+
+const chatBotDialogResumeMutation = '''
+  mutation (
+    \$dialogId: ID!) {
+    chatBotDialogResume(
+      dialogId: \$dialogId) {
+      dialogStatus
+      nextCard $chatCardFields
     }
   }
 ''';

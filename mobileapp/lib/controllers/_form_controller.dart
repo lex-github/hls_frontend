@@ -165,7 +165,7 @@ abstract class FormController extends GetxController {
 
   // methods
 
-  bool validate() => _key.currentState.validate();
+  bool validate() => _key.currentState?.validate() ?? true;
 
   void submitHandler() async {
     // hide keyboard

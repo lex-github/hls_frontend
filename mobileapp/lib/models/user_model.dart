@@ -1,4 +1,4 @@
-import 'package:hls/constants/strings.dart';
+import 'package:hls/models/chat_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
@@ -15,21 +15,23 @@ class UserData extends GenericData {
   String phone;
   @JsonKey(name: 'data')
   UserDetailsData details;
+  @JsonKey(fromJson: toInt)
+  int activeDialogId;
   @JsonKey(
       name: 'finishedDialogs',
-      fromJson: DialogType.fromJsonList,
-      toJson: DialogType.toJsonList)
-  List<DialogType> chatDialogsCompleted;
+      fromJson: ChatDialogType.fromJsonList,
+      toJson: ChatDialogType.toJsonList)
+  List<ChatDialogType> chatDialogsCompleted;
 
   UserData();
 
   // getters
 
   String get avatarUri => null;
-  List<DialogType> get chatDialogsNotCompleted => DialogType.values
+  List<ChatDialogType> get chatDialogsNotCompleted => ChatDialogType.values
       .where((x) => !(chatDialogsCompleted?.contains(x) ?? false))
       .toList(growable: false);
-  DialogType get dialog => chatDialogsNotCompleted.firstOrNull;
+  ChatDialogType get dialog => chatDialogsNotCompleted.firstOrNull;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
@@ -71,35 +73,6 @@ class GenderType extends GenericEnum<String> {
   static const FEMALE = GenderType(value: 'F');
 
   static const values = [MALE, FEMALE];
-
-  @override
-  String toString() => '$value';
-}
-
-class DialogType extends GenericEnum<String> {
-  const DialogType({String value, String title})
-      : super(value: value, title: title);
-
-  static DialogType fromValue(value) =>
-      values.firstWhere((x) => x.value == value, orElse: () => null);
-
-  static DialogType fromJsonValue(value) => fromValue(value);
-  static List<DialogType> fromJsonList(List values) =>
-      values.map(fromValue).toList(growable: false);
-  static toJsonValue(item) => item?.value;
-  static List toJsonList(List values) =>
-      values.map(toJsonValue).toList(growable: false);
-
-  static const WELCOME = DialogType(value: 'welcome', title: chatWelcomeTitle);
-  static const NUTRITION =
-      DialogType(value: 'nutrition', title: chatNutritionTitle);
-  static const LIFESTYLE =
-      DialogType(value: 'lifestyle', title: chatLifestyleTitle);
-  static const MEDICAL = DialogType(value: 'medical', title: chatMedicalTitle);
-  static const PHYSICAL =
-      DialogType(value: 'physical', title: chatPhysicalTitle);
-
-  static const values = [WELCOME, NUTRITION, LIFESTYLE, MEDICAL, PHYSICAL];
 
   @override
   String toString() => '$value';

@@ -55,6 +55,7 @@ const iconHugeSize = 45.0;
 const tabbarIconSize = 20.0;
 
 const barHeight = 75.0;
+const chatBarHeight = 40.0;
 const avatarSize = 150.0;
 const fabSize = 56.0;
 const buttonCentralSize = fabSize;
