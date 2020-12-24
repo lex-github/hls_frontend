@@ -178,6 +178,7 @@ final codeValidator = MultiValidatorWithError([
 
 // chat
 final getChatInputValidator = (String pattern) => MultiValidatorWithError([
-  RequiredValidator(),
-  PatternValidator(pattern, errorText: errorGenericText)
-]);
+      RequiredValidator(),
+      if (!pattern.isNullOrEmpty)
+        PatternValidator(pattern, errorText: errorGenericText)
+    ]);

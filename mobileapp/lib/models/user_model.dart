@@ -15,21 +15,17 @@ class UserData extends GenericData {
   String phone;
   @JsonKey(name: 'data')
   UserDetailsData details;
-  @JsonKey(fromJson: toInt)
-  int activeDialogId;
-  @JsonKey(
-      name: 'finishedDialogs',
-      fromJson: ChatDialogType.fromJsonList,
-      toJson: ChatDialogType.toJsonList)
-  List<ChatDialogType> chatDialogsCompleted;
+  @JsonKey(name: 'chatBotDialogs')
+  List<ChatDialogStatusData> dialogs;
 
   UserData();
 
   // getters
 
   String get avatarUri => null;
-  List<ChatDialogType> get chatDialogsNotCompleted => ChatDialogType.values
-      .where((x) => !(chatDialogsCompleted?.contains(x) ?? false))
+  List<ChatDialogType> get chatDialogsNotCompleted => dialogs
+      .where((x) => x.status != ChatDialogStatus.FINISHED)
+      .map((x) => x.name)
       .toList(growable: false);
   ChatDialogType get dialog => chatDialogsNotCompleted.firstOrNull;
 

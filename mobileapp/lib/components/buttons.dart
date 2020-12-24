@@ -95,7 +95,7 @@ class Button extends StatelessWidget {
   Widget _buildChild() => isLoading
       ? Container(
           padding: padding, child: Loading(color: color ?? Colors.primary))
-      : child ?? icon ?? image ?? TextPrimary(title);
+      : child ?? icon ?? image ?? TextPrimaryHint(title, align: TextAlign.center);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled

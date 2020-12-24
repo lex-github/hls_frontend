@@ -13,15 +13,11 @@ class ChatCardData extends GenericData {
       fromJson: ChatQuestionType.fromJsonValue,
       toJson: ChatQuestionType.toJsonValue)
   ChatQuestionType questionType;
-  ChatValidationData addons;
   List<ChatQuestionData> questions;
-  // String email;
-  // @JsonKey(name: 'phoneNumber')
-  // String phone;
-  // @JsonKey(name: 'data')
-  // UserDetailsData details;
-  // @JsonKey(fromJson: toInt)
-  // int activeDialogId;
+  ChatQuestionStyleData style;
+  ChatValidationData addons;
+  Map<String, ChatAnswerData> answers;
+  Map<String, ChatQuestionData> results;
 
   ChatCardData();
 
@@ -42,11 +38,28 @@ class ChatQuestionData {
   ChatQuestionData();
 
   factory ChatQuestionData.fromJson(Map<String, dynamic> json) =>
-    _$ChatQuestionDataFromJson(json);
+      _$ChatQuestionDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatQuestionDataToJson(this);
 
   @override
   String toString() => '$text';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ChatQuestionStyleData {
+  @JsonKey(name: 'row')
+  int rows;
+  @JsonKey(name: 'column')
+  int columns;
+
+  ChatQuestionStyleData();
+
+  factory ChatQuestionStyleData.fromJson(Map<String, dynamic> json) =>
+      _$ChatQuestionStyleDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatQuestionStyleDataToJson(this);
+
+  @override
+  String toString() => '[$rows x $columns]';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -56,11 +69,47 @@ class ChatValidationData {
   ChatValidationData();
 
   factory ChatValidationData.fromJson(Map<String, dynamic> json) =>
-    _$ChatValidationDataFromJson(json);
+      _$ChatValidationDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatValidationDataToJson(this);
 
   @override
   String toString() => '$regexp';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ChatAnswerData {
+  String value;
+  String text;
+
+  ChatAnswerData();
+
+  factory ChatAnswerData.fromJson(Map<String, dynamic> json) =>
+      _$ChatAnswerDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatAnswerDataToJson(this);
+
+  @override
+  String toString() => '$text';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ChatDialogStatusData extends GenericData {
+  @JsonKey(
+      fromJson: ChatDialogType.fromJsonValue,
+      toJson: ChatDialogType.toJsonValue)
+  ChatDialogType name;
+  @JsonKey(
+      fromJson: ChatDialogStatus.fromJsonValue,
+      toJson: ChatDialogStatus.toJsonValue)
+  ChatDialogStatus status;
+
+  ChatDialogStatusData();
+
+  factory ChatDialogStatusData.fromJson(Map<String, dynamic> json) =>
+    _$ChatDialogStatusDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatDialogStatusDataToJson(this);
+
+  @override
+  String toString() => '$name';
 }
 
 class ChatDialogType extends GenericEnum<String> {
@@ -89,6 +138,25 @@ class ChatDialogType extends GenericEnum<String> {
       ChatDialogType(value: 'physical', title: chatPhysicalTitle);
 
   static const values = [WELCOME, NUTRITION, LIFESTYLE, MEDICAL, PHYSICAL];
+
+  @override
+  String toString() => '$value';
+}
+
+class ChatDialogStatus extends GenericEnum<String> {
+  const ChatDialogStatus({String value}) : super(value: value);
+
+  static ChatDialogStatus fromValue(value) =>
+      values.firstWhere((x) => x.value == value, orElse: () => null);
+
+  static ChatDialogStatus fromJsonValue(value) => fromValue(value);
+  static toJsonValue(item) => item?.value;
+
+  static const ACTIVE = ChatDialogStatus(value: 'active');
+  static const PENDING = ChatDialogStatus(value: 'pending');
+  static const FINISHED = ChatDialogStatus(value: 'finished');
+
+  static const values = [ACTIVE, PENDING, FINISHED];
 
   @override
   String toString() => '$value';

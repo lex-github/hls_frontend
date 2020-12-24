@@ -41,6 +41,8 @@ const dividerWidth = .5;
 const borderWidth = 1.0;
 const borderRadiusSize = 4.0;
 
+const defaultColumns = 2;
+
 const fontTinySize = 12.0;
 const fontSmallSize = 14.0;
 const fontSize = 16.0;

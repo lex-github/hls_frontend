@@ -9,7 +9,7 @@ import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/controllers/chat_form_controller.dart';
 import 'package:hls/helpers/validation.dart';
 import 'package:hls/models/chat_card_model.dart';
-import 'package:hls/screens/_form_screen.dart';
+import 'package:hls/screens/_form_screen.dart' hide Button;
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -26,41 +26,56 @@ class ChatScreen<Controller extends ChatController>
 
   // builders
 
-  Widget _buildMessage(ChatMessage message) => ((
-              {EdgeInsets margin,
-              Color color,
-              double cornerWidth,
-              double cornerHeight,
-              double cornerLeft,
-              double cornerRight}) =>
-          Stack(clipBehavior: Clip.none, children: [
-            Container(
-                padding: Padding.small,
-                margin: margin,
-                decoration: BoxDecoration(
-                    color: color, borderRadius: borderRadiusCircular),
-                child: TextPrimaryHint(message.text)),
-            Positioned(
-                top: 0,
-                left: cornerLeft,
-                right: cornerRight,
-                child: ClipPath(
-                    clipper: ChatCornerClipper(),
+  Widget _buildMessage(ChatMessage message, {bool shouldShowCorner = false}) =>
+      ((
+                  {EdgeInsets margin,
+                  Color color,
+                  AlignmentGeometry alignment,
+                  double cornerWidth,
+                  double cornerHeight}) =>
+              Stack(clipBehavior: Clip.none, children: [
+                Align(
+                    alignment: alignment,
                     child: Container(
-                        width: cornerWidth,
-                        height: cornerHeight,
-                        color: color)))
-          ]))(
-      margin: message.isUser
-          ? EdgeInsets.only(left: Size.horizontalMedium)
-          : EdgeInsets.only(right: Size.horizontalMedium),
-      color: message.isUser ? Colors.primary : Colors.disabled,
-      cornerWidth: Size.horizontalSmall * 2,
-      cornerHeight: Size.verticalSmall,
-      cornerLeft: message.isUser ? null : -Size.horizontalSmall,
-      cornerRight: message.isUser ? -Size.horizontalSmall : null);
+                        padding: Padding.small,
+                        margin: margin,
+                        decoration: BoxDecoration(
+                            color: color, borderRadius: borderRadiusCircular),
+                        child: TextPrimaryHint(message.text))),
+                if (shouldShowCorner && !message.isUser)
+                  Positioned(
+                      top: 0,
+                      left: -Size.horizontalSmall,
+                      child: ClipPath(
+                          clipper: ChatCornerClipper(),
+                          child: Container(
+                              width: cornerWidth,
+                              height: cornerHeight,
+                              color: color))),
+                if (shouldShowCorner && message.isUser)
+                  Positioned(
+                      top: 0,
+                      right: -Size.horizontalSmall,
+                      child: Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.rotationY(pi),
+                          child: ClipPath(
+                              clipper: ChatCornerClipper(),
+                              child: Container(
+                                  width: cornerWidth,
+                                  height: cornerHeight,
+                                  color: color))))
+              ]))(
+          margin: message.isUser
+              ? EdgeInsets.only(left: Size.horizontalMedium)
+              : EdgeInsets.only(right: Size.horizontalMedium),
+          color: message.isUser ? Colors.primary : Colors.disabled,
+          alignment:
+              message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+          cornerWidth: Size.horizontalSmall * 2,
+          cornerHeight: Size.verticalSmall);
 
-  Widget _buildInput() => Container(
+  Widget _buildControlContainer({Widget child}) => Container(
       //height: Size.chatBar,
       //padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
       decoration: BoxDecoration(color: Colors.background, boxShadow: [
@@ -70,9 +85,12 @@ class ChatScreen<Controller extends ChatController>
             offset:
                 Offset(panelShadowHorizontalOffset, -panelShadowVerticalOffset))
       ]),
+      child: child);
+
+  Widget _buildInput() => _buildControlContainer(
       child: GetBuilder(
           init: ChatFormController(
-              validator: getChatInputValidator(controller.regexp)),
+              validator: getChatInputValidator(controller.questionRegexp)),
           builder: (_) => Stack(children: [
                 Input<ChatFormController>(
                     field: 'input',
@@ -94,6 +112,33 @@ class ChatScreen<Controller extends ChatController>
                     : Nothing())
               ])));
 
+  Widget _buildRadio() =>
+      (({Iterable rows, Iterable columns}) => _buildControlContainer(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      top: Size.vertical, left: Size.horizontal),
+                  child: Table(children: [
+                    for (final row in rows)
+                      TableRow(children: [
+                        for (final column in columns)
+                          Container(
+                              padding: EdgeInsets.only(
+                                  bottom: row == rows.last
+                                      ? Size.vertical
+                                      : Size.verticalSmall,
+                                  right: column == columns.last
+                                      ? Size.horizontal
+                                      : Size.horizontalSmall),
+                              child: ((ChatAnswerData answer) => Button(
+                                      title: answer.text,
+                                      onPressed: () =>
+                                          controller.post(answer.value)))(
+                                  controller.getQuestionAnswer(row, column)))
+                      ])
+                  ]))))(
+          rows: Iterable<int>.generate(controller.questionRows),
+          columns: Iterable<int>.generate(controller.questionColumns));
+
   @override
   Widget build(_) => Screen(
       shouldResize: true,
@@ -110,10 +155,34 @@ class ChatScreen<Controller extends ChatController>
                     Expanded(
                         child: ListView.builder(
                             padding: Padding.content,
-                            itemCount: controller.messages.length,
-                            itemBuilder: (_, i) =>
-                                _buildMessage(controller.messages[i]))),
-                    _buildInput()
+                            itemCount:
+                                max(controller.messages.length * 2 - 1, 0),
+                            itemBuilder: (_, i) {
+                              if (i.isOdd) {
+                                final index = (i + 1) ~/ 2;
+                                final message = controller.messages[index];
+                                final prevMessage =
+                                    controller.messages[index - 1];
+                                return message.isUser == prevMessage.isUser
+                                    ? VerticalMediumSpace()
+                                    : VerticalSpace();
+                              }
+
+                              final index = i ~/ 2;
+                              final message = controller.messages[index];
+                              final prevMessage = index == 0
+                                  ? null
+                                  : controller.messages[index - 1];
+                              final shouldShowCorner = prevMessage == null ||
+                                  prevMessage.isUser != message.isUser;
+
+                              return _buildMessage(message,
+                                  shouldShowCorner: shouldShowCorner);
+                            })),
+                    if (controller.questionType == ChatQuestionType.INPUT)
+                      _buildInput()
+                    else if (controller.questionType == ChatQuestionType.RADIO)
+                      _buildRadio()
                   ]))
           : LoadingPage()));
 }

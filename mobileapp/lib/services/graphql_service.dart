@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/values.dart';
@@ -15,14 +16,18 @@ class GraphqlService extends Service {
 
   Future<Map<String, dynamic>> query(String node,
       {Map<String, dynamic> parameters}) async {
-    if (isDebug)
-      print('GraphqlService.query $node');
-
     isAwaiting = true;
     final client = await this.client();
     final result = await client
         .query(QueryOptions(documentNode: gql(node), variables: parameters));
     isAwaiting = false;
+
+    if (isDebug)
+      debugPrint('GraphqlService.query'
+        '\n\tnode $node'
+        '\n\tparameters $parameters'
+        '\n\tresult ${result.data}'
+      );
 
     if (result.hasException) {
       print('GraphqlService.query ERROR: ${result.exception.toString()}');
@@ -34,14 +39,18 @@ class GraphqlService extends Service {
 
   Future<Map<String, dynamic>> mutation(String node,
       {Map<String, dynamic> parameters}) async {
-    if (isDebug)
-      print('GraphqlService.mutation $node');
-
     isAwaiting = true;
     final client = await this.client();
     final result = await client.mutate(
         MutationOptions(documentNode: gql(node), variables: parameters));
     isAwaiting = false;
+
+    if (isDebug)
+      debugPrint('GraphqlService.mutation'
+        '\n\tnode $node'
+        '\n\tparameters $parameters'
+        '\n\tresult ${result.data}'
+      );
 
     if (result.hasException) {
       print('GraphqlService.mutation ERROR: ${result.exception.toString()}');

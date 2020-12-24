@@ -17,9 +17,11 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..details = json['data'] == null
         ? null
         : UserDetailsData.fromJson(json['data'] as Map<String, dynamic>)
-    ..activeDialogId = toInt(json['activeDialogId'])
-    ..chatDialogsCompleted =
-        ChatDialogType.fromJsonList(json['finishedDialogs'] as List);
+    ..dialogs = (json['chatBotDialogs'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChatDialogStatusData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) {
@@ -38,9 +40,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) {
   writeNotNull('email', instance.email);
   writeNotNull('phoneNumber', instance.phone);
   writeNotNull('data', instance.details);
-  writeNotNull('activeDialogId', instance.activeDialogId);
-  writeNotNull('finishedDialogs',
-      ChatDialogType.toJsonList(instance.chatDialogsCompleted));
+  writeNotNull('chatBotDialogs', instance.dialogs);
   return val;
 }
 
