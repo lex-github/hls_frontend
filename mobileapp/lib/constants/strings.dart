@@ -40,7 +40,7 @@ const authReset2Text = 'Мы отправим вам ссылку для\nсбр
 
 // otp screens
 const otpPhoneLabel = 'Телефон';
-const otpCodeLabel = 'Код из sms';
+const otpCodeLabel = 'Последние 6 цифр';
 
 // chat
 const chatWelcomeTitle = 'Приветствие';

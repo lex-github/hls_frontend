@@ -2,7 +2,6 @@ import 'package:hls/models/chat_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
-import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/_generic_model.dart';
 
 part 'user_model.g.dart';
@@ -26,15 +25,14 @@ class UserData extends GenericData {
   ChatDialogStatusData get activeDialog =>
       dialogs.firstWhere((x) => x.status == ChatDialogStatus.ACTIVE,
           orElse: () => null);
+  List<ChatDialogStatusData> get completedDialogs => dialogs
+      .where((x) => x.status == ChatDialogStatus.FINISHED)
+      .toList(growable: false);
   List<ChatDialogType> get dialogTypesToComplete =>
       ((List<ChatDialogType> completedTypes) => [
-                for (final type in ChatDialogType.values)
-                  if (!completedTypes.contains(type)) type
-              ])(
-          dialogs
-              .where((x) => x.status == ChatDialogStatus.FINISHED)
-              .map((x) => x.name)
-              .toList(growable: false));
+            for (final type in ChatDialogType.values)
+              if (!completedTypes.contains(type)) type
+          ])(completedDialogs.map((x) => x.type).toList(growable: false));
 
   // ChatDialogType get dialogType => chatDialogsNotCompleted.firstOrNull;
 

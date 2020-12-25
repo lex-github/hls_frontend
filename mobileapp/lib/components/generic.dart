@@ -190,28 +190,37 @@ class Image extends StatelessWidget {
       : title.isNullOrEmpty
           ? _buildError()
           : title.startsWith('http') || isLink
-              ? CachedNetworkImage(
-                  imageUrl: _prepareLink(title),
-                  height: height,
-                  width: width,
-                  color: color,
-                  fit: fit,
-                  alignment: alignment,
-                  imageBuilder: builder,
-                  // placeholder: (_, __) => Container(
-                  //     decoration: BoxDecoration(border: loadingBorder),
-                  //     width: width,
-                  //     height: height,
-                  //     child: Center(child: SimpleLoading())),
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Container(
-                        decoration: BoxDecoration(border: loadingBorder),
-                        width: width,
-                        height: height,
-                        child: Center(
-                            child: Loading(value: downloadProgress.progress)),
-                      ),
-                  errorWidget: (_, __, ___) => _buildError())
+              ? title.contains('.svg')
+                  ? SvgPicture.network(title,
+                      height: height,
+                      width: width,
+                      color: color,
+                      fit: fit,
+                      alignment: alignment)
+                  : CachedNetworkImage(
+                      imageUrl: _prepareLink(title),
+                      height: height,
+                      width: width,
+                      color: color,
+                      fit: fit,
+                      alignment: alignment,
+                      imageBuilder: builder,
+                      // placeholder: (_, __) => Container(
+                      //     decoration: BoxDecoration(border: loadingBorder),
+                      //     width: width,
+                      //     height: height,
+                      //     child: Center(child: SimpleLoading())),
+                      progressIndicatorBuilder: (context, url,
+                              downloadProgress) =>
+                          Container(
+                            decoration: BoxDecoration(border: loadingBorder),
+                            width: width,
+                            height: height,
+                            child: Center(
+                                child:
+                                    Loading(value: downloadProgress.progress)),
+                          ),
+                      errorWidget: (_, __, ___) => _buildError())
               : !(title.contains('.png') ||
                       title.contains('.jpg') ||
                       title.contains('.jpe'))
@@ -526,8 +535,10 @@ class TextPrimaryTitle extends TextPrimary {
 }
 
 class TextPrimaryHint extends TextPrimary {
-  TextPrimaryHint(String text, {Color color, TextAlign align = TextAlign.left, M.TextStyle style})
-      : super(text, color: color, weight: FontWeight.w500, style: style);
+  TextPrimaryHint(String text,
+      {Color color, TextAlign align = TextAlign.left, M.TextStyle style})
+      : super(text,
+            color: color, align: align, weight: FontWeight.w500, style: style);
 }
 
 class TextSecondary extends StatelessWidget {

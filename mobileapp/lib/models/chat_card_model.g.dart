@@ -66,7 +66,9 @@ Map<String, dynamic> _$ChatCardDataToJson(ChatCardData instance) {
 }
 
 ChatQuestionData _$ChatQuestionDataFromJson(Map<String, dynamic> json) {
-  return ChatQuestionData()..text = json['text'] as String;
+  return ChatQuestionData()
+    ..text = json['text'] as String
+    ..imageUrl = json['image_url'] as String;
 }
 
 Map<String, dynamic> _$ChatQuestionDataToJson(ChatQuestionData instance) {
@@ -79,6 +81,7 @@ Map<String, dynamic> _$ChatQuestionDataToJson(ChatQuestionData instance) {
   }
 
   writeNotNull('text', instance.text);
+  writeNotNull('image_url', instance.imageUrl);
   return val;
 }
 
@@ -123,8 +126,9 @@ Map<String, dynamic> _$ChatValidationDataToJson(ChatValidationData instance) {
 
 ChatAnswerData _$ChatAnswerDataFromJson(Map<String, dynamic> json) {
   return ChatAnswerData()
-    ..value = json['value'] as String
-    ..text = json['text'] as String;
+    ..imageUrl = json['image_url'] as String
+    ..text = json['text'] as String
+    ..value = json['value'] as String;
 }
 
 Map<String, dynamic> _$ChatAnswerDataToJson(ChatAnswerData instance) {
@@ -136,8 +140,9 @@ Map<String, dynamic> _$ChatAnswerDataToJson(ChatAnswerData instance) {
     }
   }
 
-  writeNotNull('value', instance.value);
+  writeNotNull('image_url', instance.imageUrl);
   writeNotNull('text', instance.text);
+  writeNotNull('value', instance.value);
   return val;
 }
 
@@ -146,7 +151,7 @@ ChatDialogStatusData _$ChatDialogStatusDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUri = json['imageUri'] as String
-    ..name = ChatDialogType.fromJsonValue(json['name'])
+    ..type = ChatDialogType.fromJsonValue(json['name'])
     ..status = ChatDialogStatus.fromJsonValue(json['status']);
 }
 
@@ -163,7 +168,7 @@ Map<String, dynamic> _$ChatDialogStatusDataToJson(
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
   writeNotNull('imageUri', instance.imageUri);
-  writeNotNull('name', ChatDialogType.toJsonValue(instance.name));
+  writeNotNull('name', ChatDialogType.toJsonValue(instance.type));
   writeNotNull('status', ChatDialogStatus.toJsonValue(instance.status));
   return val;
 }

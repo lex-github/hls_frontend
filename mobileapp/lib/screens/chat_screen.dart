@@ -1,12 +1,14 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart' hide Colors, Padding, Size, TextStyle;
+import 'package:flutter/material.dart'
+    hide Colors, Image, Padding, Size, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/controllers/chat_form_controller.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/validation.dart';
 import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/_form_screen.dart' hide Button;
@@ -36,38 +38,49 @@ class ChatScreen<Controller extends ChatController>
                   AlignmentGeometry alignment,
                   double cornerWidth,
                   double cornerHeight}) =>
-              Stack(clipBehavior: Clip.none, children: [
-                Align(
-                    alignment: alignment,
-                    child: Container(
-                        padding: Padding.small,
-                        margin: margin,
-                        decoration: BoxDecoration(
-                            color: color, borderRadius: borderRadiusCircular),
-                        child: TextPrimaryHint(message.text))),
-                if (shouldShowCorner && !message.isUser)
-                  Positioned(
-                      top: 0,
-                      left: -Size.horizontalSmall,
-                      child: ClipPath(
-                          clipper: ChatCornerClipper(),
-                          child: Container(
-                              width: cornerWidth,
-                              height: cornerHeight,
-                              color: color))),
-                if (shouldShowCorner && message.isUser)
-                  Positioned(
-                      top: 0,
-                      right: -Size.horizontalSmall,
-                      child: Transform(
-                          alignment: Alignment.center,
-                          transform: Matrix4.rotationY(pi),
-                          child: ClipPath(
-                              clipper: ChatCornerClipper(),
-                              child: Container(
-                                  width: cornerWidth,
-                                  height: cornerHeight,
-                                  color: color))))
+              Column(children: [
+                if (!message.imageUrl.isNullOrEmpty) ...[
+                  ClipRRect(
+                      borderRadius: borderRadiusCircular,
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxHeight: .5 * Size.screenHeight),
+                          child: Image(title: message.imageUrl))),
+                  VerticalMediumSpace()
+                ],
+                Stack(clipBehavior: Clip.none, children: [
+                  Align(
+                      alignment: alignment,
+                      child: Container(
+                          padding: Padding.small,
+                          margin: margin,
+                          decoration: BoxDecoration(
+                              color: color, borderRadius: borderRadiusCircular),
+                          child: TextPrimaryHint(message.text))),
+                  if (shouldShowCorner && !message.isUser)
+                    Positioned(
+                        top: 0,
+                        left: -Size.horizontalSmall,
+                        child: ClipPath(
+                            clipper: ChatCornerClipper(),
+                            child: Container(
+                                width: cornerWidth,
+                                height: cornerHeight,
+                                color: color))),
+                  if (shouldShowCorner && message.isUser)
+                    Positioned(
+                        top: 0,
+                        right: -Size.horizontalSmall,
+                        child: Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationY(pi),
+                            child: ClipPath(
+                                clipper: ChatCornerClipper(),
+                                child: Container(
+                                    width: cornerWidth,
+                                    height: cornerHeight,
+                                    color: color))))
+                ])
               ]))(
           margin: message.isUser
               ? EdgeInsets.only(left: Size.horizontalMedium)
@@ -89,6 +102,31 @@ class ChatScreen<Controller extends ChatController>
                 Offset(panelShadowHorizontalOffset, -panelShadowVerticalOffset))
       ]),
       child: child);
+
+  Widget _buildControlButton(
+          {ChatAnswerData answer, Function(ChatAnswerData, bool) onSelected}) =>
+      Column(children: [
+        if (!answer.imageUrl.isNullOrEmpty) ...[
+          ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxHeight: .75 *
+                      Size.screenHeight /
+                      controller.questionAnswers.length),
+              child: Image(title: answer.imageUrl)),
+          VerticalMediumSpace(),
+        ],
+        Button(
+            padding: Padding.chatButton,
+            title: answer.text,
+            titleStyle: TextStyle.chatButton,
+            isSwitch: onSelected != null,
+            onSelected: onSelected != null
+                ? (isSelected) => onSelected(answer, isSelected)
+                : null,
+            onPressed: onSelected == null
+                ? () => controller.post(answer.value)
+                : null),
+      ]);
 
   Widget _buildInput() => _buildControlContainer(
       child: GetBuilder(
@@ -133,12 +171,7 @@ class ChatScreen<Controller extends ChatController>
                                       ? Size.horizontal
                                       : Size.horizontalSmall),
                               child: ((ChatAnswerData answer) => answer != null
-                                      ? Button(
-                                          padding: Padding.chatButton,
-                                          title: answer.text,
-                                          titleStyle: TextStyle.chatButton,
-                                          onPressed: () =>
-                                              controller.post(answer.value))
+                                      ? _buildControlButton(answer: answer)
                                       : Nothing())(
                                   controller.getQuestionAnswer(row, column)))
                       ])
@@ -149,85 +182,88 @@ class ChatScreen<Controller extends ChatController>
   Widget _buildCheckbox() => _buildControlContainer(
       child: Checkbox(
           tag: tag,
+          buildControlButton: _buildControlButton,
           rows: controller.questionRows,
           columns: controller.questionColumns));
 
   @override
-  Widget build(_) {
-    print(controller.questionType);
-    return Screen(
-        shouldResize: true,
-        padding: Padding.zero,
-        leading: Clickable(
-            child: Icon(Icons.logout, size: Size.iconSmall),
-            onPressed: _logoutHandler),
-        title: type.title,
-        child: Obx(() => controller.isInit
-            ? GetBuilder<Controller>(
-                init: controller,
-                dispose: (_) => Get.delete<Controller>(tag: tag),
-                builder: (_) => Column(children: [
-                      Expanded(
-                          child: Stack(children: [
-                        ListView.builder(
-                            reverse: true,
-                            shrinkWrap: true,
-                            controller: controller.scroll,
-                            padding: Padding.content,
-                            itemCount:
-                                max(controller.messages.length * 2 - 1, 0),
-                            itemBuilder: (_, i) {
-                              if (i.isOdd) {
-                                final index = (i + 1) ~/ 2;
-                                final message = controller.messages[index];
-                                final prevMessage =
-                                    controller.messages[index - 1];
-                                return message.isUser == prevMessage.isUser
-                                    ? VerticalMediumSpace()
-                                    : VerticalSpace();
-                              }
-
-                              final index = i ~/ 2;
+  Widget build(_) => Screen(
+      shouldResize: true,
+      padding: Padding.zero,
+      leading: Clickable(
+          child: Icon(Icons.logout, size: Size.iconSmall),
+          onPressed: _logoutHandler),
+      title: type.title,
+      child: Obx(() => controller.isInit
+          ? GetBuilder<Controller>(
+              init: controller,
+              dispose: (_) => Get.delete<Controller>(tag: tag),
+              builder: (_) => Column(children: [
+                    Expanded(
+                        child: Stack(children: [
+                      ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
+                          controller: controller.scroll,
+                          padding: Padding.content,
+                          itemCount: max(controller.messages.length * 2 - 1, 0),
+                          itemBuilder: (_, i) {
+                            if (i.isOdd) {
+                              final index = (i + 1) ~/ 2;
                               final message = controller.messages[index];
-                              final prevMessage = index == 0
-                                  ? null
-                                  : controller.messages[index - 1];
-                              final shouldShowCorner = prevMessage == null ||
-                                  prevMessage.isUser != message.isUser;
+                              final prevMessage =
+                                  controller.messages[index - 1];
+                              return message.isUser == prevMessage.isUser
+                                  ? VerticalMediumSpace()
+                                  : VerticalSpace();
+                            }
 
-                              return _buildMessage(message,
-                                  shouldShowCorner: shouldShowCorner);
-                            }),
-                        Obx(() => controller.checkboxHasSelection
-                            ? Positioned(
-                                bottom: Size.vertical,
-                                right: Size.horizontal,
-                                child: CircularButton(
-                                    size: Size.iconBig,
-                                    icon: Icons.check,
-                                    iconSize: Size.iconSmall,
-                                    onPressed: () => controller
-                                        .post(controller.checkboxSelection)))
-                            : Nothing())
-                      ])),
-                      if (controller.questionType == ChatQuestionType.INPUT)
-                        _buildInput()
-                      else if (controller.questionType ==
-                          ChatQuestionType.RADIO)
-                        _buildRadio()
-                      else if (controller.questionType ==
-                          ChatQuestionType.CHECKBOX)
-                        _buildCheckbox()
-                    ]))
-            : LoadingPage()));
-  }
+                            final index = i ~/ 2;
+                            final message = controller.messages[index];
+                            final prevMessage = index == 0
+                                ? null
+                                : controller.messages[index - 1];
+                            final shouldShowCorner = prevMessage == null ||
+                                prevMessage.isUser != message.isUser;
+
+                            return _buildMessage(message,
+                                shouldShowCorner: shouldShowCorner);
+                          }),
+                      Obx(() => controller.checkboxHasSelection
+                          ? Positioned(
+                              bottom: Size.vertical,
+                              right: Size.horizontal,
+                              child: CircularButton(
+                                  size: Size.iconBig,
+                                  icon: Icons.check,
+                                  iconSize: Size.iconSmall,
+                                  onPressed: () => controller
+                                      .post(controller.checkboxSelection)))
+                          : Nothing())
+                    ])),
+                    if (controller.questionType == ChatQuestionType.INPUT)
+                      _buildInput()
+                    else if (controller.questionType == ChatQuestionType.RADIO)
+                      _buildRadio()
+                    else if (controller.questionType ==
+                        ChatQuestionType.CHECKBOX)
+                      _buildCheckbox()
+                  ]))
+          : LoadingPage()));
 }
 
 class Checkbox extends GetWidget<ChatController> {
   final String tag;
   final Iterable rows;
   final Iterable columns;
-  Checkbox({@required this.tag, int rows, int columns})
+  final Function(
+      {ChatAnswerData answer,
+      Function(ChatAnswerData, bool) onSelected}) buildControlButton;
+  Checkbox(
+      {@required this.tag,
+      @required this.buildControlButton,
+      int rows,
+      int columns})
       : rows = Iterable<int>.generate(rows),
         columns = Iterable<int>.generate(columns);
 
@@ -258,13 +294,8 @@ class Checkbox extends GetWidget<ChatController> {
                           ? Size.horizontal
                           : Size.horizontalSmall),
                   child: ((ChatAnswerData answer) => answer != null
-                      ? Button(
-                          padding: Padding.chatButton,
-                          isSwitch: true,
-                          title: answer.text,
-                          titleStyle: TextStyle.chatButton,
-                          onSelected: (isSelected) =>
-                              _answerHandler(answer, isSelected))
+                      ? buildControlButton(
+                          answer: answer, onSelected: _answerHandler)
                       : Nothing())(controller.getQuestionAnswer(row, column)))
           ])
       ]));

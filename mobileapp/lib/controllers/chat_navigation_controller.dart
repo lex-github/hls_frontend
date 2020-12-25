@@ -33,6 +33,10 @@ class ChatNavigationController extends Controller {
       // check which dialogs are not completed
       final chatDialogsNotCompleted =
           AuthService.i.profile.dialogTypesToComplete;
+      // debugPrint(
+      //     'ChatNavigationController.onInit completed: ${AuthService.i.profile.completedDialogs}');
+      // print(
+      //     'ChatNavigationController.onInit types to complete: $chatDialogsNotCompleted');
       if (chatDialogsNotCompleted.isNullOrEmpty) return;
 
       // create sequence for completing dialogs

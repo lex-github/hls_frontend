@@ -16,7 +16,14 @@ class ChatFormController extends FormController {
   // form controller implementation
 
   @override
-  Future<bool> onSubmitRequest() => Get.find<ChatController>().post(getValue(field));
+  Future<bool> onSubmitRequest() async {
+    final result = await Get.find<ChatController>().post(getValue(field));
+    if (result == true) {
+      onChanged(field, '');
+      isDirty = false;
+    }
+    return result;
+  }
 
   @override
   onSubmitResponse(_) => null;

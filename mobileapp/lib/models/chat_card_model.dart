@@ -34,6 +34,8 @@ class ChatCardData extends GenericData {
 @JsonSerializable(includeIfNull: false)
 class ChatQuestionData {
   String text;
+  @JsonKey(name: 'image_url')
+  String imageUrl;
 
   ChatQuestionData();
 
@@ -78,8 +80,10 @@ class ChatValidationData {
 
 @JsonSerializable(includeIfNull: false)
 class ChatAnswerData {
-  String value;
+  @JsonKey(name: 'image_url')
+  String imageUrl;
   String text;
+  String value;
 
   ChatAnswerData();
 
@@ -94,9 +98,10 @@ class ChatAnswerData {
 @JsonSerializable(includeIfNull: false)
 class ChatDialogStatusData extends GenericData {
   @JsonKey(
+      name: 'name',
       fromJson: ChatDialogType.fromJsonValue,
       toJson: ChatDialogType.toJsonValue)
-  ChatDialogType name;
+  ChatDialogType type;
   @JsonKey(
       fromJson: ChatDialogStatus.fromJsonValue,
       toJson: ChatDialogStatus.toJsonValue)
@@ -105,11 +110,11 @@ class ChatDialogStatusData extends GenericData {
   ChatDialogStatusData();
 
   factory ChatDialogStatusData.fromJson(Map<String, dynamic> json) =>
-    _$ChatDialogStatusDataFromJson(json);
+      _$ChatDialogStatusDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatDialogStatusDataToJson(this);
 
   @override
-  String toString() => '$name';
+  String toString() => '$type';
 }
 
 class ChatDialogType extends GenericEnum<String> {

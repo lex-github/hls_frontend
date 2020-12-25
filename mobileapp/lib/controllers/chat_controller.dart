@@ -58,13 +58,14 @@ class ChatController extends Controller {
   @override
   void onInit() async {
     // check active chat bot dialog
-    print('ChatController.onInit '
-        '\n\ttype: $type'
-        '\n\tdialogs: ${AuthService.i.profile.dialogs}');
-
     final activeDialog = AuthService.i.profile.activeDialog;
-    final isDialogActive = false; // activeDialog != null;
+    final isDialogActive = activeDialog != null && type == activeDialog.type;
     final dialogId = activeDialog?.id;
+
+    // print('ChatController.onInit '
+    //   '\n\ttype: $type'
+    //   '\n\tdialogs: ${AuthService.i.profile.dialogs}'
+    //   '\n\tactive: $activeDialog');
 
     // start dialog of type or continue mysterious previous dialog
     final mutation = !isDialogActive
@@ -193,10 +194,12 @@ class ChatController extends Controller {
 
 class ChatMessage {
   final String text;
+  final String imageUrl;
   final bool isUser;
 
-  ChatMessage({this.text, this.isUser = true});
+  ChatMessage({this.text, this.imageUrl, this.isUser = true});
   ChatMessage.fromQuestion(ChatQuestionData question)
-      : text = question.text,
+      : imageUrl = question.imageUrl,
+        text = question.text,
         isUser = false;
 }
