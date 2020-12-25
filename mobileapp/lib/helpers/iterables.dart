@@ -34,4 +34,5 @@ extension ListGetter on List {
           ? this[index]
           : null;
   dynamic get firstOrNull => this.isNullOrEmpty ? null : this.first;
+  dynamic get lastOrNull => this.isNullOrEmpty ? null : this.last;
 }

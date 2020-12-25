@@ -23,11 +23,20 @@ class UserData extends GenericData {
   // getters
 
   String get avatarUri => null;
-  List<ChatDialogType> get chatDialogsNotCompleted => dialogs
-      .where((x) => x.status != ChatDialogStatus.FINISHED)
-      .map((x) => x.name)
-      .toList(growable: false);
-  ChatDialogType get dialog => chatDialogsNotCompleted.firstOrNull;
+  ChatDialogStatusData get activeDialog =>
+      dialogs.firstWhere((x) => x.status == ChatDialogStatus.ACTIVE,
+          orElse: () => null);
+  List<ChatDialogType> get dialogTypesToComplete =>
+      ((List<ChatDialogType> completedTypes) => [
+                for (final type in ChatDialogType.values)
+                  if (!completedTypes.contains(type)) type
+              ])(
+          dialogs
+              .where((x) => x.status == ChatDialogStatus.FINISHED)
+              .map((x) => x.name)
+              .toList(growable: false));
+
+  // ChatDialogType get dialogType => chatDialogsNotCompleted.firstOrNull;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);

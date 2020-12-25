@@ -526,8 +526,8 @@ class TextPrimaryTitle extends TextPrimary {
 }
 
 class TextPrimaryHint extends TextPrimary {
-  TextPrimaryHint(String text, {Color color, TextAlign align = TextAlign.left})
-      : super(text, color: color, weight: FontWeight.w500);
+  TextPrimaryHint(String text, {Color color, TextAlign align = TextAlign.left, M.TextStyle style})
+      : super(text, color: color, weight: FontWeight.w500, style: style);
 }
 
 class TextSecondary extends StatelessWidget {

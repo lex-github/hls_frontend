@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart';
 import 'package:get/state_manager.dart';
 import 'package:hls/components/generic.dart';
@@ -40,6 +41,7 @@ class Button extends StatelessWidget {
   final Widget icon;
   final Widget image;
   final String title;
+  final M.TextStyle titleStyle;
   final String imageTitle;
   final Color color;
   final Color background;
@@ -50,6 +52,7 @@ class Button extends StatelessWidget {
   final bool isDisabled;
   final bool isCircular;
   final Function onPressed;
+  final Function(bool) onSelected;
   final Function onLongPressed;
   final EdgeInsets padding;
   final double size;
@@ -61,6 +64,7 @@ class Button extends StatelessWidget {
       this.background,
       this.borderColor,
       this.title,
+      this.titleStyle,
       this.imageTitle,
       this.isSelected = false,
       this.isSwitch = false,
@@ -68,6 +72,7 @@ class Button extends StatelessWidget {
       this.isCircular = false,
       this.isDisabled = false,
       this.onPressed,
+      this.onSelected,
       this.onLongPressed,
       EdgeInsets padding,
       double size,
@@ -95,7 +100,10 @@ class Button extends StatelessWidget {
   Widget _buildChild() => isLoading
       ? Container(
           padding: padding, child: Loading(color: color ?? Colors.primary))
-      : child ?? icon ?? image ?? TextPrimaryHint(title, align: TextAlign.center);
+      : child ??
+          icon ??
+          image ??
+          TextPrimaryHint(title, align: TextAlign.center, style: titleStyle);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled
@@ -106,6 +114,9 @@ class Button extends StatelessWidget {
                     .then((_) => onPressed());
               if (isLoading) return;
               if (isSwitch) onChanged(!isSelected);
+              if (isSwitch && onSelected != null)
+                Future.delayed(defaultAnimationDuration)
+                    .then((_) => onSelected(!isSelected));
             },
       onTapDown: isDisabled
           ? null

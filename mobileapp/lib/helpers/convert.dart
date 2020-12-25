@@ -31,12 +31,12 @@ int dateToMilliseconds(DateTime date) => date.microsecondsSinceEpoch;
 toNull(dynamic value) => null;
 String toString(dynamic value) => value == null ? null : value.toString();
 int toInt(dynamic value) => value == null
-    ? 0
+    ? null
     : value is int
         ? value
         : int.parse(value);
 double toDouble(dynamic value) => value == null
-    ? .0
+    ? null
     : value is double
         ? value
         : value is int

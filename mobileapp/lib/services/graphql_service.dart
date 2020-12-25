@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/services/_service.dart';
+import 'package:hls/services/auth_service.dart';
 
 class GraphqlService extends Service {
   static GraphqlService get i => Get.find<GraphqlService>();
@@ -41,6 +42,7 @@ class GraphqlService extends Service {
       {Map<String, dynamic> parameters}) async {
     isAwaiting = true;
     final client = await this.client();
+
     final result = await client.mutate(
         MutationOptions(documentNode: gql(node), variables: parameters));
     isAwaiting = false;
@@ -53,7 +55,15 @@ class GraphqlService extends Service {
       );
 
     if (result.hasException) {
-      print('GraphqlService.mutation ERROR: ${result.exception.toString()}');
+      /// TODO: write message extractor
+      final exception = result.exception.toString();
+      print('GraphqlService.mutation ERROR: $exception');
+
+      if (exception.contains('User is required') && AuthService.isAuth) {
+        await Future.delayed(defaultAnimationDuration);
+        return mutation(node, parameters: parameters);
+      }
+
       //showConfirm(title: result.exception.toString());
     }
 

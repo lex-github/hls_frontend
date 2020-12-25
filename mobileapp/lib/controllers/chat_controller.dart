@@ -1,16 +1,23 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/chat_card_model.dart';
+import 'package:hls/services/auth_service.dart';
 
 class ChatController extends Controller {
   // fields
 
+  final _scroll = ScrollController();
   final List<ChatCardData> _cards = [];
   final List<ChatMessage> _messages = [];
+  final _checkboxSelection = [];
+  final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
   ChatController({this.type});
 
@@ -18,24 +25,33 @@ class ChatController extends Controller {
 
   // getters
 
-  List<ChatMessage> get messages => _messages;
-  ChatCardData get card => _cards.last;
-  String get questionKey => card.key;
-  String get questionRegexp => card.addons?.regexp;
-  ChatQuestionType get questionType => card.questionType;
-  Map<String, ChatAnswerData> get questionAnswers => card.answers;
-  Map<String, ChatQuestionData> get questionResults => card.results;
-  int get questionColumns => card.style?.columns ?? defaultColumns;
+  ScrollController get scroll => _scroll;
+  List<ChatMessage> get messages => _messages.reversed.toList(growable: false);
+  ChatCardData get card => _cards.lastOrNull;
+  String get questionKey => card?.key;
+  String get questionRegexp => card?.addons?.regexp;
+  ChatQuestionType get questionType => card?.questionType;
+  Map<String, ChatAnswerData> get questionAnswers => card?.answers;
+  Map<String, List<ChatQuestionData>> get questionResults => card?.results;
+  int get questionColumns => (card?.answers?.length ?? 1) == 1
+      ? 1
+      : card?.style?.columns ?? defaultColumns;
   int get questionRows =>
-      card.style?.rows ?? (card.answers.length ~/ questionColumns).ceil();
+      card?.style?.rows ??
+      ((card?.answers?.length ?? 0) / questionColumns).ceil();
+  List get checkboxSelection => _checkboxSelection;
+  bool get checkboxHasSelection => _checkboxHasSelection.value;
 
   ChatAnswerData getQuestionAnswer(int row, int column) {
     final index = row * questionRows + column;
-    final key = questionAnswers.keys.toList(growable: false)[index];
-    return questionAnswers[key]..value = key;
+    final keys = questionAnswers.keys.toList(growable: false);
+    final key = keys.get(index);
+    return key == null ? null : (questionAnswers[key]
+      ..value = key);
   }
 
-  ChatQuestionData getQuestionResult(value) => questionResults?.get(value);
+  List<ChatQuestionData> getQuestionResults(value) =>
+      questionResults?.get(value);
 
   // get x implementation
 
@@ -43,10 +59,12 @@ class ChatController extends Controller {
   void onInit() async {
     // check active chat bot dialog
     print('ChatController.onInit '
-        '\n\ttype: $type');
+        '\n\ttype: $type'
+        '\n\tdialogs: ${AuthService.i.profile.dialogs}');
 
-    final isDialogActive = false; //!profile.activeDialogId.isNullOrZero;
-    final dialogId = null;
+    final activeDialog = AuthService.i.profile.activeDialog;
+    final isDialogActive = false; // activeDialog != null;
+    final dialogId = activeDialog?.id;
 
     // start dialog of type or continue mysterious previous dialog
     final mutation = !isDialogActive
@@ -68,9 +86,30 @@ class ChatController extends Controller {
     super.onInit();
   }
 
+  @override
+  onClose() {
+    super.onClose();
+
+    _scroll.dispose();
+  }
+
   // methods
 
+  checkboxAdd(value) {
+    if (!_checkboxSelection.contains(value)) _checkboxSelection.add(value);
+
+    _checkboxHasSelection.value = !_checkboxSelection.isNullOrEmpty;
+  }
+
+  checkboxRemove(value) {
+    if (_checkboxSelection.contains(value)) _checkboxSelection.remove(value);
+
+    _checkboxHasSelection.value = !_checkboxSelection.isNullOrEmpty;
+  }
+
   addCard(ChatCardData card) {
+    print('ChatController.addCard type: ${card.questionType}');
+
     _cards.add(card);
 
     if (!card.questions.isNullOrEmpty)
@@ -84,14 +123,39 @@ class ChatController extends Controller {
     _messages.add(message);
 
     if (shouldUpdate) update();
+
+    /// TODO: animation is not working
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scroll.animateTo(.0,
+        curve: Curves.easeOut, duration: defaultAnimationDuration));
   }
 
   Future<bool> post(value) async {
     print('ChatController.post $value');
-    addMessage(ChatMessage(text: value.toString()));
-    final questionResult = getQuestionResult(value);
-    if (questionResult != null)
-      addMessage(ChatMessage.fromQuestion(questionResult));
+
+    // display user input
+    switch (questionType) {
+      case ChatQuestionType.INPUT:
+        addMessage(ChatMessage(text: value.toString()));
+        break;
+      case ChatQuestionType.RADIO:
+        addMessage(ChatMessage(text: questionAnswers[value].text));
+        break;
+      case ChatQuestionType.CHECKBOX:
+        addMessage(ChatMessage(
+            text: (value as List)
+                .map((x) => questionAnswers[x].text)
+                .join(', ')));
+        break;
+      case ChatQuestionType.TIMER:
+        break;
+    }
+
+    // display results
+    final questionResults = getQuestionResults(value);
+    if (!questionResults.isNullOrEmpty)
+      for (final questionResult in questionResults)
+        addMessage(ChatMessage.fromQuestion(questionResult),
+            shouldUpdate: questionResult == questionResults.last);
 
     final result = await mutation(chatBotDialogContinueMutation, parameters: {
       'dialogId': currentDialogId,
@@ -99,18 +163,20 @@ class ChatController extends Controller {
       'values': value is List ? value : [value]
     });
 
+    // cleaning previous state
+    _checkboxSelection.removeWhere((_) => true);
+    _checkboxHasSelection.value = false;
+
     // process status
     final status = ChatDialogStatus.fromValue(
         result.get(['chatBotDialogContinue', 'dialogStatus']));
     if (status != null) {
       switch (status) {
         case ChatDialogStatus.PENDING:
-
-          /// TODO: skip all chats
+          Get.find<ChatNavigationController>().skip();
           return true;
         case ChatDialogStatus.FINISHED:
-
-          /// TODO: move to next controller sequence
+          Get.find<ChatNavigationController>().next();
           return true;
       }
     }

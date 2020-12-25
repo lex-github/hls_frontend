@@ -34,9 +34,11 @@ ChatCardData _$ChatCardDataFromJson(Map<String, dynamic> json) {
     ..results = (json['results'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
           k,
-          e == null
-              ? null
-              : ChatQuestionData.fromJson(e as Map<String, dynamic>)),
+          (e as List)
+              ?.map((e) => e == null
+                  ? null
+                  : ChatQuestionData.fromJson(e as Map<String, dynamic>))
+              ?.toList()),
     );
 }
 

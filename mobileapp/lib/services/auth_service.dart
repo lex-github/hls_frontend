@@ -32,6 +32,7 @@ class AuthService extends GraphqlService {
   bool get isAuthenticated => _isAuthenticated.value;
   final _isAuthenticated = false.obs;
   set isAuthenticated(bool value) => _isAuthenticated.value = value;
+  RxBool get authenticationState => _isAuthenticated;
 
   // get x implementation
 

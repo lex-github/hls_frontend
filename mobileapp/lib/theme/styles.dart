@@ -131,6 +131,8 @@ class Padding {
       horizontal: Size.horizontal, vertical: Size.vertical);
   static get button => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.verticalSmall);
+  static get chatButton => M.EdgeInsets.symmetric(
+      horizontal: Size.horizontalTiny, vertical: Size.verticalSmall);
 
   static get tiny => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
@@ -152,6 +154,11 @@ class TextStyle {
       fontSize: Size.fontHuge,
       fontWeight: FontWeight.bold,
       color: Colors.secondaryText);
+
+  static get chatButton => M.TextStyle(
+    fontSize: Size.fontSmall,
+    fontWeight: FontWeight.w400,
+    color: Colors.primaryText);
 
   static get error =>
       M.TextStyle(fontSize: Size.fontTiny, color: Colors.failure);

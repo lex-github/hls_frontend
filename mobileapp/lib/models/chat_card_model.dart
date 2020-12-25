@@ -17,7 +17,7 @@ class ChatCardData extends GenericData {
   ChatQuestionStyleData style;
   ChatValidationData addons;
   Map<String, ChatAnswerData> answers;
-  Map<String, ChatQuestionData> results;
+  Map<String, List<ChatQuestionData>> results;
 
   ChatCardData();
 
