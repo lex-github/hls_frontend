@@ -6,6 +6,7 @@ import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
+import 'package:hls/screens/timer_screen.dart';
 import 'package:hls/services/auth_service.dart';
 
 class Router {
@@ -35,6 +36,11 @@ class Router {
     GetPage(
         name: resetRoute,
         page: () => ResetFormScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: timerRoute,
+        page: () => TimerScreen(),
+        transition: Transition.downToUp,
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: homeRoute,

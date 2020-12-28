@@ -93,6 +93,7 @@ abstract class FormController extends GetxController {
   GlobalKey<FormState> get key => _key;
   String get error => _error.value;
   bool get shouldValidate => _isDirty.value;
+  bool get shouldUnfocus => true;
   bool get isAwaiting => _isAwaiting.value;
   bool get isValid => shouldValidate ? _isValid.value : true;
   bool get isValidIgnoreDirty => _isValid.value;
@@ -169,13 +170,14 @@ abstract class FormController extends GetxController {
 
   void submitHandler() async {
     // hide keyboard
-    for (final field in fields) {
-      final node = getNode(field);
-      if (node != null && node.hasFocus) {
-        node.unfocus();
-        break;
+    if (shouldUnfocus)
+      for (final field in fields) {
+        final node = getNode(field);
+        if (node != null && node.hasFocus) {
+          node.unfocus();
+          break;
+        }
       }
-    }
 
     // form model marked as having input, autovalidation of fields will trigger
     isDirty = true;

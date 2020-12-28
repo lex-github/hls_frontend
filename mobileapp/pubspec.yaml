@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # typer text animation for bot
+  animated_text_kit: ^3.1.0
   # cached images
   cached_network_image: ^2.4.1
   # svg images

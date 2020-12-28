@@ -108,7 +108,9 @@ Map<String, dynamic> _$ChatQuestionStyleDataToJson(
 }
 
 ChatValidationData _$ChatValidationDataFromJson(Map<String, dynamic> json) {
-  return ChatValidationData()..regexp = json['regexp'] as String;
+  return ChatValidationData()
+    ..regexp = json['regexp'] as String
+    ..duration = toInt(json['duration']);
 }
 
 Map<String, dynamic> _$ChatValidationDataToJson(ChatValidationData instance) {
@@ -121,6 +123,7 @@ Map<String, dynamic> _$ChatValidationDataToJson(ChatValidationData instance) {
   }
 
   writeNotNull('regexp', instance.regexp);
+  writeNotNull('duration', instance.duration);
   return val;
 }
 

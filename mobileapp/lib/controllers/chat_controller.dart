@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
@@ -26,7 +28,7 @@ class ChatController extends Controller {
   // getters
 
   ScrollController get scroll => _scroll;
-  List<ChatMessage> get messages => _messages.reversed.toList(growable: false);
+  List<ChatMessage> get messages => _messages;
   ChatCardData get card => _cards.lastOrNull;
   String get questionKey => card?.key;
   String get questionRegexp => card?.addons?.regexp;
@@ -43,11 +45,13 @@ class ChatController extends Controller {
   bool get checkboxHasSelection => _checkboxHasSelection.value;
 
   ChatAnswerData getQuestionAnswer(int row, int column) {
+    if (questionAnswers.isNullOrEmpty)
+      return null;
+
     final index = row * questionRows + column;
     final keys = questionAnswers.keys.toList(growable: false);
     final key = keys.get(index);
-    return key == null ? null : (questionAnswers[key]
-      ..value = key);
+    return key == null ? null : (questionAnswers[key]..value = key);
   }
 
   List<ChatQuestionData> getQuestionResults(value) =>
@@ -59,7 +63,8 @@ class ChatController extends Controller {
   void onInit() async {
     // check active chat bot dialog
     final activeDialog = AuthService.i.profile.activeDialog;
-    final isDialogActive = activeDialog != null && type == activeDialog.type;
+    final isDialogActive =
+        true && activeDialog != null && type == activeDialog.type;
     final dialogId = activeDialog?.id;
 
     // print('ChatController.onInit '
@@ -115,23 +120,44 @@ class ChatController extends Controller {
 
     if (!card.questions.isNullOrEmpty)
       for (final question in card.questions)
-        addMessage(ChatMessage.fromQuestion(question), shouldUpdate: false);
+        addMessage(ChatMessage.fromQuestion(question));
 
     update();
   }
 
-  addMessage(ChatMessage message, {bool shouldUpdate = true}) {
-    _messages.add(message);
+  bool _isMessageQueueRunning = false;
+  final List<ChatMessage> messageQueue = [];
+  addMessage(ChatMessage message) async {
+    if (message == null || message.text.isNullOrEmpty)
+      return;
 
-    if (shouldUpdate) update();
+    messageQueue.insert(0, message);
 
-    /// TODO: animation is not working
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scroll.animateTo(.0,
-        curve: Curves.easeOut, duration: defaultAnimationDuration));
+    if (!_isMessageQueueRunning) {
+      _isMessageQueueRunning = true;
+      while (!messageQueue.isNullOrEmpty) {
+        final message = messageQueue.removeLast();
+        _messages.add(message);
+        update();
+
+        if (!message.isUser) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => Timer.periodic(
+              chatTyperAnimationDuration,
+              (timer) => timer.tick < message.text.length
+                  ? _scroll.animateTo(_scroll.position.maxScrollExtent,
+                      curve: Curves.easeOut, duration: defaultAnimationDuration)
+                  : timer.cancel()));
+
+          await Future.delayed(
+              chatTyperAnimationDuration * (message.text?.length ?? 0));
+        }
+      }
+      _isMessageQueueRunning = false;
+    }
   }
 
   Future<bool> post(value) async {
-    print('ChatController.post $value');
+    //print('ChatController.post $value');
 
     // display user input
     switch (questionType) {
@@ -155,8 +181,7 @@ class ChatController extends Controller {
     final questionResults = getQuestionResults(value);
     if (!questionResults.isNullOrEmpty)
       for (final questionResult in questionResults)
-        addMessage(ChatMessage.fromQuestion(questionResult),
-            shouldUpdate: questionResult == questionResults.last);
+        addMessage(ChatMessage.fromQuestion(questionResult));
 
     final result = await mutation(chatBotDialogContinueMutation, parameters: {
       'dialogId': currentDialogId,

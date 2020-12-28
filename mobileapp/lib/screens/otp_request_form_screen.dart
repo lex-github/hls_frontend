@@ -32,7 +32,8 @@ class OtpRequestFormScreen<T extends OtpRequestFormController>
                 Container(
                     key: _key,
                     padding: EdgeInsets.symmetric(horizontal: _formPadding),
-                    child: Input<T>(field: 'phone'))
+                    child: Input<T>(
+                        field: 'phone', inputType: TextInputType.number))
               ] else if (!controller.isInit)
                 Loading()
             ]));

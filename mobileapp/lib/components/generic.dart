@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
@@ -488,6 +489,22 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) => Screen(child: Center(child: Loading()));
 }
 
+class TextAnimated extends StatelessWidget {
+  final String text;
+  final Duration duration;
+  TextAnimated(this.text, {this.duration});
+
+  @override
+  Widget build(BuildContext context) => TyperAnimatedTextKit(
+      isRepeatingAnimation: false,
+      speed: duration ?? chatTyperAnimationDuration,
+      text: [text],
+      textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
+      //displayFullTextOnTap: true,
+      //stopPauseOnTap: true
+  );
+}
+
 class TextError extends StatelessWidget {
   final String text;
 
@@ -561,6 +578,10 @@ class TextSecondary extends StatelessWidget {
 
 class TextSecondaryActive extends TextSecondary {
   TextSecondaryActive(String text) : super(text, color: Colors.primary);
+}
+
+class TextTimer extends TextPrimary {
+  TextTimer(String text) : super(text, size: Size.fontTimer);
 }
 
 class VerticalTinySpace extends SizedBox {

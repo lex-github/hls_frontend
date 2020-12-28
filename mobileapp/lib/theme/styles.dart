@@ -59,6 +59,7 @@ class Size {
   static double get font => ratio(fontSize);
   static double get fontBig => ratio(fontBigSize);
   static double get fontHuge => ratio(fontHugeSize);
+  static double get fontTimer => ratio(fontTimerSize);
 
   static double get iconTiny => ratio(iconTinySize);
   static double get iconSmall => ratio(iconSmallSize);
@@ -72,6 +73,7 @@ class Size {
   static double get avatar => ratio(avatarSize);
   static double get fab => ratio(fabSize);
   static double get buttonCentral => ratio(buttonCentralSize);
+  static double get buttonTimer => ratio(buttonTimerSize);
 
   static double get horizontalTiny => width(horizontalTinyPadding);
   static double get horizontalSmall => width(horizontalSmallPadding);
@@ -155,10 +157,14 @@ class TextStyle {
       fontWeight: FontWeight.bold,
       color: Colors.secondaryText);
 
-  static get chatButton => M.TextStyle(
-    fontSize: Size.fontSmall,
-    fontWeight: FontWeight.w400,
-    color: Colors.primaryText);
+  static get buttonChat => M.TextStyle(
+      fontSize: Size.fontSmall,
+      fontWeight: FontWeight.w400,
+      color: Colors.primaryText);
+  static get buttonTimer => M.TextStyle(
+      fontSize: Size.fontBig,
+      fontWeight: FontWeight.w400,
+      color: Colors.primaryText);
 
   static get error =>
       M.TextStyle(fontSize: Size.fontTiny, color: Colors.failure);

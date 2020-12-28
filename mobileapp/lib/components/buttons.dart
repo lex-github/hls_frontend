@@ -18,6 +18,8 @@ class CircularButton extends Button {
       Color background = Colors.primary,
       Color borderColor,
       Widget child,
+      String title,
+      M.TextStyle titleStyle,
       String imageTitle,
       icon,
       iconSize})
@@ -31,6 +33,8 @@ class CircularButton extends Button {
             background: background,
             borderColor: borderColor,
             child: child,
+            title: title,
+            titleStyle: titleStyle,
             imageTitle: imageTitle,
             icon: icon,
             iconSize: iconSize);

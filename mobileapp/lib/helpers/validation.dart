@@ -182,3 +182,9 @@ final getChatInputValidator = (String pattern) => MultiValidatorWithError([
       if (!pattern.isNullOrEmpty)
         PatternValidator(pattern, errorText: errorGenericText)
     ]);
+
+// timer
+final timerValidator = MultiValidatorWithError([
+  RequiredValidator(),
+  NumericValidator()
+]);

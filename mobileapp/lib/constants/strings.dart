@@ -1,6 +1,6 @@
 const developmentText = 'Раздел в разработке';
 const requestWaitingText = 'Пожалуйста подождите';
-const selectionScreenTitle = 'Select item(s)';
+const selectionScreenTitle = 'Выберите значение(я)';
 
 // refresh control
 const idleRefreshText = '';
@@ -10,23 +10,23 @@ const completedRefreshText = '';
 
 // errors
 const errorGenericText = 'Что то пошло не так';
-const connectionExceptionText = 'Connection exception';
+const connectionExceptionText = 'Ошибка соединения';
 const noDataText = 'Нет данных';
-const formatExceptionText = 'Wrong server response';
-const timeoutExceptionText = 'Server fail to respond for {duration} seconds, try later';
+const formatExceptionText = 'Неверный ответ сервера';
+const timeoutExceptionText = 'Сервер не ответил после {duration} секунд, попробуйте позже';
 
 // validation
 const errorRequiredText = 'Обязательно к заполнению';
-const errorNumericText = 'Field should be number';
-const errorMinLengthText = 'Field should be no less then {min} characters';
-const errorExactLengthText = 'Field should {length} characters';
-const errorDateText = 'Field should be date in format {format}';
-const errorTypeText = 'Field should be of type {type}';
-const errorEmailText = 'Field should be valid e-mail';
-const errorEmailUniqueText = 'This e-mail is already taken';
-const errorPhoneText = 'Field should be valid phone';
-const errorFormText = 'Fix all form errors';
-const errorImageText = 'Upload an image';
+const errorNumericText = 'Поле должно быть числом';
+const errorMinLengthText = 'Поле должно содержать менее {min} символов';
+const errorExactLengthText = 'Поле должно содержать {length} символов';
+const errorDateText = 'Поле должно быть датой в формате {format}';
+const errorTypeText = 'Поле должно быть типа {type}';
+const errorEmailText = 'Поле должно быть корректным e-mail';
+// const errorEmailUniqueText = 'Поле должно быть уникальным e-mail';
+const errorPhoneText = 'Поле должно быть корректным номером';
+// const errorFormText = 'Исправьте ошибки формы';
+// const errorImageText = 'Загрузите изображение';
 const errorEmailOrPhoneText = 'Введите корректную электронную почту или телефон';
 
 // auth screens
@@ -49,6 +49,12 @@ const chatLifestyleTitle = 'Поговорим о жизни';
 const chatMedicalTitle = 'Поговорим о здоровье';
 const chatPhysicalTitle = 'Физические параметры';
 const chatInputLabel = 'Ответ';
+
+// timer
+const timerStart = 'СТАРТ';
+const timerStop = 'СТОП';
+const timerRestart = 'РЕСТАРТ';
+const timerInputLabel = 'Результат';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';

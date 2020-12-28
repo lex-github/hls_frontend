@@ -67,6 +67,8 @@ class ChatQuestionStyleData {
 @JsonSerializable(includeIfNull: false)
 class ChatValidationData {
   String regexp;
+  @JsonKey(fromJson: toInt)
+  int duration;
 
   ChatValidationData();
 

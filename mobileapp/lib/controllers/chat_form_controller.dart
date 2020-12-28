@@ -16,11 +16,17 @@ class ChatFormController extends FormController {
   // form controller implementation
 
   @override
+  bool get shouldUnfocus => false;
+
+  @override
+  bool get shouldValidate => super.shouldValidate || getState(field).hasValue;
+
+  @override
   Future<bool> onSubmitRequest() async {
     final result = await Get.find<ChatController>().post(getValue(field));
     if (result == true) {
-      onChanged(field, '');
       isDirty = false;
+      onChanged(field, '');
     }
     return result;
   }

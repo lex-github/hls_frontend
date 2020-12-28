@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
 
 class Service extends GetxController {
@@ -5,5 +6,6 @@ class Service extends GetxController {
 
   final _isAwaiting = false.obs;
   bool get isAwaiting => _isAwaiting.value;
-  set isAwaiting(bool value) => _isAwaiting.value = value;
+  set isAwaiting(bool value) => WidgetsBinding.instance
+      .addPostFrameCallback((_) => _isAwaiting.value = value);
 }

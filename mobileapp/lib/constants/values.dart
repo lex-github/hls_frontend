@@ -15,7 +15,10 @@ const timeoutDuration = Duration(seconds: 5);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
+const chatTyperAnimationDuration = Duration(milliseconds: 100);
+//const chatTyperAnimationDuration = Duration(milliseconds: 0);
 const navigationTransitionDuration = Duration(milliseconds: 300);
+const timerDuration = Duration(seconds: 1);
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -27,6 +30,7 @@ const resetRoute = '/reset';
 const otpRequestRoute = '/otp-request';
 const otpVerifyRoute = '/otp-verify';
 const chatRoute = '/chat';
+const timerRoute = '/timer';
 const homeRoute = '/home';
 
 // styles related
@@ -48,6 +52,7 @@ const fontSmallSize = 14.0;
 const fontSize = 16.0;
 const fontBigSize = 20.0;
 const fontHugeSize = 28.0;
+const fontTimerSize = 100.0;
 
 const iconTinySize = 10.0;
 const iconSmallSize = 15.0;
@@ -61,6 +66,7 @@ const chatBarHeight = 40.0;
 const avatarSize = 150.0;
 const fabSize = 56.0;
 const buttonCentralSize = fabSize;
+const buttonTimerSize = 115.0;
 
 const horizontalTinyPadding = 5.0;
 const horizontalSmallPadding = 10.0;
