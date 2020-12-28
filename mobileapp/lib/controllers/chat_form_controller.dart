@@ -23,11 +23,17 @@ class ChatFormController extends FormController {
 
   @override
   Future<bool> onSubmitRequest() async {
+    if (!getState(field).isValid) {
+      error = errorFormText;
+      return false;
+    }
+
     final result = await Get.find<ChatController>().post(getValue(field));
     if (result == true) {
       isDirty = false;
       onChanged(field, '');
     }
+
     return result;
   }
 

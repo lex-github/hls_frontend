@@ -68,7 +68,8 @@ Map<String, dynamic> _$ChatCardDataToJson(ChatCardData instance) {
 ChatQuestionData _$ChatQuestionDataFromJson(Map<String, dynamic> json) {
   return ChatQuestionData()
     ..text = json['text'] as String
-    ..imageUrl = json['image_url'] as String;
+    ..imageUrl = json['image_url'] as String
+    ..color = toColor(json['color']);
 }
 
 Map<String, dynamic> _$ChatQuestionDataToJson(ChatQuestionData instance) {
@@ -82,6 +83,7 @@ Map<String, dynamic> _$ChatQuestionDataToJson(ChatQuestionData instance) {
 
   writeNotNull('text', instance.text);
   writeNotNull('image_url', instance.imageUrl);
+  writeNotNull('color', colorToString(instance.color));
   return val;
 }
 
@@ -110,7 +112,8 @@ Map<String, dynamic> _$ChatQuestionStyleDataToJson(
 ChatValidationData _$ChatValidationDataFromJson(Map<String, dynamic> json) {
   return ChatValidationData()
     ..regexp = json['regexp'] as String
-    ..duration = toInt(json['duration']);
+    ..duration = toInt(json['duration'])
+    ..shouldRequireResult = json['should_require_result'] as bool;
 }
 
 Map<String, dynamic> _$ChatValidationDataToJson(ChatValidationData instance) {
@@ -124,6 +127,7 @@ Map<String, dynamic> _$ChatValidationDataToJson(ChatValidationData instance) {
 
   writeNotNull('regexp', instance.regexp);
   writeNotNull('duration', instance.duration);
+  writeNotNull('should_require_result', instance.shouldRequireResult);
   return val;
 }
 

@@ -25,7 +25,7 @@ const errorTypeText = 'Поле должно быть типа {type}';
 const errorEmailText = 'Поле должно быть корректным e-mail';
 // const errorEmailUniqueText = 'Поле должно быть уникальным e-mail';
 const errorPhoneText = 'Поле должно быть корректным номером';
-// const errorFormText = 'Исправьте ошибки формы';
+const errorFormText = 'Исправьте ошибки';
 // const errorImageText = 'Загрузите изображение';
 const errorEmailOrPhoneText = 'Введите корректную электронную почту или телефон';
 

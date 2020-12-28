@@ -225,6 +225,9 @@ class FormControllerState {
     return value.toString();
   }
 
+  bool get isValid =>
+      config.validator == null || config.validator(value).isNullOrEmpty;
+
   // working with focus
   final _hasFocus = false.obs;
   get hasFocus => _hasFocus.value;

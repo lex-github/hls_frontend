@@ -134,7 +134,7 @@ class Padding {
   static get button => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.verticalSmall);
   static get chatButton => M.EdgeInsets.symmetric(
-      horizontal: Size.horizontalTiny, vertical: Size.verticalSmall);
+      horizontal: 0, vertical: Size.verticalSmall);
 
   static get tiny => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);

@@ -45,8 +45,7 @@ class ChatController extends Controller {
   bool get checkboxHasSelection => _checkboxHasSelection.value;
 
   ChatAnswerData getQuestionAnswer(int row, int column) {
-    if (questionAnswers.isNullOrEmpty)
-      return null;
+    if (questionAnswers.isNullOrEmpty) return null;
 
     final index = row * questionRows + column;
     final keys = questionAnswers.keys.toList(growable: false);
@@ -63,8 +62,7 @@ class ChatController extends Controller {
   void onInit() async {
     // check active chat bot dialog
     final activeDialog = AuthService.i.profile.activeDialog;
-    final isDialogActive =
-        true && activeDialog != null && type == activeDialog.type;
+    final isDialogActive = false && activeDialog != null && type == activeDialog.type;
     final dialogId = activeDialog?.id;
 
     // print('ChatController.onInit '
@@ -128,8 +126,7 @@ class ChatController extends Controller {
   bool _isMessageQueueRunning = false;
   final List<ChatMessage> messageQueue = [];
   addMessage(ChatMessage message) async {
-    if (message == null || message.text.isNullOrEmpty)
-      return;
+    if (message == null || message.text.isNullOrEmpty) return;
 
     messageQueue.insert(0, message);
 
@@ -174,6 +171,7 @@ class ChatController extends Controller {
                 .join(', ')));
         break;
       case ChatQuestionType.TIMER:
+        addMessage(ChatMessage(text: value.toString()));
         break;
     }
 
@@ -192,6 +190,17 @@ class ChatController extends Controller {
     // cleaning previous state
     _checkboxSelection.removeWhere((_) => true);
     _checkboxHasSelection.value = false;
+
+    // check dialog results
+    final dialogResult = result.get(['chatBotDialogContinue', 'dialogResult']);
+    if (dialogResult != null && dialogResult is List) {
+      _cards.removeWhere((_) => true);
+
+      for (final data in dialogResult)
+        addMessage(ChatMessage.fromQuestion(ChatQuestionData.fromJson(data)));
+
+      return true;
+    }
 
     // process status
     final status = ChatDialogStatus.fromValue(
@@ -218,13 +227,15 @@ class ChatController extends Controller {
 }
 
 class ChatMessage {
+  final Color color;
   final String text;
   final String imageUrl;
   final bool isUser;
 
-  ChatMessage({this.text, this.imageUrl, this.isUser = true});
+  ChatMessage({this.color, this.text, this.imageUrl, this.isUser = true});
   ChatMessage.fromQuestion(ChatQuestionData question)
-      : imageUrl = question.imageUrl,
+      : color = question.color,
+        imageUrl = question.imageUrl,
         text = question.text,
         isUser = false;
 }

@@ -15,8 +15,7 @@ const timeoutDuration = Duration(seconds: 5);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
-const chatTyperAnimationDuration = Duration(milliseconds: 100);
-//const chatTyperAnimationDuration = Duration(milliseconds: 0);
+const chatTyperAnimationDuration = Duration(milliseconds: 75);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const timerDuration = Duration(seconds: 1);
 
