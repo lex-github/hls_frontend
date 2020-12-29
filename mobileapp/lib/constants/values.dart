@@ -30,15 +30,21 @@ const otpRequestRoute = '/otp-request';
 const otpVerifyRoute = '/otp-verify';
 const chatRoute = '/chat';
 const timerRoute = '/timer';
+const welcomeRoute = '/welcome';
 const homeRoute = '/home';
 
 // styles related
 const elevation = 5.0;
 
+const sliderIndicatorHeightCoefficient = .75;
+const sliderIndicatorWidthCoefficient = 5;
+
 const hexagonWidth = 14.0 * hexagonSize;
 const hexagonHeight = 18.0 * hexagonSize;
 const hexagonSize = 1.5; // 0-n
 const hexagonOpacity = .5; //.1; // 0-1
+
+const welcomeClipRadius = 500;
 
 const dividerWidth = .5;
 const borderWidth = 1.0;

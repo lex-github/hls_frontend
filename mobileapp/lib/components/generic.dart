@@ -147,7 +147,8 @@ class Image extends StatelessWidget {
   final bool isLink;
 
   Image(
-      {this.title,
+      {Key key,
+      this.title,
       this.loadingBorder,
       double width,
       double height,
@@ -164,7 +165,8 @@ class Image extends StatelessWidget {
                 ? BoxFit.contain
                 : BoxFit.scaleDown),
         this.width = width ?? size,
-        this.height = height ?? size;
+        this.height = height ?? size,
+        super(key: key);
 
   // methods
 
@@ -496,13 +498,13 @@ class TextAnimated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TyperAnimatedTextKit(
-      isRepeatingAnimation: false,
-      speed: duration ?? chatTyperAnimationDuration,
-      text: [text],
-      textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
-      //displayFullTextOnTap: true,
-      //stopPauseOnTap: true
-  );
+        isRepeatingAnimation: false,
+        speed: duration ?? chatTyperAnimationDuration,
+        text: [text],
+        textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
+        //displayFullTextOnTap: true,
+        //stopPauseOnTap: true
+      );
 }
 
 class TextError extends StatelessWidget {
@@ -533,11 +535,13 @@ class TextPrimary extends StatelessWidget {
   final Color color;
 
   TextPrimary(this.text,
-      {this.style,
+      {Key key,
+      this.style,
       this.size,
       this.weight,
       this.align = TextAlign.left,
-      this.color});
+      this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
@@ -553,9 +557,17 @@ class TextPrimaryTitle extends TextPrimary {
 
 class TextPrimaryHint extends TextPrimary {
   TextPrimaryHint(String text,
-      {Color color, TextAlign align = TextAlign.left, M.TextStyle style})
+      {Key key,
+      Color color,
+      TextAlign align = TextAlign.left,
+      M.TextStyle style})
       : super(text,
-            color: color, align: align, weight: FontWeight.w500, style: style);
+            key: key,
+            color: color,
+            align: align,
+            size: Size.fontSmall,
+            weight: FontWeight.w500,
+            style: style);
 }
 
 class TextSecondary extends StatelessWidget {

@@ -7,10 +7,12 @@ import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
+import 'package:hls/screens/welcome_screen.dart';
 import 'package:hls/services/auth_service.dart';
+import 'package:hls/services/settings_service.dart';
 
 class Router {
-  static final initial = otpRequestRoute;
+  static final initial = SettingsService.i.shouldShowWelcome ? welcomeRoute : otpRequestRoute;
   static final home = () => HomeSwitch();
   static final routes = [
     GetPage(
@@ -43,8 +45,12 @@ class Router {
         transition: Transition.downToUp,
         transitionDuration: navigationTransitionDuration),
     GetPage(
+        name: welcomeRoute,
+        page: () => WelcomeScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
         name: homeRoute,
         page: home,
-        transitionDuration: navigationTransitionDuration)
+        transitionDuration: navigationTransitionDuration),
   ];
 }

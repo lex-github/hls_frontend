@@ -211,7 +211,7 @@ class ChatScreen<Controller extends ChatController>
                   size: Size.iconBig,
                   background: Colors.transparent,
                   borderColor: Colors.primary,
-                  icon: Icons.check,
+                  icon: Icons.timer,
                   iconSize: Size.iconTiny,
                   onPressed: _timerHandler))));
 
@@ -224,7 +224,7 @@ class ChatScreen<Controller extends ChatController>
                   size: Size.iconBig,
                   background: Colors.transparent,
                   borderColor: Colors.primary,
-                  icon: Icons.arrow_forward_ios,
+                  icon: Icons.check,
                   iconSize: Size.iconTiny,
                   onPressed: Get.find<ChatNavigationController>().next))));
 
