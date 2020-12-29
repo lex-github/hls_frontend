@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:hls/theme/styles.dart';
 
-const isDebug = true;
+const isDebug = false;
 
 // config
 const assetsDirectory = 'assets';
@@ -42,7 +42,7 @@ const sliderIndicatorWidthCoefficient = 5;
 const hexagonWidth = 14.0 * hexagonSize;
 const hexagonHeight = 18.0 * hexagonSize;
 const hexagonSize = 1.5; // 0-n
-const hexagonOpacity = .5; //.1; // 0-1
+const hexagonOpacity = .3; // 0-1
 
 const welcomeClipRadius = 500;
 
