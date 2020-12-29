@@ -4,12 +4,8 @@ import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
-import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
-import 'package:hls/helpers/null_awareness.dart';
-import 'package:hls/helpers/strings.dart';
-import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -66,7 +62,7 @@ class AppDrawer extends StatelessWidget {
                   Icon(Icons.logout,
                       size: Size.iconSmall, color: Colors.failure),
                   HorizontalSmallSpace(),
-                  TextSecondaryAlt(drawerLogoutLabel, color: Colors.failure)
+                  TextPrimaryHint(drawerLogoutLabel, color: Colors.failure)
                 ])))
       ])));
 }

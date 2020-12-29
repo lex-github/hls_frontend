@@ -16,7 +16,12 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..phone = json['phoneNumber'] as String
     ..details = json['data'] == null
         ? null
-        : UserDetailsData.fromJson(json['data'] as Map<String, dynamic>);
+        : UserDetailsData.fromJson(json['data'] as Map<String, dynamic>)
+    ..dialogs = (json['chatBotDialogs'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChatDialogStatusData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) {
@@ -35,13 +40,14 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) {
   writeNotNull('email', instance.email);
   writeNotNull('phoneNumber', instance.phone);
   writeNotNull('data', instance.details);
+  writeNotNull('chatBotDialogs', instance.dialogs);
   return val;
 }
 
 UserDetailsData _$UserDetailsDataFromJson(Map<String, dynamic> json) {
   return UserDetailsData()
     ..age = json['age'] as int
-    ..gender = GenderType.fromJson(json['gender'])
+    ..gender = GenderType.fromJsonValue(json['gender'])
     ..weight = json['weight'] as int;
 }
 

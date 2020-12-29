@@ -59,6 +59,7 @@ class Size {
   static double get font => ratio(fontSize);
   static double get fontBig => ratio(fontBigSize);
   static double get fontHuge => ratio(fontHugeSize);
+  static double get fontTimer => ratio(fontTimerSize);
 
   static double get iconTiny => ratio(iconTinySize);
   static double get iconSmall => ratio(iconSmallSize);
@@ -68,9 +69,11 @@ class Size {
   static double get tabbarIcon => ratio(tabbarIconSize);
 
   static double get bar => ratio(barHeight);
+  static double get chatBar => ratio(chatBarHeight);
   static double get avatar => ratio(avatarSize);
   static double get fab => ratio(fabSize);
   static double get buttonCentral => ratio(buttonCentralSize);
+  static double get buttonTimer => ratio(buttonTimerSize);
 
   static double get horizontalTiny => width(horizontalTinyPadding);
   static double get horizontalSmall => width(horizontalSmallPadding);
@@ -84,7 +87,8 @@ class Size {
   static double get vertical => height(verticalPadding);
   static double get verticalBig => height(verticalBigPadding);
 
-  static M.Size get hexagon => M.Size(ratio(hexagonWidth),ratio(hexagonHeight));
+  static M.Size get hexagon =>
+      M.Size(ratio(hexagonWidth), ratio(hexagonHeight));
 }
 
 // colors
@@ -95,7 +99,7 @@ class Colors {
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
-  static const disabled = M.Color(0xFF555555);
+  static const disabled = M.Color(0xFF404040);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;
@@ -128,8 +132,14 @@ class Padding {
   static get content => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.vertical);
   static get button => M.EdgeInsets.symmetric(
-    horizontal: Size.horizontal, vertical: Size.verticalSmall);
-  static get tiny => M.EdgeInsets.all(Size.ratio(horizontalTinyPadding));
+      horizontal: Size.horizontal, vertical: Size.verticalSmall);
+  static get chatButton => M.EdgeInsets.symmetric(
+      horizontal: 0, vertical: Size.verticalSmall);
+
+  static get tiny => M.EdgeInsets.symmetric(
+      horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
+  static get small => M.EdgeInsets.symmetric(
+      horizontal: Size.horizontalSmall, vertical: Size.verticalSmall);
 }
 
 // styles
@@ -138,10 +148,23 @@ class TextStyle {
       M.TextStyle(fontSize: Size.font, color: Colors.primaryText);
   static get secondary =>
       M.TextStyle(fontSize: Size.fontSmall, color: Colors.secondaryText);
+  static get title => M.TextStyle(
+      fontSize: Size.fontBig,
+      fontWeight: FontWeight.w500,
+      color: Colors.primaryText);
   static get indicator => M.TextStyle(
       fontSize: Size.fontHuge,
       fontWeight: FontWeight.bold,
       color: Colors.secondaryText);
+
+  static get buttonChat => M.TextStyle(
+      fontSize: Size.fontSmall,
+      fontWeight: FontWeight.w400,
+      color: Colors.primaryText);
+  static get buttonTimer => M.TextStyle(
+      fontSize: Size.fontBig,
+      fontWeight: FontWeight.w400,
+      color: Colors.primaryText);
 
   static get error =>
       M.TextStyle(fontSize: Size.fontTiny, color: Colors.failure);

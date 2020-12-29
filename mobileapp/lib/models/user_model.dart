@@ -1,3 +1,4 @@
+import 'package:hls/models/chat_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
@@ -13,10 +14,25 @@ class UserData extends GenericData {
   String phone;
   @JsonKey(name: 'data')
   UserDetailsData details;
-
-  String get avatarUri => null;
+  @JsonKey(name: 'chatBotDialogs')
+  List<ChatDialogStatusData> dialogs;
 
   UserData();
+
+  // getters
+
+  String get avatarUri => null;
+  ChatDialogStatusData get activeDialog =>
+      dialogs.firstWhere((x) => x.status == ChatDialogStatus.ACTIVE,
+          orElse: () => null);
+  List<ChatDialogStatusData> get completedDialogs => dialogs
+      .where((x) => x.status == ChatDialogStatus.FINISHED)
+      .toList(growable: false);
+  List<ChatDialogType> get dialogTypesToComplete =>
+      ((List<ChatDialogType> completedTypes) => [
+            for (final type in ChatDialogType.values)
+              if (!completedTypes.contains(type)) type
+          ])(completedDialogs.map((x) => x.type).toList(growable: false));
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
@@ -29,7 +45,7 @@ class UserData extends GenericData {
 @JsonSerializable(includeIfNull: false)
 class UserDetailsData {
   int age;
-  @JsonKey(fromJson: GenderType.fromJson, toJson: GenderType.toJsonValue)
+  @JsonKey(fromJson: GenderType.fromJsonValue, toJson: GenderType.toJsonValue)
   GenderType gender;
   int weight;
 
@@ -49,7 +65,8 @@ class GenderType extends GenericEnum<String> {
 
   static GenderType fromValue(value) => values
       .firstWhere((x) => x.value == value, orElse: () => GenderType.OTHER);
-  static GenderType fromJson(value) => fromValue(value);
+
+  static GenderType fromJsonValue(value) => fromValue(value);
   static int toJsonValue(item) => item?.value;
 
   static const OTHER = GenderType(value: '?');

@@ -7,6 +7,7 @@ class SettingsService extends Service {
   static SettingsService get i => Get.find<SettingsService>();
 
   static const _tokenKey = 'token';
+  static const _shouldShowWelcomeKey = 'shouldShowWelcome';
 
   SharedPreferences _preferences;
 
@@ -26,4 +27,7 @@ class SettingsService extends Service {
 
     _token.value = value;
   }
+
+  bool get shouldShowWelcome =>
+      _preferences.getBool(_shouldShowWelcomeKey) ?? true;
 }

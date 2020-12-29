@@ -12,5 +12,7 @@ const emailValidationPattern =
 const phoneValidationPattern = r'^((\+?7)|8)\s?\(?\d{3}\)?\s?\d{3}\-?\d{2}\-?\d{2}$';
 const phoneMaskPattern = '+7 (###) ###-##-##';
 
+const codeMaskPattern = '######';
+
 const dateTimeValidationPattern = r'^\d\d:\d\d \d\d\.\d\d.\d\d\d\d$';
 const dateTimeMaskPattern = '##:## ##.##.####';

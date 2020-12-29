@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # typer text animation for bot
+  animated_text_kit: ^3.1.0
   # cached images
   cached_network_image: ^2.4.1
   # svg images
@@ -44,6 +46,8 @@ dependencies:
   keyboard_actions: ^3.3.1+1
   # keyboard state
   keyboard_visibility: any
+  # used for phone mask
+  mask_text_input_formatter: ^1.1.0
   # refresh list by pulling
   pull_to_refresh: ^1.6.3
   # settings
@@ -81,6 +85,7 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/slider/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

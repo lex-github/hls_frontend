@@ -9,41 +9,153 @@ const apiHeaders = {
 
 // types
 
-const userFields = '''
-   {
-    data {
-      age
-      gender
-      weight
-    }
-    
-    id
-    name
-    email
-    phoneNumber
-  }
-''';
+const userFields =
+  '{'
+    'data '
+    '{'
+      'age '
+      'gender '
+      'weight'
+    '} '
+    'id '
+    'name '
+    'email '
+    'phoneNumber '
+    'chatBotDialogs'
+    '{'
+      'id '
+      'name '
+      'status'
+    '}'
+  '}';
+
+const chatCardFields =
+  '{'
+    'key '
+    'addons '
+    'questionType '
+    'questions '
+    'answers '
+    'style '
+    'results'
+  '}';
 
 // query
 
-const String currentUserQuery = '''
-  query {
-    currentUser $userFields
-  }
-''';
+const currentUserQuery = 'query '
+  '{'
+    'currentUser $userFields'
+  '}';
 
 // mutations
 
-const String authSignInMutation = '''
-  mutation (
-    \$login: String! 
-    \$password: String!) {
-    authSignIn(
-      email: \$login 
-      password: \$password 
-      admin: false) {
-      authToken
-      user $userFields
-    }
-  }
-''';
+const authSignInMutation = 'mutation'
+    '('
+      '\$login: String! '
+      '\$password: String!'
+    ') '
+    '{'
+      'authSignIn'
+      '('
+        'email: \$login '
+        'password: \$password '
+        'admin: false'
+      ') '
+      '{'
+        'authToken '
+        'user $userFields'
+      '}'
+    '}';
+
+const authSignOutMutation = 'mutation '
+  '{'
+    'authSignOut'
+    '{'
+      'status'
+    '}'
+  '}';
+
+const authSendOtpMutation = 'mutation '
+  '('
+    '\$phone: String!'
+  ') '
+  '{'
+    'authSendOtp'
+    '('
+      'phoneNumber: \$phone'
+    ') '
+    '{'
+      'status'
+    '}'
+  '}';
+
+const authVerifyOtpMutation = 'mutation'
+  '('
+    '\$code: String! '
+    '\$phone: String!'
+  ') '
+  '{'
+    'authVerifyOtp'
+    '('
+      'code: \$code '
+      'phoneNumber: \$phone'
+    ') '
+    '{'
+      'authToken '
+      'user $userFields'
+    '}'
+  '}';
+
+const chatBotDialogStartMutation = 'mutation'
+  '('
+    '\$name: String!'
+  ') '
+  '{'
+    'chatBotDialogStart'
+    '('
+      'name: \$name'
+    ') '
+    '{'
+      'dialogId '
+      'dialogStatus '
+      'nextCard $chatCardFields'
+    '}'
+  '}';
+
+const chatBotDialogResumeMutation = 'mutation'
+  '('
+    '\$dialogId: ID!'
+  ') '
+  '{'
+    'chatBotDialogResume'
+    '('
+      'dialogId: \$dialogId'
+    ') '
+    '{'
+      'dialogStatus '
+      'nextCard $chatCardFields'
+    '}'
+  '}';
+
+const chatBotDialogContinueMutation = 'mutation'
+  '('
+    '\$dialogId: ID! '
+    '\$key: ID! '
+    '\$values: [String!]!'
+  ') '
+  '{'
+    'chatBotDialogContinue'
+    '('
+      'dialogId: \$dialogId '
+      'answer: '
+      '{'
+        'key: \$key '
+        'values: \$values'
+      '}'
+    ') '
+    '{'
+      'dialogResult '
+      'dialogStatus '
+      'nextCard $chatCardFields'
+    '}'
+  '}';

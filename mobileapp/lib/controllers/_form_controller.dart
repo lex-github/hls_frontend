@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
@@ -94,8 +93,10 @@ abstract class FormController extends GetxController {
   GlobalKey<FormState> get key => _key;
   String get error => _error.value;
   bool get shouldValidate => _isDirty.value;
+  bool get shouldUnfocus => true;
   bool get isAwaiting => _isAwaiting.value;
   bool get isValid => shouldValidate ? _isValid.value : true;
+  bool get isValidIgnoreDirty => _isValid.value;
   bool get isKeyboardVisible => _isKeyboardVisible.value;
   bool get hasValidationErrors => false;
   FormValidationData get validation => null;
@@ -165,12 +166,18 @@ abstract class FormController extends GetxController {
 
   // methods
 
-  bool validate() => _key.currentState.validate();
+  bool validate() => _key.currentState?.validate() ?? true;
 
   void submitHandler() async {
     // hide keyboard
-    // FocusScopeNode currentFocus = FocusScope.of(context);
-    // if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+    if (shouldUnfocus)
+      for (final field in fields) {
+        final node = getNode(field);
+        if (node != null && node.hasFocus) {
+          node.unfocus();
+          break;
+        }
+      }
 
     // form model marked as having input, autovalidation of fields will trigger
     isDirty = true;
@@ -217,6 +224,9 @@ class FormControllerState {
 
     return value.toString();
   }
+
+  bool get isValid =>
+      config.validator == null || config.validator(value).isNullOrEmpty;
 
   // working with focus
   final _hasFocus = false.obs;

@@ -41,7 +41,7 @@ Future showConfirm(
       shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular),
       backgroundColor: backgroundColor,
       title: title != null
-          ? TextPrimary(title, textAlign: TextAlign.center)
+          ? TextPrimary(title, align: TextAlign.center)
           : null,
       content: child != null
           ? child

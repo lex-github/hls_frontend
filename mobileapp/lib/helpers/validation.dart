@@ -62,7 +62,8 @@ class RequiredValidator extends TextFieldValidator {
 class LengthMatchValidator extends TextFieldValidator {
   final int length;
 
-  LengthMatchValidator({@required this.length, @required String errorText})
+  LengthMatchValidator(
+      {@required this.length, String errorText = errorExactLengthText})
       : super(errorText.replaceAll('{length}', length.toString()));
 
   @override
@@ -160,8 +161,30 @@ final textValidator = MultiValidatorWithError([
   RequiredValidator(),
 ]);
 
-// auth form
+// auth
 final loginValidator =
     MultiValidatorWithError([RequiredValidator(), EmailOrPhoneValidator()]);
 final passwordValidator = MultiValidatorWithError(
     [RequiredValidator(), MinLengthValidator(min: minPasswordLength)]);
+
+// otp
+final phoneValidator =
+    MultiValidatorWithError([RequiredValidator(), PhoneValidator()]);
+final codeValidator = MultiValidatorWithError([
+  RequiredValidator(),
+  //NumericValidator(),
+  LengthMatchValidator(length: codeMaskPattern.length)
+]);
+
+// chat
+final getChatInputValidator = (String pattern) => MultiValidatorWithError([
+      RequiredValidator(),
+      if (!pattern.isNullOrEmpty)
+        PatternValidator(pattern, errorText: errorGenericText)
+    ]);
+
+// timer
+final timerValidator = MultiValidatorWithError([
+  RequiredValidator(),
+  NumericValidator()
+]);

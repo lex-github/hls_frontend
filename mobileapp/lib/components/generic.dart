@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
@@ -146,7 +147,8 @@ class Image extends StatelessWidget {
   final bool isLink;
 
   Image(
-      {this.title,
+      {Key key,
+      this.title,
       this.loadingBorder,
       double width,
       double height,
@@ -163,7 +165,8 @@ class Image extends StatelessWidget {
                 ? BoxFit.contain
                 : BoxFit.scaleDown),
         this.width = width ?? size,
-        this.height = height ?? size;
+        this.height = height ?? size,
+        super(key: key);
 
   // methods
 
@@ -190,28 +193,37 @@ class Image extends StatelessWidget {
       : title.isNullOrEmpty
           ? _buildError()
           : title.startsWith('http') || isLink
-              ? CachedNetworkImage(
-                  imageUrl: _prepareLink(title),
-                  height: height,
-                  width: width,
-                  color: color,
-                  fit: fit,
-                  alignment: alignment,
-                  imageBuilder: builder,
-                  // placeholder: (_, __) => Container(
-                  //     decoration: BoxDecoration(border: loadingBorder),
-                  //     width: width,
-                  //     height: height,
-                  //     child: Center(child: SimpleLoading())),
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Container(
-                        decoration: BoxDecoration(border: loadingBorder),
-                        width: width,
-                        height: height,
-                        child: Center(
-                            child: Loading(value: downloadProgress.progress)),
-                      ),
-                  errorWidget: (_, __, ___) => _buildError())
+              ? title.contains('.svg')
+                  ? SvgPicture.network(title,
+                      height: height,
+                      width: width,
+                      color: color,
+                      fit: fit,
+                      alignment: alignment)
+                  : CachedNetworkImage(
+                      imageUrl: _prepareLink(title),
+                      height: height,
+                      width: width,
+                      color: color,
+                      fit: fit,
+                      alignment: alignment,
+                      imageBuilder: builder,
+                      // placeholder: (_, __) => Container(
+                      //     decoration: BoxDecoration(border: loadingBorder),
+                      //     width: width,
+                      //     height: height,
+                      //     child: Center(child: SimpleLoading())),
+                      progressIndicatorBuilder: (context, url,
+                              downloadProgress) =>
+                          Container(
+                            decoration: BoxDecoration(border: loadingBorder),
+                            width: width,
+                            height: height,
+                            child: Center(
+                                child:
+                                    Loading(value: downloadProgress.progress)),
+                          ),
+                      errorWidget: (_, __, ___) => _buildError())
               : !(title.contains('.png') ||
                       title.contains('.jpg') ||
                       title.contains('.jpe'))
@@ -274,6 +286,8 @@ class ImageSvg extends StatelessWidget {
 }
 
 class Nothing extends StatelessWidget {
+  Nothing({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => SizedBox.shrink();
 }
@@ -332,7 +346,7 @@ class Screen extends StatelessWidget {
             ? null
             : title is Widget
                 ? title
-                : TextPrimary(title.toString()),
+                : TextPrimaryTitle(title.toString()),
         child = footer.isNotNull
             ? Column(children: [
                 Expanded(
@@ -351,35 +365,33 @@ class Screen extends StatelessWidget {
   Widget _buildLeading() => leading != null
       ? leading
       : !Get.rawRoute.isFirst
-          ? Center(
-              child: Clickable(
-                  child: Icon(Icons.arrow_back_ios, size: Size.icon),
-                  onPressed: Get.back))
+          ? Clickable(
+              child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+              onPressed: Get.back)
           : drawer != null || shouldShowDrawer
-              ? Center(
-                  child: Clickable(
-                      child: Icon(Icons.menu, size: Size.icon),
-                      onPressed: tabbarScaffoldKey.currentState.openDrawer))
+              ? Clickable(
+                  child: Icon(Icons.menu, size: Size.icon),
+                  onPressed: tabbarScaffoldKey.currentState.openDrawer)
               : null;
 
   Widget _buildLeadingButton() => leading != null
       ? leading
       : !Get.rawRoute.isFirst
-          ? Center(
-              child: CircularButton(
+          ? CircularButton(
+              size: Size.iconBig,
+              background: Colors.transparent,
+              borderColor: Colors.primary,
+              icon: Icons.arrow_back_ios,
+              iconSize: Size.iconTiny,
+              onPressed: Get.back)
+          : drawer != null || shouldShowDrawer
+              ? CircularButton(
                   size: Size.iconBig,
                   background: Colors.transparent,
-                  icon: Icons.arrow_back_ios,
+                  borderColor: Colors.primary,
+                  icon: Icons.menu,
                   iconSize: Size.iconTiny,
-                  onPressed: Get.back))
-          : drawer != null || shouldShowDrawer
-              ? Center(
-                  child: CircularButton(
-                      size: Size.iconBig,
-                      background: Colors.transparent,
-                      icon: Icons.menu,
-                      iconSize: Size.iconTiny,
-                      onPressed: Scaffold.of(Get.context).openDrawer))
+                  onPressed: () => Scaffold.of(Get.context).openDrawer())
               : null;
 
   @override
@@ -398,46 +410,59 @@ class Screen extends StatelessWidget {
                     //statusBarColor: Colors.success.withOpacity(.5)
                     statusBarBrightness: Brightness.dark,
                     statusBarIconBrightness: Brightness.light),
-                child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    resizeToAvoidBottomInset: shouldResize,
-                    resizeToAvoidBottomPadding: shouldResize,
-                    primary: false,
-                    appBar: shouldHaveAppBar
-                        ? PreferredSize(
-                            preferredSize: M.Size.fromHeight(
-                                Size.bar), // here the desired height
-                            child: AppBar(
-                                title: title,
-                                titleSpacing: 0,
-                                leading: _buildLeading(),
-                                actions: trailing != null
-                                    ? [
-                                        HorizontalSpace(),
-                                        Center(child: trailing),
-                                        HorizontalSpace()
-                                      ]
-                                    : null,
-                                leadingWidth: Size.icon + Size.horizontal * 2))
-                        : null,
-                    drawer: drawer,
-                    body: fab == null
-                        ? child
-                        : Stack(children: [
-                            child,
-                            if (!shouldHaveAppBar)
-                              Positioned(
-                                  top: Size.vertical + Size.top,
-                                  left: Size.horizontal,
-                                  child: _buildLeadingButton()),
-                            Positioned(
-                                bottom: Size.vertical,
-                                right: Size.horizontal,
-                                child: fab)
-                          ])
-                    //floatingActionButton: fab,
-                    //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                    )));
+                child: SafeArea(
+                    child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        resizeToAvoidBottomInset: shouldResize,
+                        resizeToAvoidBottomPadding: shouldResize,
+                        primary: false,
+                        appBar: shouldHaveAppBar
+                            ? PreferredSize(
+                                preferredSize: M.Size.fromHeight(
+                                    Size.bar), // here the desired height
+                                child: AppBar(
+                                    toolbarHeight: Size.bar,
+                                    title: title == null
+                                        ? null
+                                        : _buildLeading() != null
+                                            ? title
+                                            : Row(children: [
+                                                if (_buildLeading() == null)
+                                                  HorizontalSpace(),
+                                                title
+                                              ]),
+                                    titleSpacing: 0,
+                                    leading: _buildLeading(),
+                                    actions: trailing != null
+                                        ? [
+                                            HorizontalSpace(),
+                                            Center(child: trailing),
+                                            HorizontalSpace()
+                                          ]
+                                        : null,
+                                    leadingWidth:
+                                        Size.icon + Size.horizontal * 2))
+                            : null,
+                        drawer: drawer,
+                        body: ((leading) =>
+                            fab == null && (leading == null || shouldHaveAppBar)
+                                ? child
+                                : Stack(children: [
+                                    child,
+                                    if (!shouldHaveAppBar && leading != null)
+                                      Positioned(
+                                          top: Size.vertical + Size.top,
+                                          left: Size.horizontal,
+                                          child: leading),
+                                    if (fab != null)
+                                      Positioned(
+                                          bottom: Size.vertical,
+                                          right: Size.horizontal,
+                                          child: fab)
+                                  ]))(_buildLeadingButton())
+                        //floatingActionButton: fab,
+                        //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                        ))));
       });
 }
 
@@ -466,6 +491,22 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) => Screen(child: Center(child: Loading()));
 }
 
+class TextAnimated extends StatelessWidget {
+  final String text;
+  final Duration duration;
+  TextAnimated(this.text, {this.duration});
+
+  @override
+  Widget build(BuildContext context) => TyperAnimatedTextKit(
+        isRepeatingAnimation: false,
+        speed: duration ?? chatTyperAnimationDuration,
+        text: [text],
+        textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
+        //displayFullTextOnTap: true,
+        //stopPauseOnTap: true
+      );
+}
+
 class TextError extends StatelessWidget {
   final String text;
 
@@ -475,79 +516,84 @@ class TextError extends StatelessWidget {
   Widget build(BuildContext context) => Text(text.tr, style: TextStyle.error);
 }
 
-class TextActive extends StatelessWidget {
-  final String text;
-  final double fontSize;
-  final TextAlign textAlign;
-  final Color color;
-
-  TextActive(this.text,
-      {this.textAlign = TextAlign.left,
-      this.fontSize,
-      this.color = Colors.primary});
-
-  @override
-  Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
-}
+// class TextIndicator extends StatelessWidget {
+//   final String text;
+//
+//   TextIndicator(this.text);
+//
+//   @override
+//   Widget build(BuildContext context) =>
+//       Text(text.tr, style: TextStyle.indicator);
+// }
 
 class TextPrimary extends StatelessWidget {
   final String text;
-  final double fontSize;
-  final TextAlign textAlign;
+  final M.TextStyle style;
+  final double size;
+  final FontWeight weight;
+  final TextAlign align;
   final Color color;
 
   TextPrimary(this.text,
-      {this.textAlign = TextAlign.left, this.fontSize, this.color});
+      {Key key,
+      this.style,
+      this.size,
+      this.weight,
+      this.align = TextAlign.left,
+      this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.primary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
+      style: TextStyle.primary
+          .merge(style)
+          .copyWith(color: color, fontSize: size, fontWeight: weight),
+      textAlign: align);
+}
+
+class TextPrimaryTitle extends TextPrimary {
+  TextPrimaryTitle(String text) : super(text, style: TextStyle.title);
+}
+
+class TextPrimaryHint extends TextPrimary {
+  TextPrimaryHint(String text,
+      {Key key,
+      Color color,
+      TextAlign align = TextAlign.left,
+      M.TextStyle style})
+      : super(text,
+            key: key,
+            color: color,
+            align: align,
+            size: Size.fontSmall,
+            weight: FontWeight.w500,
+            style: style);
 }
 
 class TextSecondary extends StatelessWidget {
   final String text;
-  final double fontSize;
-  final TextAlign textAlign;
+  final M.TextStyle style;
+  final double size;
+  final TextAlign align;
   final Color color;
 
   TextSecondary(this.text,
-      {this.textAlign = TextAlign.left, this.fontSize, this.color});
+      {this.style, this.size, this.align = TextAlign.left, this.color});
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(color: color, fontSize: fontSize),
-      textAlign: textAlign);
+      style: TextStyle.secondary
+          .merge(style)
+          .copyWith(color: color, fontSize: size),
+      textAlign: align);
 }
 
-class TextSecondaryAlt extends StatelessWidget {
-  final String text;
-  final double fontSize;
-  final TextAlign textAlign;
-  final Color color;
-
-  TextSecondaryAlt(this.text,
-      {this.textAlign = TextAlign.left,
-      this.fontSize,
-      this.color = Colors.light});
-
-  @override
-  Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.secondary.copyWith(
-          color: color, fontSize: fontSize, fontWeight: FontWeight.w500),
-      textAlign: textAlign);
+class TextSecondaryActive extends TextSecondary {
+  TextSecondaryActive(String text) : super(text, color: Colors.primary);
 }
 
-class TextIndicator extends StatelessWidget {
-  final String text;
-
-  TextIndicator(this.text);
-
-  @override
-  Widget build(BuildContext context) =>
-      Text(text.tr, style: TextStyle.indicator);
+class TextTimer extends TextPrimary {
+  TextTimer(String text) : super(text, size: Size.fontTimer);
 }
 
 class VerticalTinySpace extends SizedBox {

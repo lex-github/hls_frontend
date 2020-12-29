@@ -24,7 +24,8 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
   T get initController;
   List<String> get nodes => controller?.fields;
   Map<String, PreferredSizeWidget Function(BuildContext)> get keyboards => null;
-  bool get displayArrows => true;
+  bool get tapOutsideToDismiss => true;
+  bool get displayArrows => false;
   bool get autoScroll => true;
   List<Widget Function(FocusNode)> get toolbarButtons => null;
 
@@ -41,7 +42,7 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
           child: Form(
               key: controller.key,
               child: KeyboardActions(
-                  //tapOutsideToDismiss: true,
+                  tapOutsideToDismiss: tapOutsideToDismiss,
                   //enable: _isKeyboardVisible,
                   //overscroll: 1,
                   autoScroll: autoScroll,
@@ -113,6 +114,7 @@ class Input<T extends FormController> extends GetView<T> {
   final bool shouldFocus;
   final Widget leading;
   final Widget trailing;
+  final AutovalidateMode autovalidateMode;
 
   Input(
       {@required this.field,
@@ -126,7 +128,8 @@ class Input<T extends FormController> extends GetView<T> {
       this.shouldFocus = false,
       this.contentPadding,
       this.leading,
-      this.trailing})
+      this.trailing,
+      this.autovalidateMode})
       : super(key: key);
 
   @override
@@ -165,9 +168,10 @@ class Input<T extends FormController> extends GetView<T> {
         focusNode: controller.getNode(field),
         enabled: !isDisabled,
         validator: validator,
-        autovalidateMode: controller.shouldValidate
-            ? AutovalidateMode.always
-            : AutovalidateMode.onUserInteraction,
+        autovalidateMode: autovalidateMode ??
+            (controller.shouldValidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.onUserInteraction),
         onEditingComplete: () => controller.submitHandler()));
   }
 }
