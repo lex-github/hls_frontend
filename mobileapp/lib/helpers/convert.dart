@@ -1,5 +1,7 @@
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:hls/constants/formats.dart';
+import 'package:hls/helpers/colors.dart';
 
 // conversions
 String dateToString(
@@ -78,5 +80,10 @@ List toJsonList(List items) =>
 // form transforms
 DateTime toDateValue(value) => toDate(value, format: dateExternalFormat);
 String toDateString(value) => dateToString(date: value);
-String toDateStringInternal(value) =>
-    value == null ? null : dateToString(date: value, output: dateInternalFormat);
+String toDateStringInternal(value) => value == null
+    ? null
+    : dateToString(date: value, output: dateInternalFormat);
+
+Color toColor(value) =>
+    value == null ? null : ColorUtility.fromHex(value.toString());
+String colorToString(Color color) => color.toHex();

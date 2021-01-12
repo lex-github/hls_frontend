@@ -22,17 +22,18 @@ class OtpVerifyFormScreen<T extends OtpVerifyFormController>
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               if (!isKeyboardVisible)
                 Hero(
-                  tag: 'login',
-                  child: Image(
-                      width: Get.mediaQuery.size.width,
-                      fit: BoxFit.fitWidth,
-                      title: 'login')),
+                    tag: 'login',
+                    child: Image(
+                        width: Get.mediaQuery.size.width,
+                        fit: BoxFit.fitWidth,
+                        title: 'login')),
               VerticalMediumSpace(),
               if (controller.shouldShowForm) ...[
                 Container(
                     key: _key,
                     padding: EdgeInsets.symmetric(horizontal: _formPadding),
-                    child: Input<T>(field: 'code'))
+                    child: Input<T>(
+                        field: 'code', inputType: TextInputType.number))
               ] else if (!controller.isInit)
                 Loading()
             ]));

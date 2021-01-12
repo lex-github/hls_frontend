@@ -34,8 +34,6 @@ class UserData extends GenericData {
               if (!completedTypes.contains(type)) type
           ])(completedDialogs.map((x) => x.type).toList(growable: false));
 
-  // ChatDialogType get dialogType => chatDialogsNotCompleted.firstOrNull;
-
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
   Map<String, dynamic> toJson() => _$UserDataToJson(this);

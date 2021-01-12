@@ -1,6 +1,6 @@
 const developmentText = 'Раздел в разработке';
 const requestWaitingText = 'Пожалуйста подождите';
-const selectionScreenTitle = 'Select item(s)';
+const selectionScreenTitle = 'Выберите значение(я)';
 
 // refresh control
 const idleRefreshText = '';
@@ -10,24 +10,38 @@ const completedRefreshText = '';
 
 // errors
 const errorGenericText = 'Что то пошло не так';
-const connectionExceptionText = 'Connection exception';
+const connectionExceptionText = 'Ошибка соединения';
 const noDataText = 'Нет данных';
-const formatExceptionText = 'Wrong server response';
-const timeoutExceptionText = 'Server fail to respond for {duration} seconds, try later';
+const formatExceptionText = 'Неверный ответ сервера';
+const timeoutExceptionText = 'Сервер не ответил после {duration} секунд, попробуйте позже';
 
 // validation
 const errorRequiredText = 'Обязательно к заполнению';
-const errorNumericText = 'Field should be number';
-const errorMinLengthText = 'Field should be no less then {min} characters';
-const errorExactLengthText = 'Field should {length} characters';
-const errorDateText = 'Field should be date in format {format}';
-const errorTypeText = 'Field should be of type {type}';
-const errorEmailText = 'Field should be valid e-mail';
-const errorEmailUniqueText = 'This e-mail is already taken';
-const errorPhoneText = 'Field should be valid phone';
-const errorFormText = 'Fix all form errors';
-const errorImageText = 'Upload an image';
+const errorNumericText = 'Поле должно быть числом';
+const errorMinLengthText = 'Поле должно содержать менее {min} символов';
+const errorExactLengthText = 'Поле должно содержать {length} символов';
+const errorDateText = 'Поле должно быть датой в формате {format}';
+const errorTypeText = 'Поле должно быть типа {type}';
+const errorEmailText = 'Поле должно быть корректным e-mail';
+// const errorEmailUniqueText = 'Поле должно быть уникальным e-mail';
+const errorPhoneText = 'Поле должно быть корректным номером';
+const errorFormText = 'Исправьте ошибки';
+// const errorImageText = 'Загрузите изображение';
 const errorEmailOrPhoneText = 'Введите корректную электронную почту или телефон';
+
+// slider
+const slide1Text = 'Сохранить и приумножить\nздоровье';
+const slide2Text = 'Тестирование вашего текущего состояния по 100+ параметрам. '
+  'Контроль прогресса, коррекция плана на рост.';
+const slide3Text = 'Автоматизированный персональный просчёт рациона питания по '
+  'полному биохимическому составу для 1000+ продуктов';
+const slide4Text = 'Целевые тренировки для всех возрастов с любым уровнем здоровья. '
+  'Более 30 программ от оздоровительных, до силовых';
+const slide5Text = 'Постоянно обновляемая база рейтинга продуктов от Роскачества '
+  'и другие полезные для вашего здоровья инструменты';
+const slide6Text = '300+ ответов на все вопросы о здоровом образе жизни. Простым '
+  'языком, коротко.';
+const slide7Text = 'Поехали!';
 
 // auth screens
 const authLoginLabel = 'Телефон/e-mail';
@@ -49,6 +63,12 @@ const chatLifestyleTitle = 'Поговорим о жизни';
 const chatMedicalTitle = 'Поговорим о здоровье';
 const chatPhysicalTitle = 'Физические параметры';
 const chatInputLabel = 'Ответ';
+
+// timer
+const timerStart = 'СТАРТ';
+const timerStop = 'СТОП';
+const timerRestart = 'РЕСТАРТ';
+const timerInputLabel = 'Результат';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';

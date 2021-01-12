@@ -8,6 +8,7 @@ import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/controllers/chat_form_controller.dart';
+import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/validation.dart';
 import 'package:hls/models/chat_card_model.dart';
@@ -29,6 +30,14 @@ class ChatScreen<Controller extends ChatController>
 
   _logoutHandler() => AuthService.i.logout();
 
+  _timerHandler() async {
+    final result = await Get.toNamed(timerRoute, arguments: controller.card);
+    print('ChatScreen._timerHandler result: $result');
+    if (result == null) return;
+
+    controller.post(result);
+  }
+
   // builders
 
   Widget _buildMessage(ChatMessage message, {bool shouldShowCorner = false}) =>
@@ -43,8 +52,8 @@ class ChatScreen<Controller extends ChatController>
                   ClipRRect(
                       borderRadius: borderRadiusCircular,
                       child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxHeight: .5 * Size.screenHeight),
+                          constraints:
+                              BoxConstraints(maxHeight: .5 * Size.screenHeight),
                           child: Image(title: message.imageUrl))),
                   VerticalMediumSpace()
                 ],
@@ -55,8 +64,12 @@ class ChatScreen<Controller extends ChatController>
                           padding: Padding.small,
                           margin: margin,
                           decoration: BoxDecoration(
-                              color: color, borderRadius: borderRadiusCircular),
-                          child: TextPrimaryHint(message.text))),
+                              color: message.color ?? color,
+                              borderRadius: borderRadiusCircular),
+                          child: TextAnimated(message.text,
+                              duration: message.isUser
+                                  ? Duration.zero
+                                  : chatTyperAnimationDuration))),
                   if (shouldShowCorner && !message.isUser)
                     Positioned(
                         top: 0,
@@ -66,7 +79,7 @@ class ChatScreen<Controller extends ChatController>
                             child: Container(
                                 width: cornerWidth,
                                 height: cornerHeight,
-                                color: color))),
+                                color: message.color ?? color))),
                   if (shouldShowCorner && message.isUser)
                     Positioned(
                         top: 0,
@@ -118,7 +131,7 @@ class ChatScreen<Controller extends ChatController>
         Button(
             padding: Padding.chatButton,
             title: answer.text,
-            titleStyle: TextStyle.chatButton,
+            titleStyle: TextStyle.buttonChat,
             isSwitch: onSelected != null,
             onSelected: onSelected != null
                 ? (isSelected) => onSelected(answer, isSelected)
@@ -129,17 +142,21 @@ class ChatScreen<Controller extends ChatController>
       ]);
 
   Widget _buildInput() => _buildControlContainer(
-      child: GetBuilder(
+      child: GetBuilder<ChatFormController>(
           init: ChatFormController(
               validator: getChatInputValidator(controller.questionRegexp)),
-          builder: (_) => Stack(children: [
-                Input<ChatFormController>(
+          builder: (controller) => Stack(children: [
+                Obx(() => Input<ChatFormController>(
                     field: 'input',
                     isErrorVisible: false,
+                    shouldFocus: true,
+                    autovalidateMode: controller.shouldValidate
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
                     contentPadding: EdgeInsets.only(
                         left: Size.horizontal,
                         right: Size.horizontal * 2 + Size.iconSmall,
-                        bottom: Size.verticalTiny)),
+                        bottom: Size.verticalTiny))),
                 Obx(() => Get.find<ChatFormController>().isValidIgnoreDirty
                     ? Positioned(
                         right: 0,
@@ -157,19 +174,18 @@ class ChatScreen<Controller extends ChatController>
       (({Iterable rows, Iterable columns}) => _buildControlContainer(
               child: Container(
                   padding: EdgeInsets.only(
-                      top: Size.vertical, left: Size.horizontal),
+                      left: Size.horizontal,
+                      top: Size.vertical,
+                      bottom: Size.vertical - Size.verticalSmall,
+                      right: Size.horizontal - Size.horizontalSmall),
                   child: Table(children: [
                     for (final row in rows)
                       TableRow(children: [
                         for (final column in columns)
                           Container(
                               padding: EdgeInsets.only(
-                                  bottom: row == rows.last
-                                      ? Size.vertical
-                                      : Size.verticalSmall,
-                                  right: column == columns.last
-                                      ? Size.horizontal
-                                      : Size.horizontalSmall),
+                                  bottom: Size.verticalSmall,
+                                  right: Size.horizontalSmall),
                               child: ((ChatAnswerData answer) => answer != null
                                       ? _buildControlButton(answer: answer)
                                       : Nothing())(
@@ -185,6 +201,32 @@ class ChatScreen<Controller extends ChatController>
           buildControlButton: _buildControlButton,
           rows: controller.questionRows,
           columns: controller.questionColumns));
+
+  Widget _buildTimer() => _buildControlContainer(
+      child: Container(
+          padding: Padding.content,
+          width: Size.screenWidth,
+          child: Center(
+              child: CircularButton(
+                  size: Size.iconBig,
+                  background: Colors.transparent,
+                  borderColor: Colors.primary,
+                  icon: Icons.timer,
+                  iconSize: Size.iconTiny,
+                  onPressed: _timerHandler))));
+
+  Widget _buildSubmit() => _buildControlContainer(
+      child: Container(
+          padding: Padding.content,
+          width: Size.screenWidth,
+          child: Center(
+              child: CircularButton(
+                  size: Size.iconBig,
+                  background: Colors.transparent,
+                  borderColor: Colors.primary,
+                  icon: Icons.check,
+                  iconSize: Size.iconTiny,
+                  onPressed: Get.find<ChatNavigationController>().next))));
 
   @override
   Widget build(_) => Screen(
@@ -202,7 +244,6 @@ class ChatScreen<Controller extends ChatController>
                     Expanded(
                         child: Stack(children: [
                       ListView.builder(
-                          reverse: true,
                           shrinkWrap: true,
                           controller: controller.scroll,
                           padding: Padding.content,
@@ -241,13 +282,20 @@ class ChatScreen<Controller extends ChatController>
                                       .post(controller.checkboxSelection)))
                           : Nothing())
                     ])),
-                    if (controller.questionType == ChatQuestionType.INPUT)
-                      _buildInput()
-                    else if (controller.questionType == ChatQuestionType.RADIO)
-                      _buildRadio()
-                    else if (controller.questionType ==
-                        ChatQuestionType.CHECKBOX)
-                      _buildCheckbox()
+                    if (controller.messageQueue.isNullOrEmpty)
+                      if (controller.questionType == ChatQuestionType.INPUT)
+                        _buildInput()
+                      else if (controller.questionType ==
+                          ChatQuestionType.RADIO)
+                        _buildRadio()
+                      else if (controller.questionType ==
+                          ChatQuestionType.CHECKBOX)
+                        _buildCheckbox()
+                      else if (controller.questionType ==
+                          ChatQuestionType.TIMER)
+                        _buildTimer()
+                      else
+                        _buildSubmit()
                   ]))
           : LoadingPage()));
 }
@@ -281,18 +329,18 @@ class Checkbox extends GetWidget<ChatController> {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: EdgeInsets.only(top: Size.vertical, left: Size.horizontal),
+      padding: EdgeInsets.only(
+          left: Size.horizontal,
+          top: Size.vertical,
+          bottom: Size.vertical - Size.verticalSmall,
+          right: Size.horizontal - Size.horizontalSmall),
       child: Table(children: [
         for (final row in rows)
           TableRow(children: [
             for (final column in columns)
               Container(
                   padding: EdgeInsets.only(
-                      bottom:
-                          row == rows.last ? Size.vertical : Size.verticalSmall,
-                      right: column == columns.last
-                          ? Size.horizontal
-                          : Size.horizontalSmall),
+                      bottom: Size.verticalSmall, right: Size.horizontalSmall),
                   child: ((ChatAnswerData answer) => answer != null
                       ? buildControlButton(
                           answer: answer, onSelected: _answerHandler)

@@ -114,6 +114,7 @@ class Input<T extends FormController> extends GetView<T> {
   final bool shouldFocus;
   final Widget leading;
   final Widget trailing;
+  final AutovalidateMode autovalidateMode;
 
   Input(
       {@required this.field,
@@ -127,7 +128,8 @@ class Input<T extends FormController> extends GetView<T> {
       this.shouldFocus = false,
       this.contentPadding,
       this.leading,
-      this.trailing})
+      this.trailing,
+      this.autovalidateMode})
       : super(key: key);
 
   @override
@@ -166,9 +168,10 @@ class Input<T extends FormController> extends GetView<T> {
         focusNode: controller.getNode(field),
         enabled: !isDisabled,
         validator: validator,
-        autovalidateMode: controller.shouldValidate
-            ? AutovalidateMode.always
-            : AutovalidateMode.onUserInteraction,
+        autovalidateMode: autovalidateMode ??
+            (controller.shouldValidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.onUserInteraction),
         onEditingComplete: () => controller.submitHandler()));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
@@ -36,6 +37,8 @@ class ChatQuestionData {
   String text;
   @JsonKey(name: 'image_url')
   String imageUrl;
+  @JsonKey(fromJson: toColor, toJson: colorToString)
+  Color color;
 
   ChatQuestionData();
 
@@ -67,6 +70,10 @@ class ChatQuestionStyleData {
 @JsonSerializable(includeIfNull: false)
 class ChatValidationData {
   String regexp;
+  @JsonKey(fromJson: toInt)
+  int duration;
+  @JsonKey(name: 'should_require_result')
+  bool shouldRequireResult;
 
   ChatValidationData();
 
