@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:hls/theme/styles.dart';
 
-const isDebug = true;
+const isDebug = false;
 
 // config
 const assetsDirectory = 'assets';
@@ -16,7 +16,7 @@ const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
 // const chatTyperAnimationDuration = Duration(milliseconds: 75);
-const chatTyperAnimationDuration = Duration(milliseconds: 5);
+const chatTyperAnimationDuration = Duration(milliseconds: 50);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const timerDuration = Duration(seconds: 1);
 
