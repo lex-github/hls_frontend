@@ -10,7 +10,7 @@ ChatCardData _$ChatCardDataFromJson(Map<String, dynamic> json) {
   return ChatCardData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..imageUri = json['imageUri'] as String
+    ..imageUrl = json['imageUrl'] as String
     ..key = json['key'] as String
     ..questionType = ChatQuestionType.fromJsonValue(json['questionType'])
     ..questions = (json['questions'] as List)
@@ -53,7 +53,7 @@ Map<String, dynamic> _$ChatCardDataToJson(ChatCardData instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('imageUri', instance.imageUri);
+  writeNotNull('imageUrl', instance.imageUrl);
   writeNotNull('key', instance.key);
   writeNotNull(
       'questionType', ChatQuestionType.toJsonValue(instance.questionType));
@@ -157,7 +157,7 @@ ChatDialogStatusData _$ChatDialogStatusDataFromJson(Map<String, dynamic> json) {
   return ChatDialogStatusData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..imageUri = json['imageUri'] as String
+    ..imageUrl = json['imageUrl'] as String
     ..type = ChatDialogType.fromJsonValue(json['name'])
     ..status = ChatDialogStatus.fromJsonValue(json['status']);
 }
@@ -174,7 +174,7 @@ Map<String, dynamic> _$ChatDialogStatusDataToJson(
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('imageUri', instance.imageUri);
+  writeNotNull('imageUrl', instance.imageUrl);
   writeNotNull('name', ChatDialogType.toJsonValue(instance.type));
   writeNotNull('status', ChatDialogStatus.toJsonValue(instance.status));
   return val;

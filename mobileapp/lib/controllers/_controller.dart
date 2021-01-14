@@ -11,8 +11,9 @@ class Controller extends GetxController {
   @override
   @mustCallSuper
   void onInit() {
-    super.onInit();
     isInit = true;
+
+    super.onInit();
   }
 
   bool get isAwaiting => AuthService.isAuth;

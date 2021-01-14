@@ -72,3 +72,11 @@ const timerInputLabel = 'Результат';
 
 // drawer
 const drawerLogoutLabel = 'Выйти';
+
+// products
+const nutritionScreenTitle = 'Продукты';
+const productsScreenHeaderTitle = 'Каталог продуктов';
+const productsScreenHeaderDescription = 'Полный биохимический состав';
+const nutritionSearchLabel = 'Введите название продукта';
+const nutritionFilterLabel = 'Фильтр';
+const foodCategoryScreenTitle = 'Каталог продуктов';

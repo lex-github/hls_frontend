@@ -122,11 +122,11 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     size: 1.2 * Size.fab,
                     iconSize: .45 * Size.fab,
                     onPressed: (_) => null)),
-            Container(
-                height: Size.bar,
-                child: Center(child: child))
+            Container(height: Size.bar, child: Center(child: child))
           ]))
-      : child;
+      : Container(
+          padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+          child: child);
 
   Widget _buildCentralItem() => _buildCentralGroup(
       child: CircularButton(

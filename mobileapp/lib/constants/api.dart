@@ -40,11 +40,76 @@ const chatCardFields =
     'results'
   '}';
 
+const foodCategoryGeneral =
+  'id '
+  'title '
+  'icon '
+  '{'
+    'url'
+  '}';
+
+const foodCategoryListFields =
+  '{'
+    '$foodCategoryGeneral'
+  '}';
+
+const foodCategoryFields =
+  '{'
+    '$foodCategoryGeneral'
+    //'parentCategory $foodCategoryListFields'
+    'subcategories $foodSubcategoryFields'
+  '}';
+
+const foodSubcategoryFields =
+  '{'
+    '$foodCategoryGeneral'
+    //'parentCategory $foodCategoryListFields'
+    'subcategories $foodSubcategory2Fields'
+    'foods $foodFields'
+  '}';
+
+const foodSubcategory2Fields =
+  '{'
+    '$foodCategoryGeneral'
+    //'parentCategory $foodCategoryListFields'
+    'subcategories $foodSubcategory3Fields'
+    'foods $foodFields'
+  '}';
+
+const foodSubcategory3Fields =
+  '{'
+    '$foodCategoryGeneral'
+    //'parentCategory $foodCategoryListFields'
+    'foods $foodFields'
+  '}';
+
+const foodFields =
+  '{'
+    'title'
+  '}';
+
 // query
 
 const currentUserQuery = 'query '
   '{'
     'currentUser $userFields'
+  '}';
+
+const foodCategoriesQuery = 'query '
+  '{'
+    'foodCategories $foodCategoryListFields'
+  '}';
+
+const foodCategoryQuery = 'query '
+  '('
+    '\$id: ID!'
+  ')'
+  '{'
+    'foodCategory '
+    '('
+      'id: \$id'
+    ') '
+    '$foodCategoryFields'
   '}';
 
 // mutations

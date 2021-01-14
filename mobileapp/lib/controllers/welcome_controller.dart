@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
+import 'package:hls/services/auth_service.dart';
 
 class WelcomeController extends GetxController {
   final _slides = <SlideData>[
@@ -21,7 +23,9 @@ class WelcomeController extends GetxController {
   int get length => _slides.length;
   SlideData get slide => _slides[index];
 
-  next() => index < _slides.length - 1 ? index += 1 : Get.back();
+  next() => index < _slides.length - 1
+      ? index += 1
+      : (AuthService.isAuth ? Get.back() : Get.offNamed(otpRequestRoute));
 }
 
 class SlideData {

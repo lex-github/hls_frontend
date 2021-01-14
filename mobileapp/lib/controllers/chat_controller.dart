@@ -62,7 +62,8 @@ class ChatController extends Controller {
   void onInit() async {
     // check active chat bot dialog
     final activeDialog = AuthService.i.profile.activeDialog;
-    final isDialogActive = false && activeDialog != null && type == activeDialog.type;
+    final isDialogActive =
+        false && activeDialog != null && type == activeDialog.type;
     final dialogId = activeDialog?.id;
 
     // print('ChatController.onInit '
@@ -132,6 +133,13 @@ class ChatController extends Controller {
 
     if (!_isMessageQueueRunning) {
       _isMessageQueueRunning = true;
+
+      // might be a bit bold
+      while (!_scroll.hasClients) {
+        await Future.delayed(defaultAnimationDuration);
+      }
+
+      // consequential message display
       while (!messageQueue.isNullOrEmpty) {
         final message = messageQueue.removeLast();
         _messages.add(message);
@@ -140,7 +148,7 @@ class ChatController extends Controller {
         if (!message.isUser) {
           WidgetsBinding.instance.addPostFrameCallback((_) => Timer.periodic(
               chatTyperAnimationDuration,
-              (timer) => timer.tick < message.text.length
+              (timer) => timer.tick < message.text.length && _scroll.hasClients
                   ? _scroll.animateTo(_scroll.position.maxScrollExtent,
                       curve: Curves.easeOut, duration: defaultAnimationDuration)
                   : timer.cancel()));
@@ -149,12 +157,13 @@ class ChatController extends Controller {
               chatTyperAnimationDuration * (message.text?.length ?? 0));
         }
       }
+
       _isMessageQueueRunning = false;
     }
   }
 
   Future<bool> post(value) async {
-    //print('ChatController.post $value');
+    print('ChatController.post value: $value');
 
     // display user input
     switch (questionType) {
@@ -193,6 +202,7 @@ class ChatController extends Controller {
 
     // check dialog results
     final dialogResult = result.get(['chatBotDialogContinue', 'dialogResult']);
+    //print('ChatController.post result: $value');
     if (dialogResult != null && dialogResult is List) {
       _cards.removeWhere((_) => true);
 
@@ -205,6 +215,7 @@ class ChatController extends Controller {
     // process status
     final status = ChatDialogStatus.fromValue(
         result.get(['chatBotDialogContinue', 'dialogStatus']));
+    //print('ChatController.post status: $status');
     if (status != null) {
       switch (status) {
         case ChatDialogStatus.PENDING:

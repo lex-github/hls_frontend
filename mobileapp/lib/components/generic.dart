@@ -560,12 +560,13 @@ class TextPrimaryHint extends TextPrimary {
       {Key key,
       Color color,
       TextAlign align = TextAlign.left,
+      double size,
       M.TextStyle style})
       : super(text,
             key: key,
             color: color,
             align: align,
-            size: Size.fontSmall,
+            size: size ?? Size.fontSmall,
             weight: FontWeight.w500,
             style: style);
 }

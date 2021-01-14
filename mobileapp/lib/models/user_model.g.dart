@@ -10,7 +10,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return UserData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..imageUri = json['imageUri'] as String
+    ..imageUrl = json['imageUrl'] as String
     ..name = json['name'] as String
     ..email = json['email'] as String
     ..phone = json['phoneNumber'] as String
@@ -35,7 +35,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('imageUri', instance.imageUri);
+  writeNotNull('imageUrl', instance.imageUrl);
   writeNotNull('name', instance.name);
   writeNotNull('email', instance.email);
   writeNotNull('phoneNumber', instance.phone);

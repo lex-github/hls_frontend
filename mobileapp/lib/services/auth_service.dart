@@ -59,6 +59,7 @@ class AuthService extends GraphqlService {
     print('AuthService.onInit $token');
 
     if (!token.isNullOrEmpty) await retrieve();
+    else isAuthenticated = false;
 
     isInit = true;
   }

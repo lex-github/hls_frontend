@@ -10,7 +10,7 @@ GenericData _$GenericDataFromJson(Map<String, dynamic> json) {
   return GenericData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..imageUri = json['imageUri'] as String;
+    ..imageUrl = json['imageUrl'] as String;
 }
 
 Map<String, dynamic> _$GenericDataToJson(GenericData instance) {
@@ -24,6 +24,6 @@ Map<String, dynamic> _$GenericDataToJson(GenericData instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('imageUri', instance.imageUri);
+  writeNotNull('imageUrl', instance.imageUrl);
   return val;
 }

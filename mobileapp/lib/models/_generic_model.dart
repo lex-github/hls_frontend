@@ -9,7 +9,7 @@ class GenericData extends GenericEnum {
   @JsonKey(fromJson: toInt)
   int id;
   String title;
-  String imageUri;
+  String imageUrl;
 
   bool get isValid => id != null;
 

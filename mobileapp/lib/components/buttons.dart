@@ -200,7 +200,10 @@ class ButtonInner extends StatelessWidget {
         borderRadius: radius,
         border: Border.all(
             width: borderWidth,
-            color: borderColor ?? innerShadowColor,
+            //color: borderColor ??
+            color: ((background != null && background != Colors.transparent)
+                ? background.darken(.2)
+                : innerShadowColor),
             style: BorderStyle.solid),
         boxShadow: [
           BoxShadow(
@@ -313,8 +316,8 @@ class Clickable extends StatelessWidget {
           splashColor: splashColor,
           highlightColor: Colors.transparent,
           child: child,
-          onTap: () =>
-              Future.delayed(defaultAnimationDuration).then((_) => onPressed()),
+          onTap: () => Future.delayed(defaultAnimationDuration)
+              .then((_) => onPressed != null ? onPressed() : null),
           customBorder: border));
 
   @override
@@ -323,16 +326,45 @@ class Clickable extends StatelessWidget {
       : ClipRRect(borderRadius: borderRadiusCircular, child: _buildClickable());
 }
 
+// class ListItemButton extends Button {
+//   ListItemButton(
+//       {@required Widget child,
+//       bool isSelected = false,
+//       bool isSwitch = false,
+//       bool isLoading = false,
+//       Function onPressed,
+//       EdgeInsets padding})
+//       : super(
+//             child: child,
+//             isSelected: isSelected,
+//             isSwitch: isSwitch,
+//             isLoading: isLoading,
+//             isCircular: false,
+//             onPressed: onPressed,
+//             padding: padding);
+// }
+
 class ListItemButton extends Button {
   ListItemButton(
-      {@required Widget child,
+      {Widget child,
+      String imageTitle,
+      String title,
       bool isSelected = false,
       bool isSwitch = false,
       bool isLoading = false,
       Function onPressed,
       EdgeInsets padding})
       : super(
-            child: child,
+            borderColor: Colors.disabled,
+            child: child ??
+                Row(children: [
+                  Image(width: Size.iconBig, title: imageTitle),
+                  HorizontalSpace(),
+                  TextPrimaryHint(title),
+                  Expanded(child: HorizontalSpace()),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Colors.disabled, size: Size.iconSmall)
+                ]),
             isSelected: isSelected,
             isSwitch: isSwitch,
             isLoading: isLoading,

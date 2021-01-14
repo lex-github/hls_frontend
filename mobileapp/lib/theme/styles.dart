@@ -74,6 +74,7 @@ class Size {
   static double get fab => ratio(fabSize);
   static double get buttonCentral => ratio(buttonCentralSize);
   static double get buttonTimer => ratio(buttonTimerSize);
+  static double get buttonHeight => ratio(buttonHeightSize);
 
   static double get horizontalTiny => width(horizontalTinyPadding);
   static double get horizontalSmall => width(horizontalSmallPadding);
@@ -99,7 +100,8 @@ class Colors {
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
-  static const disabled = M.Color(0xFF404040);
+  //static const disabled = M.Color(0xFF404040);
+  static const disabled = M.Color(0xFF707070);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;

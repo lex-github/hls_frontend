@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:hls/theme/styles.dart';
 
-const isDebug = false;
+const isDebug = true;
 
 // config
 const assetsDirectory = 'assets';
@@ -15,7 +15,8 @@ const timeoutDuration = Duration(seconds: 5);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
-const chatTyperAnimationDuration = Duration(milliseconds: 75);
+// const chatTyperAnimationDuration = Duration(milliseconds: 75);
+const chatTyperAnimationDuration = Duration(milliseconds: 5);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const timerDuration = Duration(seconds: 1);
 
@@ -32,6 +33,7 @@ const chatRoute = '/chat';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const homeRoute = '/home';
+const foodCategoryRoute = '/category';
 
 // styles related
 const elevation = 5.0;
@@ -72,6 +74,7 @@ const avatarSize = 150.0;
 const fabSize = 56.0;
 const buttonCentralSize = fabSize;
 const buttonTimerSize = 115.0;
+const buttonHeightSize = 48.0;
 
 const horizontalTinyPadding = 5.0;
 const horizontalSmallPadding = 10.0;
