@@ -85,7 +85,16 @@ const foodSubcategory3Fields =
 
 const foodFields =
   '{'
-    'title'
+    'id '
+    'title '
+    'structure '
+    '{'
+      'key '
+      'quantity '
+      'section '
+      'title '
+      'unit '
+    '}'
   '}';
 
 // query
@@ -110,6 +119,18 @@ const foodCategoryQuery = 'query '
       'id: \$id'
     ') '
     '$foodCategoryFields'
+  '}';
+
+const foodQuery = 'query '
+  '('
+    '\$id: ID!'
+  ')'
+  '{'
+    'food '
+    '('
+      'id: \$id'
+    ') '
+    '$foodFields'
   '}';
 
 // mutations

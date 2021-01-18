@@ -13,11 +13,7 @@ import 'package:hls/screens/_form_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class TimerScreen<Controller extends TimerController>
-    extends GetWidget<Controller> {
-  TimerScreen() {
-    Get.lazyPut(() => TimerController(card: Get.arguments) as Controller);
-  }
-
+    extends GetView<Controller> {
   // builders
 
   _buildForm() => GetBuilder<TimerFormController>(
@@ -82,8 +78,7 @@ class TimerScreen<Controller extends TimerController>
       padding: Padding.zero,
       shouldHaveAppBar: false,
       child: GetBuilder<Controller>(
-          init: controller,
-          dispose: (_) => Get.delete<Controller>(),
+          init: TimerController(card: Get.arguments) as Controller,
           builder: (_) => Obx(
               () => controller.shouldShowForm ? _buildForm() : _buildTimer())));
 }

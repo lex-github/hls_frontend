@@ -12,7 +12,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_category_model.dart';
 import 'package:hls/theme/styles.dart';
 
-class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
+class FoodCategoryScreen extends GetView<FoodCategoryController> {
   final FoodCategoryData category;
   final String title;
 
@@ -21,10 +21,7 @@ class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
 
   FoodCategoryScreen()
       : category = (Get.arguments as Map).get('category'),
-        title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle {
-    Get.lazyPut(() => FoodCategoryController(id: category.id), tag: tag);
-  }
-
+        title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
   // handlers
 
   _categoryHandler(FoodCategoryData item) {
@@ -33,7 +30,7 @@ class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
     if (!item.children.isNullOrEmpty)
       return Get.toNamed(foodCategoryRoute,
           preventDuplicates: false,
-          arguments: {'category': item, 'title': category.title});
+          arguments: {'title': category.title, 'category': item});
 
     // if (item.parent.id == category.id && !item.children.isNullOrEmpty)
     if (!item.foods.isNullOrEmpty) return controller.toggle(item);
@@ -41,7 +38,9 @@ class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
     return showConfirm(title: noDataText);
   }
 
-  _foodsHandler(FoodData item) => showConfirm(title: developmentText);
+  _foodsHandler(FoodCategoryData category, FoodData item) =>
+      Get.toNamed(foodRoute,
+          arguments: {'title': category.title, 'food': item});
   // Get.toNamed(foodCategoryRoute,
   //   preventDuplicates: false, arguments: item);
 
@@ -65,13 +64,13 @@ class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
             sizeFactor: controller.getSizeFactor(item),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  VerticalSpace(),
-                  for (final subItem in item.foods)
+              VerticalSpace(),
+              for (final subItem in item.foods)
                 Clickable(
                     child: Container(
                         padding: Padding.small,
                         child: TextPrimaryHint(subItem.title)),
-                    onPressed: () => _foodsHandler(subItem))
+                    onPressed: () => _foodsHandler(item, subItem))
             ])))
       ]));
 
@@ -83,6 +82,7 @@ class FoodCategoryScreen extends GetWidget<FoodCategoryController> {
 
   Widget _buildBody() => GetBuilder<FoodCategoryController>(
       tag: tag,
+      init: FoodCategoryController(id: category.id),
       builder: (_) => controller.isInit
           ? ListView.builder(
               padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:hls/theme/styles.dart';
 
-const isDebug = false;
+const isDebug = true;
 
 // config
 const assetsDirectory = 'assets';
@@ -16,7 +16,7 @@ const inputWaitingDuration = Duration(milliseconds: 300);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const submenuAnimationDuration = Duration(milliseconds: 300);
 // const chatTyperAnimationDuration = Duration(milliseconds: 75);
-const chatTyperAnimationDuration = Duration(milliseconds: 50);
+const chatTyperAnimationDuration = Duration(milliseconds: 30);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const timerDuration = Duration(seconds: 1);
 
@@ -33,7 +33,8 @@ const chatRoute = '/chat';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const homeRoute = '/home';
-const foodCategoryRoute = '/category';
+const foodCategoryRoute = '/food-category';
+const foodRoute = '/food';
 
 // styles related
 const elevation = 5.0;

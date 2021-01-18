@@ -12,10 +12,9 @@ import 'package:hls/models/food_category_model.dart';
 import 'package:hls/screens/_form_screen.dart' hide Button;
 import 'package:hls/theme/styles.dart';
 
-class NutritionScreen extends GetWidget<NutritionController> {
+class NutritionScreen extends GetView<NutritionController> {
   NutritionScreen() {
     Get.lazyPut(() => SearchFormController());
-    Get.lazyPut(() => NutritionController());
   }
 
   // handlers
@@ -83,6 +82,7 @@ class NutritionScreen extends GetWidget<NutritionController> {
       ]);
 
   Widget _buildBody() => GetBuilder<NutritionController>(
+      init: NutritionController(),
       builder: (_) => controller.isInit
           ? ListView.builder(
               padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,

@@ -52,6 +52,7 @@ class AuthService extends GraphqlService {
       if (isAuthenticated && routes.contains(Get.currentRoute))
         Get.until(
             (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
+        //{ print('AuthService.onInit.ever'); Get.offAllNamed(homeRoute); }
       else if (isInit && !routes.contains(Get.currentRoute))
         Get.toNamed(routes.first);
     });

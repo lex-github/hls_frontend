@@ -190,6 +190,9 @@ class ChatController extends Controller {
       for (final questionResult in questionResults)
         addMessage(ChatMessage.fromQuestion(questionResult));
 
+    if (currentDialogId.isNullOrZero || questionKey.isNullOrZero)
+      Get.find<ChatNavigationController>().next();
+
     final result = await mutation(chatBotDialogContinueMutation, parameters: {
       'dialogId': currentDialogId,
       'key': questionKey,

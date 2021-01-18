@@ -10,10 +10,10 @@ import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_category_model.dart';
 
-class FoodCategoryController extends Controller
+class FoodController extends Controller
     with SingleGetTickerProviderMixin {
   final int id;
-  FoodCategoryController({@required this.id}) {
+  FoodController({@required this.id}) {
     _animationController =
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value);
@@ -25,7 +25,7 @@ class FoodCategoryController extends Controller
   final maxRotationAngle = pi / 2;
   final List<FoodCategoryData> _openedItems = [];
   final _animationProgress = .0.obs;
-  final _lastToggledItem = Rx<FoodCategoryData>();
+  final _lastToggledItem = Rx<FoodData>();
   AnimationController _animationController;
   FoodCategoryData item;
 
@@ -60,19 +60,19 @@ class FoodCategoryController extends Controller
           ? Tween<double>(begin: .0, end: 1.0).animate(_animationController)
           : AlwaysStoppedAnimation(isOpened(item) ? 1.0 : .0);
 
-  toggle(FoodCategoryData item) {
-    _lastToggledItem(item);
-
-    if (isOpened(item)) {
-      _openedItems.remove(item);
-      _animationController.reverse(from: maxRotationAngle);
-    } else {
-      _openedItems.add(item);
-      _animationController.forward(from: minRotationAngle);
-    }
-
-    //update();
-  }
+  // toggle(FoodCategoryData item) {
+  //   _lastToggledItem(item);
+  //
+  //   if (isOpened(item)) {
+  //     _openedItems.remove(item);
+  //     _animationController.reverse(from: maxRotationAngle);
+  //   } else {
+  //     _openedItems.add(item);
+  //     _animationController.forward(from: minRotationAngle);
+  //   }
+  //
+  //   //update();
+  // }
 
   @override
   void onInit() async {
@@ -87,10 +87,10 @@ class FoodCategoryController extends Controller
   }
 
   Future retrieve() async {
-    final result = await query(foodCategoryQuery, parameters: {'id': id});
-    print('FoodCategoryController.retrieve result: $result');
+    final result = await query(foodQuery, parameters: {'id': id});
+    print('FoodController.retrieve result: $result');
 
-    item = FoodCategoryData.fromJson(result.get('foodCategory'));
+    //item = FoodData.fromJson(result.get('food'));
     update();
   }
 }

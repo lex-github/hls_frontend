@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Colors, Padding, Size;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
+import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
@@ -42,14 +43,15 @@ class HomeSwitch extends StatelessWidget {
                       //     'AnimatedSwitcher ${child.key} ${currentIndex.value} = $widget');
                       // return widget;
                     },
-                    child: chatNavigation.screen),
-                if (false && chatNavigation.canGoForward)
-                  Positioned(
-                      right: Size.horizontal,
-                      bottom: Size.vertical,
-                      child: CircularButton(
-                          icon: Icons.arrow_forward_ios,
-                          iconSize: Size.iconSmall,
-                          onPressed: chatNavigation.next))
+                    child: chatNavigation.screen
+                ),
+                // if (false && chatNavigation.canGoForward)
+                //   Positioned(
+                //       right: Size.horizontal,
+                //       bottom: Size.vertical,
+                //       child: CircularButton(
+                //           icon: Icons.arrow_forward_ios,
+                //           iconSize: Size.iconSmall,
+                //           onPressed: chatNavigation.next))
               ]))(chatNavigation.index)));
 }

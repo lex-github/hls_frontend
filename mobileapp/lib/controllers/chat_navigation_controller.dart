@@ -23,7 +23,7 @@ class ChatNavigationController extends Controller {
     super.onInit();
 
     // hide or show auth form
-    ever<bool>(AuthService.i.authenticationState, (isAuthenticated) {
+    ever<bool>(AuthService.i.authenticationState, (isAuthenticated) async {
       final isAuthenticated = AuthService.isAuth;
       if (!isAuthenticated) return;
 
@@ -44,6 +44,13 @@ class ChatNavigationController extends Controller {
         _screens.add(
             ChatScreen(key: ValueKey(i), type: chatDialogsNotCompleted[i]));
       _screens.add(Nothing(key: ValueKey(chatDialogsNotCompleted.length)));
+
+      // make sure we start from first
+      _index.value = 0;
+
+      //print('ChatNavigationController.onInit $_screens');
+
+      await Future.delayed(Duration.zero);
 
       update();
     });

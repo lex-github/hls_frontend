@@ -14,12 +14,7 @@ import 'package:hls/services/_http_service.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
-abstract class FormScreen<T extends FormController> extends GetWidget<T> {
-  FormScreen() {
-    Get.put(initController);
-  }
-
-  void submitHandler() async => controller.submitHandler();
+abstract class FormScreen<T extends FormController> extends GetView<T> {
 
   T get initController;
   List<String> get nodes => controller?.fields;
@@ -28,6 +23,10 @@ abstract class FormScreen<T extends FormController> extends GetWidget<T> {
   bool get displayArrows => false;
   bool get autoScroll => true;
   List<Widget Function(FocusNode)> get toolbarButtons => null;
+
+  // handlers
+
+  void submitHandler() async => controller.submitHandler();
 
   // builders
 

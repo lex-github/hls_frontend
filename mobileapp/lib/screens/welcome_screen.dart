@@ -11,11 +11,7 @@ import 'package:hls/controllers/welcome_controller.dart';
 import 'package:hls/theme/styles.dart';
 
 class WelcomeScreen<Controller extends WelcomeController>
-    extends GetWidget<Controller> {
-  WelcomeScreen() {
-    Get.lazyPut(() => WelcomeController() as Controller);
-  }
-
+    extends GetView<Controller> {
   // builders
 
   Widget _buildIndicator({bool isSelected = true}) =>
@@ -29,7 +25,7 @@ class WelcomeScreen<Controller extends WelcomeController>
 
   @override
   Widget build(_) => GetBuilder<Controller>(
-      init: controller,
+      init: WelcomeController() as Controller,
       dispose: (_) => Get.delete<Controller>(),
       builder: (_) => Screen(
           fab: CircularButton(
@@ -62,11 +58,10 @@ class WelcomeScreen<Controller extends WelcomeController>
                     child: Container(
                         padding: Padding.content,
                         child: Obx(() => AnimatedSwitcher(
-                          duration: defaultAnimationDuration,
-                          child: TextPrimaryHint(controller.slide.text,
-                            key: ValueKey(
-                              controller.slide.text),
-                            align: TextAlign.center)))))),
+                            duration: defaultAnimationDuration,
+                            child: TextPrimaryHint(controller.slide.text,
+                                key: ValueKey(controller.slide.text),
+                                align: TextAlign.center)))))),
             Container(
                 padding: EdgeInsets.only(left: Size.horizontal),
                 height: Size.fab,
