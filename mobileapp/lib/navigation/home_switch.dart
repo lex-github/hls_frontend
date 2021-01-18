@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart' hide Colors, Padding, Size;
 import 'package:get/get.dart';
-import 'package:hls/components/buttons.dart';
-import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
-import 'package:hls/theme/styles.dart';
 
 class HomeSwitch extends StatelessWidget {
   // builders

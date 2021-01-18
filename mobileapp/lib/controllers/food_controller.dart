@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
-import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_category_model.dart';
 
 class FoodController extends Controller

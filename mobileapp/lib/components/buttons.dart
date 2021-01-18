@@ -27,7 +27,7 @@ class CircularButton extends Button {
             onPressed: onPressed,
             onLongPressed: onLongPressed,
             isCircular: true,
-            size: size ?? Size.fab,
+            size: size ?? Size.buttonBig,
             padding: Padding.zero,
             color: color,
             background: background,

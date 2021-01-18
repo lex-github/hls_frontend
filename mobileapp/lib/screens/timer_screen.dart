@@ -26,7 +26,7 @@ class TimerScreen<Controller extends TimerController>
                 if (!form.isKeyboardVisible) ...[
                   VerticalBigSpace(),
                   CircularButton(
-                      size: Size.buttonTimer,
+                      size: Size.buttonHuge,
                       title: timerRestart,
                       titleStyle:
                           TextStyle.buttonTimer.copyWith(color: Colors.primary),
@@ -50,21 +50,21 @@ class TimerScreen<Controller extends TimerController>
           Obx(() => controller.timerIsRunning
               ? controller.shouldRequireResult
                   ? CircularButton(
-                      size: Size.buttonTimer,
+                      size: Size.buttonHuge,
                       title: timerRestart,
                       titleStyle:
                           TextStyle.buttonTimer.copyWith(color: Colors.primary),
                       background: Colors.light,
                       onPressed: controller.start)
                   : CircularButton(
-                      size: Size.buttonTimer,
+                      size: Size.buttonHuge,
                       title: timerStop,
                       titleStyle:
                           TextStyle.buttonTimer.copyWith(color: Colors.primary),
                       background: Colors.light,
                       onPressed: controller.stop)
               : CircularButton(
-                  size: Size.buttonTimer,
+                  size: Size.buttonHuge,
                   title: timerStart,
                   titleStyle: TextStyle.buttonTimer,
                   onPressed: controller.start)),

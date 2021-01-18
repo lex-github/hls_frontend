@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
@@ -9,6 +12,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/utils.dart';
 import 'package:hls/components/buttons.dart';
+import 'package:hls/components/painters.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
@@ -45,6 +49,31 @@ class Avatar extends StatelessWidget {
                           fit: BoxFit.cover)))
         ]),
       );
+}
+
+class CircularProgress extends StatelessWidget {
+  final Widget child;
+  final Color color;
+  final double value;
+  final double size;
+
+  CircularProgress({this.child, this.color, this.value, double size})
+      : this.size = size ?? Size.buttonBig;
+
+  @override
+  Widget build(BuildContext context) => Stack(children: [
+        Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: Size.border, color: Colors.disabled),
+                borderRadius: BorderRadius.circular(size / 2)),
+            height: size,
+            width: size),
+        if (!value.isNullOrZero)
+          CustomPaint(
+              size: M.Size(size, size),
+              painter: SectorPainter(
+                  color: color, endAngle: value * 2 * pi, startAngle: pi / 2))
+      ]);
 }
 
 class Constraint extends StatelessWidget {
@@ -346,7 +375,14 @@ class Screen extends StatelessWidget {
             ? null
             : title is Widget
                 ? title
-                : TextPrimaryTitle(title.toString()),
+                : SizedBox(
+                    width: Size.screenWidth -
+                        Size.horizontal * 4 -
+                        Size.horizontal -
+                        Size.iconSmall * 2,
+                    child: AutoSizeText(title.toString(),
+                        style: TextStyle.title,
+                        maxLines: 2)), //TextPrimaryTitle(title.toString()),
         child = footer.isNotNull
             ? Column(children: [
                 Expanded(
@@ -424,24 +460,22 @@ class Screen extends StatelessWidget {
                                     toolbarHeight: Size.bar,
                                     title: title == null
                                         ? null
-                                        : _buildLeading() != null
-                                            ? title
-                                            : Row(children: [
-                                                if (_buildLeading() == null)
-                                                  HorizontalSpace(),
-                                                title
-                                              ]),
+                                        : Row(children: [
+                                            if (_buildLeading() == null)
+                                              HorizontalSpace(),
+                                            title,
+                                            //HorizontalSpace()
+                                          ]),
                                     titleSpacing: 0,
                                     leading: _buildLeading(),
                                     actions: trailing != null
                                         ? [
-                                            HorizontalSpace(),
                                             Center(child: trailing),
                                             HorizontalSpace()
                                           ]
                                         : null,
                                     leadingWidth:
-                                        Size.icon + Size.horizontal * 2))
+                                        Size.iconSmall + Size.horizontal * 2))
                             : null,
                         drawer: drawer,
                         body: ((leading) =>

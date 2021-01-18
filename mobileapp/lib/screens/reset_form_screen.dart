@@ -50,7 +50,7 @@ class ResetFormScreen<T extends ResetFormController> extends FormScreen<T> {
   Widget buildScreen({Widget child}) => Screen(
       fab: Button<T>(
           isCircular: true,
-          size: Size.fab,
+          size: Size.buttonBig,
           icon: Icons.arrow_forward_ios,
           iconSize: Size.iconSmall),
       padding: Padding.zero,

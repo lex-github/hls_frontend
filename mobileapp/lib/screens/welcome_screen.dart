@@ -64,7 +64,7 @@ class WelcomeScreen<Controller extends WelcomeController>
                                 align: TextAlign.center)))))),
             Container(
                 padding: EdgeInsets.only(left: Size.horizontal),
-                height: Size.fab,
+                height: Size.buttonBig,
                 child: Obx(() => Row(children: [
                       for (final i
                           in Iterable<int>.generate(controller.length)) ...[

@@ -93,7 +93,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
 
   Widget _buildCentralGroup({Widget child}) => isSubmenuVisible
       ? Container(
-          height: Size.height(submenuDistance + buttonCentralSize),
+          height: Size.height(submenuDistance + buttonBigSize),
           child: Stack(alignment: Alignment.bottomCenter, children: <Widget>[
             _buildCentralGroupOffset(
                 degrees: 120,
@@ -101,8 +101,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                 child: CircularButton(
                     imageTitle: 'icons/time',
                     background: Colors.schedule,
-                    size: 1.2 * Size.fab,
-                    iconSize: .5 * Size.fab,
+                    size: 1.2 * Size.buttonBig,
+                    iconSize: .5 * Size.buttonBig,
                     onPressed: (_) => null)),
             _buildCentralGroupOffset(
                 degrees: 90,
@@ -110,8 +110,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                 child: CircularButton(
                     imageTitle: 'icons/cutlery',
                     background: Colors.nutrition,
-                    size: 1.2 * Size.fab,
-                    iconSize: .4 * Size.fab,
+                    size: 1.2 * Size.buttonBig,
+                    iconSize: .4 * Size.buttonBig,
                     onPressed: (_) => null)),
             _buildCentralGroupOffset(
                 degrees: 60,
@@ -119,8 +119,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                 child: CircularButton(
                     imageTitle: 'icons/running',
                     background: Colors.exercise,
-                    size: 1.2 * Size.fab,
-                    iconSize: .45 * Size.fab,
+                    size: 1.2 * Size.buttonBig,
+                    iconSize: .45 * Size.buttonBig,
                     onPressed: (_) => null)),
             Container(height: Size.bar, child: Center(child: child))
           ]))
@@ -136,8 +136,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
               alignment: Alignment.center,
               transform:
                   Matrix4.rotationZ(radians(_centralRotationAnimation.value)),
-              child:
-                  Icon(Icons.add, color: Colors.icon, size: Size.fab * .5))));
+              child: Icon(Icons.add,
+                  color: Colors.icon, size: Size.buttonBig * .5))));
 
   Widget _buildItem(int index, bool isSelected) {
     final item = widget.items[index];

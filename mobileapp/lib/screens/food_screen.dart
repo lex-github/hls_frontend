@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/food_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_category_model.dart';
@@ -54,24 +55,60 @@ class FoodScreen extends GetView<FoodController> {
         VerticalSpace(),
         TextPrimary(food.title, align: TextAlign.center),
         VerticalSpace(),
+        Container(
+            margin: EdgeInsets.symmetric(horizontal: Size.horizontal),
+            padding: Padding.content,
+            decoration: BoxDecoration(
+                borderRadius: borderRadiusCircular,
+                color: Colors.background,
+                // border: Border.all(
+                //     width: borderWidth / 2,
+                //     color:  Colors.primary),
+                boxShadow: [
+                  BoxShadow(
+                      color: panelShadowColor,
+                      blurRadius: panelShadowBlurRadius,
+                      offset: -Offset(panelShadowHorizontalOffset,
+                          panelShadowVerticalOffset)),
+                ]),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CircularProgress(color: Colors.failure, value: .35),
+                      VerticalSpace(),
+                      CircularProgress(color: Colors.nutrition, value: .74)
+                    ]
+                  ),
+                  CircularProgress(size: Size.buttonHuge),
+                  Column(
+                    children: [
+                      CircularProgress(color: Colors.exercise, value: .28),
+                      VerticalSpace(),
+                      CircularProgress(color: Colors.primary, value: .35)
+                    ]
+                  )
+                ])),
+        VerticalBigSpace()
       ]);
 
-  Widget _buildBody() => Nothing();
-    // GetBuilder<FoodCategoryController>(
-    // init: FoodController(id: food.id),
-    //   builder: (_) => controller.isInit
-    //       ? ListView.builder(
-    //           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
-    //               Size.horizontal, Size.vertical),
-    //           itemCount: controller.list.length * 2 - 1,
-    //           itemBuilder: (_, i) {
-    //             if (i.isOdd) return VerticalMediumSpace();
-    //
-    //             final index = i ~/ 2;
-    //
-    //             return _buildListItem(controller.list[index]);
-    //           })
-    //       : Center(child: Loading()));
+  Widget _buildBody() => GetBuilder<FoodController>(
+      init: FoodController(id: food.id),
+      builder: (_) => controller.isInit
+          ? Nothing()
+          // ? ListView.builder(
+          //     padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
+          //         Size.horizontal, Size.vertical),
+          //     itemCount: controller.list.length * 2 - 1,
+          //     itemBuilder: (_, i) {
+          //       if (i.isOdd) return VerticalMediumSpace();
+          //
+          //       final index = i ~/ 2;
+          //
+          //       return _buildListItem(controller.list[index]);
+          //     })
+          : Center(child: Loading()));
 
   @override
   Widget build(_) => Screen(

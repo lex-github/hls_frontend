@@ -89,7 +89,7 @@ class Button<T extends FormController> extends GetView<T> {
   @override
   Widget build(BuildContext context) => Obx(() => B.Button(
       isCircular: isCircular,
-      size: size ?? Size.fab,
+      size: size ?? Size.buttonBig,
       background: controller.isValid ? Colors.primary : Colors.failure,
       padding: padding ?? Padding.zero,
       icon: icon ?? Icons.arrow_forward_ios,
