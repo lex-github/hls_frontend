@@ -67,7 +67,8 @@ class CircularProgress extends StatelessWidget {
                 border: Border.all(width: Size.border, color: Colors.disabled),
                 borderRadius: BorderRadius.circular(size / 2)),
             height: size,
-            width: size),
+            width: size,
+            child: Center(child: child)),
         if (!value.isNullOrZero)
           CustomPaint(
               size: M.Size(size, size),

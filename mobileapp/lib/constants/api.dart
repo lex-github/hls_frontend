@@ -40,13 +40,16 @@ const chatCardFields =
     'results'
   '}';
 
-const foodCategoryGeneral =
-  'id '
-  'title '
+const iconFields =
   'icon '
   '{'
     'url'
   '}';
+
+const foodCategoryGeneral =
+  'id '
+  'title '
+  '$iconFields';
 
 const foodCategoryListFields =
   '{'
@@ -94,7 +97,8 @@ const foodFields =
       'section '
       'title '
       'unit '
-    '}'
+    '} '
+    '$iconFields'
   '}';
 
 // query

@@ -100,7 +100,6 @@ class Colors {
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
   static const disabled = M.Color(0xFF404040);
-  //static const disabled = M.Color(0xFF606060);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;
@@ -113,12 +112,17 @@ class Colors {
 
   // text
   static const primaryText = Colors.light;
-  static const secondaryText = Colors.disabled;
+  static const secondaryText = M.Color(0xFF606060);
 
   // project specific
   static const schedule = M.Color(0xFF8416FF);
   static const nutrition = M.Color(0xFF99E600);
   static const exercise = M.Color(0xFFD70010);
+
+  static const water = M.Color(0xFF017CD0);
+  static const carbs = M.Color(0xFF00A632);
+  static const fats = M.Color(0xFFE38D00);
+  static const proteins = M.Color(0xFFA50800);
 }
 
 // padding

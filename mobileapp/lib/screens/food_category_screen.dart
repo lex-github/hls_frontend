@@ -10,6 +10,7 @@ import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_category_model.dart';
+import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
 class FoodCategoryScreen extends GetView<FoodCategoryController> {
@@ -76,7 +77,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
-        TextPrimary(category.title),
+        TextPrimary(category?.title),
         VerticalSpace(),
       ]);
 

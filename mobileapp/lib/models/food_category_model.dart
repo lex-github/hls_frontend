@@ -1,4 +1,5 @@
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/models/food_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/models/_generic_model.dart';
 
@@ -26,30 +27,4 @@ class FoodCategoryData extends GenericData {
 
   @override
   String toString() => 'FoodCategoryData(title: $title)';
-}
-
-@JsonSerializable(includeIfNull: false)
-class FoodData extends GenericData {
-  FoodData();
-
-  factory FoodData.fromJson(Map<String, dynamic> json) =>
-    _$FoodDataFromJson(json);
-  Map<String, dynamic> toJson() => _$FoodDataToJson(this);
-
-  @override
-  String toString() => 'FoodData(title: $title)';
-}
-
-@JsonSerializable(includeIfNull: false)
-class ImageData {
-  String url;
-
-  ImageData();
-
-  factory ImageData.fromJson(Map<String, dynamic> json) =>
-      _$ImageDataFromJson(json);
-  Map<String, dynamic> toJson() => _$ImageDataToJson(this);
-
-  @override
-  String toString() => 'ImageData(url: $url)';
 }

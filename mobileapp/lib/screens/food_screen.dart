@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:get/get.dart';
+import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/food_controller.dart';
 import 'package:hls/helpers/iterables.dart';
-import 'package:hls/models/food_category_model.dart';
+import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
 class FoodScreen extends GetView<FoodController> {
@@ -19,37 +21,54 @@ class FoodScreen extends GetView<FoodController> {
 
   // handlers
 
-  //_categoryHandler(FoodCategoryData item) => controller.toggle(item);
+  _sectionHandler(String title) => controller.toggle(title);
 
   // builds
 
-  // Widget _buildListItem(FoodCategoryData item) => Button(
-  //     borderColor: Colors.disabled,
-  //     onPressed: () => _categoryHandler(item),
-  //     child: Column(children: [
-  //       Row(children: [
-  //         Image(width: Size.iconBig, title: item.imageUrl),
-  //         HorizontalSpace(),
-  //         TextPrimaryHint(item.title),
-  //         Expanded(child: HorizontalSpace()),
-  //         Obx(() => Transform.rotate(
-  //             angle: controller.getRotationAngle(item),
-  //             child: Icon(Icons.arrow_forward_ios,
-  //                 color: Colors.disabled, size: Size.iconSmall))),
-  //       ]),
-  //       Obx(() => SizeTransition(
-  //           sizeFactor: controller.getSizeFactor(item),
-  //           child:
-  //               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //                 VerticalSpace(),
-  //                 for (final subItem in item.foods)
-  //               Clickable(
-  //                   child: Container(
-  //                       padding: Padding.small,
-  //                       child: TextPrimaryHint(subItem.title)),
-  //                   onPressed: () => _foodsHandler(subItem))
-  //           ])))
-  //     ]));
+  Widget _buildListItem(String title, List<FoodSectionData> items) => Button(
+      borderColor: Colors.disabled,
+      onPressed: () => _sectionHandler(title),
+      child: Column(children: [
+        Row(children: [
+          Container(height: Size.iconBig), // make row height correspond FoodCategoryScreen
+          TextPrimaryHint(title),
+          Expanded(child: HorizontalSpace()),
+          Obx(() => Transform.rotate(
+              angle: controller.getRotationAngle(title),
+              child: Icon(Icons.arrow_forward_ios,
+                  color: Colors.disabled, size: Size.iconSmall))),
+        ]),
+        Obx(() => SizeTransition(
+            sizeFactor: controller.getSizeFactor(title),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              VerticalMediumSpace(),
+              for (final subItem in items)
+                Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: Size.verticalTiny),
+                    child: Row(
+                      children: [
+                        Expanded(child: TextSecondary(subItem.title)),
+                        TextSecondary('${subItem.quantity} ${subItem.unit}')
+                      ]
+                    ))
+            ])))
+      ]));
+
+  Widget _buildIndicator(FoodSectionData data,
+          {String title, Color color, double value}) =>
+      CircularProgress(
+          color: color,
+          value: value,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Text(data?.quantity?.toString() ?? '0',
+                style:
+                    TextStyle.primary.copyWith(fontSize: 1.1 * Size.fontTiny)),
+            Text(title ?? data.title.toLowerCase(),
+                style:
+                    TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny)),
+          ]));
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
@@ -74,40 +93,47 @@ class FoodScreen extends GetView<FoodController> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      CircularProgress(color: Colors.failure, value: .35),
-                      VerticalSpace(),
-                      CircularProgress(color: Colors.nutrition, value: .74)
-                    ]
-                  ),
-                  CircularProgress(size: Size.buttonHuge),
-                  Column(
-                    children: [
-                      CircularProgress(color: Colors.exercise, value: .28),
-                      VerticalSpace(),
-                      CircularProgress(color: Colors.primary, value: .35)
-                    ]
-                  )
+                  Column(children: [
+                    _buildIndicator(food.water, color: Colors.water, value: .2),
+                    VerticalSpace(),
+                    _buildIndicator(food.carbs,
+                        title: foodCarbLabel, color: Colors.carbs, value: .35)
+                  ]),
+                  CircularProgress(
+                      size: Size.buttonHuge,
+                      child: (food?.image?.url?.isNullOrEmpty ?? true)
+                          ? Icon(Icons.no_food,
+                              color: Colors.disabled,
+                              size: .5 * Size.buttonHuge)
+                          : Image(
+                              title: food.image.url,
+                              width: .5 * Size.buttonHuge,
+                              height: .5 * Size.buttonHuge)),
+                  Column(children: [
+                    _buildIndicator(food.fats, color: Colors.fats, value: .65),
+                    VerticalSpace(),
+                    _buildIndicator(food.proteins,
+                        color: Colors.proteins, value: .45)
+                  ])
                 ])),
-        VerticalBigSpace()
+        //VerticalBigSpace()
       ]);
 
   Widget _buildBody() => GetBuilder<FoodController>(
       init: FoodController(id: food.id),
       builder: (_) => controller.isInit
-          ? Nothing()
-          // ? ListView.builder(
-          //     padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
-          //         Size.horizontal, Size.vertical),
-          //     itemCount: controller.list.length * 2 - 1,
-          //     itemBuilder: (_, i) {
-          //       if (i.isOdd) return VerticalMediumSpace();
-          //
-          //       final index = i ~/ 2;
-          //
-          //       return _buildListItem(controller.list[index]);
-          //     })
+          ? ListView.builder(
+              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalBig,
+                  Size.horizontal, Size.vertical),
+              itemCount: controller.list.length * 2 - 1,
+              itemBuilder: (_, i) {
+                if (i.isOdd) return VerticalMediumSpace();
+
+                final index = i ~/ 2;
+
+                return _buildListItem(
+                    controller.getTitle(index), controller.getSection(index));
+              })
           : Center(child: Loading()));
 
   @override

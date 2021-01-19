@@ -1,6 +1,9 @@
 import 'package:hls/helpers/null_awareness.dart';
 
 extension MapGetter on Map {
+  String get queryString => this.keys.fold(
+      [], (parameters, key) => parameters..add('$key=${this[key]}')).join('&');
+
   T get<T>(key, {defaultValue, Function(dynamic) convert}) {
     if (this == null) return defaultValue;
     //print('key: $key convert: $convert');
@@ -23,8 +26,14 @@ extension MapGetter on Map {
     return this.containsKey(key) ? this[key] : defaultValue;
   }
 
-  String get queryString => this.keys.fold(
-      [], (parameters, key) => parameters..add('$key=${this[key]}')).join('&');
+  Map<K, V> set<K, V>(K key, V value) {
+    this[key] = value;
+    return this;
+  }
+
+  Map<K, List<V>> setList<K, V>(K key, V value) => this == null ? null : this.containsKey(key)
+      ? (this..get(key).add(value))
+      : this.set(key, [value]);
 }
 
 extension ListGetter on List {

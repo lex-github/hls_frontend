@@ -81,3 +81,4 @@ const nutritionSearchLabel = 'Введите название продукта';
 const nutritionFilterLabel = 'Фильтр';
 const foodCategoryScreenTitle = 'Каталог продуктов';
 const foodScreenTitle = 'Каталог продуктов';
+const foodCarbLabel = 'углев.';
