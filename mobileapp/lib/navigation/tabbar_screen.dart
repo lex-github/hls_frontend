@@ -6,6 +6,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/navigation/drawer.dart';
 import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
+import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/screens/nutrition_screen.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -26,7 +27,7 @@ class _TabbarScreenState extends State<TabbarScreen>
       TabbarController(index: index, length: _tabbarItems.length, vsync: this));
 
   final List<Widget> _tabbarBodies = <Widget>[
-    DevelopmentScreen(shouldShowDrawer: true),
+    HubScreen(),
     NutritionScreen(),
     DevelopmentScreen(shouldShowDrawer: true),
     DevelopmentScreen(shouldShowDrawer: true)

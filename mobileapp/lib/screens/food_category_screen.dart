@@ -85,7 +85,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
       tag: tag,
       init: FoodCategoryController(id: category.id),
       builder: (_) => controller.isInit
-          ? ListView.builder(
+          ? controller.list.length > 0 ? ListView.builder(
               padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
                   Size.horizontal, Size.vertical),
               itemCount: controller.list.length * 2 - 1,
@@ -95,7 +95,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
                 final index = i ~/ 2;
 
                 return _buildListItem(controller.list[index]);
-              })
+              }) : EmptyPage()
           : Center(child: Loading()));
 
   @override

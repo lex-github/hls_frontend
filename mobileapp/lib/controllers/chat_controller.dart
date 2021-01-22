@@ -93,9 +93,9 @@ class ChatController extends Controller {
 
   @override
   onClose() {
-    super.onClose();
-
     _scroll.dispose();
+
+    super.onClose();
   }
 
   // methods

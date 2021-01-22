@@ -4,6 +4,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/navigation/home_switch.dart';
 import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
+import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
 import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
@@ -60,8 +61,12 @@ class Router {
         page: () => FoodCategoryScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: foodRoute,
-      page: () => FoodScreen(),
-      transitionDuration: navigationTransitionDuration),
+        name: foodRoute,
+        page: () => FoodScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: foodFilterRoute,
+        page: () => FoodFilterScreen(),
+        transitionDuration: navigationTransitionDuration),
   ];
 }

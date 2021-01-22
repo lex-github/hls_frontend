@@ -73,6 +73,9 @@ const timerInputLabel = 'Результат';
 // drawer
 const drawerLogoutLabel = 'Выйти';
 
+// hub
+const hubScreenTitle = 'ЗОЖ — это просто';
+
 // products
 const nutritionScreenTitle = 'Продукты';
 const productsScreenHeaderTitle = 'Каталог продуктов';

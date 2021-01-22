@@ -19,6 +19,7 @@ const submenuAnimationDuration = Duration(milliseconds: 300);
 const chatTyperAnimationDuration = Duration(milliseconds: 30);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const timerDuration = Duration(seconds: 1);
+const rotationAnimationDuration = Duration(seconds: 60);
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -33,6 +34,7 @@ const chatRoute = '/chat';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const homeRoute = '/home';
+const foodFilterRoute = '/food-filter';
 const foodCategoryRoute = '/food-category';
 const foodRoute = '/food';
 
@@ -61,6 +63,7 @@ const fontSize = 16.0;
 const fontBigSize = 20.0;
 const fontHugeSize = 28.0;
 const fontTimerSize = 100.0;
+const fontPercentSize = 48.0;
 
 const iconTinySize = 10.0;
 const iconSmallSize = 15.0;

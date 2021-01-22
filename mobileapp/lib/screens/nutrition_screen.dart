@@ -26,19 +26,21 @@ class NutritionScreen extends GetView<NutritionController> {
 
   Widget _buildFilterFirst() => Button(
       borderColor: Colors.disabled,
+      onPressed: () => Get.toNamed(foodFilterRoute),
       child: Row(children: [
         Icon(Icons.filter_alt_rounded, color: Colors.disabled),
         HorizontalSmallSpace(),
-        TextPrimaryHint(nutritionFilterLabel),
-        HorizontalSmallSpace(),
-        Container(
-            width: Size.iconSmall,
-            height: Size.iconSmall,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Size.iconSmall),
-                color: Colors.primary),
-            child:
-                Center(child: TextPrimaryHint('2', size: .9 * Size.fontTiny)))
+        //TextPrimaryHint(nutritionFilterLabel),
+        TextSecondary(nutritionFilterLabel),
+        // HorizontalSmallSpace(),
+        // Container(
+        //     width: Size.iconSmall,
+        //     height: Size.iconSmall,
+        //     decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(Size.iconSmall),
+        //         color: Colors.primary),
+        //     child:
+        //         Center(child: TextPrimaryHint('2', size: .9 * Size.fontTiny)))
       ]));
 
   Widget _buildFilterItem({String title}) =>

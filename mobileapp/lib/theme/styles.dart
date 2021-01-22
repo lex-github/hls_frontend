@@ -60,6 +60,7 @@ class Size {
   static double get fontBig => ratio(fontBigSize);
   static double get fontHuge => ratio(fontHugeSize);
   static double get fontTimer => ratio(fontTimerSize);
+  static double get fontPercent => ratio(fontPercentSize);
 
   static double get iconTiny => ratio(iconTinySize);
   static double get iconSmall => ratio(iconSmallSize);
@@ -99,7 +100,7 @@ class Colors {
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
-  static const disabled = M.Color(0xFF404040);
+  static const disabled = M.Color(0xFF454040);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;
@@ -112,7 +113,7 @@ class Colors {
 
   // text
   static const primaryText = Colors.light;
-  static const secondaryText = M.Color(0xFF606060);
+  static const secondaryText = M.Color(0xFF606065);
 
   // project specific
   static const schedule = M.Color(0xFF8416FF);

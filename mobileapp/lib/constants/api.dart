@@ -51,6 +51,14 @@ const foodCategoryGeneral =
   'title '
   '$iconFields';
 
+const foodFiltersListFields =
+  '{'
+    'key '
+    'title '
+    'values '
+    //'filters'
+  '}';
+
 const foodCategoryListFields =
   '{'
     '$foodCategoryGeneral'
@@ -111,6 +119,12 @@ const currentUserQuery = 'query '
 const foodCategoriesQuery = 'query '
   '{'
     'foodCategories $foodCategoryListFields'
+  '}';
+
+const foodFilterQuery = 'query '
+  '{'
+    'foodFiltersList '
+    '$foodFiltersListFields'
   '}';
 
 const foodCategoryQuery = 'query '
