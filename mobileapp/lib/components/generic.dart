@@ -370,7 +370,7 @@ class Screen extends StatelessWidget {
       this.shouldShowDrawer = false,
       @required Widget child,
       Widget footer,
-      EdgeInsets padding})
+      EdgeInsets padding, List<Widget> children,})
       : assert(title == null || title is String || title is Widget),
         this.title = title == null
             ? null

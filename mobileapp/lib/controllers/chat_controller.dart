@@ -21,6 +21,7 @@ class ChatController extends Controller {
   final _checkboxSelection = [];
   final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
+  final  _isTyping = true.obs;
   ChatController({this.type});
 
   int currentDialogId;
@@ -32,6 +33,7 @@ class ChatController extends Controller {
   ChatCardData get card => _cards.lastOrNull;
   String get questionKey => card?.key;
   String get questionRegexp => card?.addons?.regexp;
+  bool get isTyping => _isTyping.value;
   ChatQuestionType get questionType => card?.questionType;
   Map<String, ChatAnswerData> get questionAnswers => card?.answers;
   Map<String, List<ChatQuestionData>> get questionResults => card?.results;
@@ -133,6 +135,7 @@ class ChatController extends Controller {
 
     if (!_isMessageQueueRunning) {
       _isMessageQueueRunning = true;
+      _isTyping.value = true;
 
       // might be a bit bold
       while (!_scroll.hasClients) {
@@ -146,17 +149,12 @@ class ChatController extends Controller {
         update();
 
         if (!message.isUser) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => Timer.periodic(
-              chatTyperAnimationDuration,
-              (timer) => timer.tick < message.text.length && _scroll.hasClients
-                  ? _scroll.animateTo(_scroll.position.maxScrollExtent,
-                      curve: Curves.easeOut, duration: defaultAnimationDuration)
-                  : timer.cancel()));
-
           await Future.delayed(
               chatTyperAnimationDuration * (message.text?.length ?? 0));
         }
       }
+      _isTyping.value = messageQueue.length > 0;
+      _isTyping.value = false;
 
       _isMessageQueueRunning = false;
     }

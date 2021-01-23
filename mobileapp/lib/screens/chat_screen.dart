@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -16,18 +16,19 @@ import 'package:hls/screens/_form_screen.dart' hide Button;
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
+import '../components/generic.dart';
 class ChatScreen<Controller extends ChatController>
     extends StatelessWidget {
   final ChatDialogType type;
+  final _isTyping = true.obs;
   ChatScreen({Key key, @required this.type}) : super(key: key);
 
   //@override
   String get tag => type.title;
-
+  bool get isTyping => _isTyping.value;
   Controller get controller => Get.find<Controller>(tag: tag);
 
   // handlers
-
   _logoutHandler() => AuthService.i.logout();
 
   _timerHandler() async {
@@ -37,7 +38,6 @@ class ChatScreen<Controller extends ChatController>
 
     controller.post(result);
   }
-
   // builders
 
   Widget _buildMessage(ChatMessage message, {bool shouldShowCorner = false}) =>
@@ -66,10 +66,7 @@ class ChatScreen<Controller extends ChatController>
                           decoration: BoxDecoration(
                               color: message.color ?? color,
                               borderRadius: borderRadiusCircular),
-                          child: TextAnimated(message.text,
-                              duration: message.isUser
-                                  ? Duration.zero
-                                  : chatTyperAnimationDuration))),
+                          child: TextPrimaryHint(message.text,),),),
                   if (shouldShowCorner && !message.isUser)
                     Positioned(
                         top: 0,
@@ -236,67 +233,82 @@ class ChatScreen<Controller extends ChatController>
       leading: Clickable(
           child: Icon(Icons.logout, size: Size.iconSmall),
           onPressed: _logoutHandler),
-      title: type.title,
-      child: GetBuilder<Controller>(
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:<Widget> [
+        Text(type.title),
+          Obx(() =>  Visibility(visible: controller.isTyping,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children:<Widget>[
+                Text('HLS печатает',
+                  style: TextStyle.secondary,),
+                SizedBox(width: 15.0,),
+                SpinKitThreeBounce(
+                    color: Colors.disabled,
+                    size: 10.0),],),
+          )),],),
+      child:
+      GetBuilder<Controller>(
           tag: tag,
           init: ChatController(type: type) as Controller,
           //dispose: (_) => Get.delete<Controller>(tag: tag),
           builder: (controller) => Obx(() => controller.isInit
-              ? Column(children: [
-                  Expanded(
-                      child: Stack(children: [
-                    ListView.builder(
-                        shrinkWrap: true,
-                        controller: controller.scroll,
-                        padding: Padding.content,
-                        itemCount: max(controller.messages.length * 2 - 1, 0),
-                        itemBuilder: (_, i) {
-                          if (i.isOdd) {
-                            final index = (i + 1) ~/ 2;
+                ? Column(children: [
+                    Expanded(
+                        child: Stack(children: [
+                      ListView.builder(
+                          shrinkWrap: true,
+                          controller: controller.scroll,
+                          padding: Padding.content,
+                          itemCount: max(controller.messages.length * 2 - 1, 0),
+                          itemBuilder: (_, i) {
+                            if (i.isOdd) {
+                              final index = (i + 1) ~/ 2;
+                              final message = controller.messages[index];
+                              final prevMessage = controller.messages[index - 1];
+                              return message.isUser == prevMessage.isUser
+                                  ? VerticalMediumSpace()
+                                  : VerticalSpace();
+                            }
+                            final index = i ~/ 2;
                             final message = controller.messages[index];
-                            final prevMessage = controller.messages[index - 1];
-                            return message.isUser == prevMessage.isUser
-                                ? VerticalMediumSpace()
-                                : VerticalSpace();
-                          }
+                            final prevMessage = index == 0
+                                ? null
+                                : controller.messages[index - 1];
+                            final shouldShowCorner = prevMessage == null ||
+                                prevMessage.isUser != message.isUser;
 
-                          final index = i ~/ 2;
-                          final message = controller.messages[index];
-                          final prevMessage = index == 0
-                              ? null
-                              : controller.messages[index - 1];
-                          final shouldShowCorner = prevMessage == null ||
-                              prevMessage.isUser != message.isUser;
-
-                          return _buildMessage(message,
-                              shouldShowCorner: shouldShowCorner);
-                        }),
-                    Obx(() => controller.checkboxHasSelection
-                        ? Positioned(
-                            bottom: Size.vertical,
-                            right: Size.horizontal,
-                            child: CircularButton(
-                                size: Size.iconBig,
-                                icon: Icons.check,
-                                iconSize: Size.iconSmall,
-                                onPressed: () => controller
-                                    .post(controller.checkboxSelection)))
-                        : Nothing())
-                  ])),
-                  if (controller.messageQueue.isNullOrEmpty)
-                    if (controller.questionType == ChatQuestionType.INPUT)
-                      _buildInput()
-                    else if (controller.questionType == ChatQuestionType.RADIO)
-                      _buildRadio()
-                    else if (controller.questionType ==
-                        ChatQuestionType.CHECKBOX)
-                      _buildCheckbox()
-                    else if (controller.questionType == ChatQuestionType.TIMER)
-                      _buildTimer()
-                    else
-                      _buildSubmit()
-                ])
-              : LoadingPage())));
+                            return _buildMessage(message,
+                                shouldShowCorner: shouldShowCorner);
+                          }),
+                      Obx(() => controller.checkboxHasSelection
+                          ? Positioned(
+                              bottom: Size.vertical,
+                              right: Size.horizontal,
+                              child: CircularButton(
+                                  size: Size.iconBig,
+                                  icon: Icons.check,
+                                  iconSize: Size.iconSmall,
+                                  onPressed: () => controller
+                                      .post(controller.checkboxSelection)))
+                          : Nothing())
+                    ])),
+                    if (controller.messageQueue.isNullOrEmpty)
+                      if (controller.questionType == ChatQuestionType.INPUT)
+                        _buildInput()
+                      else if (controller.questionType == ChatQuestionType.RADIO)
+                        _buildRadio()
+                      else if (controller.questionType ==
+                          ChatQuestionType.CHECKBOX)
+                        _buildCheckbox()
+                      else if (controller.questionType == ChatQuestionType.TIMER)
+                        _buildTimer()
+                      else
+                        _buildSubmit()
+                  ])
+                : LoadingPage())),);
 }
 
 class Checkbox extends GetWidget<ChatController> {
@@ -347,7 +359,6 @@ class Checkbox extends GetWidget<ChatController> {
           ])
       ]));
 }
-
 class ChatCornerClipper extends CustomClipper<Path> {
   @override
   Path getClip(size) {
