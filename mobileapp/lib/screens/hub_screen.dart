@@ -46,7 +46,7 @@ class HubScreen extends StatelessWidget {
                                 title: 'ПИТАНИЕ',
                                 value: .63,
                                 endAngle: angle,
-                                startAngle: -pi / 2)),
+                                startAngle: startAngle)),
                         CustomPaint(
                             size: M.Size(outerRadius, outerRadius),
                             painter: SectorProgressPainter(
@@ -71,7 +71,31 @@ class HubScreen extends StatelessWidget {
                         style: TextStyle.primary
                             .copyWith(fontSize: Size.fontPercent),
                       ))
-                ]))
+                ])),
+        Row(children: [
+          HorizontalSpace(),
+          Expanded(
+              child: Button(
+                  padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                  title: 'ПИТАНИЕ',
+                  borderColor: Colors.nutrition,
+                  titleStyle: M.TextStyle(fontSize: Size.width(12)))),
+          HorizontalSmallSpace(),
+          Expanded(
+              child: Button(
+                  padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                  title: 'ДВИЖЕНИЕ',
+                  borderColor: Colors.exercise,
+                  titleStyle: M.TextStyle(fontSize: Size.width(12)))),
+          HorizontalSmallSpace(),
+          Expanded(
+              child: Button(
+                  padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                  title: 'РЕЖИМ',
+                  borderColor: Colors.schedule,
+                  titleStyle: M.TextStyle(fontSize: Size.width(12)))),
+          HorizontalSpace()
+        ])
       ]));
 }
 

@@ -17,14 +17,12 @@ import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class ChatScreen<Controller extends ChatController>
-    extends StatelessWidget {
+    extends GetView<Controller> {
   final ChatDialogType type;
   ChatScreen({Key key, @required this.type}) : super(key: key);
 
   //@override
   String get tag => type.title;
-
-  Controller get controller => Get.find<Controller>(tag: tag);
 
   // handlers
 
