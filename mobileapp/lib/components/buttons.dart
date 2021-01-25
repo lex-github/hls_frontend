@@ -200,16 +200,15 @@ class ButtonInner extends StatelessWidget {
         borderRadius: radius,
         border: Border.all(
             width: borderWidth,
-            //color: borderColor ??
             color: ((background != null && background != Colors.transparent)
                 ? background.darken(.2)
-                : innerShadowColor),
+                : borderColor ?? innerShadowColor),
             style: BorderStyle.solid),
         boxShadow: [
           BoxShadow(
               color: (background != null && background != Colors.transparent)
                   ? background.darken(.1)
-                  : innerShadowColor),
+                  : borderColor ?? innerShadowColor),
           BoxShadow(
               color: (background != null && background != Colors.transparent)
                   ? background
