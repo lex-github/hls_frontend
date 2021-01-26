@@ -140,22 +140,24 @@ class ChatScreen<Controller extends ChatController>
 
   Widget _buildInput() => _buildControlContainer(
       child: GetBuilder<ChatFormController>(
+          tag: controller.questionKey,
           init: ChatFormController(
-              tag: tag,
+              tag: controller.questionKey,
               validator: getChatInputValidator(controller.questionRegexp)),
-          builder: (controller) => Stack(children: [
+          builder: (formController) => Stack(children: [
                 Obx(() => Input<ChatFormController>(
+                    tag: controller.questionKey,
                     field: 'input',
                     isErrorVisible: false,
                     shouldFocus: true,
-                    autovalidateMode: controller.shouldValidate
+                    autovalidateMode: formController.shouldValidate
                         ? AutovalidateMode.always
                         : AutovalidateMode.disabled,
                     contentPadding: EdgeInsets.only(
                         left: Size.horizontal,
                         right: Size.horizontal * 2 + Size.iconSmall,
                         bottom: Size.verticalTiny))),
-                Obx(() => Get.find<ChatFormController>().isValidIgnoreDirty
+                Obx(() => formController.isValidIgnoreDirty
                     ? Positioned(
                         right: 0,
                         height: Size.chatBar,
@@ -163,8 +165,7 @@ class ChatScreen<Controller extends ChatController>
                         child: Clickable(
                             child: Icon(Icons.send,
                                 color: Colors.primary, size: Size.iconSmall),
-                            onPressed:
-                                Get.find<ChatFormController>().submitHandler))
+                            onPressed: formController.submitHandler))
                     : Nothing())
               ])));
 
@@ -227,94 +228,89 @@ class ChatScreen<Controller extends ChatController>
                   onPressed: Get.find<ChatNavigationController>().next))));
 
   @override
-  Widget build(_) => Screen(
-        shouldResize: true,
-        padding: Padding.zero,
-        leading: Clickable(
-            child: Icon(Icons.logout, size: Size.iconSmall),
-            onPressed: _logoutHandler),
-        title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(type.title),
-              Obx(() => Visibility(
-                  visible: controller.isTyping,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: <Widget>[
-                        Text('HLS печатает', style: TextStyle.secondary),
-                        HorizontalTinySpace(),
-                        SpinKitThreeBounce(
-                            color: Colors.disabled, size: Size.fontTiny)
-                      ])))
-            ]),
-        child: GetBuilder<Controller>(
-            tag: tag,
-            init: ChatController(type: type) as Controller,
-            //dispose: (_) => Get.delete<Controller>(tag: tag),
-            builder: (controller) => Obx(() => controller.isInit
-                ? Column(children: [
-                    Expanded(
-                        child: Stack(children: [
-                      ListView.builder(
-                          shrinkWrap: true,
-                          controller: controller.scroll,
-                          padding: Padding.content,
-                          itemCount: max(controller.messages.length * 2 - 1, 0),
-                          itemBuilder: (_, i) {
-                            if (i.isOdd) {
-                              final index = (i + 1) ~/ 2;
-                              final message = controller.messages[index];
-                              final prevMessage =
-                                  controller.messages[index - 1];
-                              return message.isUser == prevMessage.isUser
-                                  ? VerticalMediumSpace()
-                                  : VerticalSpace();
-                            }
-                            final index = i ~/ 2;
+  Widget build(_) => GetBuilder<Controller>(
+      tag: tag,
+      init: ChatController(type: type) as Controller,
+      builder: (_) => Screen(
+          shouldResize: true,
+          padding: Padding.zero,
+          leading: Clickable(
+              child: Icon(Icons.logout, size: Size.iconSmall),
+              onPressed: _logoutHandler),
+          title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(type.title),
+                Obx(() => Visibility(
+                    visible: controller.isTyping,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: <Widget>[
+                          Text('HLS печатает', style: TextStyle.secondary),
+                          HorizontalTinySpace(),
+                          SpinKitThreeBounce(
+                              color: Colors.disabled, size: Size.fontTiny)
+                        ])))
+              ]),
+          child: Obx(() => controller.isInit
+              ? Column(children: [
+                  Expanded(
+                      child: Stack(children: [
+                    ListView.builder(
+                        shrinkWrap: true,
+                        controller: controller.scroll,
+                        padding: Padding.content,
+                        itemCount: max(controller.messages.length * 2 - 1, 0),
+                        itemBuilder: (_, i) {
+                          if (i.isOdd) {
+                            final index = (i + 1) ~/ 2;
                             final message = controller.messages[index];
-                            final prevMessage = index == 0
-                                ? null
-                                : controller.messages[index - 1];
-                            final shouldShowCorner = prevMessage == null ||
-                                prevMessage.isUser != message.isUser;
+                            final prevMessage = controller.messages[index - 1];
+                            return message.isUser == prevMessage.isUser
+                                ? VerticalMediumSpace()
+                                : VerticalSpace();
+                          }
+                          final index = i ~/ 2;
+                          final message = controller.messages[index];
+                          final prevMessage = index == 0
+                              ? null
+                              : controller.messages[index - 1];
+                          final shouldShowCorner = prevMessage == null ||
+                              prevMessage.isUser != message.isUser;
 
-                            return _buildMessage(message,
-                                shouldShowCorner: shouldShowCorner);
-                          }),
-                      Obx(() => controller.checkboxHasSelection
-                          ? Positioned(
-                              bottom: Size.vertical,
-                              right: Size.horizontal,
-                              child: CircularButton(
-                                  size: Size.iconBig,
-                                  icon: Icons.check,
-                                  iconSize: Size.iconSmall,
-                                  onPressed: () => controller
-                                      .post(controller.checkboxSelection)))
-                          : Nothing())
-                    ])),
-                    if (controller.messageQueue.isNullOrEmpty)
-                      if (controller.questionType == ChatQuestionType.INPUT)
-                        _buildInput()
-                      else if (controller.questionType ==
-                          ChatQuestionType.RADIO)
-                        _buildRadio()
-                      else if (controller.questionType ==
-                          ChatQuestionType.CHECKBOX)
-                        _buildCheckbox()
-                      else if (controller.questionType ==
-                          ChatQuestionType.TIMER)
-                        _buildTimer()
-                      else
-                        _buildSubmit()
-                  ])
-                : LoadingPage())),
-      );
+                          return _buildMessage(message,
+                              shouldShowCorner: shouldShowCorner);
+                        }),
+                    Obx(() => controller.checkboxHasSelection
+                        ? Positioned(
+                            bottom: Size.vertical,
+                            right: Size.horizontal,
+                            child: CircularButton(
+                                size: Size.iconBig,
+                                icon: Icons.check,
+                                iconSize: Size.iconSmall,
+                                onPressed: () => controller
+                                    .post(controller.checkboxSelection)))
+                        : Nothing())
+                  ])),
+                  if (controller.messageQueue.isNullOrEmpty)
+                    if (controller.questionType == ChatQuestionType.INPUT)
+                      _buildInput()
+                    else if (controller.questionType == ChatQuestionType.RADIO)
+                      _buildRadio()
+                    else if (controller.questionType ==
+                        ChatQuestionType.CHECKBOX)
+                      _buildCheckbox()
+                    else if (controller.questionType == ChatQuestionType.TIMER)
+                      _buildTimer()
+                    else
+                      _buildSubmit()
+                ])
+              : LoadingPage())));
 }
 
-class Checkbox extends GetWidget<ChatController> {
+class Checkbox extends GetView<ChatController> {
   final String tag;
   final Iterable rows;
   final Iterable columns;
