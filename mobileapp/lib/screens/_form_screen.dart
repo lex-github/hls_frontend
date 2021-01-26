@@ -15,7 +15,6 @@ import 'package:hls/theme/styles.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 abstract class FormScreen<T extends FormController> extends GetView<T> {
-
   T get initController;
   List<String> get nodes => controller?.fields;
   Map<String, PreferredSizeWidget Function(BuildContext)> get keyboards => null;
@@ -103,6 +102,7 @@ class Button<T extends FormController> extends GetView<T> {
 
 class Input<T extends FormController> extends GetView<T> {
   final String field;
+  final String _tag;
   final TextInputType inputType;
   final int maxLines;
   final int errorMaxLines;
@@ -118,6 +118,7 @@ class Input<T extends FormController> extends GetView<T> {
   Input(
       {@required this.field,
       Key key,
+      String tag,
       this.inputType = TextInputType.text,
       this.maxLines = 1,
       this.errorMaxLines = defaultErrorMaxLines,
@@ -129,7 +130,11 @@ class Input<T extends FormController> extends GetView<T> {
       this.leading,
       this.trailing,
       this.autovalidateMode})
-      : super(key: key);
+      : _tag = tag,
+        super(key: key);
+
+  @override
+  String get tag => _tag ?? super.tag;
 
   @override
   Widget build(_) {
