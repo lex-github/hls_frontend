@@ -9,6 +9,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_category_model.dart';
+import 'package:hls/models/food_model.dart';
 
 class FoodCategoryController extends Controller
     with SingleGetTickerProviderMixin {
@@ -30,6 +31,7 @@ class FoodCategoryController extends Controller
   FoodCategoryData item;
 
   List<FoodCategoryData> get list => item.children;
+  List<FoodData> get foods => item.foods;
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;
   double get rotationAngle => maxRotationAngle * animationProgress;

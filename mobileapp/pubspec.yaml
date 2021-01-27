@@ -63,6 +63,13 @@ dev_dependencies:
 
   # needed for serializable classes
   build_runner: ^1.10.9
+  # generate icons
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: 'ic_launcher'
+  ios: true
+  image_path: 'assets/icon.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

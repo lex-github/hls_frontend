@@ -36,7 +36,9 @@ int toInt(dynamic value) => value == null
     ? null
     : value is int
         ? value
-        : int.parse(value);
+        : value is double
+            ? value.toInt()
+            : int.parse(value);
 double toDouble(dynamic value) => value == null
     ? null
     : value is double

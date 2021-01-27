@@ -55,6 +55,7 @@ const foodFiltersListFields =
   '{'
     'key '
     'title '
+    'section '
     'values '
     //'filters'
   '}';
@@ -69,6 +70,7 @@ const foodCategoryFields =
     '$foodCategoryGeneral'
     //'parentCategory $foodCategoryListFields'
     'subcategories $foodSubcategoryFields'
+    'foods $foodFields'
   '}';
 
 const foodSubcategoryFields =
