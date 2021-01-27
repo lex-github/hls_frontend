@@ -16,7 +16,7 @@ class Controller extends GetxController {
     super.onInit();
   }
 
-  bool get isAwaiting => AuthService.isAuth;
+  bool get isAwaiting => AuthService.i.isAwaiting;
 
   Future<Map<String, dynamic>> query(String node,
           {Map<String, dynamic> parameters}) =>

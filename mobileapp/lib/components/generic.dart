@@ -9,6 +9,7 @@ import 'package:flutter/material.dart' as M;
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart' hide Svg;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/utils.dart';
 import 'package:hls/components/buttons.dart';
@@ -20,6 +21,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/strings.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class Avatar extends StatelessWidget {
@@ -448,56 +450,69 @@ class Screen extends StatelessWidget {
                     statusBarBrightness: Brightness.dark,
                     statusBarIconBrightness: Brightness.light),
                 child: SafeArea(
-                    child: Scaffold(
-                        backgroundColor: Colors.transparent,
-                        resizeToAvoidBottomInset: shouldResize,
-                        resizeToAvoidBottomPadding: shouldResize,
-                        primary: false,
-                        appBar: shouldHaveAppBar
-                            ? PreferredSize(
-                                preferredSize: M.Size.fromHeight(
-                                    Size.bar), // here the desired height
-                                child: AppBar(
-                                    toolbarHeight: Size.bar,
-                                    title: title == null
-                                        ? null
-                                        : Row(children: [
-                                            if (_buildLeading() == null)
-                                              HorizontalSpace(),
-                                            title,
-                                            //HorizontalSpace()
-                                          ]),
-                                    titleSpacing: 0,
-                                    leading: _buildLeading(),
-                                    actions: trailing != null
-                                        ? [
-                                            Center(child: trailing),
-                                            HorizontalSpace()
-                                          ]
-                                        : null,
-                                    leadingWidth:
-                                        Size.iconSmall + Size.horizontal * 2))
-                            : null,
-                        drawer: drawer,
-                        body: ((leading) =>
-                            fab == null && (leading == null || shouldHaveAppBar)
-                                ? child
-                                : Stack(children: [
-                                    child,
-                                    if (!shouldHaveAppBar && leading != null)
-                                      Positioned(
-                                          top: Size.vertical + Size.top,
-                                          left: Size.horizontal,
-                                          child: leading),
-                                    if (fab != null)
-                                      Positioned(
-                                          bottom: Size.vertical,
-                                          right: Size.horizontal,
-                                          child: fab)
-                                  ]))(_buildLeadingButton())
-                        //floatingActionButton: fab,
-                        //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                        ))));
+                    child: Column(children: [
+                  if (isDebug)
+                    Obx(()=>Material(
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: Padding.small.top),
+                        width: Size.screenWidth,
+                        color: Colors.primary,
+                        child: Text('application: $version  api: ${AuthService.i.version}',
+                              style: TextStyle.version)
+                        ))),
+                  Expanded(
+                      child: Scaffold(
+                          backgroundColor: Colors.transparent,
+                          resizeToAvoidBottomInset: shouldResize,
+                          resizeToAvoidBottomPadding: shouldResize,
+                          primary: false,
+                          appBar: shouldHaveAppBar
+                              ? PreferredSize(
+                                  preferredSize: M.Size.fromHeight(
+                                      Size.bar), // here the desired height
+                                  child: AppBar(
+                                      toolbarHeight: Size.bar,
+                                      title: title == null
+                                          ? null
+                                          : Row(children: [
+                                              if (_buildLeading() == null)
+                                                HorizontalSpace(),
+                                              title,
+                                              //HorizontalSpace()
+                                            ]),
+                                      titleSpacing: 0,
+                                      leading: _buildLeading(),
+                                      actions: trailing != null
+                                          ? [
+                                              Center(child: trailing),
+                                              HorizontalSpace()
+                                            ]
+                                          : null,
+                                      leadingWidth:
+                                          Size.iconSmall + Size.horizontal * 2))
+                              : null,
+                          drawer: drawer,
+                          body: ((leading) => fab == null &&
+                                  (leading == null || shouldHaveAppBar)
+                              ? child
+                              : Stack(children: [
+                                  child,
+                                  if (!shouldHaveAppBar && leading != null)
+                                    Positioned(
+                                        top: Size.vertical + Size.top,
+                                        left: Size.horizontal,
+                                        child: leading),
+                                  if (fab != null)
+                                    Positioned(
+                                        bottom: Size.vertical,
+                                        right: Size.horizontal,
+                                        child: fab)
+                                ]))(_buildLeadingButton())
+                          //floatingActionButton: fab,
+                          //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                          ))
+                ]))));
       });
 }
 

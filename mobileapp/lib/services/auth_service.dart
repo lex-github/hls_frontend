@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/services/_http_service.dart';
 import 'package:hls/services/graphql_service.dart';
 import 'package:hls/services/settings_service.dart';
 
@@ -20,6 +22,11 @@ class AuthService extends GraphqlService {
   final _isInit = false.obs;
   bool get isInit => _isInit.value;
   set isInit(bool value) => _isInit.value = value;
+
+  // version
+  final _version = '${requestWaitingText.toLowerCase()}...'.obs;
+  String get version => _version.value;
+  set version(String value) => _version.value = value;
 
   // profile
   // final _profile = Rx<UserData>(null);
@@ -52,15 +59,23 @@ class AuthService extends GraphqlService {
       if (isAuthenticated && routes.contains(Get.currentRoute))
         Get.until(
             (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
-        //{ print('AuthService.onInit.ever'); Get.offAllNamed(homeRoute); }
+      //{ print('AuthService.onInit.ever'); Get.offAllNamed(homeRoute); }
       else if (isInit && !routes.contains(Get.currentRoute))
         Get.toNamed(routes.first);
     });
 
     print('AuthService.onInit $token');
 
-    if (!token.isNullOrEmpty) await retrieve();
-    else isAuthenticated = false;
+    if (!token.isNullOrEmpty)
+      await retrieve();
+    else
+      isAuthenticated = false;
+
+    // retrieve api version
+    final result =
+        await Get.find<HttpService>().request(HttpRequest(path: siteUrl));
+    version = result.data.get('version');
+    print('AuthService.onInit $version');
 
     isInit = true;
   }

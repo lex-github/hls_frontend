@@ -22,11 +22,20 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   final minRotationAngle = .0;
   final maxRotationAngle = pi / 2;
   final _animationProgress = .0.obs;
-  final List<Data> _openedItems = [];
-  final _lastToggledItem = Rx<Data>();
+  final List<String> _openedItems = [];
+  final _lastToggledItem = Rx<String>();
+
   List<Data> list;
   AnimationController _animationController;
 
+  // getters
+
+  Map<String, List<Data>> get sections => list != null
+      ? list.fold({}, (sections, x) => sections.setList(x.section ?? x.title, x))
+      : {};
+  String getTitle(int index) => sections.keys.toList(growable: false)[index];
+  List<Data> getSection(int index) =>
+      sections.values.toList(growable: false)[index];
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;
   double get rotationAngle => maxRotationAngle * animationProgress;
@@ -35,34 +44,44 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
 
   // methods
 
-  bool isOpened(Data item) =>
-      _openedItems.firstWhere((x) => item.key == x.key, orElse: () => null) !=
-      null;
+  bool isOpened(String title) =>
+      _openedItems.firstWhere((x) => x == title, orElse: () => null) != null;
 
-  double getRotationAngle(Data item) => item.key == _lastToggledItem.value?.key
+  double getRotationAngle(String title) => title == _lastToggledItem.value
       ? rotationAngle
-      : isOpened(item)
+      : isOpened(title)
           ? maxRotationAngle
           : minRotationAngle;
 
-  Animation<double> getSizeFactor(Data item) =>
-      item.key == _lastToggledItem.value?.key
+  Animation<double> getSizeFactor(String title) =>
+      title == _lastToggledItem.value
           ? Tween<double>(begin: .0, end: 1.0).animate(_animationController)
-          : AlwaysStoppedAnimation(isOpened(item) ? 1.0 : .0);
+          : AlwaysStoppedAnimation(isOpened(title) ? 1.0 : .0);
 
-  toggle(Data item) {
-    _lastToggledItem(item);
+  toggle(String title) {
+    _lastToggledItem(title);
 
-    if (isOpened(item)) {
-      _openedItems.remove(item);
+    if (isOpened(title)) {
+      _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
     } else {
-      _openedItems.add(item);
+      _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);
     }
 
     //update();
   }
+
+  // working with filters
+
+  final _filtersFrom = RxMap<String, int>();
+  final _filtersTo = RxMap<String, int>();
+
+  int getFilterFrom(String key) => _filtersFrom.value.get(key);
+  int getFilterTo(String key) => _filtersTo.value.get(key);
+
+  setFilterFrom(String key, int value) => _filtersFrom[key] = value;
+  setFilterTo(String key, int value) => _filtersTo[key] = value;
 
   @override
   void onInit() async {

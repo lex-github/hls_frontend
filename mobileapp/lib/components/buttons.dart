@@ -196,23 +196,28 @@ class ButtonInner extends StatelessWidget {
     final offset = Offset(size / innerShadowHorizontalOffsetCoefficient,
         size / innerShadowVerticalOffsetCoefficient);
 
+    final shouldUseBackgroundColor =
+        background != null && background != Colors.transparent;
+    final shadowColor = borderColor == null ||
+            borderColor == Colors.transparent ||
+            borderColor == Colors.disabled
+        ? innerShadowColor
+        : borderColor;
+
     final decoration = BoxDecoration(
         borderRadius: radius,
         border: Border.all(
             width: borderWidth,
-            color: ((background != null && background != Colors.transparent)
-                ? background.darken(.2)
-                : borderColor ?? innerShadowColor),
+            color:
+                shouldUseBackgroundColor ? background.darken(.2) : shadowColor,
             style: BorderStyle.solid),
         boxShadow: [
           BoxShadow(
-              color: (background != null && background != Colors.transparent)
+              color: shouldUseBackgroundColor
                   ? background.darken(.1)
-                  : borderColor ?? innerShadowColor),
+                  : shadowColor),
           BoxShadow(
-              color: (background != null && background != Colors.transparent)
-                  ? background
-                  : Colors.background,
+              color: shouldUseBackgroundColor ? background : Colors.background,
               blurRadius: blurRadius,
               offset: offset)
         ]);
