@@ -130,12 +130,10 @@ abstract class FormController extends GetxController {
 
   // setters
 
-  set isDirty(bool x) => _isDirty.value != x ? _isDirty.value = x : null;
-  set isAwaiting(bool x) =>
-      _isAwaiting.value != x ? _isAwaiting.value = x : null;
-  set isValid(bool x) => _isValid.value != x ? _isValid.value = x : null;
-  set isKeyboardVisible(bool x) =>
-      _isKeyboardVisible.value != x ? _isKeyboardVisible.value = x : null;
+  set isDirty(bool x) => _isDirty.value = x;
+  set isAwaiting(bool x) => _isAwaiting.value = x;
+  set isValid(bool x) => _isValid.value = x;
+  set isKeyboardVisible(bool x) => _isKeyboardVisible.value = x;
   set error(String x) => _error.value = x;
 
   // events

@@ -15,20 +15,20 @@ import 'package:hls/services/auth_service.dart';
 class ChatController extends Controller {
   // fields
 
-  final _scroll = ScrollController();
+  final _scrollController = ScrollController();
   final List<ChatCardData> _cards = [];
   final List<ChatMessage> _messages = [];
   final _checkboxSelection = [];
   final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
-  final  _isTyping = false.obs;
+  final _isTyping = false.obs;
   ChatController({this.type});
 
   int currentDialogId;
 
   // getters
 
-  ScrollController get scroll => _scroll;
+  ScrollController get scrollController => _scrollController;
   List<ChatMessage> get messages => _messages;
   ChatCardData get card => _cards.lastOrNull;
   String get questionKey => card?.key;
@@ -95,12 +95,16 @@ class ChatController extends Controller {
 
   @override
   onClose() {
-    _scroll.dispose();
+    _scrollController.dispose();
 
     super.onClose();
   }
 
   // methods
+
+  scroll() =>
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          curve: Curves.easeOut, duration: defaultAnimationDuration);
 
   checkboxAdd(value) {
     if (!_checkboxSelection.contains(value)) _checkboxSelection.add(value);
@@ -138,20 +142,34 @@ class ChatController extends Controller {
       _isTyping.value = true;
 
       // might be a bit bold
-      while (!_scroll.hasClients) {
+      while (!_scrollController.hasClients) {
         await Future.delayed(defaultAnimationDuration);
       }
 
       // consequential message display
       while (!messageQueue.isNullOrEmpty) {
         final message = messageQueue.removeLast();
-        _messages.add(message);
-        update();
 
-        if (!message.isUser && messageQueue.length > 0) {
+        // delay before display
+        if (!message.isUser) {
+          // WidgetsBinding.instance.addPostFrameCallback((_) => Timer.periodic(
+          //   chatTyperAnimationDuration,
+          //     (timer) => timer.tick < message.text.length && _scroll.hasClients
+          //     ? _scroll.animateTo(_scroll.position.maxScrollExtent,
+          //     curve: Curves.easeOut, duration: defaultAnimationDuration)
+          //     : timer.cancel()));
+
           await Future.delayed(
               chatTyperAnimationDuration * (message.text?.length ?? 0));
         }
+
+        // message display
+        _messages.add(message);
+        update();
+
+        // scroll to chat end
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _scrollController.hasClients ? scroll() : null);
       }
 
       _isTyping.value = false;
@@ -161,6 +179,9 @@ class ChatController extends Controller {
 
   Future<bool> post(value) async {
     print('ChatController.post value: $value');
+
+    if (isAwaiting)
+      return false;
 
     // display user input
     switch (questionType) {

@@ -101,17 +101,24 @@ class ChatScreen<Controller extends ChatController>
           cornerWidth: Size.horizontalSmall * 2,
           cornerHeight: Size.verticalSmall);
 
-  Widget _buildControlContainer({Widget child}) => Container(
-      //height: Size.chatBar,
-      //padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-      decoration: BoxDecoration(color: Colors.background, boxShadow: [
-        BoxShadow(
-            color: panelShadowColor,
-            blurRadius: panelShadowBlurRadius,
-            offset:
-                Offset(panelShadowHorizontalOffset, -panelShadowVerticalOffset))
-      ]),
-      child: child);
+  Widget _buildControlContainer(
+          {Widget child, bool shouldShowLoading = true}) =>
+      Container(
+          //height: Size.chatBar,
+          //padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+          decoration: BoxDecoration(color: Colors.background, boxShadow: [
+            BoxShadow(
+                color: panelShadowColor,
+                blurRadius: panelShadowBlurRadius,
+                offset: Offset(
+                    panelShadowHorizontalOffset, -panelShadowVerticalOffset))
+          ]),
+          child: shouldShowLoading && controller.isAwaiting
+              ? Container(
+                  width: Size.screenWidth,
+                  padding: Padding.content,
+                  child: Center(child: Loading()))
+              : child);
 
   Widget _buildControlButton(
           {ChatAnswerData answer, Function(ChatAnswerData, bool) onSelected}) =>
@@ -139,6 +146,7 @@ class ChatScreen<Controller extends ChatController>
       ]);
 
   Widget _buildInput() => _buildControlContainer(
+      shouldShowLoading: false,
       child: GetBuilder<ChatFormController>(
           init: ChatFormController(
               tag: tag,
@@ -160,10 +168,17 @@ class ChatScreen<Controller extends ChatController>
                         right: 0,
                         height: Size.chatBar,
                         width: Size.horizontal * 2 + Size.iconSmall,
-                        child: Clickable(
-                            child: Icon(Icons.send,
-                                color: Colors.primary, size: Size.iconSmall),
-                            onPressed: formController.submitHandler))
+                        child: controller.isAwaiting
+                            ? Center(
+                                child: SizedBox(
+                                    width: Size.iconSmall,
+                                    height: Size.iconSmall,
+                                    child: Loading()))
+                            : Clickable(
+                                child: Icon(Icons.send,
+                                    color: Colors.primary,
+                                    size: Size.iconSmall),
+                                onPressed: formController.submitHandler))
                     : Nothing())
               ])));
 
@@ -200,6 +215,7 @@ class ChatScreen<Controller extends ChatController>
           columns: controller.questionColumns));
 
   Widget _buildTimer() => _buildControlContainer(
+      //shouldShowLoading: false,
       child: Container(
           padding: Padding.content,
           width: Size.screenWidth,
@@ -257,7 +273,7 @@ class ChatScreen<Controller extends ChatController>
                       child: Stack(children: [
                     ListView.builder(
                         shrinkWrap: true,
-                        controller: controller.scroll,
+                        controller: controller.scrollController,
                         padding: Padding.content,
                         itemCount: max(controller.messages.length * 2 - 1, 0),
                         itemBuilder: (_, i) {
