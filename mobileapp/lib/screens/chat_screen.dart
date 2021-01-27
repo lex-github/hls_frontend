@@ -140,13 +140,11 @@ class ChatScreen<Controller extends ChatController>
 
   Widget _buildInput() => _buildControlContainer(
       child: GetBuilder<ChatFormController>(
-          tag: controller.questionKey,
           init: ChatFormController(
-              tag: controller.questionKey,
+              tag: tag,
               validator: getChatInputValidator(controller.questionRegexp)),
           builder: (formController) => Stack(children: [
                 Obx(() => Input<ChatFormController>(
-                    tag: controller.questionKey,
                     field: 'input',
                     isErrorVisible: false,
                     shouldFocus: true,
