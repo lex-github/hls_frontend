@@ -132,7 +132,7 @@ class HubScreen extends StatelessWidget {
                         children: [
                           CardWidget(
                             width: Size.avatar,
-                            title: 'КРУНИЕ НАЧАЛО КОНЦА',
+                            title: 'КУРЕНИЕ НАЧАЛО КОНЦА',
                           ),
                         HorizontalSpace(),
                         CardWidget(
