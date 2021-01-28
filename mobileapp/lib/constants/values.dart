@@ -113,3 +113,7 @@ const panelShadowVerticalOffset = -2.0;
 const submenuBlurStrength = 3.0;
 const submenuBlurVerticalCoefficient = 2;
 const submenuDistance = 200;
+//strings
+const nutritionTitle = 'ПИТАНИЕ';
+const exerciseTitle = 'ДВИЖЕНИЕ';
+const scheduleTitle = 'РЕЖИМ';
