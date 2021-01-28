@@ -8,7 +8,10 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/nutrition_controller.dart';
 import 'package:hls/controllers/search_form_controller.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_category_model.dart';
+import 'package:hls/models/food_filter_model.dart';
+import 'package:hls/models/food_model.dart';
 import 'package:hls/screens/_form_screen.dart' hide Button;
 import 'package:hls/theme/styles.dart';
 
@@ -19,37 +22,57 @@ class NutritionScreen extends GetView<NutritionController> {
 
   // handlers
 
-  _itemHandler(FoodCategoryData item) =>
-      Get.toNamed(foodCategoryRoute, arguments: {'category': item});
+  _filterHandler() async {
+    final response =
+        await Get.toNamed(foodFilterRoute, arguments: controller.filters);
+    final filters = Map<String, FoodFilterData>.from(response);
+    print('NutritionScreen._filterHandler filters: $filters');
+
+    // Map<String, FoodFilterData> filters = await Get.toNamed(foodFilterRoute);
+    if (filters != null) controller.filters = filters;
+  }
+
+  _categoryHandler(FoodCategoryData data) =>
+      Get.toNamed(foodCategoryRoute, arguments: {'category': data});
+
+  _foodHandler(FoodData item) =>
+    Get.toNamed(foodRoute,
+      arguments: {'title': item.category.title, 'food': item});
 
   // builders
 
   Widget _buildFilterFirst() => Button(
       borderColor: Colors.disabled,
-      onPressed: () => Get.toNamed(foodFilterRoute),
-      child: Row(children: [
-        Icon(Icons.filter_alt_rounded, color: Colors.disabled),
-        HorizontalSmallSpace(),
-        //TextPrimaryHint(nutritionFilterLabel),
-        TextSecondary(nutritionFilterLabel),
-        // HorizontalSmallSpace(),
-        // Container(
-        //     width: Size.iconSmall,
-        //     height: Size.iconSmall,
-        //     decoration: BoxDecoration(
-        //         borderRadius: BorderRadius.circular(Size.iconSmall),
-        //         color: Colors.primary),
-        //     child:
-        //         Center(child: TextPrimaryHint('2', size: .9 * Size.fontTiny)))
-      ]));
+      onPressed: _filterHandler,
+      child: Obx(() => Row(children: [
+            Icon(Icons.filter_alt_rounded, color: Colors.disabled),
+            HorizontalSmallSpace(),
+            //TextPrimaryHint(nutritionFilterLabel),
+            TextSecondary(nutritionFilterLabel),
+            if (!controller.filters.isNullOrEmpty) ...[
+              HorizontalSmallSpace(),
+              Container(
+                  width: Size.iconSmall,
+                  height: Size.iconSmall,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Size.iconSmall),
+                      color: Colors.primary),
+                  child: Center(
+                      child: TextPrimaryHint('${controller.filters.length}',
+                          size: .9 * Size.fontTiny)))
+            ]
+          ])));
 
   Widget _buildFilterItem({String title}) =>
       Button(borderColor: Colors.disabled, child: TextSecondary(title));
 
-  Widget _buildListItem(FoodCategoryData item) => ListItemButton(
+  Widget _buildCategoryListItem(FoodCategoryData item) => ListItemButton(
       imageTitle: item.imageUrl,
       title: item.title,
-      onPressed: () => _itemHandler(item));
+      onPressed: () => _categoryHandler(item));
+
+  Widget _buildFoodListItem(FoodData item) =>
+      ListItemFoodButton(item: item, onPressed: () => _foodHandler(item));
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
@@ -83,20 +106,40 @@ class NutritionScreen extends GetView<NutritionController> {
                 }))
       ]);
 
-  Widget _buildBody() => GetBuilder<NutritionController>(
+  Widget _buildCategories() => controller.list.isNullOrEmpty
+      ? EmptyPage()
+      : ListView.builder(
+          padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
+              Size.horizontal, Size.vertical),
+          itemCount: controller.list.length * 2 - 1,
+          itemBuilder: (_, i) {
+            if (i.isOdd) return VerticalMediumSpace();
+
+            final index = i ~/ 2;
+
+            return _buildCategoryListItem(controller.list[index]);
+          });
+
+  Widget _buildFoods() => controller.foods.isNullOrEmpty
+      ? EmptyPage()
+      : ListView.builder(
+          padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
+              Size.horizontal, Size.vertical),
+          itemCount: controller.foods.length * 2 - 1,
+          itemBuilder: (_, i) {
+            if (i.isOdd) return VerticalMediumSpace();
+
+            final index = i ~/ 2;
+
+            return _buildFoodListItem(controller.foods[index]);
+          });
+
+  Widget _buildBody() => GetX<NutritionController>(
       init: NutritionController(),
-      builder: (_) => controller.isInit
-          ? ListView.builder(
-              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
-                  Size.horizontal, Size.vertical),
-              itemCount: controller.list.length * 2 - 1,
-              itemBuilder: (_, i) {
-                if (i.isOdd) return VerticalMediumSpace();
-
-                final index = i ~/ 2;
-
-                return _buildListItem(controller.list[index]);
-              })
+      builder: (_) => controller.isInit && !controller.isAwaiting
+          ? controller.filters.isNullOrEmpty
+              ? _buildCategories()
+              : _buildFoods()
           : Center(child: Loading()));
 
   @override

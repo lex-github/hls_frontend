@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart' as C;
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
@@ -94,8 +96,20 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
                 to != null &&
                 to != data.max)
               TextPrimaryHint('$from - $to'),
-            // HorizontalSpace(),
-            // Icon(Icons.add_circle_outline)
+            if (from != null && from != data.min ||
+                to != null && to != data.max)
+              Transform.translate(
+                  offset: Offset(Size.horizontal, .0),
+                  child: Clickable(
+                      onPressed: () => controller.setFilterClear(data.key),
+                      child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: Size.verticalTiny,
+                              horizontal: Size.horizontal),
+                          child: Transform.rotate(
+                              angle: pi / 4,
+                              child: Icon(Icons.add_circle_outline,
+                                  size: Size.iconSmall)))))
           ]))(
       controller.getFilterFrom(data.key), controller.getFilterTo(data.key)));
 
@@ -122,15 +136,17 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           VerticalMediumSpace(),
-                          for (final subItem in items)
-                            Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Size.verticalTiny),
-                                child: Row(children: [
-                                  TextSecondary(subItem.title)
-                                  // Expanded(child: TextSecondary(subItem.title)),
-                                  // TextSecondary('${subItem.quantity} ${subItem.unit}')
-                                ]))
+                          for (final data in items)
+                            Row(children: [
+                              Expanded(
+                                  child: Clickable(
+                                      onPressed: () => _filterHandler(data),
+                                      child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: Size.verticalTiny),
+                                          child: TextSecondary(data.title)))),
+                              _buildFilterValue(data)
+                            ])
                         ])))
               ]))
           : Button(
@@ -145,29 +161,36 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
                 _buildFilterValue(items[0])
               ]));
 
-  Widget _buildBody() => GetBuilder<FoodFilterController>(
-      init: FoodFilterController(),
-      builder: (_) => controller.isInit
-          ? !controller.sections.isNullOrEmpty
-              ? ListView.builder(
-                  padding: EdgeInsets.fromLTRB(Size.horizontal,
-                      Size.verticalBig, Size.horizontal, Size.vertical),
-                  itemCount: controller.sections.length * 2 - 1,
-                  itemBuilder: (_, i) {
-                    if (i.isOdd) return VerticalMediumSpace();
+  Widget _buildBody() => controller.isInit
+      ? !controller.sections.isNullOrEmpty
+          ? ListView.builder(
+              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalBig,
+                  Size.horizontal, Size.vertical),
+              itemCount: controller.sections.length * 2 - 1,
+              itemBuilder: (_, i) {
+                if (i.isOdd) return VerticalMediumSpace();
 
-                    final index = i ~/ 2;
+                final index = i ~/ 2;
 
-                    return _buildListItem(controller.getTitle(index),
-                        controller.getSection(index));
-                  })
-              : EmptyPage()
-          : Center(child: Loading()));
+                return _buildListItem(
+                    controller.getTitle(index), controller.getSection(index));
+              })
+          : EmptyPage()
+      : Center(child: Loading());
 
   @override
-  Widget build(_) => Screen(
-      padding: Padding.zero,
-      shouldShowDrawer: true,
-      title: 'Найдено 999',
-      child: _buildBody());
+  Widget build(_) => GetBuilder<FoodFilterController>(
+      init: FoodFilterController(),
+      builder: (_) => Screen(
+          onBackPressed: () => Get.back(result: controller.values),
+          padding: Padding.zero,
+          shouldShowDrawer: true,
+          title: foodFilterScreenTitle,
+          trailing: Obx(() => ((int number) => number > 0
+              ? Clickable(
+                  onPressed: () => controller.setFilterClearAll(),
+                  child: TextPrimaryHint('$clearButtonTitle ($number)',
+                      color: Colors.failure))
+              : Nothing())(controller.filterNumber)),
+          child: _buildBody()));
 }

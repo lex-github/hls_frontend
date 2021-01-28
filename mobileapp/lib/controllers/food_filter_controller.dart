@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_filter_model.dart';
 
 class FoodFilterController<Data extends FoodFilterData> extends Controller
@@ -31,7 +33,8 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   // getters
 
   Map<String, List<Data>> get sections => list != null
-      ? list.fold({}, (sections, x) => sections.setList(x.section ?? x.title, x))
+      ? list
+          .fold({}, (sections, x) => sections.setList(x.section ?? x.title, x))
       : {};
   String getTitle(int index) => sections.keys.toList(growable: false)[index];
   List<Data> getSection(int index) =>
@@ -77,16 +80,62 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   final _filtersFrom = RxMap<String, int>();
   final _filtersTo = RxMap<String, int>();
 
-  int getFilterFrom(String key) => _filtersFrom.value.get(key);
-  int getFilterTo(String key) => _filtersTo.value.get(key);
+  int getFilterFrom(String key) => _filtersFrom.get(key);
+  int getFilterTo(String key) => _filtersTo.get(key);
 
   setFilterFrom(String key, int value) => _filtersFrom[key] = value;
   setFilterTo(String key, int value) => _filtersTo[key] = value;
+  setFilterClear(String key) {
+    _filtersFrom[key] = null;
+    _filtersTo[key] = null;
+  }
+
+  setFilterClearAll() {
+    _filtersFrom.clear();
+    _filtersTo.clear();
+  }
+
+  Map<String, FoodFilterData> get values {
+    _filtersFrom.keys; // needed for Obx
+
+    Map<String, FoodFilterData> data = {};
+    if (list.isNullOrEmpty) return data;
+
+    for (final filter in list) {
+      final key = filter.key;
+      final from = _filtersFrom.get<int>(key);
+      final to = _filtersTo.get<int>(key);
+
+      if (from != null && from != filter.values.min ||
+          to != null && to != filter.values.max)
+        data[key] = FoodFilterData()
+          ..key = key
+          ..values = (FilterValueData()
+            ..min = from?.toDouble()
+            ..max = to?.toDouble());
+    }
+
+    return data;
+  }
+
+  int get filterNumber => values.keys.length;
 
   @override
   void onInit() async {
     await retrieve();
     super.onInit();
+
+    final Map<String, FoodFilterData> filters = Get.arguments;
+    if (!filters.isNullOrEmpty) {
+      _filtersFrom.assignAll({
+        for (final data in filters.values)
+          if (data.values.min != null) data.key: toInt(data.values.min)
+      });
+      _filtersTo.assignAll({
+        for (final data in filters.values)
+          if (data.values.max != null) data.key: toInt(data.values.max)
+      });
+    }
   }
 
   @override

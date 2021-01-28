@@ -358,6 +358,7 @@ class Screen extends StatelessWidget {
   final bool shouldResize;
   final bool shouldHaveAppBar;
   final bool shouldShowDrawer;
+  final Function onBackPressed;
 
   Screen(
       {this.key,
@@ -372,7 +373,8 @@ class Screen extends StatelessWidget {
       this.shouldShowDrawer = false,
       @required Widget child,
       Widget footer,
-      EdgeInsets padding})
+      EdgeInsets padding,
+      this.onBackPressed})
       : assert(title == null || title is String || title is Widget),
         this.title = title == null
             ? null
@@ -380,9 +382,11 @@ class Screen extends StatelessWidget {
                 ? title
                 : SizedBox(
                     width: Size.screenWidth -
-                        Size.horizontal * 4 -
-                        Size.horizontal -
-                        Size.iconSmall * 2,
+                        Size.horizontal * 4
+                        //Size.horizontal
+                        -
+                        Size.iconSmall * 2 -
+                        (trailing == null ? 0 : Size.horizontal * 2),
                     child: AutoSizeText(title.toString(),
                         style: TextStyle.title,
                         maxLines: 2)), //TextPrimaryTitle(title.toString()),
@@ -406,7 +410,7 @@ class Screen extends StatelessWidget {
       : !Get.rawRoute.isFirst
           ? Clickable(
               child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
-              onPressed: Get.back)
+              onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? Clickable(
                   child: Icon(Icons.menu, size: Size.icon),
@@ -422,7 +426,7 @@ class Screen extends StatelessWidget {
               borderColor: Colors.primary,
               icon: Icons.arrow_back_ios,
               iconSize: Size.iconTiny,
-              onPressed: Get.back)
+              onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? CircularButton(
                   size: Size.iconBig,
@@ -452,15 +456,15 @@ class Screen extends StatelessWidget {
                 child: SafeArea(
                     child: Column(children: [
                   if (isDebug)
-                    Obx(()=>Material(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: Padding.small.top),
-                        width: Size.screenWidth,
-                        color: Colors.primary,
-                        child: Text('application: $version  api: ${AuthService.i.version}',
-                              style: TextStyle.version)
-                        ))),
+                    Obx(() => Material(
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Padding.small.top),
+                            width: Size.screenWidth,
+                            color: Colors.primary,
+                            child: Text(
+                                'application: $version  api: ${AuthService.i.version}',
+                                style: TextStyle.version)))),
                   Expanded(
                       child: Scaffold(
                           backgroundColor: Colors.transparent,
@@ -582,6 +586,7 @@ class TextPrimary extends StatelessWidget {
   final double size;
   final FontWeight weight;
   final TextAlign align;
+  final TextOverflow overflow;
   final Color color;
 
   TextPrimary(this.text,
@@ -590,6 +595,7 @@ class TextPrimary extends StatelessWidget {
       this.size,
       this.weight,
       this.align = TextAlign.left,
+      this.overflow = TextOverflow.visible,
       this.color})
       : super(key: key);
 
@@ -598,6 +604,7 @@ class TextPrimary extends StatelessWidget {
       style: TextStyle.primary
           .merge(style)
           .copyWith(color: color, fontSize: size, fontWeight: weight),
+      overflow: overflow,
       textAlign: align);
 }
 
@@ -610,12 +617,14 @@ class TextPrimaryHint extends TextPrimary {
       {Key key,
       Color color,
       TextAlign align = TextAlign.left,
+      TextOverflow overflow = TextOverflow.visible,
       double size,
       M.TextStyle style})
       : super(text,
             key: key,
             color: color,
             align: align,
+            overflow: overflow,
             size: size ?? Size.fontSmall,
             weight: FontWeight.w500,
             style: style);
