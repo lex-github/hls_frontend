@@ -137,7 +137,7 @@ class NutritionScreen extends GetView<NutritionController> {
   Widget _buildBody() => GetX<NutritionController>(
       init: NutritionController(),
       builder: (_) => controller.isInit && !controller.isAwaiting
-          ? controller.filters.isNullOrEmpty
+          ? controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
               ? _buildCategories()
               : _buildFoods()
           : Center(child: Loading()));

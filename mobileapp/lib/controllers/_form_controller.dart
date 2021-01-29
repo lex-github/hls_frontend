@@ -190,7 +190,7 @@ abstract class FormController extends GetxController {
     isAwaiting = true;
     final result = await onSubmitRequest();
     isAwaiting = false;
-    if (result) return onSubmitResponse(true);
+    if (!result.isNullEmptyOrFalse) return onSubmitResponse(true);
 
     // check if onSubmitRequest generated validation error
     if (!hasValidationErrors) showConfirm(title: error ?? errorGenericText);

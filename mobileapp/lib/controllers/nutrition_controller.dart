@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -14,6 +15,11 @@ class NutritionController extends Controller {
   final _filters = RxMap<String, FoodFilterData>();
   Map<String, FoodFilterData> get filters => _filters;
   set filters(Map<String, FoodFilterData> values) => _filters.assignAll(values);
+
+  // search
+  final _search = ''.obs;
+  String get search => _search.value;
+  set search(String value) => _search.value = value;
 
   // categories
 
@@ -43,7 +49,8 @@ class NutritionController extends Controller {
             if (filter.values.max != null)
               '${filter.key}_lteq': filter.values.max
           }
-      }
+      },
+      'search': search
     });
 
     //print('NutritionController.retrieveFoods result: $result');
@@ -59,8 +66,9 @@ class NutritionController extends Controller {
   void onInit() async {
     await retrieve();
 
-    // retrieve foods on filter change
-    ever<Map<String, FoodFilterData>>(_filters, (_) => retrieveFoods());
+    // retrieve foods on filter change or search change
+    ever(_filters, (_) => retrieveFoods());
+    debounce(_search, (_) => retrieveFoods(), time: searchDelayDuration);
 
     super.onInit();
   }
