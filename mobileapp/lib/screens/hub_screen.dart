@@ -111,20 +111,50 @@ class HubScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       VerticalBigSpace(),
-                      RowTitleAndDescriptionWidget( title: 'Цель:', description: 'Похудение',),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Цель:', style: TextStyle.secondary),
+                        Text('Похудение', style: TextStyle.primary),
+                      ],
+                    ),
                       VerticalMediumSpace(),
-                      RowTitleAndDescriptionWidget( title: 'Макроцикл:', description: 'Оздоровительный',),
-                      VerticalMediumSpace(),
-                      Column(
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RowTitleAndDescriptionWidget( title: 'Микроцикл:', description: 'Первый',),
-                          RowTitleAndDescriptionWidget( title: '(2 м /16тр)', description: '(подготовительный)',),
+                          Text('Макроцикл:', style: TextStyle.secondary),
+                          Text('Оздоровительный', style: TextStyle.primary),
                         ],
                       ),
                       VerticalMediumSpace(),
-                      RowTitleAndDescriptionWidget( title: 'Неделя:', description: '2/8',),
+                      Column(
+                        children: [
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Микроцикл', style: TextStyle.secondary),
+                              Text('Первый', style: TextStyle.primary),
+                            ],
+                          ),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('(2 м /16 тр):', style: TextStyle.secondary),
+                              Text('(подготовительный)', style: TextStyle.primary),
+                            ],
+                          ),
+                        ],
+                      ),
                       VerticalMediumSpace(),
-                      RowTitleAndDescriptionWidget( title: 'Тренировки:', description: '3/16',),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Неделя:', style: TextStyle.secondary),
+                          Text('2/8', style: TextStyle.primary),
+                        ],
+                      ),
+                      VerticalMediumSpace(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Тренировки:', style: TextStyle.secondary),
+                          Text('3/16', style: TextStyle.primary),
+                        ],
+                      ),
                       VerticalBigSpace(),
                     ],
                   ),
@@ -133,22 +163,20 @@ class HubScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
                   child: Column(
                     children: [
-                      CardWidget(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3',),
+                      CardWidget(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3'),
                       VerticalSpace(),
                       Row(
                         children: [
                           CardWidget(
                             width: Size.avatar,
-                            title: 'КУРЕНИЕ НАЧАЛО КОНЦА',
-                          ),
+                            title: 'КУРЕНИЕ НАЧАЛО КОНЦА'),
                         HorizontalSpace(),
                         CardWidget(
                           width: Size.avatar,
-                          title: 'ЧЕМ СИЛЕН СЕЛЕН?',
-                        ),
+                          title: 'ЧЕМ СИЛЕН СЕЛЕН?'),
                         ],),
                       VerticalSpace(),
-                      CardWidget(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА',),
+                      CardWidget(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА'),
                       VerticalBigSpace(),
                     ],
                   ),

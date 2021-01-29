@@ -77,20 +77,6 @@ class CircularProgress extends StatelessWidget {
       ]);
 }
 
-class RowTitleAndDescriptionWidget extends StatelessWidget {
-  final String title;
-  final String description;
-  final TextStyle style;
-  final MainAxisAlignment mainAxisAlignment;
-
-  RowTitleAndDescriptionWidget({this.style, this.mainAxisAlignment, this.title, this.description,});
-
-  @override
-  Widget build(BuildContext context) {
-    return
-  }
-}
-
 class CardWidget extends StatelessWidget {
   final ShapeBorder shape;
   final bool semanticContainer;
