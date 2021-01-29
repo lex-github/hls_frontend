@@ -87,12 +87,7 @@ class RowTitleAndDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: TextStyle.secondary,),
-        Text(description, style: TextStyle.primary,),
-      ],
-    );
+    return
   }
 }
 

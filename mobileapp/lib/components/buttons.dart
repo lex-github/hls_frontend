@@ -170,25 +170,6 @@ class Button extends StatelessWidget {
       isSelected.obs);
 }
 
-class StrokedButtonWidget extends StatelessWidget {
-  final String title;
-  final Color borderColor;
-  final M.TextStyle titleStyle;
-  final EdgeInsetsGeometry padding;
-
-  StrokedButtonWidget({this.title, this.borderColor, this.titleStyle, this.padding});
-
-  @override
-  Widget build(BuildContext context) {
-    return Button(
-      padding: EdgeInsets.symmetric(vertical: Padding.button.top),
-      title: title,
-      borderColor: borderColor,
-      titleStyle: M.TextStyle(fontSize: Size.fontTiny),
-    );
-  }
-}
-
 class ButtonInner extends StatelessWidget {
   final Color background;
   final Color borderColor;

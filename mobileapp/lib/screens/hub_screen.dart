@@ -83,18 +83,25 @@ class HubScreen extends StatelessWidget {
                   Row(children: [
                     HorizontalSpace(),
                     Expanded(child: Clickable(
-                      child: StrokedButtonWidget(title: scheduleTitle,
-                        borderColor: Colors.schedule,),
+                      child: Button(
+                        padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                        title: scheduleTitle,
+                        borderColor: Colors.schedule,
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)),
                     )),
                     HorizontalSmallSpace(),
                     Expanded(child: Clickable(
-                      child: StrokedButtonWidget(title: nutritionTitle,
-                        borderColor: Colors.nutrition,),
+                      child: Button(padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                        title: nutritionTitle,
+                        borderColor: Colors.nutrition,
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)),
                     )),
                     HorizontalSmallSpace(),
                     Expanded(child: Clickable(
-                      child: StrokedButtonWidget(title: exerciseTitle,
-                        borderColor: Colors.exercise,),
+                      child: Button(padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                        title: exerciseTitle,
+                        borderColor: Colors.exercise,
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)),
                     )),
                     HorizontalSpace(),
                   ],),),
