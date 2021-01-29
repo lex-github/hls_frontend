@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Image, Padding, Size, TextStyle, Card;
 import 'package:flutter/material.dart' as M;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -125,20 +125,10 @@ class HubScreen extends StatelessWidget {
                         ],
                       ),
                       VerticalMediumSpace(),
-                      Column(
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Микроцикл', style: TextStyle.secondary),
-                              Text('Первый', style: TextStyle.primary),
-                            ],
-                          ),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('(2 м /16 тр):', style: TextStyle.secondary),
-                              Text('(подготовительный)', style: TextStyle.primary),
-                            ],
-                          ),
+                          Expanded(child: Text('Микроцикл\n''(2м /16 тр):',style:TextStyle.secondary, textAlign: TextAlign.left,)),
+                          Expanded(child: Text('Первый\n''(подготовительный)', style: TextStyle.primary, textAlign: TextAlign.right)),
                         ],
                       ),
                       VerticalMediumSpace(),
