@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_form_controller.dart';
 import 'package:hls/controllers/chat_controller.dart';
 
@@ -30,7 +31,8 @@ class ChatFormController extends FormController {
       return false;
     }
 
-    final result = await Get.find<ChatController>(tag: tag).post(getValue(field));
+    final result =
+        await Get.find<ChatController>(tag: tag).post(getValue(field));
     if (result == true) {
       isDirty = false;
       onChanged(field, '');
@@ -40,5 +42,13 @@ class ChatFormController extends FormController {
   }
 
   @override
-  onSubmitResponse(_) => null;
+  void onKeyboardChanged(isVisible) async {
+    await Future.delayed(defaultAnimationDuration);
+    await Future.delayed(defaultAnimationDuration);
+
+    Get.find<ChatController>(tag: tag).scroll();
+  }
+
+  @override
+  onSubmitResponse(_) => Get.find<ChatController>(tag: tag).scroll();
 }

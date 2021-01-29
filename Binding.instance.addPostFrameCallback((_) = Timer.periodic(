@@ -1,0 +1,932 @@
+[33mcommit dc0d79f7c00e544802d1b0625542fb00ec6f0634[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 25 17:25:32 2021 +0300
+
+    hub screen tests
+
+[33mcommit de20ed155b8f5204feced7c060bfc0e0cbbacdbe[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Jan 22 16:22:18 2021 +0300
+
+    rotation hub dial
+
+[33mcommit eb7aa6d44bf9c34dab760fb42f2ac964623f7478[m
+Merge: a62239d 9e7995f
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 19 11:27:56 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit a62239d95d3f5773f50b82fe5313df2b2e037bbf[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 19 11:27:43 2021 +0300
+
+    food view wired
+
+[33mcommit 9e7995fea7e653fd9f55c58dca8a2c167bbd1b27[m
+Author: klim <i@klim.vc>
+Date:   Mon Jan 18 23:00:28 2021 +0300
+
+    success ios build for Testflight
+
+[33mcommit c784c1db7ed6714e46aeaa62d572a0a52ebd863f[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 18 17:12:17 2021 +0300
+
+    product screen start
+
+[33mcommit 96bef52a73f0db8be2e5b9649eeec5b0976c7838[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 18 14:04:11 2021 +0300
+
+    state cycle redone, minor chat fixes
+
+[33mcommit c533a24d8489c33d607de6e00c1d6b906720e6d0[m
+Merge: a1ec333 d4b0de0
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:50:04 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit a1ec3338a456dd269f22e0a7b44fb675684e1c91[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:49:49 2021 +0300
+
+    build added
+
+[33mcommit ac0a1fe0720899937823ecb2b26e48d5762f90b4[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:44:50 2021 +0300
+
+    category screen model, controller - wired
+
+[33mcommit d4b0de08855cc1d2e12099829101382d232175e5[m
+Merge: b77a331 c03f35e
+Author: klim <i@klim.vc>
+Date:   Tue Jan 12 20:49:40 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit b77a331be443fd8fb7371efd3d00b6d3225295b5[m
+Author: klim <i@klim.vc>
+Date:   Tue Jan 12 20:49:16 2021 +0300
+
+    update gitignore
+
+[33mcommit c03f35e78b2977761c1a72e479ce8658325b4383[m
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 14:25:18 2020 +0300
+
+    fix ios configs
+
+[33mcommit 536d52e6845df57a9b145f3fdacdc6e69cef766f[m
+Merge: b4be03d a7f92b8
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 13:45:54 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend into master
+
+[33mcommit a7f92b8b163961237d90fd729912e39a256c5733[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 13:44:39 2020 +0300
+
+    transparency and slider fixes
+
+[33mcommit b4be03daa98469c08fa4d805f3046ae9b9ad91e8[m
+Merge: 54cc620 78f51eb
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 12:39:21 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend into master
+
+[33mcommit 54cc6201a0c4862c22c9e72e61ab1ca1a1cd85c8[m
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 12:39:13 2020 +0300
+
+    fix some things for success build ios
+
+[33mcommit 78f51ebac6c04c54c8681990797ddd30c5c1351b[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 11:46:22 2020 +0300
+
+    android apk in root/build
+
+[33mcommit 222444d3240bfe5555e7e125ede7be801bbf3d8c[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 11:41:22 2020 +0300
+
+    welcome slider
+
+[33mcommit 9082817606267c905b5d9d11f2cf22d5673c6a43[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Dec 28 15:59:06 2020 +0300
+
+    chat testing finished
+
+[33mcommit b36cce47f86db8b08c82be38c6a667d5f44603c4[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Dec 28 06:30:51 2020 +0300
+
+    chat timer
+
+[33mcommit b9d75616a0212546e275196e1525258c433b7748[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 17:57:49 2020 +0300
+
+    internet permission
+
+[33mcommit 1a54dc62e8c7cdacb7aec3f2c5f9ee1ff189194e[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 15:39:33 2020 +0300
+
+    chat logic and images
+
+[33mcommit e1698e04d99676c0d4b7cd85c6f13b6bab2701e1[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 06:32:43 2020 +0300
+
+    working with chat, checkboxes and logic
+
+[33mcommit 7c3d0d11c1c661d6e081d08b8445cc4d8cfe4e2e[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Dec 24 18:10:49 2020 +0300
+
+    chat components logic
+
+[33mcommit 564b1013decb46029ec5f502a288dcdfeecb80b5[m
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 23 17:57:51 2020 +0300
+
+    chat markup and logic start
+
+[33mcommit df8ef67305559da3888e45a90f65ef32e28bd0a3[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 22 17:57:08 2020 +0300
+
+    authentication redone to use otp, chat screens prepared
+
+[33mcommit 43d6ab62ad97fd7d8d0f77e168e6591e1abd5d9d[m
+Author: Lex <lex@tadatuta.net>
+Date:   Sat Dec 19 12:59:06 2020 +0300
+
+    graphql service
+
+[33mcommit 010f35f783155b7e924fb9cb4e963d175e6d733b[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 18 18:28:43 2020 +0300
+
+    navigation drawer and tabbar
+
+[33mcommit dcd3602acf0b3c7d59d5d3823c45588191b8d420[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Dec 17 19:19:32 2020 +0300
+
+    more auth markup and basic tabbar
+
+[33mcommit 7b4c8dc1e2c03b4ac1384863f3d085d91880107b[m
+Merge: 867b5ed fb958b4
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 16 15:48:13 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit 867b5ed651689999b54bf9fe5b0c012cf8f27b09[m
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 16 15:43:22 2020 +0300
+
+    initial commit
+
+[33mcommit fb958b4125b95a34cfab8b2e5754a0603f3f98da[m
+Author: klim <i@klim.vc>
+Date:   Sat Sep 5 21:56:43 2020 +0300
+
+    save figma files on our disk
+
+[33mcommit ee2d647ad4c8ae58081d6038a8bfd24cbe12fdcc[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 20:32:01 2020 +0300
+
+    go to meeting with autors
+
+[33mcommit f3f278ad96c563b0437a4ed201ada510f30e8d30[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 20:22:21 2020 +0300
+
+    update first part screens
+
+[33mcommit 67465d1085ebed69535a8266b15f0c74d30915f3[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:37:19 2020 +0300
+
+    added first screens
+
+[33mcommit 210d10ea69a6f58e0f6acfcdf804bdcdc6107a28[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:20:25 2020 +0300
+
+    added svg files
+
+[33mcommit 7245021b6dcfe335f877eb3eff2c140cd40aea28[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:20:13 2020 +0300
+
+    added svg files
+
+[33mcommit dde318c8e58bdd4b9ab0d190da93bd41815d6f56[m
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 21:37:38 2020 +0300
+
+    added some screen forma svg
+
+[33mcommit 20cb1832e2a1f9ddcab93ba7a8e1c20e51641871[m
+Merge: a5ce2ab dd6e26c
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 09:49:04 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/zozh
+
+[33mcommit a5ce2ab49799e7485f197f52fc2f4f03e356eb70[m
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 09:48:59 2020 +0300
+
+    fix last changes
+
+[33mcommit dd6e26c7ab89a1129d18333210d4bf9f60817bb5[m
+Author: Klim <i@klim.vc>
+Date:   Mon Jun 1 18:37:48 2020 +0300
+
+    new notes for design stage
+
+[33mcommit 3d5e962d4048c9bc240a702f0954c34d623c51fc[m
+Author: Klim <klimlion@gmail.com>
+Date:   Wed Apr 29 21:52:20 2020 +0300
+
+    comments for part design
+
+[33mcommit bf10d7d16fe539d6d756800c0df287dac50788dc[m
+Author: Klim <klimlion@gmail.com>
+Date:   Wed Apr 29 20:38:15 2020 +0300
+
+    current status
+
+[33mcommit b91f170fbc90de81822d040a4afc8e3f6edd034d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:43:57 2020 +0300
+
+    fix for report info
+
+[33mcommit ae276d2febf11caa610662245bc9a23a537fb14d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:39:02 2020 +0300
+
+    fix roles
+
+[33mcommit 0d99718ce054eb49b6090b1fd22bec6df3686ab8[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:37:45 2020 +0300
+
+    fix text about autors
+
+[33mcommit 83035e7abaa39110051904fba57056247de8113a[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:35:45 2020 +0300
+
+    fix scheme & added proto
+
+[33mcommit 18c9f6c54b299492aed9ec26732530b6f2d5d889[m
+Author: Klim <i@klim.vc>
+Date:   Wed Mar 4 23:13:10 2020 +0300
+
+    myeat info + fats + uglevody
+
+[33mcommit 0a6ba5415f645771e743f30322801e718282317f[m
+Author: Klim <i@klim.vc>
+Date:   Tue Mar 3 13:58:51 2020 +0300
+
+    myeat info
+
+[33mcommit b9194cf9e4a69439a8db0d72e5689eb3d715f75c[m
+Merge: 5aad973 71e2033
+Author: Klim <i@klim.vc>
+Date:   Mon Mar 2 19:46:13 2020 +0300
+
+    fix conflict
+
+[33mcommit 5aad973a2c44db86210217f29079aea0331e885c[m
+Author: Klim <i@klim.vc>
+Date:   Mon Mar 2 19:45:11 2020 +0300
+
+    fix draft changes
+
+[33mcommit 71e2033bbc187020a9b8f71fdc0a439edca6825f[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 22:00:37 2020 +0300
+
+    changes title & desc
+
+[33mcommit 2eb953f712a91f569e0a678e081642a3a164620d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 22:00:14 2020 +0300
+
+    changes some things
+
+[33mcommit e4943eee523d4877c0c19f93045ef97634b53206[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 21:55:06 2020 +0300
+
+    added full screens for application
+
+[33mcommit 72508e8077ec03b5d887ca10e921d6da6bbfa71d[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 18:23:18 2020 +0300
+
+    full customers description for all screens
+
+[33mcommit c6c2cb0def1663fba46b71024fef0efd619ec9ab[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 14:06:37 2020 +0300
+
+    eat, trainers, reports
+
+[33mcommit 00663ee36caff7751ed6c16ebe7cf042dfd62c45[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 12:11:42 2020 +0300
+
+    added draft + ration
+
+[33mcommit 9d36423d4051c3974f7d2b436e7a7f809da68e52[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:39:30 2020 +0300
+
+    fix about roles
+
+[33mcommit 50f89d55234e0122d16618d4a47f64d08dbca287[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:26:03 2020 +0300
+
+    added about LP + admi
+
+[33mcommit 35b3498675f33ead2309173c63f8a33ba272e307[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:20:22 2020 +0300
+
+    fix about jp
+
+[33mcommit 2a4f52763c604e886adb2e7b1caf485e91753a14[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:19:33 2020 +0300
+
+    fix about jp
+
+[33mcommit 01231e5fbe212e9799568117173e4f7db4025864[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:15:33 2020 +0300
+
+    fix about jp
+
+[33mcommit 0420443ee7c9ad2c4c35b503d590e63431946b31[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 22:08:35 2020 +0300
+
+    added first basic info for project
+
+[33mcommit bc571f9e8a396fd3b04dcc2fc75c34db8b1ad98d[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:55:48 2020 +0300
+
+    added sideba
+
+[33mcommit c2d8aab8742d9b959250f8f791eedbc1d198ad3f[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:38:51 2020 +0300
+
+    add materials from authors
+
+[33mcommit 7b7173cc30a8eec589823e6f90803a0b07ed877f[m
+Merge: 2d682c5 075552c
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:38:22 2020 +0300
+
+    resolving conflict
+
+[33mcommit 2d682c51a79883ec160ad36754ebd1b0a092881e[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 19:53:03 2020 +0300
+
+    first format doc
+
+[33mcommit 075552c4d4bcf64cd68f73efafb4a7da51825626[m
+Author: Klim <klimlion@gmail.com>
+Date:   Mon Feb 10 19:18:51 2020 +0300
+
+    added gitign
+
+[33mcommit 21dd71ddd498e412875ea6685f7b159964ddcc83[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Feb 9 13:51:53 2020 +0300
+
+    added gitignore
+
+[33mcommit c238faa9ede8844dec0b926e760a2c5b351f6bf4[m
+Author: Klim <klimlion@gmail.com>
+Date:   Thu Feb 6 21:38:17 2020 +0300
+
+    seq diagramm first version
+
+[33mcommit d638ea2f2fbb382d1f2481ed1fca3f41d788e99e[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 6 19:10:40 2020 +0300
+
+    init alg
+[33mcommit 7b1e1da011f31e792decd611d0288910fa2c6f3d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Jan 27 06:22:29 2021 +0300
+
+    form controller fixes
+
+[33mcommit 851542485576e6b67f169cc20cb89d97627a8594[m[33m ([m[1;31morigin/master[m[33m)[m
+Merge: de97554 1e1e6d2
+Author: lex <lex@tadatuta.net>
+Date:   Tue Jan 26 13:01:50 2021 +0000
+
+    Merge branch 'lex' of klim/hls_frontend into master
+
+[33mcommit 1e1e6d28f6562523e0f123a7dfb6954a63b39b4a[m[33m ([m[1;31morigin/lex[m[33m, [m[1;32mlex[m[33m)[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 26 15:57:55 2021 +0300
+
+    build added
+
+[33mcommit de9755418a815e3dc276f1e08a058ff3d10d2ad2[m
+Merge: 68cfd6e 7d24c98
+Author: lex <lex@tadatuta.net>
+Date:   Tue Jan 26 12:50:59 2021 +0000
+
+    Merge branch 'SmartManagementFix' of klim/hls_frontend into master
+
+[33mcommit 7d24c987fd07ec25547e20f5191fed7460067fe8[m[33m ([m[1;31morigin/SmartManagementFix[m[33m, [m[1;32mSmartManagementFix[m[33m)[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 26 15:46:02 2021 +0300
+
+    smart management changed, chat controller testing
+
+[33mcommit 68cfd6e468a06e25548ca585c536d2d8f07ce03f[m
+Merge: de20ed1 6100e79
+Author: lex <lex@tadatuta.net>
+Date:   Mon Jan 25 15:05:09 2021 +0000
+
+    Merge branch 'HLS-60' of klim/hls_frontend into master
+
+[33mcommit 6100e79af580f9745b639d607628c900c7ce0579[m[33m ([m[1;31morigin/HLS-60[m[33m, [m[1;32mHLS-60[m[33m)[m
+Merge: dc0d79f 8a1cb42
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 25 18:03:14 2021 +0300
+
+    various fixes
+
+[33mcommit dc0d79f7c00e544802d1b0625542fb00ec6f0634[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 25 17:25:32 2021 +0300
+
+    hub screen tests
+
+[33mcommit 8a1cb427cf698c461000bc1449275d10e442c999[m
+Author: alexp <alexander-kn@bk.ru>
+Date:   Sat Jan 23 18:59:24 2021 +0300
+
+    typing indicator
+
+[33mcommit de20ed155b8f5204feced7c060bfc0e0cbbacdbe[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Jan 22 16:22:18 2021 +0300
+
+    rotation hub dial
+
+[33mcommit eb7aa6d44bf9c34dab760fb42f2ac964623f7478[m
+Merge: a62239d 9e7995f
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 19 11:27:56 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit a62239d95d3f5773f50b82fe5313df2b2e037bbf[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Jan 19 11:27:43 2021 +0300
+
+    food view wired
+
+[33mcommit 9e7995fea7e653fd9f55c58dca8a2c167bbd1b27[m
+Author: klim <i@klim.vc>
+Date:   Mon Jan 18 23:00:28 2021 +0300
+
+    success ios build for Testflight
+
+[33mcommit c784c1db7ed6714e46aeaa62d572a0a52ebd863f[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 18 17:12:17 2021 +0300
+
+    product screen start
+
+[33mcommit 96bef52a73f0db8be2e5b9649eeec5b0976c7838[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Jan 18 14:04:11 2021 +0300
+
+    state cycle redone, minor chat fixes
+
+[33mcommit c533a24d8489c33d607de6e00c1d6b906720e6d0[m
+Merge: a1ec333 d4b0de0
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:50:04 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit a1ec3338a456dd269f22e0a7b44fb675684e1c91[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:49:49 2021 +0300
+
+    build added
+
+[33mcommit ac0a1fe0720899937823ecb2b26e48d5762f90b4[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Jan 14 16:44:50 2021 +0300
+
+    category screen model, controller - wired
+
+[33mcommit d4b0de08855cc1d2e12099829101382d232175e5[m
+Merge: b77a331 c03f35e
+Author: klim <i@klim.vc>
+Date:   Tue Jan 12 20:49:40 2021 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit b77a331be443fd8fb7371efd3d00b6d3225295b5[m
+Author: klim <i@klim.vc>
+Date:   Tue Jan 12 20:49:16 2021 +0300
+
+    update gitignore
+
+[33mcommit c03f35e78b2977761c1a72e479ce8658325b4383[m
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 14:25:18 2020 +0300
+
+    fix ios configs
+
+[33mcommit 536d52e6845df57a9b145f3fdacdc6e69cef766f[m
+Merge: b4be03d a7f92b8
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 13:45:54 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend into master
+
+[33mcommit a7f92b8b163961237d90fd729912e39a256c5733[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 13:44:39 2020 +0300
+
+    transparency and slider fixes
+
+[33mcommit b4be03daa98469c08fa4d805f3046ae9b9ad91e8[m
+Merge: 54cc620 78f51eb
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 12:39:21 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend into master
+
+[33mcommit 54cc6201a0c4862c22c9e72e61ab1ca1a1cd85c8[m
+Author: klim <i@klim.vc>
+Date:   Tue Dec 29 12:39:13 2020 +0300
+
+    fix some things for success build ios
+
+[33mcommit 78f51ebac6c04c54c8681990797ddd30c5c1351b[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 11:46:22 2020 +0300
+
+    android apk in root/build
+
+[33mcommit 222444d3240bfe5555e7e125ede7be801bbf3d8c[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 29 11:41:22 2020 +0300
+
+    welcome slider
+
+[33mcommit 9082817606267c905b5d9d11f2cf22d5673c6a43[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Dec 28 15:59:06 2020 +0300
+
+    chat testing finished
+
+[33mcommit b36cce47f86db8b08c82be38c6a667d5f44603c4[m
+Author: Lex <lex@tadatuta.net>
+Date:   Mon Dec 28 06:30:51 2020 +0300
+
+    chat timer
+
+[33mcommit b9d75616a0212546e275196e1525258c433b7748[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 17:57:49 2020 +0300
+
+    internet permission
+
+[33mcommit 1a54dc62e8c7cdacb7aec3f2c5f9ee1ff189194e[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 15:39:33 2020 +0300
+
+    chat logic and images
+
+[33mcommit e1698e04d99676c0d4b7cd85c6f13b6bab2701e1[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 25 06:32:43 2020 +0300
+
+    working with chat, checkboxes and logic
+
+[33mcommit 7c3d0d11c1c661d6e081d08b8445cc4d8cfe4e2e[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Dec 24 18:10:49 2020 +0300
+
+    chat components logic
+
+[33mcommit 564b1013decb46029ec5f502a288dcdfeecb80b5[m
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 23 17:57:51 2020 +0300
+
+    chat markup and logic start
+
+[33mcommit df8ef67305559da3888e45a90f65ef32e28bd0a3[m
+Author: Lex <lex@tadatuta.net>
+Date:   Tue Dec 22 17:57:08 2020 +0300
+
+    authentication redone to use otp, chat screens prepared
+
+[33mcommit 43d6ab62ad97fd7d8d0f77e168e6591e1abd5d9d[m
+Author: Lex <lex@tadatuta.net>
+Date:   Sat Dec 19 12:59:06 2020 +0300
+
+    graphql service
+
+[33mcommit 010f35f783155b7e924fb9cb4e963d175e6d733b[m
+Author: Lex <lex@tadatuta.net>
+Date:   Fri Dec 18 18:28:43 2020 +0300
+
+    navigation drawer and tabbar
+
+[33mcommit dcd3602acf0b3c7d59d5d3823c45588191b8d420[m
+Author: Lex <lex@tadatuta.net>
+Date:   Thu Dec 17 19:19:32 2020 +0300
+
+    more auth markup and basic tabbar
+
+[33mcommit 7b4c8dc1e2c03b4ac1384863f3d085d91880107b[m
+Merge: 867b5ed fb958b4
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 16 15:48:13 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/hls_frontend
+
+[33mcommit 867b5ed651689999b54bf9fe5b0c012cf8f27b09[m
+Author: Lex <lex@tadatuta.net>
+Date:   Wed Dec 16 15:43:22 2020 +0300
+
+    initial commit
+
+[33mcommit fb958b4125b95a34cfab8b2e5754a0603f3f98da[m
+Author: klim <i@klim.vc>
+Date:   Sat Sep 5 21:56:43 2020 +0300
+
+    save figma files on our disk
+
+[33mcommit ee2d647ad4c8ae58081d6038a8bfd24cbe12fdcc[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 20:32:01 2020 +0300
+
+    go to meeting with autors
+
+[33mcommit f3f278ad96c563b0437a4ed201ada510f30e8d30[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 20:22:21 2020 +0300
+
+    update first part screens
+
+[33mcommit 67465d1085ebed69535a8266b15f0c74d30915f3[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:37:19 2020 +0300
+
+    added first screens
+
+[33mcommit 210d10ea69a6f58e0f6acfcdf804bdcdc6107a28[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:20:25 2020 +0300
+
+    added svg files
+
+[33mcommit 7245021b6dcfe335f877eb3eff2c140cd40aea28[m
+Author: klim <i@klim.vc>
+Date:   Fri Aug 14 15:20:13 2020 +0300
+
+    added svg files
+
+[33mcommit dde318c8e58bdd4b9ab0d190da93bd41815d6f56[m
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 21:37:38 2020 +0300
+
+    added some screen forma svg
+
+[33mcommit 20cb1832e2a1f9ddcab93ba7a8e1c20e51641871[m
+Merge: a5ce2ab dd6e26c
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 09:49:04 2020 +0300
+
+    Merge branch 'master' of git.mobissa.ru:klim/zozh
+
+[33mcommit a5ce2ab49799e7485f197f52fc2f4f03e356eb70[m
+Author: klim <i@klim.vc>
+Date:   Thu Jul 30 09:48:59 2020 +0300
+
+    fix last changes
+
+[33mcommit dd6e26c7ab89a1129d18333210d4bf9f60817bb5[m
+Author: Klim <i@klim.vc>
+Date:   Mon Jun 1 18:37:48 2020 +0300
+
+    new notes for design stage
+
+[33mcommit 3d5e962d4048c9bc240a702f0954c34d623c51fc[m
+Author: Klim <klimlion@gmail.com>
+Date:   Wed Apr 29 21:52:20 2020 +0300
+
+    comments for part design
+
+[33mcommit bf10d7d16fe539d6d756800c0df287dac50788dc[m
+Author: Klim <klimlion@gmail.com>
+Date:   Wed Apr 29 20:38:15 2020 +0300
+
+    current status
+
+[33mcommit b91f170fbc90de81822d040a4afc8e3f6edd034d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:43:57 2020 +0300
+
+    fix for report info
+
+[33mcommit ae276d2febf11caa610662245bc9a23a537fb14d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:39:02 2020 +0300
+
+    fix roles
+
+[33mcommit 0d99718ce054eb49b6090b1fd22bec6df3686ab8[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:37:45 2020 +0300
+
+    fix text about autors
+
+[33mcommit 83035e7abaa39110051904fba57056247de8113a[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Mar 15 23:35:45 2020 +0300
+
+    fix scheme & added proto
+
+[33mcommit 18c9f6c54b299492aed9ec26732530b6f2d5d889[m
+Author: Klim <i@klim.vc>
+Date:   Wed Mar 4 23:13:10 2020 +0300
+
+    myeat info + fats + uglevody
+
+[33mcommit 0a6ba5415f645771e743f30322801e718282317f[m
+Author: Klim <i@klim.vc>
+Date:   Tue Mar 3 13:58:51 2020 +0300
+
+    myeat info
+
+[33mcommit b9194cf9e4a69439a8db0d72e5689eb3d715f75c[m
+Merge: 5aad973 71e2033
+Author: Klim <i@klim.vc>
+Date:   Mon Mar 2 19:46:13 2020 +0300
+
+    fix conflict
+
+[33mcommit 5aad973a2c44db86210217f29079aea0331e885c[m
+Author: Klim <i@klim.vc>
+Date:   Mon Mar 2 19:45:11 2020 +0300
+
+    fix draft changes
+
+[33mcommit 71e2033bbc187020a9b8f71fdc0a439edca6825f[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 22:00:37 2020 +0300
+
+    changes title & desc
+
+[33mcommit 2eb953f712a91f569e0a678e081642a3a164620d[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 22:00:14 2020 +0300
+
+    changes some things
+
+[33mcommit e4943eee523d4877c0c19f93045ef97634b53206[m
+Author: Klim <klimlion@gmail.com>
+Date:   Tue Feb 25 21:55:06 2020 +0300
+
+    added full screens for application
+
+[33mcommit 72508e8077ec03b5d887ca10e921d6da6bbfa71d[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 18:23:18 2020 +0300
+
+    full customers description for all screens
+
+[33mcommit c6c2cb0def1663fba46b71024fef0efd619ec9ab[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 14:06:37 2020 +0300
+
+    eat, trainers, reports
+
+[33mcommit 00663ee36caff7751ed6c16ebe7cf042dfd62c45[m
+Author: Klim <i@klim.vc>
+Date:   Sun Feb 23 12:11:42 2020 +0300
+
+    added draft + ration
+
+[33mcommit 9d36423d4051c3974f7d2b436e7a7f809da68e52[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:39:30 2020 +0300
+
+    fix about roles
+
+[33mcommit 50f89d55234e0122d16618d4a47f64d08dbca287[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:26:03 2020 +0300
+
+    added about LP + admi
+
+[33mcommit 35b3498675f33ead2309173c63f8a33ba272e307[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:20:22 2020 +0300
+
+    fix about jp
+
+[33mcommit 2a4f52763c604e886adb2e7b1caf485e91753a14[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:19:33 2020 +0300
+
+    fix about jp
+
+[33mcommit 01231e5fbe212e9799568117173e4f7db4025864[m
+Author: Klim <klimlion@gmail.com>
+Date:   Fri Feb 14 10:15:33 2020 +0300
+
+    fix about jp
+
+[33mcommit 0420443ee7c9ad2c4c35b503d590e63431946b31[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 22:08:35 2020 +0300
+
+    added first basic info for project
+
+[33mcommit bc571f9e8a396fd3b04dcc2fc75c34db8b1ad98d[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:55:48 2020 +0300
+
+    added sideba
+
+[33mcommit c2d8aab8742d9b959250f8f791eedbc1d198ad3f[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:38:51 2020 +0300
+
+    add materials from authors
+
+[33mcommit 7b7173cc30a8eec589823e6f90803a0b07ed877f[m
+Merge: 2d682c5 075552c
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 20:38:22 2020 +0300
+
+    resolving conflict
+
+[33mcommit 2d682c51a79883ec160ad36754ebd1b0a092881e[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 13 19:53:03 2020 +0300
+
+    first format doc
+
+[33mcommit 075552c4d4bcf64cd68f73efafb4a7da51825626[m
+Author: Klim <klimlion@gmail.com>
+Date:   Mon Feb 10 19:18:51 2020 +0300
+
+    added gitign
+
+[33mcommit 21dd71ddd498e412875ea6685f7b159964ddcc83[m
+Author: Klim <klimlion@gmail.com>
+Date:   Sun Feb 9 13:51:53 2020 +0300
+
+    added gitignore
+
+[33mcommit c238faa9ede8844dec0b926e760a2c5b351f6bf4[m
+Author: Klim <klimlion@gmail.com>
+Date:   Thu Feb 6 21:38:17 2020 +0300
+
+    seq diagramm first version
+
+[33mcommit d638ea2f2fbb382d1f2481ed1fca3f41d788e99e[m
+Author: Klim <i@klim.vc>
+Date:   Thu Feb 6 19:10:40 2020 +0300
+
+    init alg

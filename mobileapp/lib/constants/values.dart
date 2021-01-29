@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
+const version = '0.0.0.1';
 
 // config
 const assetsDirectory = 'assets';
@@ -11,15 +12,15 @@ const assetsDirectory = 'assets';
 const defaultItemsPerPage = 20;
 
 // time
-const timeoutDuration = Duration(seconds: 5);
-const inputWaitingDuration = Duration(milliseconds: 300);
+const chatTyperAnimationDuration = Duration(milliseconds: 10);
 const defaultAnimationDuration = Duration(milliseconds: 150);
-const submenuAnimationDuration = Duration(milliseconds: 300);
-// const chatTyperAnimationDuration = Duration(milliseconds: 75);
-const chatTyperAnimationDuration = Duration(milliseconds: 30);
+const inputWaitingDuration = Duration(milliseconds: 300);
 const navigationTransitionDuration = Duration(milliseconds: 300);
-const timerDuration = Duration(seconds: 1);
 const rotationAnimationDuration = Duration(seconds: 60);
+const searchDelayDuration = Duration(seconds: 2);
+const submenuAnimationDuration = Duration(milliseconds: 300);
+const timeoutDuration = Duration(seconds: 5);
+const timerDuration = Duration(seconds: 1);
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -75,6 +76,8 @@ const tabbarIconSize = 20.0;
 const barHeight = 75.0;
 const chatBarHeight = 40.0;
 const avatarSize = 150.0;
+const pickerSize = 35.0;
+const bottomSheetSize = 250.0;
 const buttonBigSize = 56.0;
 const buttonHugeSize = 115.0;
 const buttonHeightSize = 48.0;

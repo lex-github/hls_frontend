@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_filter_model.dart';
 
 class FoodFilterController<Data extends FoodFilterData> extends Controller
@@ -22,11 +24,21 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   final minRotationAngle = .0;
   final maxRotationAngle = pi / 2;
   final _animationProgress = .0.obs;
-  final List<Data> _openedItems = [];
-  final _lastToggledItem = Rx<Data>();
+  final List<String> _openedItems = [];
+  final _lastToggledItem = Rx<String>();
+
   List<Data> list;
   AnimationController _animationController;
 
+  // getters
+
+  Map<String, List<Data>> get sections => list != null
+      ? list
+          .fold({}, (sections, x) => sections.setList(x.section ?? x.title, x))
+      : {};
+  String getTitle(int index) => sections.keys.toList(growable: false)[index];
+  List<Data> getSection(int index) =>
+      sections.values.toList(growable: false)[index];
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;
   double get rotationAngle => maxRotationAngle * animationProgress;
@@ -35,39 +47,95 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
 
   // methods
 
-  bool isOpened(Data item) =>
-      _openedItems.firstWhere((x) => item.key == x.key, orElse: () => null) !=
-      null;
+  bool isOpened(String title) =>
+      _openedItems.firstWhere((x) => x == title, orElse: () => null) != null;
 
-  double getRotationAngle(Data item) => item.key == _lastToggledItem.value?.key
+  double getRotationAngle(String title) => title == _lastToggledItem.value
       ? rotationAngle
-      : isOpened(item)
+      : isOpened(title)
           ? maxRotationAngle
           : minRotationAngle;
 
-  Animation<double> getSizeFactor(Data item) =>
-      item.key == _lastToggledItem.value?.key
+  Animation<double> getSizeFactor(String title) =>
+      title == _lastToggledItem.value
           ? Tween<double>(begin: .0, end: 1.0).animate(_animationController)
-          : AlwaysStoppedAnimation(isOpened(item) ? 1.0 : .0);
+          : AlwaysStoppedAnimation(isOpened(title) ? 1.0 : .0);
 
-  toggle(Data item) {
-    _lastToggledItem(item);
+  toggle(String title) {
+    _lastToggledItem(title);
 
-    if (isOpened(item)) {
-      _openedItems.remove(item);
+    if (isOpened(title)) {
+      _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
     } else {
-      _openedItems.add(item);
+      _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);
     }
 
     //update();
   }
 
+  // working with filters
+
+  final _filtersFrom = RxMap<String, int>();
+  final _filtersTo = RxMap<String, int>();
+
+  int getFilterFrom(String key) => _filtersFrom.get(key);
+  int getFilterTo(String key) => _filtersTo.get(key);
+
+  setFilterFrom(String key, int value) => _filtersFrom[key] = value;
+  setFilterTo(String key, int value) => _filtersTo[key] = value;
+  setFilterClear(String key) {
+    _filtersFrom[key] = null;
+    _filtersTo[key] = null;
+  }
+
+  setFilterClearAll() {
+    _filtersFrom.clear();
+    _filtersTo.clear();
+  }
+
+  Map<String, FoodFilterData> get values {
+    _filtersFrom.keys; // needed for Obx
+
+    Map<String, FoodFilterData> data = {};
+    if (list.isNullOrEmpty) return data;
+
+    for (final filter in list) {
+      final key = filter.key;
+      final from = _filtersFrom.get<int>(key);
+      final to = _filtersTo.get<int>(key);
+
+      if (from != null && from != filter.values.min ||
+          to != null && to != filter.values.max)
+        data[key] = FoodFilterData()
+          ..key = key
+          ..values = (FilterValueData()
+            ..min = from?.toDouble()
+            ..max = to?.toDouble());
+    }
+
+    return data;
+  }
+
+  int get filterNumber => values.keys.length;
+
   @override
   void onInit() async {
     await retrieve();
     super.onInit();
+
+    final Map<String, FoodFilterData> filters = Get.arguments;
+    if (!filters.isNullOrEmpty) {
+      _filtersFrom.assignAll({
+        for (final data in filters.values)
+          if (data.values.min != null) data.key: toInt(data.values.min)
+      });
+      _filtersTo.assignAll({
+        for (final data in filters.values)
+          if (data.values.max != null) data.key: toInt(data.values.max)
+      });
+    }
   }
 
   @override

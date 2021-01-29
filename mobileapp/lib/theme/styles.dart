@@ -72,6 +72,8 @@ class Size {
   static double get bar => ratio(barHeight);
   static double get chatBar => ratio(chatBarHeight);
   static double get avatar => ratio(avatarSize);
+  static double get bottomSheet => ratio(bottomSheetSize);
+  static double get picker => ratio(pickerSize);
   static double get buttonBig => ratio(buttonBigSize);
   static double get buttonHuge => ratio(buttonHugeSize);
   static double get buttonHeight => ratio(buttonHeightSize);
@@ -146,6 +148,8 @@ class Padding {
       horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
   static get small => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalSmall, vertical: Size.verticalSmall);
+  static get medium => M.EdgeInsets.symmetric(
+    horizontal: Size.horizontalMedium, vertical: Size.verticalMedium);
 }
 
 // styles
@@ -174,6 +178,8 @@ class TextStyle {
 
   static get error =>
       M.TextStyle(fontSize: Size.fontTiny, color: Colors.failure);
+  static get version =>
+    M.TextStyle(fontSize: Size.fontTiny, color: Colors.light);
 }
 
 final borderRadiusCircular = BorderRadius.circular(Size.borderRadius);

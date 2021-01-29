@@ -9,6 +9,7 @@ import 'package:flutter/material.dart' as M;
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart' hide Svg;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/utils.dart';
 import 'package:hls/components/buttons.dart';
@@ -20,6 +21,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/strings.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class Avatar extends StatelessWidget {
@@ -411,6 +413,7 @@ class Screen extends StatelessWidget {
   final bool shouldResize;
   final bool shouldHaveAppBar;
   final bool shouldShowDrawer;
+  final Function onBackPressed;
 
   Screen(
       {this.key,
@@ -425,7 +428,8 @@ class Screen extends StatelessWidget {
       this.shouldShowDrawer = false,
       @required Widget child,
       Widget footer,
-      EdgeInsets padding})
+      EdgeInsets padding,
+      this.onBackPressed})
       : assert(title == null || title is String || title is Widget),
         this.title = title == null
             ? null
@@ -433,9 +437,11 @@ class Screen extends StatelessWidget {
                 ? title
                 : SizedBox(
                     width: Size.screenWidth -
-                        Size.horizontal * 4 -
-                        Size.horizontal -
-                        Size.iconSmall * 2,
+                        Size.horizontal * 4
+                        //Size.horizontal
+                        -
+                        Size.iconSmall * 2 -
+                        (trailing == null ? 0 : Size.horizontal * 2),
                     child: AutoSizeText(title.toString(),
                         style: TextStyle.title,
                         maxLines: 2)), //TextPrimaryTitle(title.toString()),
@@ -459,7 +465,7 @@ class Screen extends StatelessWidget {
       : !Get.rawRoute.isFirst
           ? Clickable(
               child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
-              onPressed: Get.back)
+              onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? Clickable(
                   child: Icon(Icons.menu, size: Size.icon),
@@ -475,7 +481,7 @@ class Screen extends StatelessWidget {
               borderColor: Colors.primary,
               icon: Icons.arrow_back_ios,
               iconSize: Size.iconTiny,
-              onPressed: Get.back)
+              onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? CircularButton(
                   size: Size.iconBig,
@@ -503,56 +509,69 @@ class Screen extends StatelessWidget {
                     statusBarBrightness: Brightness.dark,
                     statusBarIconBrightness: Brightness.light),
                 child: SafeArea(
-                    child: Scaffold(
-                        backgroundColor: Colors.transparent,
-                        resizeToAvoidBottomInset: shouldResize,
-                        resizeToAvoidBottomPadding: shouldResize,
-                        primary: false,
-                        appBar: shouldHaveAppBar
-                            ? PreferredSize(
-                                preferredSize: M.Size.fromHeight(
-                                    Size.bar), // here the desired height
-                                child: AppBar(
-                                    toolbarHeight: Size.bar,
-                                    title: title == null
-                                        ? null
-                                        : Row(children: [
-                                            if (_buildLeading() == null)
-                                              HorizontalSpace(),
-                                            title,
-                                            //HorizontalSpace()
-                                          ]),
-                                    titleSpacing: 0,
-                                    leading: _buildLeading(),
-                                    actions: trailing != null
-                                        ? [
-                                            Center(child: trailing),
-                                            HorizontalSpace()
-                                          ]
-                                        : null,
-                                    leadingWidth:
-                                        Size.iconSmall + Size.horizontal * 2))
-                            : null,
-                        drawer: drawer,
-                        body: ((leading) =>
-                            fab == null && (leading == null || shouldHaveAppBar)
-                                ? child
-                                : Stack(children: [
-                                    child,
-                                    if (!shouldHaveAppBar && leading != null)
-                                      Positioned(
-                                          top: Size.vertical + Size.top,
-                                          left: Size.horizontal,
-                                          child: leading),
-                                    if (fab != null)
-                                      Positioned(
-                                          bottom: Size.vertical,
-                                          right: Size.horizontal,
-                                          child: fab)
-                                  ]))(_buildLeadingButton())
-                        //floatingActionButton: fab,
-                        //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                        ))));
+                    child: Column(children: [
+                  if (isDebug)
+                    Obx(() => Material(
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Padding.small.top),
+                            width: Size.screenWidth,
+                            color: Colors.primary,
+                            child: Text(
+                                'application: $version  api: ${AuthService.i.version}',
+                                style: TextStyle.version)))),
+                  Expanded(
+                      child: Scaffold(
+                          backgroundColor: Colors.transparent,
+                          resizeToAvoidBottomInset: shouldResize,
+                          resizeToAvoidBottomPadding: shouldResize,
+                          primary: false,
+                          appBar: shouldHaveAppBar
+                              ? PreferredSize(
+                                  preferredSize: M.Size.fromHeight(
+                                      Size.bar), // here the desired height
+                                  child: AppBar(
+                                      toolbarHeight: Size.bar,
+                                      title: title == null
+                                          ? null
+                                          : Row(children: [
+                                              if (_buildLeading() == null)
+                                                HorizontalSpace(),
+                                              title,
+                                              //HorizontalSpace()
+                                            ]),
+                                      titleSpacing: 0,
+                                      leading: _buildLeading(),
+                                      actions: trailing != null
+                                          ? [
+                                              Center(child: trailing),
+                                              HorizontalSpace()
+                                            ]
+                                          : null,
+                                      leadingWidth:
+                                          Size.iconSmall + Size.horizontal * 2))
+                              : null,
+                          drawer: drawer,
+                          body: ((leading) => fab == null &&
+                                  (leading == null || shouldHaveAppBar)
+                              ? child
+                              : Stack(children: [
+                                  child,
+                                  if (!shouldHaveAppBar && leading != null)
+                                    Positioned(
+                                        top: Size.vertical + Size.top,
+                                        left: Size.horizontal,
+                                        child: leading),
+                                  if (fab != null)
+                                    Positioned(
+                                        bottom: Size.vertical,
+                                        right: Size.horizontal,
+                                        child: fab)
+                                ]))(_buildLeadingButton())
+                          //floatingActionButton: fab,
+                          //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                          ))
+                ]))));
       });
 }
 
@@ -622,6 +641,7 @@ class TextPrimary extends StatelessWidget {
   final double size;
   final FontWeight weight;
   final TextAlign align;
+  final TextOverflow overflow;
   final Color color;
 
   TextPrimary(this.text,
@@ -630,6 +650,7 @@ class TextPrimary extends StatelessWidget {
       this.size,
       this.weight,
       this.align = TextAlign.left,
+      this.overflow = TextOverflow.visible,
       this.color})
       : super(key: key);
 
@@ -638,6 +659,7 @@ class TextPrimary extends StatelessWidget {
       style: TextStyle.primary
           .merge(style)
           .copyWith(color: color, fontSize: size, fontWeight: weight),
+      overflow: overflow,
       textAlign: align);
 }
 
@@ -650,12 +672,14 @@ class TextPrimaryHint extends TextPrimary {
       {Key key,
       Color color,
       TextAlign align = TextAlign.left,
+      TextOverflow overflow = TextOverflow.visible,
       double size,
       M.TextStyle style})
       : super(text,
             key: key,
             color: color,
             align: align,
+            overflow: overflow,
             size: size ?? Size.fontSmall,
             weight: FontWeight.w500,
             style: style);

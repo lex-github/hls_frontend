@@ -8,8 +8,12 @@ part 'food_filter_model.g.dart';
 class FoodFilterData extends GenericData {
   String key;
   FilterValueData values;
+  String section;
 
   FoodFilterData();
+
+  int get min => toInt(values.min);
+  int get max => toInt(values.max);
 
   factory FoodFilterData.fromJson(Map<String, dynamic> json) =>
       _$FoodFilterDataFromJson(json);

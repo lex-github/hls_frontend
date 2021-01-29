@@ -55,6 +55,7 @@ const foodFiltersListFields =
   '{'
     'key '
     'title '
+    'section '
     'values '
     //'filters'
   '}';
@@ -69,6 +70,7 @@ const foodCategoryFields =
     '$foodCategoryGeneral'
     //'parentCategory $foodCategoryListFields'
     'subcategories $foodSubcategoryFields'
+    'foods $foodFields'
   '}';
 
 const foodSubcategoryFields =
@@ -98,6 +100,7 @@ const foodFields =
   '{'
     'id '
     'title '
+    '$iconFields '
     'structure '
     '{'
       'key '
@@ -106,7 +109,7 @@ const foodFields =
       'title '
       'unit '
     '} '
-    '$iconFields'
+    'foodCategory $foodCategoryListFields'
   '}';
 
 // query
@@ -147,6 +150,20 @@ const foodQuery = 'query '
     'food '
     '('
       'id: \$id'
+    ') '
+    '$foodFields'
+  '}';
+
+const foodsQuery = 'query '
+  '('
+    '\$search: String '
+    '\$filters: Json'
+  ')'
+  '{'
+    'foods '
+    '('
+      'search: \$search '
+      'filters: \$filters'
     ') '
     '$foodFields'
   '}';

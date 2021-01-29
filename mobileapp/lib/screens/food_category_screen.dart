@@ -39,7 +39,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
     return showConfirm(title: noDataText);
   }
 
-  _foodsHandler(FoodCategoryData category, FoodData item) =>
+  _foodHandler(FoodCategoryData category, FoodData item) =>
       Get.toNamed(foodRoute,
           arguments: {'title': category.title, 'food': item});
   // Get.toNamed(foodCategoryRoute,
@@ -71,8 +71,23 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
                     child: Container(
                         padding: Padding.small,
                         child: TextPrimaryHint(subItem.title)),
-                    onPressed: () => _foodsHandler(item, subItem))
+                    onPressed: () => _foodHandler(item, subItem))
             ])))
+      ]));
+
+  Widget _buildFoodItem(FoodData item) => Button(
+      borderColor: Colors.disabled,
+      onPressed: () => _foodHandler(category, item),
+      child: Row(children: [
+        if (!item.imageUrl.isNullOrEmpty) ...[
+          Image(width: Size.iconBig, title: item.imageUrl),
+          HorizontalSpace()
+        ] else
+          SizedBox(height: Size.iconBig),
+        TextPrimaryHint(item.title),
+        Expanded(child: HorizontalSpace()),
+        Icon(Icons.arrow_forward_ios,
+            color: Colors.disabled, size: Size.iconSmall)
       ]));
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
@@ -85,17 +100,31 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
       tag: tag,
       init: FoodCategoryController(id: category.id),
       builder: (_) => controller.isInit
-          ? controller.list.length > 0 ? ListView.builder(
-              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
-                  Size.horizontal, Size.vertical),
-              itemCount: controller.list.length * 2 - 1,
-              itemBuilder: (_, i) {
-                if (i.isOdd) return VerticalMediumSpace();
+          ? controller.list.length > 0
+              ? ListView.builder(
+                  padding: EdgeInsets.fromLTRB(Size.horizontal,
+                      Size.verticalMedium, Size.horizontal, Size.vertical),
+                  itemCount: controller.list.length * 2 - 1,
+                  itemBuilder: (_, i) {
+                    if (i.isOdd) return VerticalMediumSpace();
 
-                final index = i ~/ 2;
+                    final index = i ~/ 2;
 
-                return _buildListItem(controller.list[index]);
-              }) : EmptyPage()
+                    return _buildListItem(controller.list[index]);
+                  })
+              : controller.foods.length > 0
+                  ? ListView.builder(
+                      padding: EdgeInsets.fromLTRB(Size.horizontal,
+                          Size.verticalMedium, Size.horizontal, Size.vertical),
+                      itemCount: controller.foods.length * 2 - 1,
+                      itemBuilder: (_, i) {
+                        if (i.isOdd) return VerticalMediumSpace();
+
+                        final index = i ~/ 2;
+
+                        return _buildFoodItem(controller.foods[index]);
+                      })
+                  : EmptyPage()
           : Center(child: Loading()));
 
   @override

@@ -14,7 +14,8 @@ FoodFilterData _$FoodFilterDataFromJson(Map<String, dynamic> json) {
     ..key = json['key'] as String
     ..values = json['values'] == null
         ? null
-        : FilterValueData.fromJson(json['values'] as Map<String, dynamic>);
+        : FilterValueData.fromJson(json['values'] as Map<String, dynamic>)
+    ..section = json['section'] as String;
 }
 
 Map<String, dynamic> _$FoodFilterDataToJson(FoodFilterData instance) {
@@ -31,13 +32,14 @@ Map<String, dynamic> _$FoodFilterDataToJson(FoodFilterData instance) {
   writeNotNull('imageUrl', instance.imageUrl);
   writeNotNull('key', instance.key);
   writeNotNull('values', instance.values);
+  writeNotNull('section', instance.section);
   return val;
 }
 
 FilterValueData _$FilterValueDataFromJson(Map<String, dynamic> json) {
   return FilterValueData()
-    ..min = (json['min'] as num)?.toDouble()
-    ..max = (json['max'] as num)?.toDouble();
+    ..min = toDouble(json['min'])
+    ..max = toDouble(json['max']);
 }
 
 Map<String, dynamic> _$FilterValueDataToJson(FilterValueData instance) {

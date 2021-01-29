@@ -76,7 +76,7 @@ const drawerLogoutLabel = 'Выйти';
 // hub
 const hubScreenTitle = 'ЗОЖ — это просто';
 
-// products
+// food items
 const nutritionScreenTitle = 'Продукты';
 const productsScreenHeaderTitle = 'Каталог продуктов';
 const productsScreenHeaderDescription = 'Полный биохимический состав';
@@ -85,3 +85,11 @@ const nutritionFilterLabel = 'Фильтр';
 const foodCategoryScreenTitle = 'Каталог продуктов';
 const foodScreenTitle = 'Каталог продуктов';
 const foodCarbLabel = 'углев.';
+
+// food filter
+const foodFilterScreenTitle = 'Каталог продуктов';
+const backButtonTitle = 'Назад';
+const submitButtonTitle = 'Готово';
+const clearButtonTitle = 'СБРОС';
+const filterFromLabel = 'от';
+const filterToLabel = 'до';
