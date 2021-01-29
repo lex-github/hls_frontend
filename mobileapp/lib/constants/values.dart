@@ -12,14 +12,15 @@ const assetsDirectory = 'assets';
 const defaultItemsPerPage = 20;
 
 // time
-const timeoutDuration = Duration(seconds: 5);
-const inputWaitingDuration = Duration(milliseconds: 300);
-const defaultAnimationDuration = Duration(milliseconds: 150);
-const submenuAnimationDuration = Duration(milliseconds: 300);
 const chatTyperAnimationDuration = Duration(milliseconds: 10);
+const defaultAnimationDuration = Duration(milliseconds: 150);
+const inputWaitingDuration = Duration(milliseconds: 300);
 const navigationTransitionDuration = Duration(milliseconds: 300);
-const timerDuration = Duration(seconds: 1);
 const rotationAnimationDuration = Duration(seconds: 60);
+const searchDelayDuration = Duration(seconds: 2);
+const submenuAnimationDuration = Duration(milliseconds: 300);
+const timeoutDuration = Duration(seconds: 5);
+const timerDuration = Duration(seconds: 1);
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -115,3 +116,7 @@ const panelShadowVerticalOffset = -2.0;
 const submenuBlurStrength = 3.0;
 const submenuBlurVerticalCoefficient = 2;
 const submenuDistance = 200;
+//strings
+const nutritionTitle = 'ПИТАНИЕ';
+const exerciseTitle = 'ДВИЖЕНИЕ';
+const scheduleTitle = 'РЕЖИМ';

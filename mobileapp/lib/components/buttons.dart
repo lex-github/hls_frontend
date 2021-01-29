@@ -1,12 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
-import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart' hide TextStyle;
 import 'package:get/state_manager.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/colors.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/helpers/strings.dart';
+import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
 class CircularButton extends Button {
@@ -168,6 +171,25 @@ class Button extends StatelessWidget {
                 isSelected, // Rx has a _callable_ function! You could use (flag) => data.value = flag,
           ),
       isSelected.obs);
+}
+
+class StrokedButtonWidget extends StatelessWidget {
+  final String title;
+  final Color borderColor;
+  final M.TextStyle titleStyle;
+  final EdgeInsetsGeometry padding;
+
+  StrokedButtonWidget({this.title, this.borderColor, this.titleStyle, this.padding});
+
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+      padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+      title: title,
+      borderColor: borderColor,
+      titleStyle: M.TextStyle(fontSize: Size.fontTiny),
+    );
+  }
 }
 
 class ButtonInner extends StatelessWidget {
@@ -362,8 +384,10 @@ class ListItemButton extends Button {
             borderColor: Colors.disabled,
             child: child ??
                 Row(children: [
-                  Image(width: Size.iconBig, title: imageTitle),
-                  HorizontalSpace(),
+                  if (!imageTitle.isNullOrEmpty) ...[
+                    Image(width: Size.iconBig, title: imageTitle),
+                    HorizontalSpace()
+                  ],
                   TextPrimaryHint(title),
                   Expanded(child: HorizontalSpace()),
                   Icon(Icons.arrow_forward_ios,
@@ -375,4 +399,77 @@ class ListItemButton extends Button {
             isCircular: false,
             onPressed: onPressed,
             padding: padding);
+}
+
+class ListItemFoodButton extends ListItemButton {
+  ListItemFoodButton(
+      {@required FoodData item,
+      bool isSelected = false,
+      bool isSwitch = false,
+      bool isLoading = false,
+      Function onPressed})
+      : super(
+            child: Row(children: [
+              if (!item.imageUrl.isNullOrEmpty) ...[
+                Image(width: Size.iconHuge, title: item.imageUrl),
+                HorizontalSpace()
+              ],
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Row(children: [
+                      Expanded(
+                          child: TextPrimaryHint(item.title.capitalize(),
+                              overflow: TextOverflow.visible)),
+                      HorizontalSpace(),
+                      Icon(Icons.arrow_forward_ios,
+                          color: Colors.disabled, size: Size.iconSmall)
+                    ]),
+                    VerticalTinySpace(),
+                    TextSecondary(item.category.title),
+                    VerticalSmallSpace(),
+                    Row(children: [
+                      ListItemFoodIndicator(
+                          title: foodCarbLabel,
+                          data: item.carbs,
+                          color: Colors.carbs),
+                      HorizontalSmallSpace(),
+                      ListItemFoodIndicator(
+                          data: item.fats, color: Colors.fats),
+                      HorizontalSmallSpace(),
+                      ListItemFoodIndicator(
+                          data: item.proteins, color: Colors.proteins),
+                      HorizontalSmallSpace(),
+                      ListItemFoodIndicator(
+                          data: item.water, color: Colors.water)
+                    ])
+                  ]))
+            ]),
+            isSelected: isSelected,
+            isSwitch: isSwitch,
+            isLoading: isLoading,
+            onPressed: onPressed);
+}
+
+class ListItemFoodIndicator extends StatelessWidget {
+  final Color color;
+  final FoodSectionData data;
+  final String title;
+
+  ListItemFoodIndicator({this.color, this.title, @required this.data});
+
+  @override
+  Widget build(BuildContext context) => Container(
+      decoration:
+          BoxDecoration(color: color, borderRadius: borderRadiusCircular),
+      padding: Padding.tiny,
+      child: Column(children: [
+        Text(data?.quantity?.toString() ?? '0',
+            style: TextStyle.primary.copyWith(
+                fontSize: 1.1 * Size.fontTiny, fontWeight: FontWeight.bold)),
+        Text(title ?? data.title.toLowerCase(),
+            style: TextStyle.secondary
+                .copyWith(fontSize: .9 * Size.fontTiny, color: Colors.light))
+      ]));
 }

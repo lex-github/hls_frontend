@@ -148,6 +148,8 @@ class Padding {
       horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
   static get small => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalSmall, vertical: Size.verticalSmall);
+  static get medium => M.EdgeInsets.symmetric(
+    horizontal: Size.horizontalMedium, vertical: Size.verticalMedium);
 }
 
 // styles

@@ -7,8 +7,7 @@ String trimTrailing(String pattern, String from) {
 }
 
 String trimLeading(String pattern, String from) {
-  if (from.isNullOrEmpty)
-    return '';
+  if (from.isNullOrEmpty) return '';
 
   int i = 0;
   while (from.startsWith(pattern, i)) i += pattern.length;
@@ -17,4 +16,8 @@ String trimLeading(String pattern, String from) {
 
 String trimBoth(String pattern, String from) {
   return trimTrailing(pattern, trimLeading(pattern, from));
+}
+
+extension StringExtension on String {
+  String capitalize() => "${this[0].toUpperCase()}${this.substring(1)}";
 }

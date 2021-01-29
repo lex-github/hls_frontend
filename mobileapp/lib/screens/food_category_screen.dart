@@ -39,7 +39,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
     return showConfirm(title: noDataText);
   }
 
-  _foodsHandler(FoodCategoryData category, FoodData item) =>
+  _foodHandler(FoodCategoryData category, FoodData item) =>
       Get.toNamed(foodRoute,
           arguments: {'title': category.title, 'food': item});
   // Get.toNamed(foodCategoryRoute,
@@ -71,13 +71,13 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
                     child: Container(
                         padding: Padding.small,
                         child: TextPrimaryHint(subItem.title)),
-                    onPressed: () => _foodsHandler(item, subItem))
+                    onPressed: () => _foodHandler(item, subItem))
             ])))
       ]));
 
   Widget _buildFoodItem(FoodData item) => Button(
       borderColor: Colors.disabled,
-      onPressed: () => _foodsHandler(category, item),
+      onPressed: () => _foodHandler(category, item),
       child: Row(children: [
         if (!item.imageUrl.isNullOrEmpty) ...[
           Image(width: Size.iconBig, title: item.imageUrl),

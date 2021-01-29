@@ -87,7 +87,9 @@ const foodScreenTitle = 'Каталог продуктов';
 const foodCarbLabel = 'углев.';
 
 // food filter
+const foodFilterScreenTitle = 'Каталог продуктов';
 const backButtonTitle = 'Назад';
 const submitButtonTitle = 'Готово';
+const clearButtonTitle = 'СБРОС';
 const filterFromLabel = 'от';
 const filterToLabel = 'до';

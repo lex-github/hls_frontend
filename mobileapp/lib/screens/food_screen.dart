@@ -67,7 +67,7 @@ class FoodScreen extends GetView<FoodController> {
                     TextStyle.primary.copyWith(fontSize: 1.1 * Size.fontTiny)),
             Text(title ?? data.title.toLowerCase(),
                 style:
-                    TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny)),
+                    TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
