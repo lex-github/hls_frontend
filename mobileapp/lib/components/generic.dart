@@ -79,77 +79,68 @@ class CircularProgress extends StatelessWidget {
       ]);
 }
 
-class RowTitleAndDescriptionWidget extends StatelessWidget {
+class Card extends StatelessWidget {
   final String title;
-  final String description;
-  final TextStyle style;
-  final MainAxisAlignment mainAxisAlignment;
-
-  RowTitleAndDescriptionWidget({this.style, this.mainAxisAlignment, this.title, this.description,});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: TextStyle.secondary,),
-        Text(description, style: TextStyle.primary,),
-      ],
-    );
-  }
-}
-
-class CardWidget extends StatelessWidget {
-  final ShapeBorder shape;
-  final bool semanticContainer;
-  final double height;
   final double width;
-  final Decoration decoration;
-  final Widget child;
-  final AlignmentGeometry alignment;
-  final String title;
-  final M.TextStyle textStyle;
-  final TextDirection textDirection;
-  final CrossAxisAlignment crossAxisAlignment;
-  final EdgeInsetsGeometry padding;
 
-  CardWidget({this.shape, this.semanticContainer, this.height, this.width, this.decoration,
-    this.child, this.alignment,  this.textStyle, this.textDirection, this.padding, this.title,
-    this.crossAxisAlignment});
+  Card({this.title, this.width});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Size.borderRadius)),
-      semanticContainer: true,
-      child: Column( crossAxisAlignment: CrossAxisAlignment.end,
-        textDirection: TextDirection.ltr,
-        children: [
-        Container(
-          height: Size.avatar,
-          width: width,
-          padding: EdgeInsets.symmetric(vertical: Size.vertical, horizontal: Size.horizontalMedium),
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(Size.borderRadius),
-            topRight: Radius.circular(Size.borderRadius),),
-            image: DecorationImage(
-              image: NetworkImage('https://placeimg.com/640/480/any'),
-              fit: BoxFit.cover,
-            ),),
-          child: Align(alignment: Alignment.bottomLeft,
-              child: Text(title, style: M.TextStyle(fontSize: Size.fontSmall, color: Colors.primaryText ),)),
-        ),
-        M.Padding(
-          padding: EdgeInsets.symmetric(vertical: Size.vertical, horizontal: Size.horizontal),
-          child: Row(textDirection: TextDirection.rtl,
+    return M.Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Size.borderRadius)),
+        semanticContainer: true,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            textDirection: TextDirection.ltr,
             children: [
-              Clickable(child: Icon(Icons.share, color: Colors.disabled)),
-              HorizontalBigSpace(),
-              Clickable(child:Icon(Icons.favorite, color: Colors.disabled)),
-            ],
-          ),
-        )
-      ],
-      ),
-    );
+              Container(
+                  height: Size.avatar,
+                  width: width,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Size.borderRadius),
+                          topRight: Radius.circular(Size.borderRadius)),
+                      child: Stack(children: [
+                        ShaderMask(
+                            child: Image(
+                                height: Size.avatar,
+                                width: width,
+                                image: NetworkImage(
+                                    'https://placeimg.com/640/480/any'),
+                                fit: BoxFit.cover),
+                            shaderCallback: (Rect bounds) {
+                              return LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent.withOpacity(0.1),
+                                    Colors.transparent.withOpacity(0.9)
+                                  ]).createShader(bounds);
+                            },
+                            blendMode: BlendMode.srcATop),
+                        Align(
+                            alignment: Alignment.bottomLeft,
+                            child: M.Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Size.vertical,
+                                    horizontal: Size.horizontal),
+                                child: Text(title,
+                                    style: M.TextStyle(
+                                        fontSize: Size.fontSmall,
+                                        color: Colors.primaryText))))
+                      ]))),
+              M.Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Size.vertical, horizontal: Size.horizontal),
+                  child: Row(textDirection: TextDirection.rtl, children: [
+                    Clickable(child: Icon(Icons.share, color: Colors.disabled)),
+                    HorizontalBigSpace(),
+                    Clickable(
+                        child: Icon(Icons.favorite, color: Colors.disabled))
+                  ]))
+            ]));
   }
 }
 

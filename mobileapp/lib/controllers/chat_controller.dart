@@ -17,7 +17,7 @@ class ChatController extends Controller {
 
   final _scrollController = ScrollController();
   final List<ChatCardData> _cards = [];
-  final List<ChatMessage> _messages = [];
+  final _messages = <ChatMessage>[].obs;
   final _checkboxSelection = [];
   final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
@@ -127,7 +127,7 @@ class ChatController extends Controller {
       for (final question in card.questions)
         addMessage(ChatMessage.fromQuestion(question));
 
-    update();
+    //update();
   }
 
   bool _isMessageQueueRunning = false;
@@ -165,7 +165,7 @@ class ChatController extends Controller {
 
         // message display
         _messages.add(message);
-        update();
+        //update();
 
         // scroll to chat end
         WidgetsBinding.instance.addPostFrameCallback(
@@ -173,15 +173,15 @@ class ChatController extends Controller {
       }
 
       _isTyping.value = false;
-      _isMessageQueueRunning = false;
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _isMessageQueueRunning = false);
     }
   }
 
   Future<bool> post(value) async {
     print('ChatController.post value: $value');
 
-    if (isAwaiting)
-      return false;
+    if (isAwaiting) return false;
 
     // display user input
     switch (questionType) {
@@ -232,6 +232,10 @@ class ChatController extends Controller {
 
       return true;
     }
+
+    // ensure message queue is empty
+    while (_isMessageQueueRunning)
+      await Future.delayed(defaultAnimationDuration);
 
     // process status
     final status = ChatDialogStatus.fromValue(
