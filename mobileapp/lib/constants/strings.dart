@@ -58,6 +58,7 @@ const otpCodeLabel = 'Последние 6 цифр';
 
 // chat
 const chatWelcomeTitle = 'Приветствие';
+const chatTypingText = 'HLS печатает';
 const chatNutritionTitle = 'Поговорим о еде';
 const chatLifestyleTitle = 'Поговорим о жизни';
 const chatMedicalTitle = 'Поговорим о здоровье';

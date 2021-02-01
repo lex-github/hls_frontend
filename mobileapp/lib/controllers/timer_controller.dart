@@ -8,7 +8,7 @@ import 'package:hls/models/chat_card_model.dart';
 class TimerController extends GetxController {
   final ChatCardData card;
   TimerController({@required this.card}) {
-    card.addons.duration = 5;
+    //card.addons.duration = 2;
     _time.value = DateTime(0, 0, 0, 0, 0, card.addons.duration);
   }
 

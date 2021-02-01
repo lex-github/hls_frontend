@@ -78,62 +78,72 @@ class CircularProgress extends StatelessWidget {
                   color: color, endAngle: value * 2 * pi, startAngle: pi / 2))
       ]);
 }
-class CardW extends StatelessWidget {
+
+class Card extends StatelessWidget {
   final String title;
   final double width;
 
-  CardW({this.title, this.width});
+  Card({this.title, this.width});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Size.borderRadius)),
+    return M.Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Size.borderRadius)),
         semanticContainer: true,
-        child: Column( crossAxisAlignment: CrossAxisAlignment.end,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             textDirection: TextDirection.ltr,
             children: [
-              Container(height: Size.avatar, width: width,
+              Container(
+                  height: Size.avatar,
+                  width: width,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(Size.borderRadius),
-                          topRight:Radius.circular(Size.borderRadius)),
-                      child: Stack(
-                          children: [
-                            ShaderMask(
-                              child: Image(height: Size.avatar, width: width,
-                                  image: NetworkImage('https://placeimg.com/640/480/any'),
-                                  fit: BoxFit.cover),
-                              shaderCallback: (Rect bounds) {
-                                return LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [Colors.transparent.withOpacity(0.1), Colors.transparent.withOpacity(0.9)]).createShader(bounds);
-                              },
-                              blendMode: BlendMode.srcATop
-                            ),
-                            Align(alignment: Alignment.bottomLeft,
-                                child: M.Padding(
-                                  padding: EdgeInsets.symmetric(vertical: Size.vertical, horizontal: Size.horizontal),
-                                  child: Text(title, style: M.TextStyle(fontSize: Size.fontSmall, color: Colors.primaryText ))
-                                ))
-                          ]
-                      )
-                  )
-              ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Size.borderRadius),
+                          topRight: Radius.circular(Size.borderRadius)),
+                      child: Stack(children: [
+                        ShaderMask(
+                            child: Image(
+                                height: Size.avatar,
+                                width: width,
+                                image: NetworkImage(
+                                    'https://placeimg.com/640/480/any'),
+                                fit: BoxFit.cover),
+                            shaderCallback: (Rect bounds) {
+                              return LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent.withOpacity(0.1),
+                                    Colors.transparent.withOpacity(0.9)
+                                  ]).createShader(bounds);
+                            },
+                            blendMode: BlendMode.srcATop),
+                        Align(
+                            alignment: Alignment.bottomLeft,
+                            child: M.Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Size.vertical,
+                                    horizontal: Size.horizontal),
+                                child: Text(title,
+                                    style: M.TextStyle(
+                                        fontSize: Size.fontSmall,
+                                        color: Colors.primaryText))))
+                      ]))),
               M.Padding(
-                  padding: EdgeInsets.symmetric(vertical: Size.vertical, horizontal: Size.horizontal),
-                  child: Row(textDirection: TextDirection.rtl,
-                      children: [
-                        Clickable(child: Icon(Icons.share, color: Colors.disabled)),
-                        HorizontalBigSpace(),
-                        Clickable(child:Icon(Icons.favorite, color: Colors.disabled))
-                      ]
-                  )
-              )
-            ]
-        )
-    );
+                  padding: EdgeInsets.symmetric(
+                      vertical: Size.vertical, horizontal: Size.horizontal),
+                  child: Row(textDirection: TextDirection.rtl, children: [
+                    Clickable(child: Icon(Icons.share, color: Colors.disabled)),
+                    HorizontalBigSpace(),
+                    Clickable(
+                        child: Icon(Icons.favorite, color: Colors.disabled))
+                  ]))
+            ]));
   }
 }
+
 class Constraint extends StatelessWidget {
   final Widget child;
   final double minWidth;
