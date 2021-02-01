@@ -93,3 +93,15 @@ const submitButtonTitle = 'Готово';
 const clearButtonTitle = 'СБРОС';
 const filterFromLabel = 'от';
 const filterToLabel = 'до';
+
+//Buttons titles
+const nutritionTitle = 'ПИТАНИЕ';
+const exerciseTitle = 'ДВИЖЕНИЕ';
+const scheduleTitle = 'РЕЖИМ';
+
+//plan titles
+const goalTitle = 'Цель';
+const macrocycleTitle = 'Макроцикл';
+const microcycleTitle = 'Микроцикл';
+const weekTitle = 'Неделя';
+const trainingTitle = 'Тренировки';

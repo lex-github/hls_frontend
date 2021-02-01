@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Image, Padding, Size, TextStyle, Card;
 import 'package:flutter/material.dart' as M;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -29,8 +29,8 @@ class HubScreen extends StatelessWidget {
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
           child: Icon(Icons.notifications)),
-      child: ListView(
-        children: [Column(children: [
+      child: ListView(children: [
+        Column(children: [
           VerticalSpace(),
           GetBuilder<HubController>(
               init: HubController(),
@@ -74,74 +74,85 @@ class HubScreen extends StatelessWidget {
                         ))
                   ]))
         ]),
-          VerticalBigSpace(),
+        VerticalBigSpace(),
+        Container(
+            child: Column(children: [
           Container(
-            child: Column(
-              children: [
-                Container(
-                  child:
-                  Row(children: [
-                    HorizontalSpace(),
-                    Expanded(child: Clickable(
-                      child: Button(
-                        padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+              child: Row(children: [
+            HorizontalSpace(),
+            Expanded(
+                child: Clickable(
+                    child: Button(
+                        padding:
+                            EdgeInsets.symmetric(vertical: Padding.button.top),
                         title: scheduleTitle,
                         borderColor: Colors.schedule,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny))
-                    )),
-                    HorizontalSmallSpace(),
-                    Expanded(child: Clickable(
-                      child: Button(padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
+            HorizontalSmallSpace(),
+            Expanded(
+                child: Clickable(
+                    child: Button(
+                        padding:
+                            EdgeInsets.symmetric(vertical: Padding.button.top),
                         title: nutritionTitle,
                         borderColor: Colors.nutrition,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny))
-                    )),
-                    HorizontalSmallSpace(),
-                    Expanded(child: Clickable(
-                      child: Button(padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
+            HorizontalSmallSpace(),
+            Expanded(
+                child: Clickable(
+                    child: Button(
+                        padding:
+                            EdgeInsets.symmetric(vertical: Padding.button.top),
                         title: exerciseTitle,
                         borderColor: Colors.exercise,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny))
-                    )),
-                    HorizontalSpace()
-                  ])),
-                Container(color: Colors.background,
-                  padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      VerticalBigSpace(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Цель:', style: TextStyle.secondary),
-                        Text('Похудение', style: TextStyle.primary)
-                      ]
-                    ),
-                      VerticalMediumSpace(),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
+            HorizontalSpace()
+          ])),
+          Container(
+              color: Colors.background,
+              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    VerticalBigSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Макроцикл:', style: TextStyle.secondary),
+                          Text('$goalTitle:', style: TextStyle.secondary),
+                          Text('Похудение', style: TextStyle.primary)
+                        ]),
+                    VerticalMediumSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('$macrocycleTitle:', style: TextStyle.secondary),
                           Text('Оздоровительный', style: TextStyle.primary)
-                        ]
-                      ),
-                      VerticalMediumSpace(),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ]),
+                    VerticalMediumSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: Text('Микроцикл\n''(2м /16 тр):',style:TextStyle.secondary, textAlign: TextAlign.left)),
-                          Expanded(child: Text('Первый\n''(подготовительный)', style: TextStyle.primary, textAlign: TextAlign.right))
-                        ]
-                      ),
-                      VerticalMediumSpace(),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Expanded(
+                              child: Text('$microcycleTitle\n' '(2м /16 тр):',
+                                  style: TextStyle.secondary,
+                                  textAlign: TextAlign.left)),
+                          Expanded(
+                              child: Text('Первый\n' '(подготовительный)',
+                                  style: TextStyle.primary,
+                                  textAlign: TextAlign.right))
+                        ]),
+                    VerticalMediumSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Неделя:', style: TextStyle.secondary),
+                          Text('$weekTitle:', style: TextStyle.secondary),
                           Text('2/8', style: TextStyle.primary)
-                        ]
-                      ),
-                      VerticalMediumSpace(),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ]),
+                    VerticalMediumSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Тренировки:', style: TextStyle.secondary),
+                          Text('$trainingTitle:', style: TextStyle.secondary),
                           Text('3/16', style: TextStyle.primary)
                         ]
                       ),
@@ -153,18 +164,22 @@ class HubScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
                   child: Column(
                     children: [
-                      CardW(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3', width: Size.targetWidth),
+                     Card(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3'),
                       VerticalSpace(),
                       Row(
                         children: [
-                          CardW(
-                            title: 'КУРЕНИЕ НАЧАЛО КОНЦА',width: Size.avatar),
+                          Expanded(
+                            child: Card(
+                              title: 'КУРЕНИЕ НАЧАЛО КОНЦА')
+                          ),
                         HorizontalSpace(),
-                        CardW(
-                          title: 'ЧЕМ СИЛЕН СЕЛЕН?', width: Size.avatar)
+                        Expanded(
+                          child: Card(
+                            title: 'ЧЕМ СИЛЕН СЕЛЕН?')
+                        )
                         ]),
                       VerticalSpace(),
-                      CardW(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА', width: Size.targetWidth),
+                      Card(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА'),
                       VerticalBigSpace()
                     ]
                   )
