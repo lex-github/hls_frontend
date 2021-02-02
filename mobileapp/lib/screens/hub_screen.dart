@@ -118,14 +118,14 @@ class HubScreen extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Цель:', style: TextStyle.secondary),
+                          Text('$goalTitle:', style: TextStyle.secondary),
                           Text('Похудение', style: TextStyle.primary)
                         ]),
                     VerticalMediumSpace(),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Макроцикл:', style: TextStyle.secondary),
+                          Text('$macrocycleTitle:', style: TextStyle.secondary),
                           Text('Оздоровительный', style: TextStyle.primary)
                         ]),
                     VerticalMediumSpace(),
@@ -133,7 +133,7 @@ class HubScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                              child: Text('Микроцикл\n' '(2м /16 тр):',
+                              child: Text('$microcycleTitle\n' '(2м /16 тр):',
                                   style: TextStyle.secondary,
                                   textAlign: TextAlign.left)),
                           Expanded(
@@ -145,14 +145,14 @@ class HubScreen extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Неделя:', style: TextStyle.secondary),
+                          Text('$weekTitle:', style: TextStyle.secondary),
                           Text('2/8', style: TextStyle.primary)
                         ]),
                     VerticalMediumSpace(),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Тренировки:', style: TextStyle.secondary),
+                          Text('$trainingTitle:', style: TextStyle.secondary),
                           Text('3/16', style: TextStyle.primary)
                         ]),
                     VerticalBigSpace(),
@@ -161,17 +161,15 @@ class HubScreen extends StatelessWidget {
               color: Colors.background,
               padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
               child: Column(children: [
-                Card(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3', width: Size.targetWidth),
+                Card(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3'),
                 VerticalSpace(),
                 Row(children: [
-                  Card(title: 'КУРЕНИЕ НАЧАЛО КОНЦА', width: Size.avatar),
+                  Expanded(child: Card(title: 'КУРЕНИЕ НАЧАЛО КОНЦА')),
                   HorizontalSpace(),
-                  Card(title: 'ЧЕМ СИЛЕН СЕЛЕН?', width: Size.avatar)
+                  Expanded(child: Card(title: 'ЧЕМ СИЛЕН СЕЛЕН?'))
                 ]),
                 VerticalSpace(),
-                Card(
-                    title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА',
-                    width: Size.targetWidth),
+                Card(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА'),
                 VerticalBigSpace()
               ]))
         ]))
