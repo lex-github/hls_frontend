@@ -55,8 +55,9 @@ class ChatController extends Controller {
     return key == null ? null : (questionAnswers[key]..value = key);
   }
 
-  List<ChatQuestionData> getQuestionResults(value) =>
-      questionResults?.get(value);
+  List<ChatQuestionData> getQuestionResults(value) => value is List
+      ? [for (final x in value) ...questionResults?.get(x)]
+      : questionResults?.get(value);
 
   // get x implementation
 
@@ -105,6 +106,9 @@ class ChatController extends Controller {
   scroll() =>
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
           curve: Curves.easeOut, duration: defaultAnimationDuration);
+
+  bool isCheckboxSelected(ChatAnswerData data) =>
+      _checkboxSelection.contains(data.value);
 
   checkboxAdd(value) {
     if (!_checkboxSelection.contains(value)) _checkboxSelection.add(value);
@@ -207,6 +211,8 @@ class ChatController extends Controller {
     if (!questionResults.isNullOrEmpty)
       for (final questionResult in questionResults)
         addMessage(ChatMessage.fromQuestion(questionResult));
+
+    //return true;
 
     if (currentDialogId.isNullOrZero || questionKey.isNullOrZero)
       Get.find<ChatNavigationController>().next();

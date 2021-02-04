@@ -124,6 +124,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
 
   Widget _buildControlButton(
           {@required Controller controller,
+          @required bool isSelected,
           ChatAnswerData answer,
           Function(ChatAnswerData, bool) onSelected}) =>
       Column(children: [
@@ -141,6 +142,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
             title: answer.text,
             titleStyle: TextStyle.buttonChat,
             isSwitch: onSelected != null,
+            isSelected: isSelected,
             onSelected: onSelected != null
                 ? (isSelected) => onSelected(answer, isSelected)
                 : null,
@@ -206,6 +208,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
                                   right: Size.horizontalSmall),
                               child: ((ChatAnswerData answer) => answer != null
                                       ? _buildControlButton(
+                                          isSelected: false,
                                           controller: controller,
                                           answer: answer)
                                       : Nothing())(
@@ -350,12 +353,14 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
                   : LoadingPage())));
 }
 
-class Checkbox extends GetView<ChatController> {
+class Checkbox<Controller extends ChatController> extends GetView<Controller> {
   final String tag;
   final Iterable rows;
   final Iterable columns;
   final Function(
-      {ChatAnswerData answer,
+      {@required Controller controller,
+      ChatAnswerData answer,
+      bool isSelected,
       Function(ChatAnswerData, bool) onSelected}) buildControlButton;
   Checkbox(
       {@required this.tag,
@@ -369,6 +374,7 @@ class Checkbox extends GetView<ChatController> {
 
   _answerHandler(ChatAnswerData data, bool isSelected) {
     final value = data.value;
+
     if (isSelected)
       controller.checkboxAdd(value);
     else
@@ -393,7 +399,11 @@ class Checkbox extends GetView<ChatController> {
                       bottom: Size.verticalSmall, right: Size.horizontalSmall),
                   child: ((ChatAnswerData answer) => answer != null
                       ? buildControlButton(
-                          answer: answer, onSelected: _answerHandler)
+                          isSelected:
+                              controller.isCheckboxSelected(answer),
+                          controller: controller,
+                          answer: answer,
+                          onSelected: _answerHandler)
                       : Nothing())(controller.getQuestionAnswer(row, column)))
           ])
       ]));
