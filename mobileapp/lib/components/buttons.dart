@@ -165,11 +165,8 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(_) => ObxValue(
-      (isSelected) => _buildButton(
-            isSelected: isSelected.value,
-            onChanged:
-                isSelected, // Rx has a _callable_ function! You could use (flag) => data.value = flag,
-          ),
+      (isSelected) =>
+          _buildButton(isSelected: isSelected.value, onChanged: isSelected),
       isSelected.obs);
 }
 
