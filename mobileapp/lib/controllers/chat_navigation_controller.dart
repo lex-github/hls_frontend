@@ -2,7 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/services/auth_service.dart';
 
@@ -14,7 +16,12 @@ class ChatNavigationController extends Controller {
   int get length => _screens.length;
   bool get isLast => index == length - 1;
   bool get canGoForward => index < _screens.length - 1;
-  Widget get screen => _screens.isNullOrEmpty ? Nothing() : _screens[index];
+  Widget get screen {
+    // unsure getter is reactive
+    index;
+
+    return _screens.isNullOrEmpty ? Nothing() : _screens[index];
+  }
 
   // get x implementation
 
@@ -30,6 +37,14 @@ class ChatNavigationController extends Controller {
 
       // init screens
       _screens.removeWhere((_) => true);
+      // make sure we start from first
+      _index.value = 0;
+      // remove controllers
+      // print('AAAAAH ${ChatDialogType.values}');
+      // for (final type in ChatDialogType.values) {
+      //   print('DELETE $type');
+      //   Get.delete<ChatController>(tag: type.title, force: true);
+      // }
 
       // check which dialogs are not completed
       final chatDialogsNotCompleted =
@@ -45,11 +60,6 @@ class ChatNavigationController extends Controller {
         _screens.add(
             ChatScreen(key: ValueKey(i), type: chatDialogsNotCompleted[i]));
       _screens.add(Nothing(key: ValueKey(chatDialogsNotCompleted.length)));
-
-      // make sure we start from first
-      _index.value = 0;
-
-      print('ChatNavigationController.onInit $_screens');
 
       await Future.delayed(Duration.zero);
 

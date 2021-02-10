@@ -7,6 +7,7 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/controllers/chat_form_controller.dart';
 import 'package:hls/controllers/chat_navigation_controller.dart';
@@ -261,96 +262,106 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
   @override
   Widget build(_) => GetX<Controller>(
       tag: tag,
+      global: false,
       init: ChatController(type: type) as Controller,
-      builder: (controller) => Screen(
-          shouldResize: true,
-          padding: Padding.zero,
-          leading: Clickable(
-              child: Icon(Icons.logout, size: Size.iconSmall),
-              onPressed: _logoutHandler),
-          title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(type.title),
-                Visibility(
-                    visible: controller.isTyping,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: <Widget>[
-                          Text(chatTypingText, style: TextStyle.secondary),
-                          HorizontalTinySpace(),
-                          SpinKitThreeBounce(
-                              color: Colors.disabled, size: Size.fontTiny)
-                        ]))
-              ]),
-          child: GestureDetector(
-              onTap: () {
-                final currentFocus = FocusScope.of(Get.context);
-                if (!currentFocus.hasPrimaryFocus &&
-                    currentFocus.focusedChild != null) {
-                  currentFocus.focusedChild.unfocus();
-                }
-              },
-              child: controller.isInit
-                  ? Column(children: [
-                      Expanded(
-                          child: Stack(children: [
-                        ListView.builder(
-                            shrinkWrap: true,
-                            controller: controller.scrollController,
-                            padding: Padding.content,
-                            itemCount:
-                                max(controller.messages.length * 2 - 1, 0),
-                            itemBuilder: (_, i) {
-                              if (i.isOdd) {
-                                final index = (i + 1) ~/ 2;
-                                final message = controller.messages[index];
-                                final prevMessage =
-                                    controller.messages[index - 1];
-                                return message.isUser == prevMessage.isUser
-                                    ? VerticalMediumSpace()
-                                    : VerticalSpace();
-                              }
-                              final index = i ~/ 2;
-                              final message = controller.messages[index];
-                              final prevMessage = index == 0
-                                  ? null
-                                  : controller.messages[index - 1];
-                              final shouldShowCorner = prevMessage == null ||
-                                  prevMessage.isUser != message.isUser;
+      builder: (currentController) {
+        // this is wrong
+        // - currentController is wrong type after logout
+        // - this.controller is not registered on last render
+        final controller = Get.isRegistered<Controller>(tag: tag)
+            ? this.controller
+            : currentController;
 
-                              return _buildMessage(message,
-                                  shouldShowCorner: shouldShowCorner);
-                            }),
-                        controller.checkboxHasSelection
-                            ? Positioned(
-                                bottom: Size.vertical,
-                                right: Size.horizontal,
-                                child: CircularButton(
-                                    size: Size.iconBig,
-                                    icon: Icons.check,
-                                    iconSize: Size.iconSmall,
-                                    onPressed: () => controller
-                                        .post(controller.checkboxSelection)))
-                            : Nothing()
-                      ])),
-                      if (controller.messageQueue.isNullOrEmpty)
-                        if (controller.questionType == ChatQuestionType.INPUT)
-                          _buildInput(controller: controller)
-                        else if (controller.questionType ==
-                            ChatQuestionType.RADIO)
-                          _buildRadio(controller: controller)
-                        else if (controller.questionType ==
-                            ChatQuestionType.CHECKBOX)
-                          _buildCheckbox(controller: controller)
-                        else if (controller.questionType ==
-                            ChatQuestionType.TIMER)
-                          _buildTimer(controller: controller)
-                        else
-                          _buildSubmit(controller: controller)
-                    ])
-                  : LoadingPage())));
+        return Screen(
+            shouldResize: true,
+            padding: Padding.zero,
+            leading: Clickable(
+                child: Icon(Icons.logout, size: Size.iconSmall),
+                onPressed: _logoutHandler),
+            title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(type.title),
+                  Visibility(
+                      visible: controller.isTyping,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: <Widget>[
+                            Text(chatTypingText, style: TextStyle.secondary),
+                            HorizontalTinySpace(),
+                            SpinKitThreeBounce(
+                                color: Colors.disabled, size: Size.fontTiny)
+                          ]))
+                ]),
+            child: GestureDetector(
+                onTap: () {
+                  final currentFocus = FocusScope.of(Get.context);
+                  if (!currentFocus.hasPrimaryFocus &&
+                      currentFocus.focusedChild != null) {
+                    currentFocus.focusedChild.unfocus();
+                  }
+                },
+                child: controller.isInit
+                    ? Column(children: [
+                        Expanded(
+                            child: Stack(children: [
+                          ListView.builder(
+                              shrinkWrap: true,
+                              controller: controller.scrollController,
+                              padding: Padding.content,
+                              itemCount:
+                                  max(controller.messages.length * 2 - 1, 0),
+                              itemBuilder: (_, i) {
+                                if (i.isOdd) {
+                                  final index = (i + 1) ~/ 2;
+                                  final message = controller.messages[index];
+                                  final prevMessage =
+                                      controller.messages[index - 1];
+                                  return message.isUser == prevMessage.isUser
+                                      ? VerticalMediumSpace()
+                                      : VerticalSpace();
+                                }
+                                final index = i ~/ 2;
+                                final message = controller.messages[index];
+                                final prevMessage = index == 0
+                                    ? null
+                                    : controller.messages[index - 1];
+                                final shouldShowCorner = prevMessage == null ||
+                                    prevMessage.isUser != message.isUser;
+
+                                return _buildMessage(message,
+                                    shouldShowCorner: shouldShowCorner);
+                              }),
+                          controller.checkboxHasSelection
+                              ? Positioned(
+                                  bottom: Size.vertical,
+                                  right: Size.horizontal,
+                                  child: CircularButton(
+                                      size: Size.iconBig,
+                                      icon: Icons.check,
+                                      iconSize: Size.iconSmall,
+                                      onPressed: () => controller
+                                          .post(controller.checkboxSelection)))
+                              : Nothing()
+                        ])),
+                        if (controller.messageQueue.isNullOrEmpty)
+                          if (controller.questionType == ChatQuestionType.INPUT)
+                            _buildInput(controller: controller)
+                          else if (controller.questionType ==
+                              ChatQuestionType.RADIO)
+                            _buildRadio(controller: controller)
+                          else if (controller.questionType ==
+                              ChatQuestionType.CHECKBOX)
+                            _buildCheckbox(controller: controller)
+                          else if (controller.questionType ==
+                              ChatQuestionType.TIMER)
+                            _buildTimer(controller: controller)
+                          else
+                            _buildSubmit(controller: controller)
+                      ])
+                    : LoadingPage()));
+      });
 }
 
 class Checkbox<Controller extends ChatController> extends GetView<Controller> {
@@ -399,8 +410,7 @@ class Checkbox<Controller extends ChatController> extends GetView<Controller> {
                       bottom: Size.verticalSmall, right: Size.horizontalSmall),
                   child: ((ChatAnswerData answer) => answer != null
                       ? buildControlButton(
-                          isSelected:
-                              controller.isCheckboxSelected(answer),
+                          isSelected: controller.isCheckboxSelected(answer),
                           controller: controller,
                           answer: answer,
                           onSelected: _answerHandler)

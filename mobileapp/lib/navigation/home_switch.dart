@@ -8,47 +8,45 @@ class HomeSwitch extends StatelessWidget {
   // builders
 
   @override
-  Widget build(_) => GetBuilder<ChatNavigationController>(
+  Widget build(_) => GetX<ChatNavigationController>(
       init: ChatNavigationController(),
-      builder: (chatNavigation) => chatNavigation.length == 0
-          ? TabbarScreen()
-          : Obx(() => ((int currentIndex) => Stack(children: [
-                TabbarScreen(),
-                AnimatedSwitcher(
-                    duration: navigationTransitionDuration,
-                    switchInCurve: Curves.easeOut,
-                    switchOutCurve: Curves.easeOut,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      final inAnimation =
-                          Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
-                              .animate(animation);
-                      final outAnimation =
-                          Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
-                              .animate(animation);
+      builder: (chatNavigation) {
+        final screen = chatNavigation.screen;
 
-                      return child.key == ValueKey(currentIndex)
-                          ? chatNavigation.isLast
-                              ? child
-                              : SlideTransition(
-                                  position: inAnimation, child: child)
-                          : !chatNavigation.isLast
-                              ? child
-                              : SlideTransition(
-                                  position: outAnimation, child: child);
-                      // print(
-                      //     'AnimatedSwitcher ${child.key} ${currentIndex.value} = $widget');
-                      // return widget;
-                    },
-                    child: chatNavigation.screen
-                ),
-                // if (false && chatNavigation.canGoForward)
-                //   Positioned(
-                //       right: Size.horizontal,
-                //       bottom: Size.vertical,
-                //       child: CircularButton(
-                //           icon: Icons.arrow_forward_ios,
-                //           iconSize: Size.iconSmall,
-                //           onPressed: chatNavigation.next))
-              ]))(chatNavigation.index)));
+        return Stack(children: [
+            TabbarScreen(),
+            AnimatedSwitcher(
+                duration: navigationTransitionDuration,
+                switchInCurve: Curves.easeOut,
+                switchOutCurve: Curves.easeOut,
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  final inAnimation =
+                      Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
+                          .animate(animation);
+                  final outAnimation =
+                      Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+                          .animate(animation);
+
+                  return child.key == ValueKey(chatNavigation.index)
+                      ? chatNavigation.isLast
+                          ? child
+                          : SlideTransition(position: inAnimation, child: child)
+                      : !chatNavigation.isLast
+                          ? child
+                          : SlideTransition(
+                              position: outAnimation, child: child);
+                  // print(
+                  //     'AnimatedSwitcher ${child.key} ${currentIndex.value} = $widget');
+                  // return widget;
+                },
+                child: screen),
+            // if (false && chatNavigation.canGoForward)
+            //   Positioned(
+            //       right: Size.horizontal,
+            //       bottom: Size.vertical,
+            //       child: CircularButton(
+            //           icon: Icons.arrow_forward_ios,
+            //           iconSize: Size.iconSmall,
+            //           onPressed: chatNavigation.next))
+          ]);});
 }
