@@ -528,7 +528,7 @@ class Screen extends StatelessWidget {
                       child: Scaffold(
                           backgroundColor: Colors.transparent,
                           resizeToAvoidBottomInset: shouldResize,
-                          resizeToAvoidBottomPadding: shouldResize,
+                          //resizeToAvoidBottomPadding: shouldResize,
                           primary: false,
                           appBar: shouldHaveAppBar
                               ? PreferredSize(

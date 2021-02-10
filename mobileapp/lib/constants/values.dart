@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.3';
+const version = '0.0.0.4';
 
 // config
 const assetsDirectory = 'assets';

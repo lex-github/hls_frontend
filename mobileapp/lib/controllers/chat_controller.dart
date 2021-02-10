@@ -138,6 +138,7 @@ class ChatController extends Controller {
   final List<ChatMessage> messageQueue = [];
   addMessage(ChatMessage message) async {
     if (message == null || message.text.isNullOrEmpty) return;
+    if (_messages.lastOrNull?.text == message.text) return;
 
     messageQueue.insert(0, message);
 
@@ -168,6 +169,7 @@ class ChatController extends Controller {
         }
 
         // message display
+        print('ChatController.addMessage ${message.imageUrl}');
         _messages.add(message);
         //update();
 

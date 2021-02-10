@@ -25,6 +25,7 @@ class ChatNavigationController extends Controller {
     // hide or show auth form
     ever<bool>(AuthService.i.authenticationState, (isAuthenticated) async {
       final isAuthenticated = AuthService.isAuth;
+      print('ChatNavigationController.onInit authenticated: $isAuthenticated');
       if (!isAuthenticated) return;
 
       // init screens
@@ -48,7 +49,7 @@ class ChatNavigationController extends Controller {
       // make sure we start from first
       _index.value = 0;
 
-      //print('ChatNavigationController.onInit $_screens');
+      print('ChatNavigationController.onInit $_screens');
 
       await Future.delayed(Duration.zero);
 
