@@ -56,7 +56,7 @@ class _TabbarScreenState extends State<TabbarScreen>
           drawerScrimColor: Colors.shadow.withOpacity(.4),
           primary: false,
           resizeToAvoidBottomInset: false,
-          resizeToAvoidBottomPadding: false,
+          //resizeToAvoidBottomPadding: false,
           body: _buildTabbar(),
           bottomNavigationBar: _buildBar())
       : _buildTabbar();

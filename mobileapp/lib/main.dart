@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart' hide Image, Router;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hls/components/generic.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -44,10 +45,16 @@ class HLS extends StatelessWidget {
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),
               builder: (_) => GetMaterialApp(
-                  smartManagement: SmartManagement.onlyBuilder,
-                  theme: theme(context),
-                  defaultTransition: Transition.rightToLeftWithFade,
-                  getPages: Router.routes,
-                  initialRoute: Router.initial,
-                  home: Router.home())))));
+                    smartManagement: SmartManagement.onlyBuilder,
+                    theme: theme(context),
+                    defaultTransition: Transition.rightToLeftWithFade,
+                    getPages: Router.routes,
+                    // home: SingleChildScrollView(
+                    //     child: Column(children: [
+                    //   Image(title: 'neck_1.svg'),
+                    //   Image(title: 'neck_2.svg')
+                    // ])),
+                    initialRoute: Router.initial,
+                    home: Router.home()
+                  )))));
 }

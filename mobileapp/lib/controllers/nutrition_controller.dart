@@ -53,12 +53,12 @@ class NutritionController extends Controller {
       'search': search
     });
 
-    //print('NutritionController.retrieveFoods result: $result');
+    print('NutritionController.retrieveFoods result: $result');
 
     foods = result
         .get<List>('foods')
-        .map((x) => FoodData.fromJson(x))
-        .toList(growable: false);
+        ?.map((x) => FoodData.fromJson(x))
+        ?.toList(growable: false);
     update();
   }
 

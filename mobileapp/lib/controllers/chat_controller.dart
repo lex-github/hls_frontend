@@ -123,7 +123,7 @@ class ChatController extends Controller {
   }
 
   addCard(ChatCardData card) {
-    print('ChatController.addCard type: ${card.questionType}');
+    //print('ChatController.addCard type: ${card.questionType}');
 
     _cards.add(card);
 
@@ -138,6 +138,7 @@ class ChatController extends Controller {
   final List<ChatMessage> messageQueue = [];
   addMessage(ChatMessage message) async {
     if (message == null || message.text.isNullOrEmpty) return;
+    if (_messages.lastOrNull?.text == message.text) return;
 
     messageQueue.insert(0, message);
 
@@ -168,6 +169,7 @@ class ChatController extends Controller {
         }
 
         // message display
+        //print('ChatController.addMessage ${message.imageUrl}');
         _messages.add(message);
         //update();
 
@@ -183,7 +185,7 @@ class ChatController extends Controller {
   }
 
   Future<bool> post(value) async {
-    print('ChatController.post value: $value');
+    //print('ChatController.post value: $value');
 
     if (isAwaiting) return false;
 
