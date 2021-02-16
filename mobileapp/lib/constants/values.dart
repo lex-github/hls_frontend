@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.4';
+const version = '0.0.0.5';
 
 // config
 const assetsDirectory = 'assets';
@@ -35,6 +35,7 @@ const chatRoute = '/chat';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const homeRoute = '/home';
+const articleRoute = '/article';
 const foodFilterRoute = '/food-filter';
 const foodCategoryRoute = '/food-category';
 const foodRoute = '/food';
@@ -54,7 +55,7 @@ const welcomeClipRadius = 500;
 
 const dividerWidth = .5;
 const borderWidth = 1.0;
-const borderRadiusSize = 4.0;
+const borderRadiusSize = 6.0;
 
 const defaultColumns = 2;
 
@@ -76,6 +77,8 @@ const tabbarIconSize = 20.0;
 const barHeight = 75.0;
 const chatBarHeight = 40.0;
 const avatarSize = 150.0;
+const thumbnailHeight = 180.0;
+const imageHeight = 265.0;
 const pickerSize = 35.0;
 const bottomSheetSize = 250.0;
 const buttonBigSize = 56.0;
@@ -94,8 +97,8 @@ const verticalMediumPadding = 15.0;
 const verticalPadding = 20.0;
 const verticalBigPadding = 35.0;
 
-const screenShadowSpreadRadius = 0.0;
 const screenShadowBlurRadius = 10.0;
+const screenShadowSpreadRadius = .0;
 const screenShadowOffset = const Offset(-2, -2);
 
 final innerShadowColor = Colors.primary.withOpacity(.75);
@@ -109,9 +112,12 @@ const outerShadowHorizontalOffsetCoefficient = 15.0;
 const outerShadowVerticalOffsetCoefficient = 15.0;
 
 const panelShadowColor = Colors.shadow;
-const panelShadowBlurRadius = 10.0;
-const panelShadowHorizontalOffset = 0.0;
+const panelShadowBlurRadius = 1.5;
+const panelShadowSpreadRadius = 4.5;
+const panelShadowHorizontalOffset = -2.0;
 const panelShadowVerticalOffset = -2.0;
+const panelShadowOffset =
+    const Offset(panelShadowHorizontalOffset, panelShadowVerticalOffset);
 
 const submenuBlurStrength = 3.0;
 const submenuBlurVerticalCoefficient = 2;

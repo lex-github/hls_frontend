@@ -7,7 +7,6 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
-import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/controllers/chat_form_controller.dart';
 import 'package:hls/controllers/chat_navigation_controller.dart';
@@ -113,8 +112,8 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
             BoxShadow(
                 color: panelShadowColor,
                 blurRadius: panelShadowBlurRadius,
-                offset: Offset(
-                    panelShadowHorizontalOffset, -panelShadowVerticalOffset))
+                spreadRadius: panelShadowSpreadRadius,
+                offset: -panelShadowOffset)
           ]),
           child: shouldShowLoading && controller.isAwaiting
               ? Container(

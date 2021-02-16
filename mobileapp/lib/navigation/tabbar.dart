@@ -176,8 +176,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                 BoxShadow(
                     color: panelShadowColor,
                     blurRadius: panelShadowBlurRadius,
-                    offset: Offset(panelShadowHorizontalOffset,
-                        -panelShadowVerticalOffset))
+                    spreadRadius: panelShadowSpreadRadius,
+                    offset: -panelShadowOffset)
               ]),
               padding: EdgeInsets.symmetric(horizontal: Size.horizontalSmall),
               height: Size.bar,

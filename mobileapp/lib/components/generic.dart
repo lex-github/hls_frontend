@@ -81,61 +81,97 @@ class CircularProgress extends StatelessWidget {
 
 class Card extends StatelessWidget {
   final String title;
-  final NetworkImage image;
+  final String imageTitle;
+  final double width;
+  final bool isHalf;
+  final Function onPressed;
 
-  Card({this.title, this.image});
+  Card(
+      {this.title,
+      this.imageTitle,
+      double width,
+      this.isHalf = false,
+      this.onPressed})
+      : this.width = width ??
+            (isHalf
+                ? (Size.screenWidth - Size.horizontal * 7) / 2
+                : Size.screenWidth - Size.horizontal * 4);
 
   @override
-  Widget build(BuildContext context) => M.Card(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Size.borderRadius)),
-      semanticContainer: true,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          textDirection: TextDirection.ltr,
-          children: [
-            Container(
-                height: Size.avatar,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(Size.borderRadius),
-                        topRight: Radius.circular(Size.borderRadius)),
-                    child: Stack(children: [
-                      ShaderMask(
-                          child: Image(
-                              height: Size.avatar,
-                              width: double.infinity,
-                              image: NetworkImage(
-                                  'https://placeimg.com/640/480/any'),
-                              fit: BoxFit.fill),
-                          shaderCallback: (Rect bounds) => LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.transparent.withOpacity(.1),
-                                    Colors.transparent.withOpacity(.9)
-                                  ]).createShader(bounds),
-                          blendMode: BlendMode.srcATop),
-                      Align(
-                          alignment: Alignment.bottomLeft,
-                          child: M.Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Size.vertical,
-                                  horizontal: Size.horizontal),
-                              child: Text(title,
-                                  style: M.TextStyle(
-                                      fontSize: Size.fontSmall,
-                                      color: Colors.primaryText))))
-                    ]))),
-            M.Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: Size.vertical, horizontal: Size.horizontal),
-                child: Row(textDirection: TextDirection.rtl, children: [
-                  Clickable(child: Icon(Icons.share, color: Colors.disabled)),
-                  HorizontalBigSpace(),
-                  Clickable(child: Icon(Icons.favorite, color: Colors.disabled))
-                ]))
-          ]));
+  Widget build(BuildContext context) {
+    print('Card.build title: $title imageTitle: $imageTitle');
+
+    return Container(
+        decoration:
+            BoxDecoration(borderRadius: borderRadiusCircular, boxShadow: [
+          BoxShadow(
+              color: Colors.shadow,
+              blurRadius: panelShadowBlurRadius,
+              spreadRadius: panelShadowSpreadRadius,
+              offset: -panelShadowOffset)
+        ]),
+        child: ClipRRect(
+            borderRadius: borderRadiusCircular,
+            child: Clickable(
+                onPressed: onPressed,
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.background,
+                        borderRadius: borderRadiusCircular),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            height: Size.thumbnail,
+                            child: Stack(children: [
+                              if (!imageTitle.isNullOrEmpty)
+                                ShaderMask(
+                                    shaderCallback: (Rect bounds) =>
+                                        LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.transparent
+                                                  .withOpacity(.1),
+                                              Colors.transparent.withOpacity(.9)
+                                            ]).createShader(bounds),
+                                    blendMode: BlendMode.srcATop,
+                                    child: Hero(
+                                        tag: imageTitle,
+                                        child: Image(
+                                            title: imageTitle,
+                                            height: Size.thumbnail,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover))),
+                              Positioned(
+                                  left: Size.horizontal,
+                                  bottom:
+                                      isHalf ? Size.vertical : Size.verticalBig,
+                                  width: width,
+                                  child: TextPrimary(title,
+                                      size: Size.fontSmall,
+                                      weight: FontWeight.normal))
+                            ]),
+                          ),
+                          M.Padding(
+                              padding: Padding.small,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Clickable(
+                                        child: Container(
+                                            padding: Padding.tiny,
+                                            child: Icon(Icons.favorite,
+                                                color: Colors.secondaryText))),
+                                    HorizontalSmallSpace(),
+                                    Clickable(
+                                        child: Container(
+                                            padding: Padding.tiny,
+                                            child: Icon(Icons.share,
+                                                color: Colors.secondaryText)))
+                                  ]))
+                        ])))));
+  }
 }
 
 class Constraint extends StatelessWidget {
@@ -411,6 +447,8 @@ class Screen extends StatelessWidget {
   final Widget child;
   final Widget drawer;
   final Widget leading;
+  final double leadingTop;
+  final double leadingLeft;
   final Widget trailing;
   final Widget fab;
   final Color color;
@@ -424,6 +462,8 @@ class Screen extends StatelessWidget {
       title,
       this.drawer,
       this.leading,
+      this.leadingTop,
+      this.leadingLeft,
       this.trailing,
       this.fab,
       this.color,
@@ -563,8 +603,9 @@ class Screen extends StatelessWidget {
                                   child,
                                   if (!shouldHaveAppBar && leading != null)
                                     Positioned(
-                                        top: Size.vertical + Size.top,
-                                        left: Size.horizontal,
+                                        top: leadingTop ??
+                                            (Size.vertical + Size.top),
+                                        left: leadingLeft ?? Size.horizontal,
                                         child: leading),
                                   if (fab != null)
                                     Positioned(
@@ -668,7 +709,8 @@ class TextPrimary extends StatelessWidget {
 }
 
 class TextPrimaryTitle extends TextPrimary {
-  TextPrimaryTitle(String text) : super(text, style: TextStyle.title);
+  TextPrimaryTitle(String text, {TextAlign align, double size})
+      : super(text, style: TextStyle.title, align: align, size: size);
 }
 
 class TextPrimaryHint extends TextPrimary {

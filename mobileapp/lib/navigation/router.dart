@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/navigation/home_switch.dart';
+import 'package:hls/screens/article_screen.dart';
 import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
@@ -55,6 +56,10 @@ class Router {
     GetPage(
         name: homeRoute,
         page: home,
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: articleRoute,
+        page: () => ArticleScreen(article: Get.arguments),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: foodCategoryRoute,

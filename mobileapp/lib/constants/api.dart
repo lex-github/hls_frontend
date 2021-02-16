@@ -1,4 +1,5 @@
 const siteUrl = 'https://hls-backend-stage.herokuapp.com/';
+//const siteUrl = 'http://213.183.48.100:3000/';
 const apiUri = '${siteUrl}graphql';
 const apiTokenKey = 'Client-Token';
 const apiTokenValue = 'WcbKFUnrAteA3YyajbK8c68839j7TXXq';
@@ -21,7 +22,7 @@ const userFields =
     'name '
     'email '
     'phoneNumber '
-    'chatBotDialogs'
+    'chatBotDialogs '
     '{'
       'id '
       'name '
@@ -38,6 +39,26 @@ const chatCardFields =
     'answers '
     'style '
     'results'
+  '}';
+
+const postFields =
+  '{'
+    'id '
+    'title '
+    'text '
+    'imageUrl '
+    'kind '
+    //'isHalf '
+    //'isFavourite '
+    'publishedAt '
+    'stories '
+    '{'
+      'id '
+      'imageUrl '
+      'text'
+    '}'
+    'videoDuration '
+    'videoUrl'
   '}';
 
 const iconFields =
@@ -117,6 +138,19 @@ const foodFields =
 const currentUserQuery = 'query '
   '{'
     'currentUser $userFields'
+  '}';
+
+const postsQuery = 'query '
+  '{'
+    'posts '
+    '{'
+      'nodes $postFields '
+      'pageInfo '
+      '{'
+        'endCursor '
+        'hasNextPage'
+      '}'
+    '}'
   '}';
 
 const foodCategoriesQuery = 'query '
