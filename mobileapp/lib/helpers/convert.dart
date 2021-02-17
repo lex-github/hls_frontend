@@ -28,6 +28,9 @@ String boolToString(bool value) => value == null
         ? '1'
         : '0';
 int dateToMilliseconds(DateTime date) => date.microsecondsSinceEpoch;
+String durationToString(Duration duration) =>
+    '${duration.inMinutes.toString().padLeft(2, '0')}:'
+    '${(duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}';
 
 // coercions
 toNull(dynamic value) => null;
@@ -48,6 +51,15 @@ double toDouble(dynamic value) => value == null
             : value.isEmpty
                 ? .0
                 : double.parse(value.replaceAll(' ', ''));
+bool toBool(dynamic value) => value == null
+    ? false
+    : value is bool
+        ? value
+        : value is double
+            ? value != 0
+            : value is String
+                ? value != '' && value != 'false' && value != '0'
+                : false;
 DateTime toDate(dynamic value, {format = dateTimeInternalFormat}) {
   if (value == null || value is DateTime) return value;
 

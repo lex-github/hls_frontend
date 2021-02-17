@@ -17,12 +17,15 @@ import 'package:hls/components/painters.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/strings.dart';
+import 'package:hls/models/post_model.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
+import 'package:share/share.dart';
 
 class Avatar extends StatelessWidget {
   final UserData user;
@@ -80,17 +83,21 @@ class CircularProgress extends StatelessWidget {
 }
 
 class Card extends StatelessWidget {
+  final double width;
+  final PostType type;
   final String title;
   final String imageTitle;
-  final double width;
   final bool isHalf;
+  final Duration duration;
   final Function onPressed;
 
   Card(
-      {this.title,
+      {double width,
+      this.type,
+      this.title,
       this.imageTitle,
-      double width,
       this.isHalf = false,
+      this.duration,
       this.onPressed})
       : this.width = width ??
             (isHalf
@@ -98,30 +105,26 @@ class Card extends StatelessWidget {
                 : Size.screenWidth - Size.horizontal * 4);
 
   @override
-  Widget build(BuildContext context) {
-    print('Card.build title: $title imageTitle: $imageTitle');
-
-    return Container(
-        decoration:
-            BoxDecoration(borderRadius: borderRadiusCircular, boxShadow: [
-          BoxShadow(
-              color: Colors.shadow,
-              blurRadius: panelShadowBlurRadius,
-              spreadRadius: panelShadowSpreadRadius,
-              offset: -panelShadowOffset)
-        ]),
-        child: ClipRRect(
-            borderRadius: borderRadiusCircular,
-            child: Clickable(
-                onPressed: onPressed,
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.background,
-                        borderRadius: borderRadiusCircular),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
+  Widget build(BuildContext context) => Container(
+      decoration: BoxDecoration(borderRadius: borderRadiusCircular, boxShadow: [
+        BoxShadow(
+            color: Colors.shadow,
+            blurRadius: panelShadowBlurRadius,
+            spreadRadius: panelShadowSpreadRadius,
+            offset: -panelShadowOffset)
+      ]),
+      child: ClipRRect(
+          borderRadius: borderRadiusCircular,
+          child: Clickable(
+              onPressed: onPressed,
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.background,
+                      borderRadius: borderRadiusCircular),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
                             height: Size.thumbnail,
                             child: Stack(children: [
                               if (!imageTitle.isNullOrEmpty)
@@ -145,33 +148,64 @@ class Card extends StatelessWidget {
                                             fit: BoxFit.cover))),
                               Positioned(
                                   left: Size.horizontal,
-                                  bottom:
-                                      isHalf ? Size.vertical : Size.verticalBig,
-                                  width: width,
-                                  child: TextPrimary(title,
+                                  top: Size.thumbnail -
+                                      Size.verticalBig -
+                                      Size.vertical,
+                                  width: width -
+                                      (type == PostType.VIDEO
+                                          ? Size.horizontalBig
+                                          : 0),
+                                  height: Size.verticalBig,
+                                  child: TextPrimary(title.toUpperCase(),
                                       size: Size.fontSmall,
-                                      weight: FontWeight.normal))
-                            ]),
-                          ),
-                          M.Padding(
-                              padding: Padding.small,
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Clickable(
-                                        child: Container(
-                                            padding: Padding.tiny,
-                                            child: Icon(Icons.favorite,
-                                                color: Colors.secondaryText))),
-                                    HorizontalSmallSpace(),
-                                    Clickable(
-                                        child: Container(
-                                            padding: Padding.tiny,
-                                            child: Icon(Icons.share,
-                                                color: Colors.secondaryText)))
-                                  ]))
-                        ])))));
-  }
+                                      weight: FontWeight.normal,
+                                      overflow: TextOverflow.ellipsis,
+                                      lines: 2)),
+                              if (!(duration?.inSeconds?.isNullOrZero ?? true))
+                                Positioned(
+                                    right: Size.horizontal,
+                                    bottom: Size.vertical,
+                                    child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                1.5 * Size.horizontalTiny,
+                                            vertical:
+                                                0.5 * Size.horizontalTiny),
+                                        decoration: BoxDecoration(
+                                            color: Colors.background
+                                                .withOpacity(.5),
+                                            borderRadius: borderRadiusCircular),
+                                        child: TextPrimaryHint(
+                                            durationToString(duration),
+                                            size: Size.fontTiny))),
+                              if (type == PostType.VIDEO)
+                                Positioned(
+                                    top: Size.thumbnail / 2 - Size.iconBig / 2,
+                                    left: width / 2,
+                                    child: Image(
+                                        title: 'play',
+                                        size: 1.15 * Size.iconBig))
+                            ])),
+                        M.Padding(
+                            padding: Padding.small,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Clickable(
+                                  //     child: Container(
+                                  //         padding: Padding.tiny,
+                                  //         child: Icon(Icons.favorite,
+                                  //             color: Colors.secondaryText))),
+                                  HorizontalSmallSpace(),
+                                  Clickable(
+                                      onPressed: () => Share.share(title,
+                                          subject: 'Статья HLS'),
+                                      child: Container(
+                                          padding: Padding.tiny,
+                                          child: Icon(Icons.share,
+                                              color: Colors.secondaryText)))
+                                ]))
+                      ])))));
 }
 
 class Constraint extends StatelessWidget {
@@ -687,6 +721,7 @@ class TextPrimary extends StatelessWidget {
   final FontWeight weight;
   final TextAlign align;
   final TextOverflow overflow;
+  final int lines;
   final Color color;
 
   TextPrimary(this.text,
@@ -696,6 +731,7 @@ class TextPrimary extends StatelessWidget {
       this.weight,
       this.align = TextAlign.left,
       this.overflow = TextOverflow.visible,
+      this.lines,
       this.color})
       : super(key: key);
 
@@ -705,6 +741,7 @@ class TextPrimary extends StatelessWidget {
           .merge(style)
           .copyWith(color: color, fontSize: size, fontWeight: weight),
       overflow: overflow,
+      maxLines: lines,
       textAlign: align);
 }
 

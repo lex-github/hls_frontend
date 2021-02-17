@@ -10,7 +10,9 @@ import 'package:hls/screens/food_screen.dart';
 import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
+import 'package:hls/screens/story_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
+import 'package:hls/screens/video_screen.dart';
 import 'package:hls/screens/welcome_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/services/settings_service.dart';
@@ -60,6 +62,14 @@ class Router {
     GetPage(
         name: articleRoute,
         page: () => ArticleScreen(article: Get.arguments),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: storyRoute,
+        page: () => StoryScreen(stories: Get.arguments),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: videoRoute,
+        page: () => VideoScreen(url: Get.arguments),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: foodCategoryRoute,

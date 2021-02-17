@@ -1,6 +1,7 @@
 import 'package:hls/constants/api.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/models/_generic_model.dart';
 
@@ -27,19 +28,27 @@ class PostData extends GenericData {
       fromJson: PostType.fromJsonValue,
       toJson: PostType.toJsonValue)
   PostType type;
+  @JsonKey(fromJson: toBool)
+  bool isHalf = false;
   @JsonKey(name: 'publishedAt', fromJson: toDate)
   DateTime date;
   @JsonKey(name: 'text')
   List<String> texts;
   List<StoryData> stories;
   String videoUrl;
-  String videoDuration;
+  @JsonKey(name: 'videoDuration')
+  int durationSeconds;
 
   PostData();
 
-  String get imageUrl => super.imageUrl.startsWith('http')
-      ? super.imageUrl
-      : '$siteUrl${super.imageUrl}';
+  // getters
+
+  String get imageUrl =>
+      !super.imageUrl.isNullOrEmpty && super.imageUrl.startsWith('http')
+          ? super.imageUrl
+          : '$siteUrl${super.imageUrl}';
+
+  Duration get duration => Duration(seconds: durationSeconds ?? 0);
 
   factory PostData.fromJson(Map<String, dynamic> json) =>
       _$PostDataFromJson(json);

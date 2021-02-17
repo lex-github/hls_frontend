@@ -46,24 +46,22 @@ class ArticleScreen extends GetView<FoodCategoryController> {
                     TextSecondary(dateToString(date: article.date))
                   ]))
         ]),
-        Positioned(
-          right: Size.horizontal,
-          top: Size.image - Size.buttonBig / 2,
-          child: CircularButton(
-              icon: Icons.favorite,
-              size: Size.buttonBig,
-              iconSize: .45 * Size.buttonBig,
-              onPressed: (_) => null),
-        ),
+        // Positioned(
+        //   right: Size.horizontal,
+        //   top: Size.image - Size.buttonBig / 2,
+        //   child: CircularButton(
+        //       icon: Icons.favorite,
+        //       size: Size.buttonBig,
+        //       iconSize: .45 * Size.buttonBig,
+        //       onPressed: (_) => null))
       ]);
 
   @override
   Widget build(_) => Screen(
       padding: Padding.zero,
-      color: Colors.nutrition,
       shouldHaveAppBar: false,
       leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
-      leadingTop: Size.vertical + Size.top - Size.iconBig / 2,
+      leadingTop: Size.vertical + Size.top, // - Size.iconBig / 2,
       leading: Clickable(
           borderRadius: Size.iconBig / 2,
           child: Container(
@@ -77,7 +75,9 @@ class ArticleScreen extends GetView<FoodCategoryController> {
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         _buildHeader(),
         if (article.texts.isNullOrEmpty)
-          Center(child: TextSecondary(noDataText))
+          Center(
+              child: Container(
+                  padding: Padding.content, child: TextSecondary(noDataText)))
         else ...[
           VerticalSpace(),
           for (final text in article.texts) ...[

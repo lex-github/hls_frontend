@@ -12,6 +12,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/post_controller.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/post_model.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -42,6 +43,26 @@ class HubScreen extends StatelessWidget {
               borderColor: color,
               titleStyle: M.TextStyle(fontSize: Size.fontTiny))));
 
+  Widget _buildItem(PostData item, {bool isHalf = false}) => Card(
+      type: item.type,
+      title: item.title,
+      imageTitle: item.imageUrl,
+      isHalf: item.isHalf || isHalf,
+      duration: item.duration,
+      onPressed: () {
+        switch(item.type) {
+          case PostType.ARTICLE:
+            Get.toNamed(articleRoute, arguments: item);
+            break;
+          case PostType.STORY:
+            Get.toNamed(storyRoute, arguments: item.stories);
+            break;
+          case PostType.VIDEO:
+            Get.toNamed(videoRoute, arguments: item.videoUrl);
+            break;
+        }
+      });
+
   Widget _buildNewsList() => GetX<PostController>(
       init: PostController(),
       builder: (controller) => !controller.isInit && controller.isAwaiting
@@ -50,14 +71,25 @@ class HubScreen extends StatelessWidget {
               ? Nothing()
               : Column(children: [
                   VerticalBigSpace(),
-                  for (final item in controller.list) ...[
-                    Card(
-                        title: item.title,
-                        imageTitle: item.imageUrl,
-                        onPressed: () =>
-                            Get.toNamed(articleRoute, arguments: item)),
-                    if (item != controller.list.last) VerticalSpace()
-                  ],
+                  for (int i = 0; i < controller.list.length; i++)
+                    ...((PostData item) => !item.isHalf
+                        ? [
+                            _buildItem(item),
+                            if (item != controller.list.last) VerticalSpace()
+                          ]
+                        : [
+                            Row(children: [
+                              Expanded(child: _buildItem(item)),
+                              HorizontalSpace(),
+                              ((PostData item) => item == null
+                                      ? Nothing()
+                                      : Expanded(
+                                          child:
+                                              _buildItem(item, isHalf: true)))(
+                                  controller.list.get(++i))
+                            ]),
+                            if (i < controller.list.length - 1) VerticalSpace()
+                          ])(controller.list[i]),
                   // Card(
                   //     title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3',
                   //     imageTitle: 'https://placeimg.com/640/480/any',

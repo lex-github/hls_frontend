@@ -48,7 +48,7 @@ const postFields =
     'text '
     'imageUrl '
     'kind '
-    //'isHalf '
+    'isHalf '
     //'isFavourite '
     'publishedAt '
     'stories '

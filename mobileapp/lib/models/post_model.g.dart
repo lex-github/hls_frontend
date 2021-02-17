@@ -36,6 +36,7 @@ PostData _$PostDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..type = PostType.fromJsonValue(json['kind'])
+    ..isHalf = toBool(json['isHalf'])
     ..date = toDate(json['publishedAt'])
     ..texts = (json['text'] as List)?.map((e) => e as String)?.toList()
     ..stories = (json['stories'] as List)
@@ -43,7 +44,7 @@ PostData _$PostDataFromJson(Map<String, dynamic> json) {
             e == null ? null : StoryData.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..videoUrl = json['videoUrl'] as String
-    ..videoDuration = json['videoDuration'] as String
+    ..durationSeconds = json['videoDuration'] as int
     ..imageUrl = json['imageUrl'] as String;
 }
 
@@ -59,11 +60,12 @@ Map<String, dynamic> _$PostDataToJson(PostData instance) {
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
   writeNotNull('kind', PostType.toJsonValue(instance.type));
+  writeNotNull('isHalf', instance.isHalf);
   writeNotNull('publishedAt', instance.date?.toIso8601String());
   writeNotNull('text', instance.texts);
   writeNotNull('stories', instance.stories);
   writeNotNull('videoUrl', instance.videoUrl);
-  writeNotNull('videoDuration', instance.videoDuration);
+  writeNotNull('videoDuration', instance.durationSeconds);
   writeNotNull('imageUrl', instance.imageUrl);
   return val;
 }
