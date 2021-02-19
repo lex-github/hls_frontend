@@ -8,8 +8,9 @@ import 'package:hls/controllers/chat_controller.dart';
 class ChatFormController extends FormController {
   final field = 'input';
   final ChatController controller;
-  final FieldValidator validator;
-  ChatFormController({@required this.controller, this.validator});
+  ChatFormController({@required this.controller});
+
+  FieldValidator validator;
 
   @override
   List<FormConfig> get config =>

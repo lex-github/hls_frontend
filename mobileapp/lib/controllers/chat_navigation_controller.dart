@@ -2,7 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/services/auth_service.dart';
 
@@ -31,18 +33,20 @@ class ChatNavigationController extends Controller {
     ever<bool>(AuthService.i.authenticationState, (isAuthenticated) async {
       final isAuthenticated = AuthService.isAuth;
       print('ChatNavigationController.onInit authenticated: $isAuthenticated');
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {
+        // init screens
+        _screens.removeWhere((_) => true);
+        // remove controllers
+        // for (final type in ChatDialogType.values) {
+        //   print('DELETE $type');
+        //   Get.delete<ChatController>(tag: type.title);
+        // }
+        // make sure we start from first
+        _index.value = 0;
 
-      // init screens
-      _screens.removeWhere((_) => true);
-      // make sure we start from first
-      _index.value = 0;
-      // remove controllers
-      // print('AAAAAH ${ChatDialogType.values}');
-      // for (final type in ChatDialogType.values) {
-      //   print('DELETE $type');
-      //   Get.delete<ChatController>(tag: type.title, force: true);
-      // }
+        update();
+        return;
+      }
 
       // check which dialogs are not completed
       final chatDialogsNotCompleted =

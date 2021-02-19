@@ -19,12 +19,13 @@ import 'package:hls/theme/styles.dart';
 
 import '../components/generic.dart';
 
-class ChatScreen<Controller extends ChatController> extends StatelessWidget {
+class ChatScreen<Controller extends ChatController>
+    extends GetView<Controller> {
   final ChatDialogType type;
   ChatScreen({Key key, @required this.type}) : super(key: key);
 
+  @override
   String get tag => type.title;
-  Controller get controller => Get.find<Controller>(tag: tag);
 
   // handlers
 
@@ -102,9 +103,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
           cornerHeight: Size.verticalSmall);
 
   Widget _buildControlContainer(
-          {@required Controller controller,
-          Widget child,
-          bool shouldShowLoading = true}) =>
+          {Widget child, bool shouldShowLoading = true}) =>
       Container(
           //height: Size.chatBar,
           //padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
@@ -123,8 +122,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
               : child);
 
   Widget _buildControlButton(
-          {@required Controller controller,
-          @required bool isSelected,
+          {@required bool isSelected,
           ChatAnswerData answer,
           Function(ChatAnswerData, bool) onSelected}) =>
       Column(children: [
@@ -150,48 +148,48 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
                 onSelected == null ? () => controller.post(answer.value) : null)
       ]);
 
-  Widget _buildInput({@required Controller controller}) =>
-      _buildControlContainer(
-          controller: controller,
-          shouldShowLoading: false,
-          child: GetBuilder<ChatFormController>(
-              init: ChatFormController(
-                  controller: controller,
-                  validator: getChatInputValidator(controller.questionRegexp)),
-              builder: (formController) => Stack(children: [
-                    Obx(() => Input<ChatFormController>(
-                        field: 'input',
-                        isErrorVisible: false,
-                        //shouldFocus: true,
-                        autovalidateMode: formController.shouldValidate
-                            ? AutovalidateMode.always
-                            : AutovalidateMode.disabled,
-                        contentPadding: EdgeInsets.only(
-                            left: Size.horizontal,
-                            right: Size.horizontal * 2 + Size.iconSmall,
-                            bottom: Size.verticalTiny))),
-                    Obx(() => formController.isValidIgnoreDirty
-                        ? Positioned(
-                            right: 0,
-                            height: Size.chatBar,
-                            width: Size.horizontal * 2 + Size.iconSmall,
-                            child: controller.isAwaiting
-                                ? Center(
-                                    child: SizedBox(
-                                        width: Size.iconSmall,
-                                        height: Size.iconSmall,
-                                        child: Loading()))
-                                : Clickable(
-                                    child: Icon(Icons.send,
-                                        color: Colors.primary,
-                                        size: Size.iconSmall),
-                                    onPressed: formController.submitHandler))
-                        : Nothing())
-                  ])));
+  Widget _buildInput() => _buildControlContainer(
+      shouldShowLoading: false,
+      child: GetBuilder<ChatFormController>(
+          init: ChatFormController(controller: controller),
+          builder: (formController) {
+            formController.validator = getChatInputValidator(controller.questionRegexp);
+            formController.reloadConfig();
 
-  Widget _buildRadio({@required Controller controller}) =>
+            return Stack(children: [
+                Obx(() => Input<ChatFormController>(
+                    field: 'input',
+                    //validator: getChatInputValidator(controller.questionRegexp),
+                    isErrorVisible: false,
+                    //shouldFocus: true,
+                    autovalidateMode: formController.shouldValidate
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
+                    contentPadding: EdgeInsets.only(
+                        left: Size.horizontal,
+                        right: Size.horizontal * 2 + Size.iconSmall,
+                        bottom: Size.verticalTiny))),
+                Obx(() => formController.isValidIgnoreDirty
+                    ? Positioned(
+                        right: 0,
+                        height: Size.chatBar,
+                        width: Size.horizontal * 2 + Size.iconSmall,
+                        child: controller.isAwaiting
+                            ? Center(
+                                child: SizedBox(
+                                    width: Size.iconSmall,
+                                    height: Size.iconSmall,
+                                    child: Loading()))
+                            : Clickable(
+                                child: Icon(Icons.send,
+                                    color: Colors.primary,
+                                    size: Size.iconSmall),
+                                onPressed: formController.submitHandler))
+                    : Nothing())
+              ]); }));
+
+  Widget _buildRadio() =>
       (({Iterable rows, Iterable columns}) => _buildControlContainer(
-              controller: controller,
               child: Container(
                   padding: EdgeInsets.only(
                       left: Size.horizontal,
@@ -208,9 +206,7 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
                                   right: Size.horizontalSmall),
                               child: ((ChatAnswerData answer) => answer != null
                                       ? _buildControlButton(
-                                          isSelected: false,
-                                          controller: controller,
-                                          answer: answer)
+                                          isSelected: false, answer: answer)
                                       : Nothing())(
                                   controller.getQuestionAnswer(row, column)))
                       ])
@@ -218,58 +214,60 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
           rows: Iterable<int>.generate(controller.questionRows),
           columns: Iterable<int>.generate(controller.questionColumns));
 
-  Widget _buildCheckbox({@required Controller controller}) =>
-      _buildControlContainer(
-          controller: controller,
-          child: Checkbox(
-              tag: tag,
-              buildControlButton: _buildControlButton,
-              rows: controller.questionRows,
-              columns: controller.questionColumns));
+  Widget _buildCheckbox() => _buildControlContainer(
+      child: Checkbox(
+          tag: tag,
+          buildControlButton: _buildControlButton,
+          rows: controller.questionRows,
+          columns: controller.questionColumns));
 
-  Widget _buildTimer({@required Controller controller}) =>
-      _buildControlContainer(
-          controller: controller,
-          //shouldShowLoading: false,
-          child: Container(
-              padding: Padding.content,
-              width: Size.screenWidth,
-              child: Center(
-                  child: CircularButton(
-                      size: Size.iconBig,
-                      background: Colors.transparent,
-                      borderColor: Colors.primary,
-                      icon: Icons.timer,
-                      iconSize: Size.iconTiny,
-                      onPressed: _timerHandler))));
+  Widget _buildTimer() => _buildControlContainer(
+      //shouldShowLoading: false,
+      child: Container(
+          padding: Padding.content,
+          width: Size.screenWidth,
+          child: Center(
+              child: CircularButton(
+                  size: Size.iconBig,
+                  background: Colors.transparent,
+                  borderColor: Colors.primary,
+                  icon: Icons.timer,
+                  iconSize: Size.iconTiny,
+                  onPressed: _timerHandler))));
 
-  Widget _buildSubmit({@required Controller controller}) =>
-      _buildControlContainer(
-          controller: controller,
-          child: Container(
-              padding: Padding.content,
-              width: Size.screenWidth,
-              child: Center(
-                  child: CircularButton(
-                      size: Size.iconBig,
-                      background: Colors.transparent,
-                      borderColor: Colors.primary,
-                      icon: Icons.check,
-                      iconSize: Size.iconTiny,
-                      onPressed: Get.find<ChatNavigationController>().next))));
+  Widget _buildSubmit() => _buildControlContainer(
+      child: Container(
+          padding: Padding.content,
+          width: Size.screenWidth,
+          child: Center(
+              child: CircularButton(
+                  size: Size.iconBig,
+                  background: Colors.transparent,
+                  borderColor: Colors.primary,
+                  icon: Icons.check,
+                  iconSize: Size.iconTiny,
+                  onPressed: Get.find<ChatNavigationController>().next))));
 
   @override
   Widget build(_) => GetX<Controller>(
       tag: tag,
-      global: false,
+      //global: false,
       init: ChatController(type: type) as Controller,
       builder: (currentController) {
-        // this is wrong
-        // - currentController is wrong type after logout
-        // - this.controller is not registered on last render
-        final controller = Get.isRegistered<Controller>(tag: tag)
-            ? this.controller
-            : currentController;
+        // print('ChatScreen.build '
+        //     '\n\tis registered: ${Get.isRegistered<Controller>(tag: tag)} '
+        //     '\n\ttype: $type '
+        //     '\n\tcurrent type: ${currentController.type}');
+
+        final isRegistered = Get.isRegistered<Controller>(tag: tag);
+        if (!isRegistered) {
+          // Get bug need to recreate controller
+          if (currentController.type != type)
+            Get.put(ChatController(type: type) as Controller, tag: tag);
+          // Get bug controller unregistered too early
+          else
+            return LoadingScreen();
+        }
 
         return Screen(
             shouldResize: true,
@@ -346,18 +344,18 @@ class ChatScreen<Controller extends ChatController> extends StatelessWidget {
                         ])),
                         if (controller.messageQueue.isNullOrEmpty)
                           if (controller.questionType == ChatQuestionType.INPUT)
-                            _buildInput(controller: controller)
+                            _buildInput()
                           else if (controller.questionType ==
                               ChatQuestionType.RADIO)
-                            _buildRadio(controller: controller)
+                            _buildRadio()
                           else if (controller.questionType ==
                               ChatQuestionType.CHECKBOX)
-                            _buildCheckbox(controller: controller)
+                            _buildCheckbox()
                           else if (controller.questionType ==
                               ChatQuestionType.TIMER)
-                            _buildTimer(controller: controller)
+                            _buildTimer()
                           else
-                            _buildSubmit(controller: controller)
+                            _buildSubmit()
                       ])
                     : LoadingPage()));
       });
@@ -368,8 +366,7 @@ class Checkbox<Controller extends ChatController> extends GetView<Controller> {
   final Iterable rows;
   final Iterable columns;
   final Function(
-      {@required Controller controller,
-      ChatAnswerData answer,
+      {ChatAnswerData answer,
       bool isSelected,
       Function(ChatAnswerData, bool) onSelected}) buildControlButton;
   Checkbox(
@@ -410,7 +407,6 @@ class Checkbox<Controller extends ChatController> extends GetView<Controller> {
                   child: ((ChatAnswerData answer) => answer != null
                       ? buildControlButton(
                           isSelected: controller.isCheckboxSelected(answer),
-                          controller: controller,
                           answer: answer,
                           onSelected: _answerHandler)
                       : Nothing())(controller.getQuestionAnswer(row, column)))

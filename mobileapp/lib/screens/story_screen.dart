@@ -43,22 +43,11 @@ class StoryScreen extends GetView<FoodCategoryController> {
                     labelPadding: Padding.zero,
                     indicatorColor: Colors.light,
                     indicatorWeight: 2 * Size.border,
-                    indicatorPadding:
-                        EdgeInsets.symmetric(horizontal: .4 * Size.horizontalTiny),
+                    indicatorPadding: EdgeInsets.symmetric(
+                        horizontal: .4 * Size.horizontalTiny),
                     tabs: [
                       for (final _ in stories)
                         Stack(overflow: Overflow.visible, children: [
-                          // Positioned.fill(
-                          //   //height: 1.5 * Size.verticalSmall + 5,
-                          //   child: Container(
-                          //       color: Colors.failure,
-                          //       // decoration: BoxDecoration(
-                          //       //     border: Border(
-                          //       //         bottom: BorderSide(
-                          //       //             color: Colors.light.withOpacity(.5),
-                          //       //             width: Size.border)))
-                          //   ),
-                          // ),
                           Positioned(
                               bottom: -2 * Size.border,
                               left: .4 * Size.horizontalTiny,
@@ -67,6 +56,6 @@ class StoryScreen extends GetView<FoodCategoryController> {
                                   color: Colors.light.withOpacity(.5),
                                   height: 2 * Size.border))
                         ])
-                    ])),
+                    ]))
           ])));
 }

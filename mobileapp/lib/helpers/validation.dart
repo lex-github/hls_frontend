@@ -120,7 +120,7 @@ class TypeValidator<T> extends FieldValidator<T> {
   bool isValid(dynamic value) => value is T || value is List<T>;
 }
 
-class UnchangedValueValidator extends TextFieldValidator {
+class UnchangedValueValidator extends FieldValidator {
   final prevValue;
 
   UnchangedValueValidator(
@@ -141,17 +141,27 @@ class MultiValidatorWithError extends MultiValidator {
   @override
   bool isValid(value) {
     for (FieldValidator validator in validators) {
+      if (validator == null)
+        continue;
+
       if (!validator.isValid(value)) {
         _errorText = validator.errorText;
         return false;
       }
     }
+
     return true;
   }
 
   @override
   String call(dynamic value) {
-    return isValid(value) ? null : _errorText;
+    final result = isValid(value) ? null : _errorText;
+
+    // print('MultiValidatorWithError.call'
+    //   '\n\tvalue: $value'
+    //   '\n\tresult: $result');
+
+    return result;
   }
 }
 

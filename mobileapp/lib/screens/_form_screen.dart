@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' as R;
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' as B;
 import 'package:hls/components/generic.dart';
@@ -114,6 +115,7 @@ class Input<T extends FormController> extends GetView<T> {
   final Widget leading;
   final Widget trailing;
   final AutovalidateMode autovalidateMode;
+  final FieldValidator validator;
 
   Input(
       {@required this.field,
@@ -129,7 +131,8 @@ class Input<T extends FormController> extends GetView<T> {
       this.contentPadding,
       this.leading,
       this.trailing,
-      this.autovalidateMode})
+      this.autovalidateMode,
+      this.validator})
       : _tag = tag,
         super(key: key);
 
@@ -145,6 +148,7 @@ class Input<T extends FormController> extends GetView<T> {
     final validator = _composeValidator(
         controller: controller,
         field: field,
+        defaultValidator: this.validator,
         validationMessage: remoteValidationMessage);
 
     return Obx(() => TextFormField(
@@ -329,6 +333,7 @@ FormFieldValidator _composeValidator(
     {@required FormController controller,
     @required String field,
     dynamic value,
+    FieldValidator defaultValidator,
     String validationMessage,
     FormValidationData validationData}) {
   value ??= controller?.getValue(field);
@@ -337,19 +342,19 @@ FormFieldValidator _composeValidator(
   // no form controller validation
   if (controller == null)
     return validationMessage == null
-        ? null
+        ? defaultValidator
         : UnchangedValueValidator(
             errorText: validationMessage, prevValue: value);
 
   // combined validation
   final validator = controller.getValidator(field);
-  return !validationMessage.isNullOrEmpty
-      ? MultiValidatorWithError([
-          UnchangedValueValidator(
-              errorText: validationMessage, prevValue: value),
-          validator,
-        ])
-      : validator;
+
+  return MultiValidatorWithError(<FieldValidator>[
+    if (!validationMessage.isNullOrEmpty)
+      UnchangedValueValidator(errorText: validationMessage, prevValue: value),
+    if (defaultValidator != null) defaultValidator,
+    if (validator != null) validator
+  ]);
 }
 
 InputDecoration _getInputDecoration(

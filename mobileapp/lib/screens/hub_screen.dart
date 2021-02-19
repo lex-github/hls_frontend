@@ -50,7 +50,7 @@ class HubScreen extends StatelessWidget {
       isHalf: item.isHalf || isHalf,
       duration: item.duration,
       onPressed: () {
-        switch(item.type) {
+        switch (item.type) {
           case PostType.ARTICLE:
             Get.toNamed(articleRoute, arguments: item);
             break;
