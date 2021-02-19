@@ -10,16 +10,105 @@ import 'package:hls/components/painters.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/post_controller.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/iterables.dart';
+import 'package:hls/models/post_model.dart';
 import 'package:hls/theme/styles.dart';
 
-class HubScreen extends StatelessWidget {
-  final radius = Size.screenWidth / 1.5;
-  final outerRadius = Size.screenWidth / 1.5 + Size.vertical * 2;
-  final angle = 2 * pi / 3;
-  final startAngle = -pi / 2;
+final radius = Size.screenWidth / 1.4;
+final outerRadius = radius + Size.vertical * 2;
+final angle = 2 * pi / 3;
+final startAngle = -pi / 2;
 
+class HubScreen extends StatelessWidget {
   // builders
+
+  Widget _buildSector(
+          {String title, Color color, double value, double startAngle}) =>
+      CustomPaint(
+          size: M.Size(outerRadius, outerRadius),
+          painter: SectorProgressPainter(
+              color: color,
+              title: title,
+              value: value,
+              endAngle: angle,
+              startAngle: startAngle));
+
+  Widget _buildButton({String title, Color color}) => Expanded(
+      child: Clickable(
+          child: Button(
+              padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+              title: title,
+              borderColor: color,
+              titleStyle: M.TextStyle(fontSize: Size.fontTiny))));
+
+  Widget _buildItem(PostData item, {bool isHalf = false}) => Card(
+      type: item.type,
+      title: item.title,
+      imageTitle: item.imageUrl,
+      isHalf: item.isHalf || isHalf,
+      duration: item.duration,
+      onPressed: () {
+        switch (item.type) {
+          case PostType.ARTICLE:
+            Get.toNamed(articleRoute, arguments: item);
+            break;
+          case PostType.STORY:
+            Get.toNamed(storyRoute, arguments: item.stories);
+            break;
+          case PostType.VIDEO:
+            Get.toNamed(videoRoute, arguments: item.videoUrl);
+            break;
+        }
+      });
+
+  Widget _buildNewsList() => GetX<PostController>(
+      init: PostController(),
+      builder: (controller) => !controller.isInit && controller.isAwaiting
+          ? Loading()
+          : controller.list.isBlank && false
+              ? Nothing()
+              : Column(children: [
+                  VerticalBigSpace(),
+                  for (int i = 0; i < controller.list.length; i++)
+                    ...((PostData item) => !item.isHalf
+                        ? [
+                            _buildItem(item),
+                            if (item != controller.list.last) VerticalSpace()
+                          ]
+                        : [
+                            Row(children: [
+                              Expanded(child: _buildItem(item)),
+                              HorizontalSpace(),
+                              ((PostData item) => item == null
+                                      ? Nothing()
+                                      : Expanded(
+                                          child:
+                                              _buildItem(item, isHalf: true)))(
+                                  controller.list.get(++i))
+                            ]),
+                            if (i < controller.list.length - 1) VerticalSpace()
+                          ])(controller.list[i]),
+                  // Card(
+                  //     title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3',
+                  //     imageTitle: 'https://placeimg.com/640/480/any',
+                  //     onPressed: () => Get.toNamed(articleRoute,
+                  //         arguments: PostData()
+                  //           ..title = 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3'
+                  //           ..imageUrl = 'https://placeimg.com/640/480/any')),
+                  // VerticalSpace(),
+                  // Row(children: [
+                  //   Expanded(
+                  //       child:
+                  //           Card(title: 'КУРЕНИЕ НАЧАЛО КОНЦА', isHalf: true)),
+                  //   HorizontalSpace(),
+                  //   Expanded(
+                  //       child: Card(title: 'ЧЕМ СИЛЕН СЕЛЕН?', isHalf: true))
+                  // ]),
+                  // VerticalSpace(),
+                  // Card(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА')
+                ]));
 
   @override
   Widget build(_) => Screen(
@@ -29,151 +118,83 @@ class HubScreen extends StatelessWidget {
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
           child: Icon(Icons.notifications)),
-      child: ListView(children: [
-        Column(children: [
-          VerticalSpace(),
-          GetBuilder<HubController>(
-              init: HubController(),
-              builder: (controller) =>
-                  Stack(alignment: Alignment.center, children: [
-                    RotationTransition(
-                        turns: Tween(begin: .0, end: 1.0)
-                            .animate(controller.animationController),
-                        child: Stack(alignment: Alignment.center, children: [
-                          CustomPaint(
-                              size: M.Size(outerRadius, outerRadius),
-                              painter: SectorProgressPainter(
-                                  color: Colors.nutrition,
-                                  title: nutritionTitle,
-                                  value: .63,
-                                  endAngle: angle,
-                                  startAngle: -pi / 2)),
-                          CustomPaint(
-                              size: M.Size(outerRadius, outerRadius),
-                              painter: SectorProgressPainter(
-                                  color: Colors.exercise,
-                                  title: exerciseTitle,
-                                  value: .38,
-                                  endAngle: angle,
-                                  startAngle: startAngle + angle)),
-                          CustomPaint(
-                              size: M.Size(outerRadius, outerRadius),
-                              painter: SectorProgressPainter(
-                                  color: Colors.schedule,
-                                  title: scheduleTitle,
-                                  value: .81,
-                                  endAngle: angle,
-                                  startAngle: startAngle + angle * 2))
-                        ])),
-                    CircularProgress(
-                        size: radius,
-                        child: Text(
-                          '64%',
-                          style: TextStyle.primary
-                              .copyWith(fontSize: Size.fontPercent),
-                        ))
-                  ]))
-        ]),
+      child: SingleChildScrollView(
+          child: Column(children: [
         VerticalBigSpace(),
+        GetBuilder<HubController>(
+            init: HubController(),
+            builder: (controller) =>
+                Stack(alignment: Alignment.center, children: [
+                  RotationTransition(
+                      turns: Tween(begin: .0, end: 1.0)
+                          .animate(controller.animationController),
+                      child: Stack(alignment: Alignment.center, children: [
+                        _buildSector(
+                            title: scheduleTitle,
+                            color: Colors.schedule,
+                            value: .63,
+                            startAngle: startAngle),
+                        _buildSector(
+                            title: nutritionTitle,
+                            color: Colors.nutrition,
+                            value: .38,
+                            startAngle: startAngle + angle),
+                        _buildSector(
+                            title: exerciseTitle,
+                            color: Colors.exercise,
+                            value: .81,
+                            startAngle: startAngle + angle * 2)
+                      ])),
+                  CircularProgress(
+                      size: radius,
+                      child: Text('64%',
+                          style: TextStyle.primary
+                              .copyWith(fontSize: Size.fontPercent)))
+                ])),
+        VerticalBigSpace(),
+        VerticalBigSpace(),
+        Row(children: [
+          HorizontalSpace(),
+          _buildButton(title: scheduleTitle, color: Colors.schedule),
+          HorizontalSmallSpace(),
+          _buildButton(title: nutritionTitle, color: Colors.nutrition),
+          HorizontalSmallSpace(),
+          _buildButton(title: exerciseTitle, color: Colors.exercise),
+          HorizontalSpace()
+        ]),
+        VerticalSpace(),
         Container(
-            child: Column(children: [
-          Container(
-              child: Row(children: [
-            HorizontalSpace(),
-            Expanded(
-                child: Clickable(
-                    child: Button(
-                        padding:
-                            EdgeInsets.symmetric(vertical: Padding.button.top),
-                        title: scheduleTitle,
-                        borderColor: Colors.schedule,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
-            HorizontalSmallSpace(),
-            Expanded(
-                child: Clickable(
-                    child: Button(
-                        padding:
-                            EdgeInsets.symmetric(vertical: Padding.button.top),
-                        title: nutritionTitle,
-                        borderColor: Colors.nutrition,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
-            HorizontalSmallSpace(),
-            Expanded(
-                child: Clickable(
-                    child: Button(
-                        padding:
-                            EdgeInsets.symmetric(vertical: Padding.button.top),
-                        title: exerciseTitle,
-                        borderColor: Colors.exercise,
-                        titleStyle: M.TextStyle(fontSize: Size.fontTiny)))),
-            HorizontalSpace()
-          ])),
-          Container(
-              color: Colors.background,
-              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    VerticalBigSpace(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('$goalTitle:', style: TextStyle.secondary),
-                          Text('Похудение', style: TextStyle.primary)
-                        ]),
-                    VerticalMediumSpace(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('$macrocycleTitle:', style: TextStyle.secondary),
-                          Text('Оздоровительный', style: TextStyle.primary)
-                        ]),
-                    VerticalMediumSpace(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                              child: Text('$microcycleTitle\n' '(2м /16 тр):',
-                                  style: TextStyle.secondary,
-                                  textAlign: TextAlign.left)),
-                          Expanded(
-                              child: Text('Первый\n' '(подготовительный)',
-                                  style: TextStyle.primary,
-                                  textAlign: TextAlign.right))
-                        ]),
-                    VerticalMediumSpace(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('$weekTitle:', style: TextStyle.secondary),
-                          Text('2/8', style: TextStyle.primary)
-                        ]),
-                    VerticalMediumSpace(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('$trainingTitle:', style: TextStyle.secondary),
-                          Text('3/16', style: TextStyle.primary)
-                        ]),
-                    VerticalBigSpace(),
-                  ])),
-          Container(
-              color: Colors.background,
-              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-              child: Column(children: [
-                Card(title: 'ПРОДУКТЫ ЧЕМПИОНЫ Ч.3'),
-                VerticalSpace(),
-                Row(children: [
-                  Expanded(child: Card(title: 'КУРЕНИЕ НАЧАЛО КОНЦА')),
-                  HorizontalSpace(),
-                  Expanded(child: Card(title: 'ЧЕМ СИЛЕН СЕЛЕН?'))
-                ]),
-                VerticalSpace(),
-                Card(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА'),
-                VerticalBigSpace()
-              ]))
-        ]))
-      ]));
+            color: Colors.background,
+            padding: Padding.content,
+            child: Column(
+                children: [StatusBlock(), VerticalSpace(), _buildNewsList()]))
+      ])));
+}
+
+class StatusBlock extends StatelessWidget {
+  // builders
+
+  Widget _buildRow({String title, String text}) =>
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        TextSecondary('$title:'),
+        TextPrimary(text, size: Size.fontSmall, align: TextAlign.right)
+      ]);
+
+  @override
+  Widget build(BuildContext context) =>
+      Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        _buildRow(title: goalTitle, text: 'Похудение'),
+        VerticalMediumSpace(),
+        _buildRow(title: macrocycleTitle, text: 'Оздоровительный'),
+        VerticalMediumSpace(),
+        _buildRow(
+            title: '$microcycleTitle\n(2м /16 тр)',
+            text: 'Первый\n(подготовительный)'),
+        VerticalMediumSpace(),
+        _buildRow(title: weekTitle, text: '2/8'),
+        VerticalMediumSpace(),
+        _buildRow(title: trainingTitle, text: '3/16')
+      ]);
 }
 
 class HubController extends Controller with SingleGetTickerProviderMixin {

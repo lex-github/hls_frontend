@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide Image, Router;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hls/components/generic.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/null_awareness.dart';

@@ -72,6 +72,8 @@ class Size {
   static double get bar => ratio(barHeight);
   static double get chatBar => ratio(chatBarHeight);
   static double get avatar => ratio(avatarSize);
+  static double get thumbnail => ratio(thumbnailHeight);
+  static double get image => ratio(imageHeight);
   static double get bottomSheet => ratio(bottomSheetSize);
   static double get picker => ratio(pickerSize);
   static double get buttonBig => ratio(buttonBigSize);
@@ -109,13 +111,13 @@ class Colors {
   static const black = M.Colors.black;
   static const white = M.Colors.white;
 
-  static const shadow = M.Color(0xFF121212);
+  static const shadow = M.Color(0x66121212);
   static const shadowLight = M.Color(0x662f2d3e);
   static const icon = Colors.light;
 
   // text
   static const primaryText = Colors.light;
-  static const secondaryText = M.Color(0xFF606065);
+  static const secondaryText = M.Color(0xFF656570);
 
   // project specific
   static const schedule = M.Color(0xFF8416FF);

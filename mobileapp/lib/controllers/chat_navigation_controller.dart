@@ -33,18 +33,20 @@ class ChatNavigationController extends Controller {
     ever<bool>(AuthService.i.authenticationState, (isAuthenticated) async {
       final isAuthenticated = AuthService.isAuth;
       print('ChatNavigationController.onInit authenticated: $isAuthenticated');
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {
+        // init screens
+        _screens.removeWhere((_) => true);
+        // remove controllers
+        // for (final type in ChatDialogType.values) {
+        //   print('DELETE $type');
+        //   Get.delete<ChatController>(tag: type.title);
+        // }
+        // make sure we start from first
+        _index.value = 0;
 
-      // init screens
-      _screens.removeWhere((_) => true);
-      // make sure we start from first
-      _index.value = 0;
-      // remove controllers
-      // print('AAAAAH ${ChatDialogType.values}');
-      // for (final type in ChatDialogType.values) {
-      //   print('DELETE $type');
-      //   Get.delete<ChatController>(tag: type.title, force: true);
-      // }
+        update();
+        return;
+      }
 
       // check which dialogs are not completed
       final chatDialogsNotCompleted =

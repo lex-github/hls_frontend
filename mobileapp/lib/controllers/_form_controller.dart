@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/dialog.dart';
@@ -28,41 +29,7 @@ abstract class FormController extends GetxController {
 
   @override
   void onInit() {
-    for (final config in this.config) {
-      FormControllerState state = FormControllerState();
-      switch (config.type) {
-        case FieldType.SELECT:
-        case FieldType.MULTI_SELECT:
-          state
-            ..controller = TextEditingController()
-            ..node = FocusNode();
-          break;
-        case FieldType.SWITCH:
-          break;
-        default:
-          state
-            ..controller = (TextEditingController()
-              // input controller controls state
-              ..addListener(() => onChanged(config.field, state.controller.text,
-                  shouldUpdateController: false)))
-            ..node = (FocusNode()
-              ..addListener(() => state.hasFocus = state.node.hasFocus));
-      }
-
-      //print('FormController.onInit $config');
-
-      _state[config.field] = state
-        ..config = config
-        ..value = config.value;
-
-      // keyboard listener
-      _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
-          onChange: (bool visible) async {
-        isKeyboardVisible = visible;
-
-        onKeyboardChanged(visible);
-      });
-    }
+    loadConfig();
 
     super.onInit();
   }
@@ -122,11 +89,15 @@ abstract class FormController extends GetxController {
   String getLabel(String field) => getConfig(field)?.label;
   String getHint(String field) => getConfig(field)?.hint;
   FieldType getType(String field) => getConfig(field)?.type;
-  FormFieldValidator getValidator(String field) => getConfig(field)?.validator;
+  FieldValidator getValidator(String field) => getConfig(field)?.validator;
   List<TextInputFormatter> getFormatters(String field) =>
       getConfig(field)?.formatters;
-  bool isValidField(String field) =>
-      (getValidator(field) ?? (_) => null)(getValue(field)).isNullOrEmpty;
+  bool isValidField(String field) {
+    final validator = getValidator(field);
+    if (validator == null) return true;
+
+    return validator(getValue(field)).isNullOrEmpty;
+  }
 
   // setters
 
@@ -163,6 +134,48 @@ abstract class FormController extends GetxController {
   }
 
   // methods
+  loadConfig() {
+    for (final config in this.config) {
+      FormControllerState state = FormControllerState();
+      switch (config.type) {
+        case FieldType.SELECT:
+        case FieldType.MULTI_SELECT:
+          state
+            ..controller = TextEditingController()
+            ..node = FocusNode();
+          break;
+        case FieldType.SWITCH:
+          break;
+        default:
+          state
+            ..controller = (TextEditingController()
+            // input controller controls state
+              ..addListener(() => onChanged(config.field, state.controller.text,
+                shouldUpdateController: false)))
+            ..node = (FocusNode()
+              ..addListener(() => state.hasFocus = state.node.hasFocus));
+      }
+
+      //print('FormController.onInit $config');
+
+      _state[config.field] = state
+        ..config = config
+        ..value = config.value;
+
+      // keyboard listener
+      _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
+        onChange: (bool visible) async {
+          isKeyboardVisible = visible;
+
+          onKeyboardChanged(visible);
+        });
+    }
+  }
+
+  reloadConfig() {
+    for (final config in this.config)
+      _state[config.field].config = config;
+  }
 
   bool validate() => _key.currentState?.validate() ?? true;
 
@@ -267,7 +280,7 @@ class FormConfig {
   final String field;
   final String label;
   final String hint;
-  final FormFieldValidator validator;
+  final FieldValidator validator;
   final List<TextInputFormatter> formatters;
   final FieldType type;
   final value;

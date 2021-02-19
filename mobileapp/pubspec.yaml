@@ -39,7 +39,7 @@ dependencies:
   # validation
   form_field_validator: ^1.0.1
   # micro framework state/navigation manager
-  get: ^3.24.0
+  get: ^3.25.4
   # fonts
   google_fonts: ^1.1.1
   # api
@@ -54,8 +54,12 @@ dependencies:
   mask_text_input_formatter: ^1.1.0
   # refresh list by pulling
   pull_to_refresh: ^1.6.3
+  # share
+  share: ^0.6.5+4
   # settings
   shared_preferences: ^0.5.12+4
+  # video player
+  video_player: ^1.0.1
 
 dev_dependencies:
   flutter_test:

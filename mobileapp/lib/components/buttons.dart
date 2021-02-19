@@ -110,7 +110,10 @@ class Button extends StatelessWidget {
       : child ??
           icon ??
           image ??
-          TextPrimaryHint(title, align: TextAlign.center, style: titleStyle);
+          TextPrimaryHint(title,
+              align: TextAlign.center,
+              style: titleStyle,
+              size: titleStyle.fontSize);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled
@@ -327,7 +330,10 @@ class Clickable extends StatelessWidget {
   @override
   Widget build(BuildContext context) => borderRadius == null
       ? _buildClickable()
-      : ClipRRect(borderRadius: borderRadiusCircular, child: _buildClickable());
+      : ClipRRect(
+          borderRadius:
+              BorderRadius.circular(borderRadius ?? Size.borderRadius),
+          child: _buildClickable());
 }
 
 // class ListItemButton extends Button {
