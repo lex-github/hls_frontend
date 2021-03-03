@@ -81,7 +81,7 @@ abstract class FormController extends GetxController {
 
   FormControllerState getState(String field) =>
       _state.get<FormControllerState>(field);
-  dynamic getValue(String field) => getState(field)?.value;
+  T getValue<T>(String field) => getState(field)?.value;
   TextEditingController getController(String field) =>
       getState(field)?.controller;
   FocusNode getNode(String field) => getState(field)?.node;

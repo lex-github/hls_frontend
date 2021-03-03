@@ -39,11 +39,13 @@ dependencies:
   # validation
   form_field_validator: ^1.0.1
   # micro framework state/navigation manager
-  get: ^3.25.4
+  get: ^3.25.6
   # fonts
   google_fonts: ^1.1.1
   # api
-  graphql_flutter: ^3.1.0
+  graphql_flutter: ^4.0.1
+  # selection of images (camera/gallery)
+  image_picker: ^0.6.7+22
   # needed for serializable classes
   json_serializable: ^3.5.1
   # bar over keyboard
@@ -52,6 +54,8 @@ dependencies:
   keyboard_visibility: any
   # used for phone mask
   mask_text_input_formatter: ^1.1.0
+  # content type
+  mime: ^0.9.7
   # refresh list by pulling
   pull_to_refresh: ^1.6.3
   # share
@@ -101,6 +105,7 @@ flutter:
     - assets/
     - assets/icons/
     - assets/slider/
+    - assets/test/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

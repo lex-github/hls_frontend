@@ -52,6 +52,7 @@ abstract class FormScreen<T extends FormController> extends GetView<T> {
                       keyboardSeparatorColor: Colors.black.withOpacity(.6),
                       nextFocus: true,
                       actions: nodes
+                          ?.where((field) => controller.getNode(field) != null)
                           ?.map((field) => KeyboardActionsItem(
                               footerBuilder: (keyboards ?? {})[field],
                               displayArrows: displayArrows,

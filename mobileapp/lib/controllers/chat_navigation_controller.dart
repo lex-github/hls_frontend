@@ -2,9 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/_controller.dart';
-import 'package:hls/controllers/chat_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
-import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/services/auth_service.dart';
 

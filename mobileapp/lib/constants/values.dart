@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.5';
+const version = '0.0.0.6';
 
 // config
 const assetsDirectory = 'assets';
@@ -21,6 +21,7 @@ const searchDelayDuration = Duration(seconds: 2);
 const submenuAnimationDuration = Duration(milliseconds: 300);
 const timeoutDuration = Duration(seconds: 5);
 const timerDuration = Duration(seconds: 1);
+const tooltipDelay = 5;
 
 // forms
 const defaultErrorMaxLines = 3;
@@ -34,6 +35,8 @@ const otpVerifyRoute = '/otp-verify';
 const chatRoute = '/chat';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
+const profileRoute = '/profile';
+const profileFormRoute = '/profile-form';
 const homeRoute = '/home';
 const articleRoute = '/article';
 const storyRoute = '/story';
@@ -78,7 +81,7 @@ const tabbarIconSize = 20.0;
 
 const barHeight = 75.0;
 const chatBarHeight = 40.0;
-const avatarSize = 150.0;
+const avatarSize = 120.0;
 const thumbnailHeight = 180.0;
 const imageHeight = 265.0;
 const pickerSize = 35.0;
@@ -121,6 +124,6 @@ const panelShadowVerticalOffset = -2.0;
 const panelShadowOffset =
     const Offset(panelShadowHorizontalOffset, panelShadowVerticalOffset);
 
-const submenuBlurStrength = 3.0;
+const submenuBlurStrength = 6.0;
 const submenuBlurVerticalCoefficient = 2;
 const submenuDistance = 200;

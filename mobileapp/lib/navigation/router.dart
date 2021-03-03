@@ -9,6 +9,8 @@ import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
 import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
+import 'package:hls/screens/profile_form_screen.dart';
+import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
 import 'package:hls/screens/story_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
@@ -55,6 +57,14 @@ class Router {
         name: welcomeRoute,
         page: () => WelcomeScreen(),
         transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: profileRoute,
+        page: () => ProfileScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+      name: profileFormRoute,
+      page: () => ProfileFormScreen(),
+      transitionDuration: navigationTransitionDuration),
     GetPage(
         name: homeRoute,
         page: home,

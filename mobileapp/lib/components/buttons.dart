@@ -113,7 +113,7 @@ class Button extends StatelessWidget {
           TextPrimaryHint(title,
               align: TextAlign.center,
               style: titleStyle,
-              size: titleStyle.fontSize);
+              size: titleStyle?.fontSize);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled

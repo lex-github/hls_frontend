@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart' hide Svg;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
-import 'package:get/utils.dart';
+// import 'package:get/route_manager.dart';
+// import 'package:get/utils.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/api.dart';
@@ -32,28 +32,35 @@ class Avatar extends StatelessWidget {
   final Widget child;
   final String imageUri;
   final bool isLink;
+  final bool isAsset;
   final double size;
-  Avatar({this.user, this.child, this.imageUri, this.isLink = true, size})
+  Avatar(
+      {this.user,
+      this.child,
+      this.imageUri,
+      this.isLink = true,
+      this.isAsset = false,
+      size})
       : assert(user != null || child != null || !imageUri.isNullOrEmpty),
         this.size = size ?? Size.iconBig;
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: size,
-        height: size,
-        child: Stack(children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(size / 2),
-              child: Center(
-                  child: child ??
-                      Image(
-                          title: imageUri ?? user.avatarUri,
-                          isLink: isLink,
-                          height: size,
-                          width: size,
-                          fit: BoxFit.cover)))
-        ]),
-      );
+      width: size,
+      height: size,
+      child: Stack(children: [
+        ClipRRect(
+            borderRadius: BorderRadius.circular(size / 2),
+            child: Center(
+                child: child ??
+                    Image(
+                        title: imageUri ?? user.avatarUri,
+                        isLink: isLink,
+                        isAsset: isAsset,
+                        height: size,
+                        width: size,
+                        fit: BoxFit.cover)))
+      ]));
 }
 
 class CircularProgress extends StatelessWidget {
@@ -306,6 +313,7 @@ class Image extends StatelessWidget {
   final Widget Function(BuildContext, ImageProvider) builder;
   final ImageProvider image;
   final bool isLink;
+  final bool isAsset;
 
   Image(
       {Key key,
@@ -319,7 +327,8 @@ class Image extends StatelessWidget {
       this.alignment = Alignment.center,
       this.builder,
       this.image,
-      this.isLink = false})
+      this.isLink = false,
+      this.isAsset = false})
       : assert(!title.isNullOrEmpty || image != null),
         this.fit = fit ??
             (width != null || height != null || size != null
@@ -333,6 +342,10 @@ class Image extends StatelessWidget {
 
   String _prepareLink(title) =>
       title.startsWith('http') ? title : '$siteUrl${trimLeading('/', title)}';
+
+  String _preparePath(title) => isAsset
+      ? title
+      : '$assetsDirectory/$title${title.contains('.') ? '' : '.png'}';
 
   // builders
 
@@ -396,8 +409,7 @@ class Image extends StatelessWidget {
                       fit: fit,
                       alignment: alignment)
                   : M.Image(
-                      image: AssetImage(
-                          '$assetsDirectory/$title${title.contains('.') ? '' : '.png'}'),
+                      image: AssetImage(_preparePath(title)),
                       height: height,
                       width: width,
                       color: color,
@@ -484,6 +496,8 @@ class Screen extends StatelessWidget {
   final double leadingTop;
   final double leadingLeft;
   final Widget trailing;
+  final double trailingTop;
+  final double trailingRight;
   final Widget fab;
   final Color color;
   final bool shouldResize;
@@ -499,6 +513,8 @@ class Screen extends StatelessWidget {
       this.leadingTop,
       this.leadingLeft,
       this.trailing,
+      this.trailingTop,
+      this.trailingRight,
       this.fab,
       this.color,
       this.shouldResize = false,
@@ -641,6 +657,12 @@ class Screen extends StatelessWidget {
                                             (Size.vertical + Size.top),
                                         left: leadingLeft ?? Size.horizontal,
                                         child: leading),
+                                  if (!shouldHaveAppBar && trailing != null)
+                                    Positioned(
+                                        top: trailingTop ??
+                                            (Size.vertical + Size.top),
+                                        right: trailingRight ?? Size.horizontal,
+                                        child: trailing),
                                   if (fab != null)
                                     Positioned(
                                         bottom: Size.vertical,

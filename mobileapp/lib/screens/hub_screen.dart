@@ -1,47 +1,59 @@
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart'
     hide Card, Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
+import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
-import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/post_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/post_model.dart';
+import 'package:hls/services/auth_service.dart';
+import 'package:hls/services/graphql_service.dart';
 import 'package:hls/theme/styles.dart';
+import 'package:hls/models/user_model.dart';
 
 final radius = Size.screenWidth / 1.4;
 final outerRadius = radius + Size.vertical * 2;
 final angle = 2 * pi / 3;
 final startAngle = -pi / 2;
 
-class HubScreen extends StatelessWidget {
+class HubScreen extends GetView<HubController> {
+  UserDailyData get profileDaily => AuthService.i?.profile?.daily;
+
+  // handlers
+
+  _tipHandler({ActivityType type}) => controller.retrieveTooltip(type: type);
+
   // builders
 
-  Widget _buildSector(
-          {String title, Color color, double value, double startAngle}) =>
+  Widget _buildSector({ActivityType type, double value, double startAngle}) =>
       CustomPaint(
           size: M.Size(outerRadius, outerRadius),
           painter: SectorProgressPainter(
-              color: color,
-              title: title,
+              title: type.title,
+              color: type.color,
               value: value,
               endAngle: angle,
               startAngle: startAngle));
 
-  Widget _buildButton({String title, Color color}) => Expanded(
-      child: Clickable(
-          child: Button(
-              padding: EdgeInsets.symmetric(vertical: Padding.button.top),
-              title: title,
-              borderColor: color,
-              titleStyle: M.TextStyle(fontSize: Size.fontTiny))));
+  Widget _buildButton({ActivityType type}) => Expanded(
+      child: Button(
+          padding: EdgeInsets.symmetric(vertical: Padding.button.top),
+          title: type.title,
+          borderColor: type.color,
+          onPressed: () => _tipHandler(type: type),
+          titleStyle: M.TextStyle(fontSize: Size.fontTiny)));
 
   Widget _buildItem(PostData item, {bool isHalf = false}) => Card(
       type: item.type,
@@ -110,6 +122,33 @@ class HubScreen extends StatelessWidget {
                   // Card(title: 'НАШ ОРГАНИЗМ И ВЛИЯНИЕ НА НЕГО НАШЕГО РАЦИОНА')
                 ]));
 
+  Widget _buildCenter() =>
+      Obx(() => Stack(alignment: Alignment.center, children: [
+            Text('${profileDaily.total.round()}%',
+                style: TextStyle.primary.copyWith(fontSize: Size.fontPercent)),
+            if (!controller.tooltip.isNullOrEmpty || controller.isAwaiting)
+              Container(
+                  width: radius,
+                  height: radius,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(radius / 2),
+                      child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                              sigmaX: submenuBlurStrength,
+                              sigmaY: submenuBlurStrength *
+                                  submenuBlurVerticalCoefficient),
+                          child: M.Padding(
+                              padding: Padding.content,
+                              child: Center(
+                                  child: controller.isAwaiting
+                                      ? Loading(
+                                          color: controller.tooltipColor ??
+                                              Colors.primary)
+                                      : AutoSizeText(controller.tooltip,
+                                          style: TextStyle.title,
+                                          textAlign: TextAlign.center))))))
+          ]));
+
   @override
   Widget build(_) => Screen(
       padding: Padding.zero,
@@ -130,36 +169,29 @@ class HubScreen extends StatelessWidget {
                           .animate(controller.animationController),
                       child: Stack(alignment: Alignment.center, children: [
                         _buildSector(
-                            title: scheduleTitle,
-                            color: Colors.schedule,
-                            value: .63,
+                            type: ActivityType.SCHEDULE,
+                            value: profileDaily.schedule / 100,
                             startAngle: startAngle),
                         _buildSector(
-                            title: nutritionTitle,
-                            color: Colors.nutrition,
-                            value: .38,
+                            type: ActivityType.NUTRITION,
+                            value: profileDaily.nutrition / 100,
                             startAngle: startAngle + angle),
                         _buildSector(
-                            title: exerciseTitle,
-                            color: Colors.exercise,
-                            value: .81,
+                            type: ActivityType.EXERCISE,
+                            value: profileDaily.exercise / 100,
                             startAngle: startAngle + angle * 2)
                       ])),
-                  CircularProgress(
-                      size: radius,
-                      child: Text('64%',
-                          style: TextStyle.primary
-                              .copyWith(fontSize: Size.fontPercent)))
+                  CircularProgress(size: radius, child: _buildCenter())
                 ])),
         VerticalBigSpace(),
         VerticalBigSpace(),
         Row(children: [
           HorizontalSpace(),
-          _buildButton(title: scheduleTitle, color: Colors.schedule),
+          _buildButton(type: ActivityType.SCHEDULE),
           HorizontalSmallSpace(),
-          _buildButton(title: nutritionTitle, color: Colors.nutrition),
+          _buildButton(type: ActivityType.NUTRITION),
           HorizontalSmallSpace(),
-          _buildButton(title: exerciseTitle, color: Colors.exercise),
+          _buildButton(type: ActivityType.EXERCISE),
           HorizontalSpace()
         ]),
         VerticalSpace(),
@@ -197,7 +229,7 @@ class StatusBlock extends StatelessWidget {
       ]);
 }
 
-class HubController extends Controller with SingleGetTickerProviderMixin {
+class HubController extends GraphqlService with SingleGetTickerProviderMixin {
   HubController() {
     _animationController =
         AnimationController(vsync: this, duration: defaultAnimationDuration)
@@ -205,10 +237,37 @@ class HubController extends Controller with SingleGetTickerProviderMixin {
           ..repeat(period: rotationAnimationDuration);
   }
 
+  // tooltip
+
+  final _tooltip = ''.obs;
+  String get tooltip => _tooltip.value;
+
+  Color _tooltipColor;
+  Color get tooltipColor => _tooltipColor;
+
+  // animation
+
   AnimationController _animationController;
   AnimationController get animationController => _animationController;
 
   final _animationProgress = .0.obs;
   double get animationProgress => _animationProgress.value;
   set animationProgress(double value) => _animationProgress.value = value;
+
+  // methods
+
+  retrieveTooltip({ActivityType type}) async {
+    _tooltipColor = type.color;
+
+    final data =
+        await query(dailyRatingTipQuery, fetchPolicy: FetchPolicy.networkOnly);
+
+    _tooltipColor = null;
+
+    _tooltip(data.get(['dailyRatingTip', 'text']));
+
+    await tooltipDelay.delay();
+
+    _tooltip('');
+  }
 }

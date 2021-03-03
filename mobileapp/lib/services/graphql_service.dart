@@ -8,6 +8,10 @@ import 'package:hls/services/auth_service.dart';
 class GraphqlService extends Service {
   static GraphqlService get i => Get.find<GraphqlService>();
 
+  // messages
+  String _message;
+  String get message => _message;
+
   Future<GraphQLClient> client() async {
     // this might be a bit bold
     while (Get.context == null) await Future.delayed(defaultAnimationDuration);
@@ -16,19 +20,18 @@ class GraphqlService extends Service {
   }
 
   Future<Map<String, dynamic>> query(String node,
-      {Map<String, dynamic> parameters}) async {
+      {Map<String, dynamic> parameters, FetchPolicy fetchPolicy}) async {
     isAwaiting = true;
     final client = await this.client();
-    final result = await client
-        .query(QueryOptions(documentNode: gql(node), variables: parameters));
+    final result = await client.query(QueryOptions(
+        document: gql(node), variables: parameters, fetchPolicy: fetchPolicy));
     isAwaiting = false;
 
     if (isDebug)
       debugPrint('GraphqlService.query'
-        '\n\tnode $node'
-        '\n\tparameters $parameters'
-        '\n\tresult ${result.data}'
-      );
+          '\n\tnode $node'
+          '\n\tparameters $parameters'
+          '\n\tresult ${result.data}');
 
     if (result.hasException) {
       print('GraphqlService.query ERROR: ${result.exception.toString()}');
@@ -43,30 +46,40 @@ class GraphqlService extends Service {
     isAwaiting = true;
     final client = await this.client();
 
-    final result = await client.mutate(
-        MutationOptions(documentNode: gql(node), variables: parameters));
-    isAwaiting = false;
+    try {
+      final result = await client.mutate(MutationOptions(
+          document: gql(node),
+          variables: parameters,
+          fetchPolicy: FetchPolicy.networkOnly));
 
-    if (isDebug)
-      debugPrint('GraphqlService.mutation'
-        '\n\tnode $node'
-        '\n\tparameters $parameters'
-        '\n\tresult ${result.data}'
-      );
+      isAwaiting = false;
 
-    if (result.hasException) {
-      /// TODO: write message extractor
-      final exception = result.exception.toString();
-      print('GraphqlService.mutation ERROR: $exception');
+      if (isDebug)
+        debugPrint('GraphqlService.mutation'
+            '\n\tnode $node'
+            '\n\tparameters $parameters'
+            '\n\tresult ${result.data}');
 
-      if (exception.contains('User is required') && AuthService.isAuth) {
-        await Future.delayed(defaultAnimationDuration);
-        return mutation(node, parameters: parameters);
+      if (result.hasException) {
+        /// TODO: write message extractor
+        final exception = result.exception.toString();
+        print('GraphqlService.mutation ERROR: $exception');
+
+        _message = exception;
+
+        if (exception.contains('User is required') && AuthService.isAuth) {
+          await Future.delayed(defaultAnimationDuration);
+          return mutation(node, parameters: parameters);
+        }
       }
 
-      //showConfirm(title: result.exception.toString());
-    }
+      return result.data;
+    } catch (e) {
+      print('GraphqlService.mutation $e');
 
-    return result.data;
+      _message = e.toString();
+
+      return null;
+    }
   }
 }
