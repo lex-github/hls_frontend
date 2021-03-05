@@ -19,7 +19,7 @@ import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/post_model.dart';
 import 'package:hls/services/auth_service.dart';
-import 'package:hls/services/graphql_service.dart';
+import 'package:hls/services/_graphql_service.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:hls/models/user_model.dart';
 
@@ -124,7 +124,7 @@ class HubScreen extends GetView<HubController> {
 
   Widget _buildCenter() =>
       Obx(() => Stack(alignment: Alignment.center, children: [
-            Text('${profileDaily.total.round()}%',
+            Text('${profileDaily?.total?.round()}%',
                 style: TextStyle.primary.copyWith(fontSize: Size.fontPercent)),
             if (!controller.tooltip.isNullOrEmpty || controller.isAwaiting)
               Container(
@@ -167,7 +167,7 @@ class HubScreen extends GetView<HubController> {
                   RotationTransition(
                       turns: Tween(begin: .0, end: 1.0)
                           .animate(controller.animationController),
-                      child: Stack(alignment: Alignment.center, children: [
+                      child: profileDaily == null ? Nothing() : Stack(alignment: Alignment.center, children: [
                         _buildSector(
                             type: ActivityType.SCHEDULE,
                             value: profileDaily.schedule / 100,

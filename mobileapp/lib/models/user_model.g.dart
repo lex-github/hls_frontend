@@ -10,7 +10,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return UserData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..imageUrl = json['imageUrl'] as String
+    ..imageUrl = json['photoUrl'] as String
     ..email = json['email'] as String
     ..phone = json['phoneNumber'] as String
     ..details = json['data'] == null
@@ -37,7 +37,7 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
-  writeNotNull('imageUrl', instance.imageUrl);
+  writeNotNull('photoUrl', instance.imageUrl);
   writeNotNull('email', instance.email);
   writeNotNull('phoneNumber', instance.phone);
   writeNotNull('data', instance.details);
@@ -50,6 +50,7 @@ UserDetailsData _$UserDetailsDataFromJson(Map<String, dynamic> json) {
   return UserDetailsData()
     ..name = json['name'] as String
     ..age = json['age'] as int
+    ..birthDate = toDate(json['birthDate'])
     ..gender = GenderType.fromJsonValue(json['gender'])
     ..weight = json['weight'] as int
     ..height = json['height'] as int;
@@ -66,6 +67,7 @@ Map<String, dynamic> _$UserDetailsDataToJson(UserDetailsData instance) {
 
   writeNotNull('name', instance.name);
   writeNotNull('age', instance.age);
+  writeNotNull('birthDate', instance.birthDate?.toIso8601String());
   writeNotNull('gender', GenderType.toJsonValue(instance.gender));
   writeNotNull('weight', instance.weight);
   writeNotNull('height', instance.height);

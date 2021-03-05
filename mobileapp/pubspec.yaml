@@ -30,6 +30,8 @@ dependencies:
   auto_size_text: ^2.1.0
   # cached images
   cached_network_image: ^2.4.1
+  # date picker
+  flutter_datetime_picker: ^1.5.0
   # chat animation indicator
   flutter_spinkit: ^4.1.2
   # svg images
@@ -39,7 +41,7 @@ dependencies:
   # validation
   form_field_validator: ^1.0.1
   # micro framework state/navigation manager
-  get: ^3.25.6
+  get: ^3.26.0
   # fonts
   google_fonts: ^1.1.1
   # api

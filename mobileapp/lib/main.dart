@@ -35,10 +35,10 @@ class HLS extends StatelessWidget {
           // rebuild when token changes
           client: ValueNotifier(GraphQLClient(
               link: HttpLink(apiUri, defaultHeaders: {
-                'Client-Token': apiTokenValue,
+                apiTokenKey: apiTokenValue,
                 'Content-Type': 'application/json',
                 if (!SettingsService.i.token.isNullOrEmpty)
-                  'Auth-Token': SettingsService.i.token
+                  authTokenKey: SettingsService.i.token
               }), cache: GraphQLCache())),
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),

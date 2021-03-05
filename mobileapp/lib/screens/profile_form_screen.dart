@@ -7,6 +7,7 @@ import 'package:hls/controllers/profile_form_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/_form_screen.dart';
 import 'package:hls/screens/profile_screen.dart';
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,6 +20,12 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
   bool get tapOutsideToDismiss => false;
   bool get displayArrows => true;
 
+  @override
+  List<String> get nodes => super
+      .nodes
+      .where((field) => field != 'birthDate')
+      .toList(growable: false);
+
   // handlers
 
   _avatarHandler() async {
@@ -27,6 +34,8 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
         right: Icon(Icons.list),
         onLeft: () => ImageSource.camera,
         onRight: () => ImageSource.gallery);
+    if (source == null) return;
+
     final pickedFile = await _picker.getImage(source: source);
 
     if (pickedFile != null) controller.onChanged('avatar', pickedFile);
@@ -38,7 +47,7 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
   Widget buildForm(_) => Obx(() {
         final isKeyboardVisible = controller.isKeyboardVisible;
         final pickedFile = controller.getValue<PickedFile>('avatar');
-        final avatarTitle = pickedFile?.path;
+        final avatarUrl = pickedFile?.path ?? AuthService.i.profile.avatarUrl;
 
         return Column(
             mainAxisAlignment: isKeyboardVisible
@@ -48,8 +57,8 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
               if (!isKeyboardVisible)
                 Stack(children: [
                   ProfileHeader(
-                      avatarTitle: avatarTitle,
-                      isAvatarLocal: !avatarTitle.isNullOrEmpty,
+                      avatarUrl: avatarUrl,
+                      isAvatarLocal: !avatarUrl.isNullOrEmpty,
                       showDefaultAvatar: false),
                   Positioned(
                       bottom: Size.verticalTiny,
@@ -76,8 +85,8 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
                   child: Column(key: _key, children: [
                     VerticalMediumSpace(),
                     Input<T>(field: 'name'),
-                    // VerticalMediumSpace(),
-                    // Input<T>(field: 'date'),
+                    VerticalMediumSpace(),
+                    DatePicker<T>(field: 'birthDate'),
                     VerticalMediumSpace(),
                     Input<T>(field: 'height'),
                     VerticalMediumSpace(),

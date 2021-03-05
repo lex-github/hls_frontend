@@ -51,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
           onPressed: _editHandler),
       child: Obx(() => SingleChildScrollView(
               child: Column(children: [
-            ProfileHeader(),
+            ProfileHeader(avatarUrl: profile.avatarUrl),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
                 child: Column(children: [
@@ -93,12 +93,12 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class ProfileHeader extends StatelessWidget {
-  final String avatarTitle;
+  final String avatarUrl;
   final bool showDefaultAvatar;
   final bool isAvatarLocal;
 
   ProfileHeader(
-      {this.avatarTitle,
+      {this.avatarUrl,
       this.showDefaultAvatar = true,
       this.isAvatarLocal = false});
 
@@ -126,7 +126,7 @@ class ProfileHeader extends StatelessWidget {
                     child: Container(
                         color: Colors.background,
                         padding: Padding.tiny,
-                        child: avatarTitle.isNullOrEmpty
+                        child: avatarUrl.isNullOrEmpty
                             ? ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(Size.avatar / 2),
@@ -140,7 +140,7 @@ class ProfileHeader extends StatelessWidget {
                                             size: .65 * Size.avatar)
                                         : Nothing()))
                             : Avatar(
-                                imageUri: avatarTitle,
+                                imageUrl: avatarUrl,
                                 isLink: !isAvatarLocal,
                                 isAsset: isAvatarLocal,
                                 size: Size.avatar)))))

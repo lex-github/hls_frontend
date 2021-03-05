@@ -7,14 +7,20 @@ const apiHeaders = {
   apiTokenKey: apiTokenValue,
   'Content-Type': 'application/json'
 };
+const authTokenKey = 'Auth-Token';
 
-// types
+// http path
+
+const avatarUploadPath = 'upload';
+
+// graphql types
 
 const userCommonFields = ''
   'data '
   '{'
     'name '
     'age '
+    'birthDate '
     'gender '
     'weight '
     'height'
@@ -26,6 +32,7 @@ const userCommonFields = ''
     'mode'
   '} '
   'id '
+  'photoUrl '
   'email '
   'phoneNumber';
 
@@ -344,7 +351,7 @@ const usersUpdateProfileMutation = 'mutation'
   '('
     '\$name: String '
     //'\$gender: ID '
-    //'\$birthdate: String '
+    '\$birthDate: String '
     '\$height: Int '
     '\$weight: Int'
   ') '
@@ -355,7 +362,7 @@ const usersUpdateProfileMutation = 'mutation'
       '{'
         'name: \$name '
         //'gender: \$gender '
-        //'birthdate: \$birthdate '
+        'birthDate: \$birthDate '
         'height: \$height '
         'weight: \$weight'
       '}'

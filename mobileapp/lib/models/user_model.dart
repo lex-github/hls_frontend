@@ -11,6 +11,9 @@ part 'user_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class UserData extends GenericData {
+  @override
+  @JsonKey(name: 'photoUrl')
+  String imageUrl;
   String email;
   @JsonKey(name: 'phoneNumber')
   String phone;
@@ -26,11 +29,12 @@ class UserData extends GenericData {
   // getters
 
   String get name => details?.name;
+  DateTime get birthDate => details?.birthDate;
   int get age => details?.age;
   int get height => details?.height;
   int get weight => details?.weight;
 
-  String get avatarUri => null;
+  String get avatarUrl => imageUrl;
   ChatDialogStatusData get activeDialog =>
       dialogs.firstWhere((x) => x.status == ChatDialogStatus.ACTIVE,
           orElse: () => null);
@@ -49,8 +53,9 @@ class UserData extends GenericData {
 
   @override
   String toString() => 'UserData('
-      '\n\tid: $id '
-      '\n\tname: $name '
+      '\n\tid: $id'
+      '\n\tname: $name'
+      '\n\tavatar: $avatarUrl'
       '\n\tdetails: $details'
       ')';
 }
@@ -59,6 +64,8 @@ class UserData extends GenericData {
 class UserDetailsData {
   String name;
   int age;
+  @JsonKey(fromJson: toDate)
+  DateTime birthDate;
   @JsonKey(fromJson: GenderType.fromJsonValue, toJson: GenderType.toJsonValue)
   GenderType gender;
   int weight;
@@ -74,6 +81,7 @@ class UserDetailsData {
   String toString() => 'UserDetailsData('
       '\n\tname: $name'
       '\n\tage: $age'
+      '\n\tbirthDate: $birthDate'
       '\n\tgender: $gender'
       '\n\tweight: $weight'
       '\n\theight: $height'

@@ -7,6 +7,7 @@ import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -54,10 +55,24 @@ class AppDrawer extends StatelessWidget {
                               VerticalSpace(),
                               Hero(
                                   tag: 'avatar',
-                                  child: Avatar(
-                                      imageUri: 'test/avatar.png',
-                                      isLink: false,
-                                      size: 1.15 * Size.buttonBig)),
+                                  child: profile.avatarUrl.isNullOrEmpty
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              Size.avatar / 2),
+                                          child: Container(
+                                              color:
+                                                  Colors.light.withOpacity(.25),
+                                              width: 1.15 * Size.buttonBig,
+                                              height: 1.15 * Size.buttonBig,
+                                              child: Icon(Icons.person,
+                                                  color: Colors.light,
+                                                  size: .65 *
+                                                      1.15 *
+                                                      Size.buttonBig)))
+                                      : Avatar(
+                                          imageUrl: profile.avatarUrl,
+                                          isLink: false,
+                                          size: 1.15 * Size.buttonBig)),
                               Expanded(child: Nothing()),
                               TextPrimaryHint(
                                   profile.email ?? profile.name ?? ''),

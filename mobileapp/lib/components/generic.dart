@@ -30,18 +30,18 @@ import 'package:share/share.dart';
 class Avatar extends StatelessWidget {
   final UserData user;
   final Widget child;
-  final String imageUri;
+  final String imageUrl;
   final bool isLink;
   final bool isAsset;
   final double size;
   Avatar(
       {this.user,
       this.child,
-      this.imageUri,
+      this.imageUrl,
       this.isLink = true,
       this.isAsset = false,
       size})
-      : assert(user != null || child != null || !imageUri.isNullOrEmpty),
+      : assert(user != null || child != null || !imageUrl.isNullOrEmpty),
         this.size = size ?? Size.iconBig;
 
   @override
@@ -54,7 +54,7 @@ class Avatar extends StatelessWidget {
             child: Center(
                 child: child ??
                     Image(
-                        title: imageUri ?? user.avatarUri,
+                        title: imageUrl ?? user.avatarUrl,
                         isLink: isLink,
                         isAsset: isAsset,
                         height: size,
