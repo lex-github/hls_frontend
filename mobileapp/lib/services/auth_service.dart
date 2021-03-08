@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
@@ -6,8 +12,9 @@ import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/services/_http_service.dart';
-import 'package:hls/services/graphql_service.dart';
+import 'package:hls/services/_graphql_service.dart';
 import 'package:hls/services/settings_service.dart';
+import 'package:mime/mime.dart';
 
 class AuthService extends GraphqlService {
   static AuthService get i => Get.find<AuthService>();
@@ -29,11 +36,18 @@ class AuthService extends GraphqlService {
   set version(String value) => _version.value = value;
 
   // profile
-  // final _profile = Rx<UserData>(null);
-  // UserData get profile => _profile.value;
-  // Rx<UserData> get profileReactive => _profile;
-  // set profile(UserData value) => _profile.value = value;
-  UserData profile;
+  final _profile = Rx<UserData>();
+  UserData get profile => _profile.value;
+  Rx<UserData> get profileReactive => _profile;
+  set profile(UserData value) {
+    _profile.value = value;
+    // TODO: why the fuck these are not updating?
+    if (value != null) {
+      _profile.value.imageUrl = value.imageUrl;
+      _profile.value.details = value.details;
+    }
+    _profile.refresh();
+  }
 
   // authentication
   bool get isAuthenticated => _isAuthenticated.value;
@@ -85,7 +99,7 @@ class AuthService extends GraphqlService {
   Future<UserData> retrieve() async {
     if (SettingsService.i.token.isNullOrEmpty) return null;
 
-    final data = await query(currentUserQuery);
+    final data = await query(currentUserQuery, fetchPolicy: FetchPolicy.networkOnly);
     if (data.isNullOrEmpty) {
       await logout();
       return null;
@@ -146,5 +160,61 @@ class AuthService extends GraphqlService {
     isAuthenticated = false;
 
     return true;
+  }
+
+  Future<bool> edit(Map<String, dynamic> parameters) async {
+    // retrieve data
+    final data =
+        await mutation(usersUpdateProfileMutation, parameters: parameters);
+    if (data.isNullOrEmpty) return false;
+
+    // parse data
+    final Map userJson = data.get(['usersUpdateProfile', 'user']);
+    if (userJson.isNullOrEmpty) return false;
+    profile = UserData.fromJson(userJson);
+
+    return profile.isValid;
+  }
+
+  Future<bool> avatar({@required String path}) async {
+    final filename = path.split('/').last;
+    final file = File(path);
+    final bytes = await file.readAsBytes();
+    final length = bytes.length;
+    final base64 = base64Encode(bytes);
+    final checksum = md5.convert(utf8.encode(base64)).toString();
+    final contentType = lookupMimeType(filename);
+
+    final directUploadInput = {
+      'filename': filename,
+      'byteSize': length,
+      'checksum': checksum,
+      'contentType': contentType
+    };
+
+    final data = await mutation(createDirectUploadMutation,
+        parameters: directUploadInput);
+
+    print('AuthService.avatar $data');
+
+    return false;
+
+    // final data =
+    // await mutation(usersUpdateProfileMutation, parameters: parameters);
+    // if (data.isNullOrEmpty) return false;
+    //
+    // //print('AuthService.edit $data');
+    //
+    // final Map userJson = data.get(['usersUpdateProfile', 'user']);
+    // if (userJson.isNullOrEmpty) return false;
+    //
+    // print('AuthService.edit json: $userJson');
+    // print('AuthService.edit profile: ${UserData.fromJson(userJson)}');
+    //
+    // profile = UserData.fromJson(userJson);
+    //
+    // print('AuthService.edit result: $profile');
+    //
+    // return profile.isValid;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/constants/api.dart';
@@ -26,7 +27,7 @@ class HttpRequest {
       this.method = RequestMethod.GET,
       this.headers = const {},
       this.parameters = const {}})
-      : this.path = path.startsWith('http') ? path : '$siteUrl$path';
+      : this.path = path.startsWith('http') ? path : '${siteUrl}api/$path';
 
   @override
   String toString() =>
@@ -59,6 +60,8 @@ class HttpResponse {
 }
 
 class HttpService extends Service {
+  static HttpService get i => Get.find<HttpService>();
+
   http.Client client;
 
   @override

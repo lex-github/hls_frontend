@@ -34,13 +34,12 @@ class HLS extends StatelessWidget {
       child: Obx(() => GraphQLProvider(
           // rebuild when token changes
           client: ValueNotifier(GraphQLClient(
-              cache: InMemoryCache(),
-              link: HttpLink(uri: apiUri, headers: {
-                'Client-Token': apiTokenValue,
+              link: HttpLink(apiUri, defaultHeaders: {
+                apiTokenKey: apiTokenValue,
                 'Content-Type': 'application/json',
                 if (!SettingsService.i.token.isNullOrEmpty)
-                  'Auth-Token': SettingsService.i.token
-              }))),
+                  authTokenKey: SettingsService.i.token
+              }), cache: GraphQLCache())),
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),
               builder: (_) => GetMaterialApp(

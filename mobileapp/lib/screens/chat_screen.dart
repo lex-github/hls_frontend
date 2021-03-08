@@ -49,15 +49,6 @@ class ChatScreen<Controller extends ChatController>
                   double cornerWidth,
                   double cornerHeight}) =>
               Column(children: [
-                if (!message.imageUrl.isNullOrEmpty) ...[
-                  ClipRRect(
-                      borderRadius: borderRadiusCircular,
-                      child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxHeight: .5 * Size.screenHeight),
-                          child: Image(title: message.imageUrl))),
-                  VerticalMediumSpace()
-                ],
                 Stack(clipBehavior: Clip.none, children: [
                   Align(
                       alignment: alignment,
@@ -91,7 +82,16 @@ class ChatScreen<Controller extends ChatController>
                                     width: cornerWidth,
                                     height: cornerHeight,
                                     color: color))))
-                ])
+                ]),
+                if (!message.imageUrl.isNullOrEmpty) ...[
+                  ClipRRect(
+                    borderRadius: borderRadiusCircular,
+                    child: ConstrainedBox(
+                      constraints:
+                      BoxConstraints(maxHeight: .5 * Size.screenHeight),
+                      child: Image(title: message.imageUrl))),
+                  VerticalMediumSpace()
+                ]
               ]))(
           margin: message.isUser
               ? EdgeInsets.only(left: Size.horizontalMedium)
@@ -153,40 +153,41 @@ class ChatScreen<Controller extends ChatController>
       child: GetBuilder<ChatFormController>(
           init: ChatFormController(controller: controller),
           builder: (formController) {
-            formController.validator = getChatInputValidator(controller.questionRegexp);
+            formController.validator =
+                getChatInputValidator(controller.questionRegexp);
             formController.reloadConfig();
 
             return Stack(children: [
-                Obx(() => Input<ChatFormController>(
-                    field: 'input',
-                    //validator: getChatInputValidator(controller.questionRegexp),
-                    isErrorVisible: false,
-                    //shouldFocus: true,
-                    autovalidateMode: formController.shouldValidate
-                        ? AutovalidateMode.always
-                        : AutovalidateMode.disabled,
-                    contentPadding: EdgeInsets.only(
-                        left: Size.horizontal,
-                        right: Size.horizontal * 2 + Size.iconSmall,
-                        bottom: Size.verticalTiny))),
-                Obx(() => formController.isValidIgnoreDirty
-                    ? Positioned(
-                        right: 0,
-                        height: Size.chatBar,
-                        width: Size.horizontal * 2 + Size.iconSmall,
-                        child: controller.isAwaiting
-                            ? Center(
-                                child: SizedBox(
-                                    width: Size.iconSmall,
-                                    height: Size.iconSmall,
-                                    child: Loading()))
-                            : Clickable(
-                                child: Icon(Icons.send,
-                                    color: Colors.primary,
-                                    size: Size.iconSmall),
-                                onPressed: formController.submitHandler))
-                    : Nothing())
-              ]); }));
+              Obx(() => Input<ChatFormController>(
+                  field: 'input',
+                  //validator: getChatInputValidator(controller.questionRegexp),
+                  isErrorVisible: false,
+                  //shouldFocus: true,
+                  autovalidateMode: formController.shouldValidate
+                      ? AutovalidateMode.always
+                      : AutovalidateMode.disabled,
+                  contentPadding: EdgeInsets.only(
+                      left: Size.horizontal,
+                      right: Size.horizontal * 2 + Size.iconSmall,
+                      bottom: Size.verticalTiny))),
+              Obx(() => formController.isValidIgnoreDirty
+                  ? Positioned(
+                      right: 0,
+                      height: Size.chatBar,
+                      width: Size.horizontal * 2 + Size.iconSmall,
+                      child: controller.isAwaiting
+                          ? Center(
+                              child: SizedBox(
+                                  width: Size.iconSmall,
+                                  height: Size.iconSmall,
+                                  child: Loading()))
+                          : Clickable(
+                              child: Icon(Icons.send,
+                                  color: Colors.primary, size: Size.iconSmall),
+                              onPressed: formController.submitHandler))
+                  : Nothing())
+            ]);
+          }));
 
   Widget _buildRadio() =>
       (({Iterable rows, Iterable columns}) => _buildControlContainer(
@@ -342,7 +343,8 @@ class ChatScreen<Controller extends ChatController>
                                           .post(controller.checkboxSelection)))
                               : Nothing()
                         ])),
-                        if (controller.messageQueue.isNullOrEmpty)
+                        if (controller.messageQueue.isNullOrEmpty &&
+                            !controller.isTyping && !controller.isReadingPause)
                           if (controller.questionType == ChatQuestionType.INPUT)
                             _buildInput()
                           else if (controller.questionType ==

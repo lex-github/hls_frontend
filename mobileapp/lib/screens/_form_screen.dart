@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' as R;
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'
+    as DatePickerProvider;
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' as B;
@@ -52,6 +55,7 @@ abstract class FormScreen<T extends FormController> extends GetView<T> {
                       keyboardSeparatorColor: Colors.black.withOpacity(.6),
                       nextFocus: true,
                       actions: nodes
+                          ?.where((field) => controller.getNode(field) != null)
                           ?.map((field) => KeyboardActionsItem(
                               footerBuilder: (keyboards ?? {})[field],
                               displayArrows: displayArrows,
@@ -87,10 +91,15 @@ class Button<T extends FormController> extends GetView<T> {
   });
 
   @override
-  Widget build(BuildContext context) => Obx(() => B.Button(
+  Widget build(_) => Obx(() => B.Button(
       isCircular: isCircular,
       size: size ?? Size.buttonBig,
-      background: controller.isValid ? Colors.primary : Colors.failure,
+      background: controller.isValid
+          ? controller.submitState == SubmitState.SUCCESS &&
+                  !controller.isAwaiting
+              ? Colors.success
+              : Colors.primary
+          : Colors.failure,
       padding: padding ?? Padding.zero,
       icon: icon ?? Icons.arrow_forward_ios,
       iconSize: iconSize ?? Size.iconSmall,
@@ -99,6 +108,35 @@ class Button<T extends FormController> extends GetView<T> {
       isLoading: controller.isAwaiting,
       isDisabled: !controller.isValid,
       onPressed: controller.submitHandler));
+}
+
+class DatePicker<T extends FormController> extends GetView<T> {
+  final String field;
+  DatePicker({this.field});
+
+  _datePickerHandler() =>
+      DatePickerProvider.DatePicker.showDatePicker(Get.context,
+          showTitleActions: true,
+          minTime: DateTime.now().subtract((365 * 100).days),
+          maxTime: DateTime.now(),
+          //onChanged: (_) => null,
+          onConfirm: (date) => controller.onChanged(field, date),
+          currentTime: controller.getValue(field) ?? DateTime.now(),
+          locale: LocaleType.ru,
+          theme: DatePickerTheme(
+              cancelStyle: TextStyle.primary.copyWith(color: Colors.failure),
+              doneStyle: TextStyle.primary.copyWith(color: Colors.primary),
+              itemStyle: TextStyle.primary,
+              backgroundColor: Colors.background,
+              headerColor: Colors.background,
+              containerHeight: Size.bottomSheet,
+              titleHeight: Size.height(44.0),
+              itemHeight: Size.height(36.0)));
+
+  @override
+  Widget build(_) => B.Clickable(
+      onPressed: _datePickerHandler,
+      child: AbsorbPointer(child: Input<T>(field: field)));
 }
 
 class Input<T extends FormController> extends GetView<T> {

@@ -2,13 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' hide TextStyle;
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/colors.dart';
 import 'package:hls/helpers/null_awareness.dart';
-import 'package:hls/helpers/strings.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -113,7 +112,7 @@ class Button extends StatelessWidget {
           TextPrimaryHint(title,
               align: TextAlign.center,
               style: titleStyle,
-              size: titleStyle.fontSize);
+              size: titleStyle?.fontSize);
 
   Widget _buildButton({bool isSelected, RxBool onChanged}) => GestureDetector(
       onTap: isDisabled
@@ -149,22 +148,27 @@ class Button extends StatelessWidget {
               if (!isSwitch) onChanged(false);
             },
       onLongPress: onLongPressed,
-      child: isSelected
-          ? ButtonInner(
+      child: AnimatedCrossFade(
+          duration: defaultAnimationDuration,
+          crossFadeState:
+              isSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          firstCurve: Curves.easeInCirc,
+          secondCurve: Curves.easeOutCirc,
+          firstChild: ButtonInner(
               background: background,
               borderColor: borderColor,
               padding: padding,
               size: size,
               child: _buildChild(),
-              isCircular: isCircular)
-          : ButtonOuter(
+              isCircular: isCircular),
+          secondChild: ButtonOuter(
               background: background ?? (isDisabled ? Colors.disabled : null),
               borderColor: borderColor,
               padding: padding,
               size: size,
               child: _buildChild(),
               isClickable: !isDisabled,
-              isCircular: isCircular));
+              isCircular: isCircular)));
 
   @override
   Widget build(_) => ObxValue(
@@ -275,7 +279,9 @@ class ButtonOuter extends StatelessWidget {
                     width: borderWidth / 2,
                     color: Colors.shadowLight.withOpacity(.01),
                     style: BorderStyle.solid)),
-            child: Container(
+            child: AnimatedContainer(
+                duration: inputWaitingDuration,
+                curve: Curves.easeInQuint,
                 child: ClipRRect(
                     borderRadius: radius,
                     child: Container(
@@ -404,7 +410,7 @@ class ListItemFoodButton extends ListItemButton {
                       children: [
                     Row(children: [
                       Expanded(
-                          child: TextPrimaryHint(item.title.capitalize(),
+                          child: TextPrimaryHint(item.title.capitalize,
                               overflow: TextOverflow.visible)),
                       HorizontalSpace(),
                       Icon(Icons.arrow_forward_ios,

@@ -7,27 +7,52 @@ const apiHeaders = {
   apiTokenKey: apiTokenValue,
   'Content-Type': 'application/json'
 };
+const authTokenKey = 'Auth-Token';
 
-// types
+// http path
+
+const avatarUploadPath = 'upload';
+
+// graphql types
+
+const userCommonFields = ''
+  'data '
+  '{'
+    'name '
+    'age '
+    'birthDate '
+    'gender '
+    'weight '
+    'height'
+  '} '
+  'dailyRating '
+  '{'
+    'activity '
+    'eating '
+    'mode'
+  '} '
+  'id '
+  'photoUrl '
+  'email '
+  'phoneNumber';
 
 const userFields =
   '{'
-    'data '
-    '{'
-      'age '
-      'gender '
-      'weight'
-    '} '
-    'id '
-    'name '
-    'email '
-    'phoneNumber '
+    '$userCommonFields '
     'chatBotDialogs '
     '{'
       'id '
       'name '
       'status'
     '}'
+  '}';
+
+const uploadFields =
+  '{'
+    //'blobId '
+    //'headers '
+    'signedBlobId '
+    'url'
   '}';
 
 const chatCardFields =
@@ -138,6 +163,13 @@ const foodFields =
 const currentUserQuery = 'query '
   '{'
     'currentUser $userFields'
+  '}';
+
+const dailyRatingTipQuery = 'query '
+  '{'
+    'dailyRatingTip {'
+      'text'
+    '}'
   '}';
 
 const postsQuery = 'query '
@@ -312,5 +344,53 @@ const chatBotDialogContinueMutation = 'mutation'
       'dialogResult '
       'dialogStatus '
       'nextCard $chatCardFields'
+    '}'
+  '}';
+
+const usersUpdateProfileMutation = 'mutation'
+  '('
+    '\$name: String '
+    //'\$gender: ID '
+    '\$birthDate: String '
+    '\$height: Int '
+    '\$weight: Int'
+  ') '
+  '{'
+    'usersUpdateProfile'
+    '('
+      'updatedParams: '
+      '{'
+        'name: \$name '
+        //'gender: \$gender '
+        'birthDate: \$birthDate '
+        'height: \$height '
+        'weight: \$weight'
+      '}'
+    ') '
+    '{'
+      'user $userFields'
+    '}'
+  '}';
+
+const createDirectUploadMutation = 'mutation'
+  '('
+    '\$filename: String! '
+    '\$byteSize: Int! '
+    '\$checksum: String! '
+    '\$contentType: String!'
+  ') '
+  '{'
+    'createDirectUpload'
+    '('
+      'input: '
+      '{'
+        'filename: \$filename '
+        'byteSize: \$byteSize '
+        'checksum: \$checksum '
+        'contentType: \$contentType'
+      '}'
+    ') '
+    '{'
+      'directUpload $uploadFields'
     '}'
   '}';

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/iterables.dart';
@@ -17,6 +18,7 @@ abstract class FormController extends GetxController {
 
   final _key = GlobalKey<FormState>();
   final _state = <String, FormControllerState>{};
+  final _submitState = Rx<SubmitState>();
   final _isDirty = false.obs;
   final _isAwaiting = false.obs;
   final _isKeyboardVisible = false.obs;
@@ -61,6 +63,7 @@ abstract class FormController extends GetxController {
   String get error => _error.value;
   bool get shouldValidate => _isDirty.value;
   bool get shouldUnfocus => true;
+  SubmitState get submitState => _submitState.value;
   bool get isAwaiting => _isAwaiting.value;
   bool get isValid => shouldValidate ? _isValid.value : true;
   bool get isValidIgnoreDirty => _isValid.value;
@@ -81,7 +84,7 @@ abstract class FormController extends GetxController {
 
   FormControllerState getState(String field) =>
       _state.get<FormControllerState>(field);
-  dynamic getValue(String field) => getState(field)?.value;
+  T getValue<T>(String field) => getState(field)?.value;
   TextEditingController getController(String field) =>
       getState(field)?.controller;
   FocusNode getNode(String field) => getState(field)?.node;
@@ -102,6 +105,13 @@ abstract class FormController extends GetxController {
   // setters
 
   set isDirty(bool x) => _isDirty.value = x;
+  set submitState(SubmitState x) {
+    Future.delayed(defaultAnimationDuration)
+        .then((_) => _submitState.value = x)
+        .then((_) => Future.delayed(inputWaitingDuration))
+        .then((_) => _submitState.value = SubmitState.DEFAULT);
+  }
+
   set isAwaiting(bool x) => _isAwaiting.value = x;
   set isValid(bool x) => _isValid.value = x;
   set isKeyboardVisible(bool x) => _isKeyboardVisible.value = x;
@@ -140,6 +150,7 @@ abstract class FormController extends GetxController {
       switch (config.type) {
         case FieldType.SELECT:
         case FieldType.MULTI_SELECT:
+        case FieldType.DATE_PICKER:
           state
             ..controller = TextEditingController()
             ..node = FocusNode();
@@ -149,9 +160,9 @@ abstract class FormController extends GetxController {
         default:
           state
             ..controller = (TextEditingController()
-            // input controller controls state
+              // input controller controls state
               ..addListener(() => onChanged(config.field, state.controller.text,
-                shouldUpdateController: false)))
+                  shouldUpdateController: false)))
             ..node = (FocusNode()
               ..addListener(() => state.hasFocus = state.node.hasFocus));
       }
@@ -164,17 +175,16 @@ abstract class FormController extends GetxController {
 
       // keyboard listener
       _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
-        onChange: (bool visible) async {
-          isKeyboardVisible = visible;
+          onChange: (bool visible) async {
+        isKeyboardVisible = visible;
 
-          onKeyboardChanged(visible);
-        });
+        onKeyboardChanged(visible);
+      });
     }
   }
 
   reloadConfig() {
-    for (final config in this.config)
-      _state[config.field].config = config;
+    for (final config in this.config) _state[config.field].config = config;
   }
 
   bool validate() => _key.currentState?.validate() ?? true;
@@ -201,13 +211,18 @@ abstract class FormController extends GetxController {
 
     // awaiting for server response to login attempt
     isAwaiting = true;
+    //submitState = SubmitState.WAITING;
     final result = await onSubmitRequest();
     isAwaiting = false;
-    if (!result.isNullEmptyOrFalse) return onSubmitResponse(true);
+    if (!result.isNullEmptyOrFalse) {
+      submitState = SubmitState.SUCCESS;
+      return onSubmitResponse(true);
+    }
 
     // check if onSubmitRequest generated validation error
     if (!hasValidationErrors) showConfirm(title: error ?? errorGenericText);
 
+    //submitState = SubmitState.FAILURE;
     onSubmitResponse(false);
   }
 
@@ -309,6 +324,16 @@ class FieldType extends Enum<int> {
   static const SELECT = const FieldType(2);
   static const MULTI_SELECT = const FieldType(3);
   static const SWITCH = const FieldType(4);
+  static const DATE_PICKER = const FieldType(5);
+}
+
+class SubmitState extends Enum<int> {
+  const SubmitState(v) : super(v);
+
+  static const DEFAULT = const SubmitState(0);
+  static const WAITING = const SubmitState(1);
+  static const SUCCESS = const SubmitState(2);
+  static const FAILURE = const SubmitState(3);
 }
 
 // lowercase text formatter

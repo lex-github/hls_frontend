@@ -72,10 +72,38 @@ const timerRestart = 'РЕСТАРТ';
 const timerInputLabel = 'Результат';
 
 // drawer
+const drawerFavouriteLabel = 'Избранное';
+const drawerStatisticsLabel = 'Статистика';
+const drawerMeasuresLabel = 'Мои замеры';
+const drawerInstrumentsLabel = 'Полезные инструменты';
+const drawerSettingsLabel = 'Настройки';
 const drawerLogoutLabel = 'Выйти';
+
+// profile
+const ageProfileText = 'лет';
+const heightProfileText = 'рост';
+const weightProfileText = 'вес';
+const testingResultsProfileLabel = 'Результаты тестирования';
+const restartTestProfileLabel = 'Пройти тест заново';
+const progressProfileText = 'ПРОГРЕСС НА ПУТИ К ЦЕЛИ';
+
+// profile form
+const nameProfileLabel = 'Имя';
+const dateProfileLabel = 'Дата рождения';
+const heightProfileLabel = 'Рост, см';
+const weightProfileLabel = 'Вес, кг';
+const emailProfileLabel = 'Эл. почта';
 
 // hub
 const hubScreenTitle = 'ЗОЖ — это просто';
+const nutritionTitle = 'ПИТАНИЕ';
+const exerciseTitle = 'ДВИЖЕНИЕ';
+const scheduleTitle = 'РЕЖИМ';
+const goalTitle = 'Цель';
+const macrocycleTitle = 'Макроцикл';
+const microcycleTitle = 'Микроцикл';
+const weekTitle = 'Неделя';
+const trainingTitle = 'Тренировки';
 
 // food items
 const nutritionScreenTitle = 'Продукты';
@@ -94,15 +122,3 @@ const submitButtonTitle = 'Готово';
 const clearButtonTitle = 'СБРОС';
 const filterFromLabel = 'от';
 const filterToLabel = 'до';
-
-//Buttons titles
-const nutritionTitle = 'ПИТАНИЕ';
-const exerciseTitle = 'ДВИЖЕНИЕ';
-const scheduleTitle = 'РЕЖИМ';
-
-//plan titles
-const goalTitle = 'Цель';
-const macrocycleTitle = 'Макроцикл';
-const microcycleTitle = 'Микроцикл';
-const weekTitle = 'Неделя';
-const trainingTitle = 'Тренировки';
