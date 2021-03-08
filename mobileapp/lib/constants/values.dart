@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.6';
+const version = '0.0.0.7';
 
 // config
 const assetsDirectory = 'assets';
@@ -12,7 +12,7 @@ const assetsDirectory = 'assets';
 const defaultItemsPerPage = 20;
 
 // time
-const chatTyperAnimationDuration = Duration(milliseconds: 10);
+const chatTyperAnimationDuration = Duration(milliseconds: 20);
 const defaultAnimationDuration = Duration(milliseconds: 150);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const navigationTransitionDuration = Duration(milliseconds: 300);

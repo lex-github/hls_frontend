@@ -22,6 +22,7 @@ class ChatController extends Controller {
   final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
   final _isTyping = false.obs;
+  final _isReadingPause = false.obs;
   ChatController({this.type});
 
   int currentDialogId;
@@ -34,6 +35,7 @@ class ChatController extends Controller {
   String get questionKey => card?.key;
   String get questionRegexp => card?.addons?.regexp;
   bool get isTyping => _isTyping.value;
+  bool get isReadingPause => _isReadingPause.value;
   ChatQuestionType get questionType => card?.questionType;
   Map<String, ChatAnswerData> get questionAnswers => card?.answers;
   Map<String, List<ChatQuestionData>> get questionResults => card?.results;
@@ -49,9 +51,10 @@ class ChatController extends Controller {
   ChatAnswerData getQuestionAnswer(int row, int column) {
     if (questionAnswers.isNullOrEmpty) return null;
 
-    final index = row * questionRows + column;
+    final index = row * questionColumns + column;
     final keys = questionAnswers.keys.toList(growable: false);
     final key = keys.get(index);
+
     return key == null ? null : (questionAnswers[key]..value = key);
   }
 
@@ -165,8 +168,15 @@ class ChatController extends Controller {
           //     curve: Curves.easeOut, duration: defaultAnimationDuration)
           //     : timer.cancel()));
 
-          await Future.delayed(
-              chatTyperAnimationDuration * (message.text?.length ?? 0));
+          _isReadingPause.value = true;
+          final duration =
+              chatTyperAnimationDuration * (message.text?.length ?? 0);
+          await Future.delayed(duration);
+          Future.delayed(duration * 2).then((_) {
+            _isReadingPause.value = false;
+            WidgetsBinding.instance.addPostFrameCallback(
+                (_) => _scrollController.hasClients ? scroll() : null);
+          });
         }
 
         // message display
@@ -180,6 +190,7 @@ class ChatController extends Controller {
       }
 
       _isTyping.value = false;
+
       WidgetsBinding.instance
           .addPostFrameCallback((_) => _isMessageQueueRunning = false);
     }
@@ -253,8 +264,8 @@ class ChatController extends Controller {
     if (status != null) {
       switch (status) {
         case ChatDialogStatus.PENDING:
-          Get.find<ChatNavigationController>().skip();
-          return true;
+        // Get.find<ChatNavigationController>().skip();
+        // return true;
         case ChatDialogStatus.FINISHED:
           Get.find<ChatNavigationController>().next();
           return true;
