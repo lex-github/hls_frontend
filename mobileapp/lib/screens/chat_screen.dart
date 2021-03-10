@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -31,6 +32,8 @@ class ChatScreen<Controller extends ChatController>
 
   _logoutHandler() => AuthService.i.logout();
 
+  _skipHandler() => Get.find<ChatNavigationController>().skip();
+
   _timerHandler() async {
     final result = await Get.toNamed(timerRoute, arguments: controller.card);
     print('ChatScreen._timerHandler result: $result');
@@ -40,67 +43,6 @@ class ChatScreen<Controller extends ChatController>
   }
 
   // builders
-
-  Widget _buildMessage(ChatMessage message, {bool shouldShowCorner = false}) =>
-      ((
-                  {EdgeInsets margin,
-                  Color color,
-                  AlignmentGeometry alignment,
-                  double cornerWidth,
-                  double cornerHeight}) =>
-              Column(children: [
-                Stack(clipBehavior: Clip.none, children: [
-                  Align(
-                      alignment: alignment,
-                      child: Container(
-                          padding: Padding.small,
-                          margin: margin,
-                          decoration: BoxDecoration(
-                              color: message.color ?? color,
-                              borderRadius: borderRadiusCircular),
-                          child: TextPrimaryHint(message.text))),
-                  if (shouldShowCorner && !message.isUser)
-                    Positioned(
-                        top: 0,
-                        left: -Size.horizontalSmall,
-                        child: ClipPath(
-                            clipper: ChatCornerClipper(),
-                            child: Container(
-                                width: cornerWidth,
-                                height: cornerHeight,
-                                color: message.color ?? color))),
-                  if (shouldShowCorner && message.isUser)
-                    Positioned(
-                        top: 0,
-                        right: -Size.horizontalSmall,
-                        child: Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.rotationY(pi),
-                            child: ClipPath(
-                                clipper: ChatCornerClipper(),
-                                child: Container(
-                                    width: cornerWidth,
-                                    height: cornerHeight,
-                                    color: color))))
-                ]),
-                if (!message.imageUrl.isNullOrEmpty) ...[
-                  ClipRRect(
-                    borderRadius: borderRadiusCircular,
-                    child: ConstrainedBox(
-                      constraints:
-                      BoxConstraints(maxHeight: .5 * Size.screenHeight),
-                      child: Image(title: message.imageUrl))),
-                  VerticalMediumSpace()
-                ]
-              ]))(
-          margin: message.isUser
-              ? EdgeInsets.only(left: Size.horizontalMedium)
-              : EdgeInsets.only(right: Size.horizontalMedium),
-          color: message.isUser ? Colors.primary : Colors.disabled,
-          alignment:
-              message.isUser ? Alignment.centerRight : Alignment.centerLeft,
-          cornerWidth: Size.horizontalSmall * 2,
-          cornerHeight: Size.verticalSmall);
 
   Widget _buildControlContainer(
           {Widget child, bool shouldShowLoading = true}) =>
@@ -273,13 +215,27 @@ class ChatScreen<Controller extends ChatController>
         return Screen(
             shouldResize: true,
             padding: Padding.zero,
-            leading: Clickable(
-                child: Icon(Icons.logout, size: Size.iconSmall),
-                onPressed: _logoutHandler),
+            leading: Obx(() => !Get.find<ChatNavigationController>().canGoBack
+                ? Clickable(
+                    child: Icon(Icons.logout, size: Size.iconSmall),
+                    onPressed: _logoutHandler)
+                : Clickable(
+                    child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+                    onPressed: _skipHandler)),
+            trailing: Obx(() => !Get.find<ChatNavigationController>().canGoBack
+                ? Clickable(
+                    child: Icon(Icons.arrow_forward_ios, size: Size.iconSmall),
+                    onPressed: _skipHandler)
+                : Nothing()),
             title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(type.title),
+                  SizedBox(
+                      width: Size.screenWidth -
+                          Size.horizontal * 4 -
+                          Size.iconSmall * 2,
+                      child: AutoSizeText(type.title,
+                          style: TextStyle.title, maxLines: 1)),
                   Visibility(
                       visible: controller.isTyping,
                       child: Row(
@@ -328,7 +284,7 @@ class ChatScreen<Controller extends ChatController>
                                 final shouldShowCorner = prevMessage == null ||
                                     prevMessage.isUser != message.isUser;
 
-                                return _buildMessage(message,
+                                return ChatMessage(message,
                                     shouldShowCorner: shouldShowCorner);
                               }),
                           controller.checkboxHasSelection
@@ -344,7 +300,8 @@ class ChatScreen<Controller extends ChatController>
                               : Nothing()
                         ])),
                         if (controller.messageQueue.isNullOrEmpty &&
-                            !controller.isTyping && !controller.isReadingPause)
+                            !controller.isTyping &&
+                            !controller.isReadingPause)
                           if (controller.questionType == ChatQuestionType.INPUT)
                             _buildInput()
                           else if (controller.questionType ==
@@ -361,6 +318,73 @@ class ChatScreen<Controller extends ChatController>
                       ])
                     : LoadingPage()));
       });
+}
+
+class ChatMessage extends StatelessWidget {
+  final ChatMessageData message;
+  final bool shouldShowCorner;
+
+  ChatMessage(this.message, {this.shouldShowCorner});
+
+  @override
+  Widget build(BuildContext context) => ((
+              {EdgeInsets margin,
+              Color color,
+              AlignmentGeometry alignment,
+              double cornerWidth,
+              double cornerHeight}) =>
+          Column(children: [
+            Stack(clipBehavior: Clip.none, children: [
+              Align(
+                  alignment: alignment,
+                  child: Container(
+                      padding: Padding.small,
+                      margin: margin,
+                      decoration: BoxDecoration(
+                          color: message.color ?? color,
+                          borderRadius: borderRadiusCircular),
+                      child: TextPrimaryHint(message.text))),
+              if (shouldShowCorner && !message.isUser)
+                Positioned(
+                    top: 0,
+                    left: -Size.horizontalSmall,
+                    child: ClipPath(
+                        clipper: ChatCornerClipper(),
+                        child: Container(
+                            width: cornerWidth,
+                            height: cornerHeight,
+                            color: message.color ?? color))),
+              if (shouldShowCorner && message.isUser)
+                Positioned(
+                    top: 0,
+                    right: -Size.horizontalSmall,
+                    child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationY(pi),
+                        child: ClipPath(
+                            clipper: ChatCornerClipper(),
+                            child: Container(
+                                width: cornerWidth,
+                                height: cornerHeight,
+                                color: color))))
+            ]),
+            if (!message.imageUrl.isNullOrEmpty) ...[
+              ClipRRect(
+                  borderRadius: borderRadiusCircular,
+                  child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxHeight: .5 * Size.screenHeight),
+                      child: Image(title: message.imageUrl))),
+              VerticalMediumSpace()
+            ]
+          ]))(
+      margin: message.isUser
+          ? EdgeInsets.only(left: Size.horizontalMedium)
+          : EdgeInsets.only(right: Size.horizontalMedium),
+      color: message.isUser ? Colors.primary : Colors.disabled,
+      alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+      cornerWidth: Size.horizontalSmall * 2,
+      cornerHeight: Size.verticalSmall);
 }
 
 class Checkbox<Controller extends ChatController> extends GetView<Controller> {

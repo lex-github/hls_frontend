@@ -8,12 +8,9 @@ class HomeSwitch extends StatelessWidget {
   // builders
 
   @override
-  Widget build(_) => GetX<ChatNavigationController>(
+  Widget build(_) => MixinBuilder<ChatNavigationController>(
       init: ChatNavigationController(),
-      builder: (chatNavigation) {
-        final screen = chatNavigation.screen;
-
-        return Stack(children: [
+      builder: (chatNavigation) => Stack(children: [
             TabbarScreen(),
             AnimatedSwitcher(
                 duration: navigationTransitionDuration,
@@ -39,7 +36,7 @@ class HomeSwitch extends StatelessWidget {
                   //     'AnimatedSwitcher ${child.key} ${currentIndex.value} = $widget');
                   // return widget;
                 },
-                child: screen),
+                child: chatNavigation.screen)
             // if (false && chatNavigation.canGoForward)
             //   Positioned(
             //       right: Size.horizontal,
@@ -48,5 +45,5 @@ class HomeSwitch extends StatelessWidget {
             //           icon: Icons.arrow_forward_ios,
             //           iconSize: Size.iconSmall,
             //           onPressed: chatNavigation.next))
-          ]);});
+          ]));
 }

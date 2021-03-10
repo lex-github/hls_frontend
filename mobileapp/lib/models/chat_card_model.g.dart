@@ -159,7 +159,12 @@ ChatDialogStatusData _$ChatDialogStatusDataFromJson(Map<String, dynamic> json) {
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
     ..type = ChatDialogType.fromJsonValue(json['name'])
-    ..status = ChatDialogStatus.fromJsonValue(json['status']);
+    ..status = ChatDialogStatus.fromJsonValue(json['status'])
+    ..history = (json['history'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChatHistoryData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$ChatDialogStatusDataToJson(
@@ -177,5 +182,36 @@ Map<String, dynamic> _$ChatDialogStatusDataToJson(
   writeNotNull('imageUrl', instance.imageUrl);
   writeNotNull('name', ChatDialogType.toJsonValue(instance.type));
   writeNotNull('status', ChatDialogStatus.toJsonValue(instance.status));
+  writeNotNull('history', instance.history);
+  return val;
+}
+
+ChatHistoryData _$ChatHistoryDataFromJson(Map<String, dynamic> json) {
+  return ChatHistoryData()
+    ..order = json['order'] as int
+    ..question = (json['question'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChatQuestionData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..answer = (json['answer'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChatAnswerData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$ChatHistoryDataToJson(ChatHistoryData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('order', instance.order);
+  writeNotNull('question', instance.question);
+  writeNotNull('answer', instance.answer);
   return val;
 }

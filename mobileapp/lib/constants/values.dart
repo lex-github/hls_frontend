@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.7';
+const version = '0.0.0.8';
 
 // config
 const assetsDirectory = 'assets';
@@ -33,6 +33,7 @@ const resetRoute = '/reset';
 const otpRequestRoute = '/otp-request';
 const otpVerifyRoute = '/otp-verify';
 const chatRoute = '/chat';
+const chatResultsRoute = '/chat-results';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const profileRoute = '/profile';

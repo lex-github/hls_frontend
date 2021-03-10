@@ -17,7 +17,7 @@ class ChatController extends Controller {
 
   final _scrollController = ScrollController();
   final List<ChatCardData> _cards = [];
-  final _messages = <ChatMessage>[].obs;
+  final _messages = <ChatMessageData>[].obs;
   final _checkboxSelection = [];
   final _checkboxHasSelection = false.obs;
   final ChatDialogType type;
@@ -30,7 +30,7 @@ class ChatController extends Controller {
   // getters
 
   ScrollController get scrollController => _scrollController;
-  List<ChatMessage> get messages => _messages;
+  List<ChatMessageData> get messages => _messages;
   ChatCardData get card => _cards.lastOrNull;
   String get questionKey => card?.key;
   String get questionRegexp => card?.addons?.regexp;
@@ -132,14 +132,14 @@ class ChatController extends Controller {
 
     if (!card.questions.isNullOrEmpty)
       for (final question in card.questions)
-        addMessage(ChatMessage.fromQuestion(question));
+        addMessage(ChatMessageData.fromQuestion(question));
 
     //update();
   }
 
   bool _isMessageQueueRunning = false;
-  final List<ChatMessage> messageQueue = [];
-  addMessage(ChatMessage message) async {
+  final List<ChatMessageData> messageQueue = [];
+  addMessage(ChatMessageData message) async {
     if (message == null || message.text.isNullOrEmpty) return;
     if (_messages.lastOrNull?.text == message.text ||
         messageQueue.lastOrNull?.text == message.text) return;
@@ -204,19 +204,19 @@ class ChatController extends Controller {
     // display user input
     switch (questionType) {
       case ChatQuestionType.INPUT:
-        addMessage(ChatMessage(text: value.toString()));
+        addMessage(ChatMessageData(text: value.toString()));
         break;
       case ChatQuestionType.RADIO:
-        addMessage(ChatMessage(text: questionAnswers[value].text));
+        addMessage(ChatMessageData(text: questionAnswers[value].text));
         break;
       case ChatQuestionType.CHECKBOX:
-        addMessage(ChatMessage(
+        addMessage(ChatMessageData(
             text: (value as List)
                 .map((x) => questionAnswers[x].text)
                 .join(', ')));
         break;
       case ChatQuestionType.TIMER:
-        addMessage(ChatMessage(text: value.toString()));
+        addMessage(ChatMessageData(text: value.toString()));
         break;
     }
 
@@ -224,7 +224,7 @@ class ChatController extends Controller {
     final questionResults = getQuestionResults(value);
     if (!questionResults.isNullOrEmpty)
       for (final questionResult in questionResults)
-        addMessage(ChatMessage.fromQuestion(questionResult));
+        addMessage(ChatMessageData.fromQuestion(questionResult));
 
     //return true;
 
@@ -248,7 +248,7 @@ class ChatController extends Controller {
       _cards.removeWhere((_) => true);
 
       for (final data in dialogResult)
-        addMessage(ChatMessage.fromQuestion(ChatQuestionData.fromJson(data)));
+        addMessage(ChatMessageData.fromQuestion(ChatQuestionData.fromJson(data)));
 
       return true;
     }
@@ -282,14 +282,14 @@ class ChatController extends Controller {
   }
 }
 
-class ChatMessage {
+class ChatMessageData {
   final Color color;
   final String text;
   final String imageUrl;
   final bool isUser;
 
-  ChatMessage({this.color, this.text, this.imageUrl, this.isUser = true});
-  ChatMessage.fromQuestion(ChatQuestionData question)
+  ChatMessageData({this.color, this.text, this.imageUrl, this.isUser = true});
+  ChatMessageData.fromQuestion(ChatQuestionData question)
       : color = question.color,
         imageUrl = question.imageUrl,
         text = question.text,

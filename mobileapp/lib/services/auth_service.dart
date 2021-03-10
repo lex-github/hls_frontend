@@ -86,8 +86,9 @@ class AuthService extends GraphqlService {
       isAuthenticated = false;
 
     // retrieve api version
-    final result =
-        await Get.find<HttpService>().request(HttpRequest(path: siteUrl));
+    final result = await Get.find<HttpService>().request(HttpRequest(
+        path: siteUrl,
+        headers: {apiTokenKey: apiTokenValue, authTokenKey: token}));
     version = result.data.get('version');
     print('AuthService.onInit $version');
 
@@ -99,7 +100,8 @@ class AuthService extends GraphqlService {
   Future<UserData> retrieve() async {
     if (SettingsService.i.token.isNullOrEmpty) return null;
 
-    final data = await query(currentUserQuery, fetchPolicy: FetchPolicy.networkOnly);
+    final data =
+        await query(currentUserQuery, fetchPolicy: FetchPolicy.networkOnly);
     if (data.isNullOrEmpty) {
       await logout();
       return null;

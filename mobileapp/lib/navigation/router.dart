@@ -4,6 +4,8 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/navigation/home_switch.dart';
 import 'package:hls/screens/article_screen.dart';
 import 'package:hls/screens/auth_form_screen.dart';
+import 'package:hls/screens/chat_results_screen.dart';
+import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
@@ -62,9 +64,13 @@ class Router {
         page: () => ProfileScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: profileFormRoute,
-      page: () => ProfileFormScreen(),
-      transitionDuration: navigationTransitionDuration),
+        name: profileFormRoute,
+        page: () => ProfileFormScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: chatResultsRoute,
+        page: () => ChatResultsScreen(),
+        transitionDuration: navigationTransitionDuration),
     GetPage(
         name: homeRoute,
         page: home,

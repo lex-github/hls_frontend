@@ -86,6 +86,7 @@ const weightProfileText = 'вес';
 const testingResultsProfileLabel = 'Результаты тестирования';
 const restartTestProfileLabel = 'Пройти тест заново';
 const progressProfileText = 'ПРОГРЕСС НА ПУТИ К ЦЕЛИ';
+const trainingDayText = 'ДНИ ТРЕНИРОВОК';
 
 // profile form
 const nameProfileLabel = 'Имя';

@@ -5,8 +5,10 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
@@ -16,9 +18,31 @@ class ProfileScreen extends StatelessWidget {
 
   // handlers
 
+  _resultsHandler() => Get.toNamed(chatResultsRoute);
+  _restartHandler() {
+    Get.back(closeOverlays: true);
+    tabbarScaffoldKey.currentState.openEndDrawer();
+    Get.find<ChatNavigationController>().init(canGoBack: true);
+  }
+
   _editHandler() => Get.toNamed(profileFormRoute);
 
   // builders
+
+  Widget _buildBlock({String title, Widget child}) => Container(
+      decoration: BoxDecoration(
+          color: Colors.background,
+          borderRadius: borderRadiusCircular,
+          border: Border.all(
+              width: borderWidth,
+              color: Colors.disabled,
+              style: BorderStyle.solid)),
+      padding: Padding.content,
+      child: Column(children: [
+        TextSecondary(title, size: Size.fontTiny),
+        VerticalSpace(),
+        child
+      ]));
 
   Widget _buildParameter({String value, String title}) => Column(children: [
         TextPrimaryHint(value, size: Size.font),
@@ -77,16 +101,22 @@ class ProfileScreen extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: Size.verticalMedium),
                       background: Colors.primary,
-                      title: testingResultsProfileLabel),
+                      title: testingResultsProfileLabel,
+                      onPressed: _resultsHandler),
                   VerticalMediumSpace(),
                   Button(
                       padding:
                           EdgeInsets.symmetric(vertical: Size.verticalMedium),
-                      title: restartTestProfileLabel),
+                      title: restartTestProfileLabel,
+                      onPressed: _restartHandler),
                   VerticalBigSpace(),
-                  TextSecondary(progressProfileText, size: Size.fontTiny),
+                  // TextSecondary(progressProfileText, size: Size.fontTiny),
+                  // VerticalSpace(),
+                  // StatusBlock(),
+                  _buildBlock(title: progressProfileText, child: StatusBlock()),
                   VerticalSpace(),
-                  StatusBlock(),
+                  _buildBlock(
+                      title: trainingDayText, child: TrainingCalendar()),
                   VerticalSpace()
                 ]))
           ]))));
@@ -145,4 +175,14 @@ class ProfileHeader extends StatelessWidget {
                                 isAsset: isAvatarLocal,
                                 size: Size.avatar)))))
       ]));
+}
+
+class TrainingCalendar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Row(children: [
+    for(int i = 0; i < 7; i++)
+      Column(children: [
+        
+      ])
+  ]);
 }

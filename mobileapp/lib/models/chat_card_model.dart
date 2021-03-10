@@ -113,6 +113,7 @@ class ChatDialogStatusData extends GenericData {
       fromJson: ChatDialogStatus.fromJsonValue,
       toJson: ChatDialogStatus.toJsonValue)
   ChatDialogStatus status;
+  List<ChatHistoryData> history;
 
   ChatDialogStatusData();
 
@@ -121,7 +122,29 @@ class ChatDialogStatusData extends GenericData {
   Map<String, dynamic> toJson() => _$ChatDialogStatusDataToJson(this);
 
   @override
-  String toString() => '$type';
+  String toString() => 'ChatDialogStatusData('
+      '\n\ttype: $type '
+      '\n\thistory: $history'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ChatHistoryData {
+  ChatHistoryData();
+
+  int order;
+  List<ChatQuestionData> question;
+  List<ChatAnswerData> answer;
+
+  factory ChatHistoryData.fromJson(Map<String, dynamic> json) =>
+      _$ChatHistoryDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ChatHistoryDataToJson(this);
+
+  @override
+  String toString() => 'ChatHistoryData('
+      '\n\tquestion: $question'
+      '\n\tanswer: $answer'
+      ')';
 }
 
 class ChatDialogType extends GenericEnum<String> {
