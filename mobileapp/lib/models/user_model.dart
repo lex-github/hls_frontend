@@ -19,10 +19,13 @@ class UserData extends GenericData {
   String phone;
   @JsonKey(name: 'data')
   UserDetailsData details;
-  @JsonKey(name: 'dailyRating')
-  UserDailyData daily;
   @JsonKey(name: 'chatBotDialogs')
   List<ChatDialogStatusData> dialogs;
+  @JsonKey(name: 'dailyRating')
+  UserDailyData daily;
+  @JsonKey(name: 'weeklyTrainings')
+  List<int> trainings;
+  UserProgressData progress;
 
   UserData();
 
@@ -115,6 +118,129 @@ class UserDailyData {
       ')';
 }
 
+@JsonSerializable(includeIfNull: false)
+class UserProgressData {
+  String goal;
+  @JsonKey(name: 'microcycle')
+  MicroCycleData microCycle;
+  @JsonKey(name: 'macrocycle')
+  MacroCycleData macroCycle;
+  HealthData health;
+  @JsonKey(name: 'agesDiagram')
+  Map<int, double> healthHistory;
+
+  UserProgressData();
+
+  factory UserProgressData.fromJson(Map<String, dynamic> json) =>
+      _$UserProgressDataFromJson(json);
+  Map<String, dynamic> toJson() => _$UserProgressDataToJson(this);
+
+  @override
+  String toString() => 'UserProgressData('
+      '\n\tgoal: $goal'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class MicroCycleData {
+  String title;
+  int number;
+  int completedTrainings;
+  int totalTrainings;
+
+  MicroCycleData();
+
+  factory MicroCycleData.fromJson(Map<String, dynamic> json) =>
+      _$MicroCycleDataFromJson(json);
+  Map<String, dynamic> toJson() => _$MicroCycleDataToJson(this);
+
+  @override
+  String toString() => 'MicroCycleData('
+      '\n\ttitle: $title'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class MacroCycleData {
+  String title;
+
+  MacroCycleData();
+
+  factory MacroCycleData.fromJson(Map<String, dynamic> json) =>
+      _$MacroCycleDataFromJson(json);
+  Map<String, dynamic> toJson() => _$MacroCycleDataToJson(this);
+
+  @override
+  String toString() => 'MacroCycleData('
+      '\n\ttitle: $title'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class HealthData {
+  @JsonKey(name: 'historyValues')
+  List<HealthValueData> values;
+
+  HealthIndexData adaptiveCapacity;
+  HealthIndexData functionalityIndex;
+  HealthIndexData queteletIndex;
+  HealthIndexData robinsonIndex;
+  @JsonKey(name: 'rufierProbe')
+  HealthIndexData ruffierIndex;
+  double hlsApplication;
+
+  HealthData();
+
+  factory HealthData.fromJson(Map<String, dynamic> json) =>
+      _$HealthDataFromJson(json);
+  Map<String, dynamic> toJson() => _$HealthDataToJson(this);
+
+  @override
+  String toString() => 'HealthData('
+      //'\n\t: $'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class HealthValueData {
+  @JsonKey(name: 'createdAt', fromJson: toDate)
+  DateTime date;
+  @JsonKey(name: 'avgRating')
+  double average;
+  @JsonKey(name: 'formulasRating')
+  double calculated;
+  @JsonKey(name: 'hlsApplication')
+  double empirical;
+
+  HealthValueData();
+
+  factory HealthValueData.fromJson(Map<String, dynamic> json) =>
+      _$HealthValueDataFromJson(json);
+  Map<String, dynamic> toJson() => _$HealthValueDataToJson(this);
+
+  @override
+  String toString() => 'HealthValueData('
+      '\n\taverage: $average'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class HealthIndexData {
+  double percent;
+
+  HealthIndexData();
+
+  factory HealthIndexData.fromJson(Map<String, dynamic> json) =>
+      _$HealthIndexDataFromJson(json);
+  Map<String, dynamic> toJson() => _$HealthIndexDataToJson(this);
+
+  @override
+  String toString() => '${percent.round()}';
+    // 'HealthIndexData('
+    //   '\n\tpercent: $percent'
+    //   ')';
+}
+
 class GenderType extends GenericEnum<String> {
   const GenderType({String value}) : super(value: value);
 
@@ -148,12 +274,12 @@ class ActivityType extends GenericEnum<String> {
   static int toJsonValue(item) => item?.value;
 
   static const OTHER = ActivityType(value: null, color: null, title: null);
-  static const SCHEDULE = ActivityType(
-      value: 'schedule', color: Colors.schedule, title: scheduleTitle);
+  static const SCHEDULE =
+      ActivityType(value: 'MODE', color: Colors.schedule, title: scheduleTitle);
   static const NUTRITION = ActivityType(
-      value: 'nutrition', color: Colors.nutrition, title: nutritionTitle);
+      value: 'EATING', color: Colors.nutrition, title: nutritionTitle);
   static const EXERCISE = ActivityType(
-      value: 'exercise', color: Colors.exercise, title: exerciseTitle);
+      value: 'ACTIVITY', color: Colors.exercise, title: exerciseTitle);
 
   static const values = [SCHEDULE, NUTRITION, EXERCISE];
 

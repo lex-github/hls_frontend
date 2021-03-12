@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
@@ -29,7 +30,8 @@ final angle = 2 * pi / 3;
 final startAngle = -pi / 2;
 
 class HubScreen extends GetView<HubController> {
-  UserDailyData get profileDaily => AuthService.i?.profile?.daily;
+  UserData get profile => AuthService.i?.profile;
+  UserDailyData get profileDaily => profile?.daily;
 
   // handlers
 
@@ -167,20 +169,22 @@ class HubScreen extends GetView<HubController> {
                   RotationTransition(
                       turns: Tween(begin: .0, end: 1.0)
                           .animate(controller.animationController),
-                      child: profileDaily == null ? Nothing() : Stack(alignment: Alignment.center, children: [
-                        _buildSector(
-                            type: ActivityType.SCHEDULE,
-                            value: profileDaily.schedule / 100,
-                            startAngle: startAngle),
-                        _buildSector(
-                            type: ActivityType.NUTRITION,
-                            value: profileDaily.nutrition / 100,
-                            startAngle: startAngle + angle),
-                        _buildSector(
-                            type: ActivityType.EXERCISE,
-                            value: profileDaily.exercise / 100,
-                            startAngle: startAngle + angle * 2)
-                      ])),
+                      child: profileDaily == null
+                          ? Nothing()
+                          : Stack(alignment: Alignment.center, children: [
+                              _buildSector(
+                                  type: ActivityType.SCHEDULE,
+                                  value: profileDaily.schedule / 100,
+                                  startAngle: startAngle),
+                              _buildSector(
+                                  type: ActivityType.NUTRITION,
+                                  value: profileDaily.nutrition / 100,
+                                  startAngle: startAngle + angle),
+                              _buildSector(
+                                  type: ActivityType.EXERCISE,
+                                  value: profileDaily.exercise / 100,
+                                  startAngle: startAngle + angle * 2)
+                            ])),
                   CircularProgress(size: radius, child: _buildCenter())
                 ])),
         VerticalBigSpace(),
@@ -198,12 +202,19 @@ class HubScreen extends GetView<HubController> {
         Container(
             color: Colors.background,
             padding: Padding.content,
-            child: Column(
-                children: [StatusBlock(), VerticalSpace(), _buildNewsList()]))
+            child: Column(children: [
+              if (profile?.progress?.goal != null) ...[
+                StatusBlock(),
+                VerticalSpace()
+              ],
+              _buildNewsList()
+            ]))
       ])));
 }
 
 class StatusBlock extends StatelessWidget {
+  UserProgressData get progress => AuthService.i.profile.progress;
+
   // builders
 
   Widget _buildRow({String title, String text}) =>
@@ -215,17 +226,22 @@ class StatusBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        _buildRow(title: goalTitle, text: 'Похудение'),
-        VerticalMediumSpace(),
-        _buildRow(title: macrocycleTitle, text: 'Оздоровительный'),
+        _buildRow(title: goalTitle, text: progress.goal.capitalizeFirst),
         VerticalMediumSpace(),
         _buildRow(
-            title: '$microcycleTitle\n(2м /16 тр)',
-            text: 'Первый\n(подготовительный)'),
+            title: macrocycleTitle,
+            text: progress.macroCycle.title.capitalizeFirst),
         VerticalMediumSpace(),
-        _buildRow(title: weekTitle, text: '2/8'),
+        _buildRow(
+            title: '$microcycleTitle',
+            text: progress.microCycle.number.toString()),
+        // VerticalMediumSpace(),
+        // _buildRow(title: weekTitle, text: '2/8'),
         VerticalMediumSpace(),
-        _buildRow(title: trainingTitle, text: '3/16')
+        _buildRow(
+            title: trainingTitle,
+            text:
+                '${progress.microCycle.completedTrainings}/${progress.microCycle.totalTrainings}')
       ]);
 }
 
@@ -235,6 +251,11 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value)
           ..repeat(period: rotationAnimationDuration);
+  }
+
+  @override
+  void onClose() {
+    if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
   }
 
   // tooltip
@@ -256,18 +277,19 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
 
   // methods
 
+  Timer _tooltipDelayTimer;
   retrieveTooltip({ActivityType type}) async {
     _tooltipColor = type.color;
 
-    final data =
-        await query(dailyRatingTipQuery, fetchPolicy: FetchPolicy.networkOnly);
+    final data = await query(dailyRatingTipQuery,
+        parameters: {'type': type.value}, fetchPolicy: FetchPolicy.networkOnly);
 
     _tooltipColor = null;
 
     _tooltip(data.get(['dailyRatingTip', 'text']));
 
-    await tooltipDelay.delay();
+    if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
 
-    _tooltip('');
+    _tooltipDelayTimer = Timer(tooltipDelay.seconds, () => _tooltip(''));
   }
 }

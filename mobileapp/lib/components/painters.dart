@@ -4,9 +4,10 @@ library painters;
 
 import 'dart:math';
 
-import 'package:flutter/material.dart' hide Size, TextStyle;
+import 'package:flutter/material.dart' hide Colors, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:hls/theme/styles.dart';
+import 'package:path_drawing/path_drawing.dart';
 
 /// Paints simple circular progressbar
 class SectorPainter extends CustomPainter {
@@ -142,4 +143,49 @@ Offset offsetFromAngle(double angle, double radius,
   // print('offsetFromAngle angle: $a, offset: $offset');
 
   return offset;
+}
+
+class MacroGraphPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, M.Size size) {
+    final widthCell = size.width / 7;
+    final heightCell = size.height / 2;
+    final pointStart = Offset(0, size.height);
+
+    Paint paint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = Size.border
+      ..color = Colors.macroHLS
+      ..style = PaintingStyle.stroke;
+
+    Offset pointPeak = Offset(widthCell * 3, .55 * heightCell);
+    Offset pointEnd = Offset(size.width, .75 * heightCell);
+    canvas.drawLine(pointStart, pointPeak, paint);
+    canvas.drawLine(pointPeak, pointEnd, paint);
+
+    paint..color = Colors.macroNoHLS;
+    pointPeak = Offset(widthCell * 3, heightCell);
+    pointEnd = Offset(size.width, 1.35 * heightCell);
+    canvas.drawLine(pointStart, pointPeak, paint);
+    canvas.drawLine(pointPeak, pointEnd, paint);
+
+    paint..color = Colors.macroStatistical;
+    pointPeak = Offset(widthCell * 3, 1.25 * heightCell);
+    pointEnd = Offset(size.width, 1.7 * heightCell);
+    // canvas.drawLine(pointStart, pointPeak, paint);
+    // canvas.drawLine(pointPeak, pointEnd, paint);
+
+    canvas.drawPath(
+        dashPath(
+            Path()
+              ..moveTo(pointStart.dx, pointStart.dy)
+              ..lineTo(pointPeak.dx, pointPeak.dy)
+              ..lineTo(pointEnd.dx, pointEnd.dy),
+            dashArray: CircularIntervalList<double>(
+                <double>[1.5 * Size.horizontalTiny, .8 * Size.horizontalTiny])),
+        paint);
+  }
+
+  @override
+  bool shouldRepaint(_) => false;
 }

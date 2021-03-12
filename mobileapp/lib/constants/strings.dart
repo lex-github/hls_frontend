@@ -15,6 +15,8 @@ const noDataText = 'Нет данных';
 const formatExceptionText = 'Неверный ответ сервера';
 const timeoutExceptionText = 'Сервер не ответил после {duration} секунд, попробуйте позже';
 
+const trainingLimitExceeded = 'Errors::MicrocycleWeekTrainingLimit';
+
 // validation
 const errorRequiredText = 'Обязательно к заполнению';
 const errorNumericText = 'Поле должно быть числом';
@@ -87,6 +89,26 @@ const testingResultsProfileLabel = 'Результаты тестировани�
 const restartTestProfileLabel = 'Пройти тест заново';
 const progressProfileText = 'ПРОГРЕСС НА ПУТИ К ЦЕЛИ';
 const trainingDayText = 'ДНИ ТРЕНИРОВОК';
+const microCycleText = 'ТРЕНИРОВКИ МИКРОЦИКЛА';
+const microCyclePeriod1Text = '1 мес.';
+const microCyclePeriod2Text = '2 мес.';
+const trainingStoryText = 'Одна тренировка исчерпывает запасы гликогена в организме.  '
+  'Чтобы восстановить его потребуется  2-3 дня на отдых. Когда энергозапасы '
+  'восстановятся и превысят исходный уровень.\n\nНаступит суперкомпенсация — прирост. '
+  'На пике суперкомпенсации необходимо провести следующую тренировку, чтобы добиться '
+  'следующей волны ее подъема.';
+const healthDynamicText = 'ДИНАМИКА В ТЕЧЕНИИ ГОДА';
+const healthLevelLabel = 'Ваш уровень здоровья';
+const healthMassIndexLabel = 'Индекс массы тела';
+const healthRobensonIndexLabel = 'Индекс Робенсона';
+const healthRuffierIndexLabel = 'Проба Руфье';
+const healthFunctionalStateLabel = 'Индекс функционального состояния';
+const healthAdaptationPotentialLabel = 'Адаптационный потенциал';
+const healthHLSApplicationLabel = 'Приложение ЗОЖ за 2 месяца';
+const macroCycleText = 'МАКРОЦИКЛ — ПЛАН НА ЖИЗНЬ';
+const macroHLSLabel = 'с ЗОЖ';
+const macroNoHLSLabel = 'без ЗОЖ';
+const macroStatisticalLabel = 'по статистике';
 
 // profile form
 const nameProfileLabel = 'Имя';

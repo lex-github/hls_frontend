@@ -72,10 +72,12 @@ class Size {
   static double get bar => ratio(barHeight);
   static double get chatBar => ratio(chatBarHeight);
   static double get avatar => ratio(avatarSize);
+  static double get graph => ratio(graphHeight);
   static double get thumbnail => ratio(thumbnailHeight);
   static double get image => ratio(imageHeight);
   static double get bottomSheet => ratio(bottomSheetSize);
   static double get picker => ratio(pickerSize);
+  static double get button => ratio(buttonSize);
   static double get buttonBig => ratio(buttonBigSize);
   static double get buttonHuge => ratio(buttonHugeSize);
   static double get buttonHeight => ratio(buttonHeightSize);
@@ -104,7 +106,7 @@ class Colors {
   static const primary = M.Color(0xFF347CFF);
   static const success = M.Color(0xFF13D99C);
   static const failure = M.Color(0xFFD9134C);
-  static const disabled = M.Color(0xFF454040);
+  static const disabled = M.Color(0xFF404040);
   static const light = Colors.white;
 
   static const transparent = M.Colors.transparent;
@@ -117,7 +119,8 @@ class Colors {
 
   // text
   static const primaryText = Colors.light;
-  static const secondaryText = M.Color(0xFF656570);
+  static const secondaryText = M.Color(0xFF707070);
+  static const darkText = M.Color(0xFF333333);
 
   // project specific
   static const schedule = M.Color(0xFF8416FF);
@@ -128,6 +131,10 @@ class Colors {
   static const carbs = M.Color(0xFF00A632);
   static const fats = M.Color(0xFFE38D00);
   static const proteins = M.Color(0xFFA50800);
+
+  static const macroHLS = M.Color(0xFFD70010);
+  static const macroNoHLS = M.Color(0xFF8E8D8E);
+  static const macroStatistical = M.Color(0xFF347CFF);
 }
 
 // padding

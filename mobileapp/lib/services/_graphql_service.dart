@@ -9,8 +9,9 @@ class GraphqlService extends Service {
   static GraphqlService get i => Get.find<GraphqlService>();
 
   // messages
-  String _message;
-  String get message => _message;
+  GraphQLError _error;
+  GraphQLError get error => _error;
+  String get message => error.message;
 
   Future<GraphQLClient> client() async {
     // this might be a bit bold
@@ -62,12 +63,10 @@ class GraphqlService extends Service {
 
       if (result.hasException) {
         /// TODO: write message extractor
-        final exception = result.exception.toString();
-        print('GraphqlService.mutation ERROR: $exception');
+        _error = result.exception?.graphqlErrors?.first;
+        print('GraphqlService.mutation ERROR: $_error');
 
-        _message = exception;
-
-        if (exception.contains('User is required') && AuthService.isAuth) {
+        if (message.contains('User is required') && AuthService.isAuth) {
           await Future.delayed(defaultAnimationDuration);
           return mutation(node, parameters: parameters);
         }
@@ -77,7 +76,7 @@ class GraphqlService extends Service {
     } catch (e) {
       print('GraphqlService.mutation $e');
 
-      _message = e.toString();
+      _error = GraphQLError(message: e.toString());
 
       return null;
     }

@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.0.0.8';
+const version = '0.1.0.0';
+
+// logic
+//const maxTrainings = 3;
 
 // config
 const assetsDirectory = 'assets';
@@ -38,6 +41,7 @@ const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
 const profileRoute = '/profile';
 const profileFormRoute = '/profile-form';
+const trainingStoryRoute = '/training-story';
 const homeRoute = '/home';
 const articleRoute = '/article';
 const storyRoute = '/story';
@@ -83,10 +87,12 @@ const tabbarIconSize = 20.0;
 const barHeight = 75.0;
 const chatBarHeight = 40.0;
 const avatarSize = 120.0;
+const graphHeight = 156.0;
 const thumbnailHeight = 180.0;
 const imageHeight = 265.0;
 const pickerSize = 35.0;
 const bottomSheetSize = 250.0;
+const buttonSize = 39.0;
 const buttonBigSize = 56.0;
 const buttonHugeSize = 115.0;
 const buttonHeightSize = 48.0;

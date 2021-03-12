@@ -5,7 +5,6 @@ import 'package:hls/navigation/home_switch.dart';
 import 'package:hls/screens/article_screen.dart';
 import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/chat_results_screen.dart';
-import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
@@ -16,6 +15,7 @@ import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
 import 'package:hls/screens/story_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
+import 'package:hls/screens/training_story_screen.dart';
 import 'package:hls/screens/video_screen.dart';
 import 'package:hls/screens/welcome_screen.dart';
 import 'package:hls/services/auth_service.dart';
@@ -99,5 +99,10 @@ class Router {
         name: foodFilterRoute,
         page: () => FoodFilterScreen(),
         transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: trainingStoryRoute,
+        page: () => TrainingStoryScreen(),
+        transitionDuration: navigationTransitionDuration,
+        transition: Transition.downToUp),
   ];
 }

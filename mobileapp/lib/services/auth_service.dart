@@ -11,6 +11,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/services/_http_service.dart';
 import 'package:hls/services/_graphql_service.dart';
 import 'package:hls/services/settings_service.dart';
@@ -172,6 +173,18 @@ class AuthService extends GraphqlService {
 
     // parse data
     final Map userJson = data.get(['usersUpdateProfile', 'user']);
+    if (userJson.isNullOrEmpty) return false;
+    profile = UserData.fromJson(userJson);
+
+    return profile.isValid;
+  }
+
+  Future<bool> toggleTraining(DayType type) async {
+    final data = await mutation(usersToggleWeeklyTrainingMutation,
+        parameters: {'day': type.value});
+    if (data.isNullOrEmpty) return false;
+
+    final Map userJson = data.get(['usersToggleWeeklyTraining', 'user']);
     if (userJson.isNullOrEmpty) return false;
     profile = UserData.fromJson(userJson);
 
