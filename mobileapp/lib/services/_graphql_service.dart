@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/_controller.dart';
 import 'package:hls/services/_service.dart';
 import 'package:hls/services/auth_service.dart';
 
@@ -35,8 +37,14 @@ class GraphqlService extends Service {
           '\n\tresult ${result.data}');
 
     if (result.hasException) {
-      print('GraphqlService.query ERROR: ${result.exception.toString()}');
+      _error = result.exception?.graphqlErrors?.first;
+      print('GraphqlService.query ERROR: $_error');
       //showConfirm(title: result.exception.toString());
+
+      if (_error.status == errorNotAuthorized) {
+        await AuthService.i.afterLogout();
+        return null;
+      }
     }
 
     return result.data;
@@ -66,9 +74,14 @@ class GraphqlService extends Service {
         _error = result.exception?.graphqlErrors?.first;
         print('GraphqlService.mutation ERROR: $_error');
 
-        if (message.contains('User is required') && AuthService.isAuth) {
-          await Future.delayed(defaultAnimationDuration);
-          return mutation(node, parameters: parameters);
+        // if (message.contains('User is required') && AuthService.isAuth) {
+        //   await Future.delayed(defaultAnimationDuration);
+        //   return mutation(node, parameters: parameters);
+        // }
+
+        if (_error.status == errorNotAuthorized) {
+          await AuthService.i.logout();
+          return null;
         }
       }
 
