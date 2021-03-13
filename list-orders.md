@@ -102,3 +102,29 @@ site -> site : Фиксация сколько и какого контента 
 
 @enduml
 ```
+
+
+
+```plantuml
+
+@startuml
+'hide footbox
+autonumber
+!pragma teoz true
+
+skinparam monochrome reverse
+'skinparam backgroundColor #272822
+
+actor Покупатель as user
+collections Сайт as site
+actor Менеджер as manager
+actor Исполнитель as booster
+collections ЛК_Исполнителя as b_panel
+collections ЛК_Менеджера as m_panel
+
+== Оформление заказа ==
+user -> site : Выбор и покупка товара в каталоге
+user -> site : Выбор и покупка товара в каталоге
+
+@enduml
+```
