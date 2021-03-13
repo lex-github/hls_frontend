@@ -15,7 +15,8 @@ const noDataText = 'Нет данных';
 const formatExceptionText = 'Неверный ответ сервера';
 const timeoutExceptionText = 'Сервер не ответил после {duration} секунд, попробуйте позже';
 
-const trainingLimitExceeded = 'Errors::MicrocycleWeekTrainingLimit';
+const errorNotAuthorized = 'Errors::Auth';
+const errorTrainingLimitExceeded = 'Errors::MicrocycleWeekTrainingLimit';
 
 // validation
 const errorRequiredText = 'Обязательно к заполнению';

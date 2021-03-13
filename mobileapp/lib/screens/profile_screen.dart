@@ -216,7 +216,7 @@ class TrainingCalendar extends GetView<TrainingCalendarController>
     if (controller.isAwaiting) return false;
 
     if (!await controller.toggle(type)) {
-      if (controller.error.status == trainingLimitExceeded)
+      if (controller.error.status == errorTrainingLimitExceeded)
         return Get.toNamed(trainingStoryRoute);
 
       return showConfirm(title: controller.message);

@@ -32,6 +32,6 @@ class Controller extends GetxController {
 }
 
 extension GraphQLErrorExtension on GraphQLError {
-  int get code => extensions.get('status');
-  String get status => extensions.get('exception');
+  int get code => extensions?.get('status');
+  String get status => extensions?.get('exception');
 }

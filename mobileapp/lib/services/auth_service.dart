@@ -98,6 +98,12 @@ class AuthService extends GraphqlService {
 
   // methods
 
+  afterLogout() {
+    SettingsService.i.token = null;
+    profile = null;
+    isAuthenticated = false;
+  }
+
   Future<UserData> retrieve() async {
     if (SettingsService.i.token.isNullOrEmpty) return null;
 
@@ -158,9 +164,7 @@ class AuthService extends GraphqlService {
     final data = await mutation(authSignOutMutation);
     print('AuthService.logout $data');
 
-    SettingsService.i.token = null;
-    profile = null;
-    isAuthenticated = false;
+    afterLogout();
 
     return true;
   }
