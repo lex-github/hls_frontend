@@ -11,6 +11,7 @@ import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/chat_navigation_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
+import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/navigation/tabbar_screen.dart';
@@ -53,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
       ]));
 
   Widget _buildParameter({String value, String title}) => Column(children: [
-        TextPrimaryHint(value, size: Size.font),
+        TextPrimaryHint(value ?? noDataText, size: Size.font),
         TextPrimary(title, size: .9 * Size.fontTiny)
       ]);
 
@@ -91,19 +92,23 @@ class ProfileScreen extends StatelessWidget {
                     VerticalTinySpace(),
                     TextPrimaryTitle(profile.name, size: 1.2 * Size.fontBig)
                   ],
-                  VerticalSpace(),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildParameter(
-                            value: '${profile.age}', title: ageProfileText),
-                        _buildParameter(
-                            value: '${profile.height}',
-                            title: heightProfileText),
-                        _buildParameter(
-                            value: '${profile.weight}',
-                            title: weightProfileText)
-                      ]),
+                  if (!(profile.age.isNullOrEmpty &&
+                      profile.height.isNullOrEmpty &&
+                      profile.weight.isNullOrEmpty)) ...[
+                    VerticalSpace(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildParameter(
+                              value: '${profile.age}', title: ageProfileText),
+                          _buildParameter(
+                              value: '${profile.height}',
+                              title: heightProfileText),
+                          _buildParameter(
+                              value: '${profile.weight}',
+                              title: weightProfileText)
+                        ])
+                  ],
                   VerticalSpace(),
                   Button(
                       padding:
@@ -407,23 +412,23 @@ class HealthYearGraph extends StatelessWidget {
           ]),
           VerticalSpace(),
           TextSecondary(
-              '$healthLevelLabel – ${values.last.calculated.round()}%(${values.last.empirical.round()}):',
+              '$healthLevelLabel – ${values?.lastOrNull?.calculated?.round() ?? 0}%(${values?.lastOrNull?.empirical?.round() ?? 0}):',
               size: Size.fontTiny),
           VerticalSpace(),
-          TextSecondary('$healthMassIndexLabel – ${health.queteletIndex}%',
+          TextSecondary('$healthMassIndexLabel – ${health?.queteletIndex ?? 0}%',
               size: Size.fontTiny),
-          TextSecondary('$healthRobensonIndexLabel – ${health.robinsonIndex}%',
+          TextSecondary('$healthRobensonIndexLabel – ${health?.robinsonIndex ?? 0}%',
               size: Size.fontTiny),
-          TextSecondary('$healthRuffierIndexLabel – ${health.ruffierIndex}%',
-              size: Size.fontTiny),
-          TextSecondary(
-              '$healthFunctionalStateLabel – ${health.functionalityIndex}%',
+          TextSecondary('$healthRuffierIndexLabel – ${health?.ruffierIndex ?? 0}%',
               size: Size.fontTiny),
           TextSecondary(
-              '$healthAdaptationPotentialLabel – ${health.adaptiveCapacity}%',
+              '$healthFunctionalStateLabel – ${health?.functionalityIndex ?? 0}%',
               size: Size.fontTiny),
           TextSecondary(
-              '$healthHLSApplicationLabel – нет(${health.hlsApplication.round()}%):',
+              '$healthAdaptationPotentialLabel – ${health?.adaptiveCapacity ?? 0}%',
+              size: Size.fontTiny),
+          TextSecondary(
+              '$healthHLSApplicationLabel – нет(${health?.hlsApplication?.round() ?? 0}%)',
               size: Size.fontTiny)
         ]))
       ]);

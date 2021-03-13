@@ -220,7 +220,7 @@ class StatusBlock extends StatelessWidget {
   Widget _buildRow({String title, String text}) =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         TextSecondary('$title:'),
-        TextPrimary(text, size: Size.fontSmall, align: TextAlign.right)
+        TextPrimary(text ?? noDataText, size: Size.fontSmall, align: TextAlign.right)
       ]);
 
   @override
@@ -234,14 +234,14 @@ class StatusBlock extends StatelessWidget {
         VerticalMediumSpace(),
         _buildRow(
             title: '$microcycleTitle',
-            text: progress.microCycle.number.toString()),
+            text: progress?.microCycle?.number?.toString() ?? '0'),
         // VerticalMediumSpace(),
         // _buildRow(title: weekTitle, text: '2/8'),
         VerticalMediumSpace(),
         _buildRow(
             title: trainingTitle,
             text:
-                '${progress.microCycle.completedTrainings}/${progress.microCycle.totalTrainings}')
+                '${progress?.microCycle?.completedTrainings ?? 0}/${progress?.microCycle?.totalTrainings ?? 0}')
       ]);
 }
 
