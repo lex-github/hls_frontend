@@ -30,7 +30,9 @@ class FoodScreen extends GetView<FoodController> {
       onPressed: () => _sectionHandler(title),
       child: Column(children: [
         Row(children: [
-          Container(height: Size.iconBig), // make row height correspond FoodCategoryScreen
+          Container(
+              height: Size
+                  .iconBig), // make row height correspond FoodCategoryScreen
           TextPrimaryHint(title),
           Expanded(child: HorizontalSpace()),
           Obx(() => Transform.rotate(
@@ -45,14 +47,11 @@ class FoodScreen extends GetView<FoodController> {
               VerticalMediumSpace(),
               for (final subItem in items)
                 Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: Size.verticalTiny),
-                    child: Row(
-                      children: [
-                        Expanded(child: TextSecondary(subItem.title)),
-                        TextSecondary('${subItem.quantity} ${subItem.unit}')
-                      ]
-                    ))
+                    padding: EdgeInsets.symmetric(vertical: Size.verticalTiny),
+                    child: Row(children: [
+                      Expanded(child: TextSecondary(subItem.title)),
+                      TextSecondary('${subItem.quantity} ${subItem.unit}')
+                    ]))
             ])))
       ]));
 
@@ -73,6 +72,14 @@ class FoodScreen extends GetView<FoodController> {
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
         TextPrimary(food.title, align: TextAlign.center),
+        if (!food.championOn.isNullOrEmpty) ...[
+          VerticalSmallSpace(),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Image(title: 'icons/champion'),
+            HorizontalTinySpace(),
+            TextSecondary(food?.championOn?.join(', '), color: Colors.champion)
+          ])
+        ],
         VerticalSpace(),
         Container(
             margin: EdgeInsets.symmetric(horizontal: Size.horizontal),
@@ -94,10 +101,11 @@ class FoodScreen extends GetView<FoodController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(children: [
-                    _buildIndicator(food.water, color: Colors.water, value: .2),
+                    //_buildIndicator(food.water, color: Colors.water, value: .2),
+                    _buildIndicator(food.calories, color: Colors.water, value: .2),
                     VerticalSpace(),
-                    _buildIndicator(food.carbs,
-                        title: foodCarbLabel, color: Colors.carbs, value: .35)
+                    _buildIndicator(food.proteins,
+                      color: Colors.proteins, value: .45)
                   ]),
                   CircularProgress(
                       size: Size.buttonHuge,
@@ -112,8 +120,8 @@ class FoodScreen extends GetView<FoodController> {
                   Column(children: [
                     _buildIndicator(food.fats, color: Colors.fats, value: .65),
                     VerticalSpace(),
-                    _buildIndicator(food.proteins,
-                        color: Colors.proteins, value: .45)
+                    _buildIndicator(food.carbs,
+                      title: foodCarbLabel, color: Colors.carbs, value: .35)
                   ])
                 ])),
         //VerticalBigSpace()

@@ -26,5 +26,8 @@ class FoodCategoryData extends GenericData {
   Map<String, dynamic> toJson() => _$FoodCategoryDataToJson(this);
 
   @override
-  String toString() => 'FoodCategoryData(title: $title)';
+  String toString() => 'FoodCategoryData('
+    '\n\tid: $id'
+    '\n\ttitle: $title'
+    ')';
 }

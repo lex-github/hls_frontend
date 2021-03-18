@@ -123,6 +123,8 @@ class Colors {
   static const darkText = M.Color(0xFF333333);
 
   // project specific
+  static const champion = M.Color(0xFFF2994A);
+
   static const schedule = M.Color(0xFF8416FF);
   static const nutrition = M.Color(0xFF99E600);
   static const exercise = M.Color(0xFFD70010);

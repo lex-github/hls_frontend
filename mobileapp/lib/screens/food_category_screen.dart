@@ -98,7 +98,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
 
   Widget _buildBody() => GetBuilder<FoodCategoryController>(
       tag: tag,
-      init: FoodCategoryController(id: category.id),
+      init: FoodCategoryController(id: category?.id),
       builder: (_) => controller.isInit
           ? controller.list.length > 0
               ? ListView.builder(

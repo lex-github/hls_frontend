@@ -80,7 +80,7 @@ class GraphqlService extends Service {
         // }
 
         if (_error.status == errorNotAuthorized) {
-          await AuthService.i.logout();
+          await AuthService.i.afterLogout();
           return null;
         }
       }

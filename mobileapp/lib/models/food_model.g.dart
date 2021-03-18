@@ -22,6 +22,8 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
             ? null
             : FoodSectionData.fromJson(e as Map<String, dynamic>))
         ?.toList()
+    ..championOn =
+        (json['championOn'] as List)?.map((e) => e as String)?.toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 
@@ -39,6 +41,7 @@ Map<String, dynamic> _$FoodDataToJson(FoodData instance) {
   writeNotNull('icon', instance.image);
   writeNotNull('foodCategory', instance.category);
   writeNotNull('structure', instance.structure);
+  writeNotNull('championOn', instance.championOn);
   writeNotNull('imageUrl', instance.imageUrl);
   return val;
 }

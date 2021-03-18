@@ -14,6 +14,7 @@ class FoodData extends GenericData {
   @JsonKey(name: 'foodCategory')
   FoodCategoryData category;
   List<FoodSectionData> structure;
+  List<String> championOn;
 
   FoodData();
 
@@ -29,6 +30,7 @@ class FoodData extends GenericData {
   FoodSectionData get carbs => getByKey('carbohydrates');
   FoodSectionData get fats => getByKey('fats');
   FoodSectionData get proteins => getByKey('proteins');
+  FoodSectionData get calories => getByKey('energy_value');
 
   Map<String, List<FoodSectionData>> get sections => structure?.fold(
       {},

@@ -141,6 +141,11 @@ class ChatController extends Controller {
   final List<ChatMessageData> messageQueue = [];
   addMessage(ChatMessageData message) async {
     if (message == null || message.text.isNullOrEmpty) return;
+
+    print('ChatController.addMessage'
+      '\n\tmessages: ${_messages.lastOrNull?.text}'
+      '\n\tnew: ${message.text}');
+
     if (_messages.lastOrNull?.text == message.text ||
         messageQueue.lastOrNull?.text == message.text) return;
 

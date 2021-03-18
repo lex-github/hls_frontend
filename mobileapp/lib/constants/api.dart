@@ -18,7 +18,7 @@ const avatarUploadPath = 'upload';
 const userCommonFields = ''
   'data '
   '{'
-    'name '
+    //'name '
     'age '
     'birthDate '
     'gender '
@@ -88,6 +88,11 @@ const uploadFields =
     //'headers '
     'signedBlobId '
     'url'
+  '}';
+
+const chatBotFields =
+  '{'
+    ''
   '}';
 
 const chatCardFields =
@@ -190,7 +195,8 @@ const foodFields =
       'title '
       'unit '
     '} '
-    'foodCategory $foodCategoryListFields'
+    'foodCategory $foodCategoryListFields '
+    'championOn'
   '}';
 
 // query
@@ -364,6 +370,7 @@ const chatBotDialogStartMutation = 'mutation'
       'name: \$name'
     ') '
     '{'
+      'chatBot $chatBotFields '
       'dialogId '
       'dialogStatus '
       'nextCard $chatCardFields'
