@@ -62,10 +62,10 @@ const otpCodeLabel = 'Последние 6 цифр';
 // chat
 const chatWelcomeTitle = 'Приветствие';
 const chatTypingText = 'HLS печатает';
-const chatNutritionTitle = 'Поговорим о еде';
-const chatLifestyleTitle = 'Поговорим об организации жизни';
-const chatMedicalTitle = 'Поговорим о здоровье';
-const chatPhysicalTitle = 'Физические параметры';
+const chatNutritionTitle = 'Питание. Тест.';
+const chatLifestyleTitle = 'Режим.Тест.';
+const chatMedicalTitle = 'Движение. Тест.';
+const chatPhysicalTitle = 'Движение.Тест.';
 const chatInputLabel = 'Ответ';
 
 // timer
