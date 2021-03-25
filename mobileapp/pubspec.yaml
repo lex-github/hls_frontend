@@ -63,7 +63,7 @@ dependencies:
   # macro graph dash
   path_drawing: 0.4.1+1
   # output debug info
-  pretty_json: ^2.0.0
+  pretty_json: ^1.1.0
   # refresh list by pulling
   #pull_to_refresh: ^1.6.3
   pull_to_refresh: ^1.6.4
