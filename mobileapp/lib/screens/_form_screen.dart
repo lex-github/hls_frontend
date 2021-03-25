@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' as R;
@@ -45,7 +47,7 @@ abstract class FormScreen<T extends FormController> extends GetView<T> {
               key: controller.key,
               child: KeyboardActions(
                   tapOutsideToDismiss: tapOutsideToDismiss,
-                  //enable: _isKeyboardVisible,
+                  enable: Platform.isAndroid || Platform.isIOS,
                   //overscroll: 1,
                   autoScroll: autoScroll,
                   child: buildForm(context),

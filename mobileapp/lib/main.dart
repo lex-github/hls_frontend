@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart' hide Image, Router;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/navigation/router.dart';
 import 'package:hls/services/_http_service.dart';
@@ -11,11 +14,16 @@ import 'package:hls/services/settings_service.dart';
 import 'package:hls/theme/theme_data.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:window_size/window_size.dart';
 
 void main() => initServices().then((_) => runApp(HLS()));
 
 Future initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows || Platform.isMacOS)
+    //DesktopWindow.setWindowSize(Size(desktopWindowWidth, desktopWindowHeight));
+    await setWindowMaxSize(Size(desktopWindowWidth, desktopWindowHeight));
 
   await initializeDateFormatting(null, null);
   await Get.put(SettingsService()).init();
@@ -39,20 +47,20 @@ class HLS extends StatelessWidget {
                 'Content-Type': 'application/json',
                 if (!SettingsService.i.token.isNullOrEmpty)
                   authTokenKey: SettingsService.i.token
-              }), cache: GraphQLCache())),
+              }),
+              cache: GraphQLCache())),
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),
               builder: (_) => GetMaterialApp(
-                    smartManagement: SmartManagement.onlyBuilder,
-                    theme: theme(context),
-                    defaultTransition: Transition.rightToLeftWithFade,
-                    getPages: Router.routes,
-                    // home: SingleChildScrollView(
-                    //     child: Column(children: [
-                    //   Image(title: 'neck_1.svg'),
-                    //   Image(title: 'neck_2.svg')
-                    // ])),
-                    initialRoute: Router.initial,
-                    home: Router.home()
-                  )))));
+                  smartManagement: SmartManagement.onlyBuilder,
+                  theme: theme(context),
+                  defaultTransition: Transition.rightToLeftWithFade,
+                  getPages: Router.routes,
+                  // home: SingleChildScrollView(
+                  //     child: Column(children: [
+                  //   Image(title: 'neck_1.svg'),
+                  //   Image(title: 'neck_2.svg')
+                  // ])),
+                  initialRoute: Router.initial,
+                  home: Router.home())))));
 }
