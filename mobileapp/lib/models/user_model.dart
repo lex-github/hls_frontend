@@ -189,6 +189,8 @@ class HealthData {
   HealthIndexData ruffierIndex;
   double hlsApplication;
 
+  Map<String, dynamic> debugInfo;
+
   HealthData();
 
   factory HealthData.fromJson(Map<String, dynamic> json) =>

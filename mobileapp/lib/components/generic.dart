@@ -491,6 +491,7 @@ class Screen extends StatelessWidget {
   final Key key;
   final Widget title;
   final Widget child;
+  final double height;
   final Widget drawer;
   final Widget leading;
   final double leadingTop;
@@ -498,6 +499,7 @@ class Screen extends StatelessWidget {
   final Widget trailing;
   final double trailingTop;
   final double trailingRight;
+  final Widget bottom;
   final Widget fab;
   final Color color;
   final bool shouldResize;
@@ -508,6 +510,7 @@ class Screen extends StatelessWidget {
   Screen(
       {this.key,
       title,
+      this.height,
       this.drawer,
       this.leading,
       this.leadingTop,
@@ -515,6 +518,7 @@ class Screen extends StatelessWidget {
       this.trailing,
       this.trailingTop,
       this.trailingRight,
+      this.bottom,
       this.fab,
       this.color,
       this.shouldResize = false,
@@ -622,7 +626,7 @@ class Screen extends StatelessWidget {
                           primary: false,
                           appBar: shouldHaveAppBar
                               ? PreferredSize(
-                                  preferredSize: M.Size.fromHeight(
+                                  preferredSize: M.Size.fromHeight(height ??
                                       Size.bar), // here the desired height
                                   child: AppBar(
                                       toolbarHeight: Size.bar,
@@ -643,7 +647,8 @@ class Screen extends StatelessWidget {
                                             ]
                                           : null,
                                       leadingWidth:
-                                          Size.iconSmall + Size.horizontal * 2))
+                                          Size.iconSmall + Size.horizontal * 2,
+                                      bottom: bottom))
                               : null,
                           drawer: drawer,
                           body: ((leading) => fab == null &&

@@ -103,6 +103,9 @@ mixin CommonDialog {
       @required Widget right,
       T Function() onLeft,
       T Function() onRight}) async {
+    // onLeft ??= () => null;
+    // onRight ??= () => null;
+
     // color
     final Color textColor = Colors.primary;
     final Color backgroundColor = Colors.background;
@@ -116,24 +119,27 @@ mixin CommonDialog {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      titlePadding: EdgeInsets.symmetric(vertical: Size.vertical),
-      contentPadding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-      actionsPadding: EdgeInsets.symmetric(vertical: Size.vertical),
-      buttonPadding: Padding.zero,
-      shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular),
-      backgroundColor: backgroundColor,
-      title: title != null
-          ? Text(title,
-              textAlign: TextAlign.center,
-              style: TextStyle.primary.copyWith(color: textColor))
-          : null,
-      content: description != null
-          ? Text(description,
-              textAlign: TextAlign.center,
-              style: TextStyle.primary.copyWith(color: textColor))
-          : null,
-      actions: [leftButton, HorizontalBigSpace(), rightButton],
-    );
+        titlePadding: EdgeInsets.symmetric(vertical: Size.vertical),
+        contentPadding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+        actionsPadding: EdgeInsets.symmetric(vertical: Size.vertical),
+        buttonPadding: Padding.zero,
+        shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular),
+        backgroundColor: backgroundColor,
+        title: title != null
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+                child: Text(title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle.primary.copyWith(color: textColor)))
+            : null,
+        content: description != null
+            ? description is String
+                ? Text(description,
+                    textAlign: TextAlign.center,
+                    style: TextStyle.primary.copyWith(color: textColor))
+                : description
+            : null,
+        actions: [leftButton, HorizontalBigSpace(), rightButton]);
 
     // show the dialog
     return await Get.dialog(alert);

@@ -205,7 +205,8 @@ HealthData _$HealthDataFromJson(Map<String, dynamic> json) {
     ..ruffierIndex = json['rufierProbe'] == null
         ? null
         : HealthIndexData.fromJson(json['rufierProbe'] as Map<String, dynamic>)
-    ..hlsApplication = (json['hlsApplication'] as num)?.toDouble();
+    ..hlsApplication = (json['hlsApplication'] as num)?.toDouble()
+    ..debugInfo = json['debugInfo'] as Map<String, dynamic>;
 }
 
 Map<String, dynamic> _$HealthDataToJson(HealthData instance) {
@@ -224,6 +225,7 @@ Map<String, dynamic> _$HealthDataToJson(HealthData instance) {
   writeNotNull('robinsonIndex', instance.robinsonIndex);
   writeNotNull('rufierProbe', instance.ruffierIndex);
   writeNotNull('hlsApplication', instance.hlsApplication);
+  writeNotNull('debugInfo', instance.debugInfo);
   return val;
 }
 

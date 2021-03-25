@@ -129,6 +129,9 @@ class Colors {
   static const nutrition = M.Color(0xFF99E600);
   static const exercise = M.Color(0xFFD70010);
 
+  static const scheduleNight = M.Color(0xFFC53DFF);
+  static const scheduleDay = M.Color(0xFFECFF1F);
+
   static const water = M.Color(0xFF017CD0);
   static const carbs = M.Color(0xFF00A632);
   static const fats = M.Color(0xFFE38D00);

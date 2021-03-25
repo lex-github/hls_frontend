@@ -123,7 +123,7 @@ abstract class FormController extends GetxController {
 
   void onChanged(String field, dynamic value,
       {bool shouldUpdate = true, bool shouldUpdateController = true}) {
-    print('FormController.onChanged $field: $value');
+    //print('FormController.onChanged $field: $value');
 
     _state[field] ??= FormControllerState();
     final state = _state[field];

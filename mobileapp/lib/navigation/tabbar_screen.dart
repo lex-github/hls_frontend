@@ -8,6 +8,7 @@ import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/screens/nutrition_screen.dart';
+import 'package:hls/screens/schedule_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 final tabbarScaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'tabbarKey');
@@ -29,7 +30,7 @@ class _TabbarScreenState extends State<TabbarScreen>
   final List<Widget> _tabbarBodies = <Widget>[
     HubScreen(),
     NutritionScreen(),
-    DevelopmentScreen(shouldShowDrawer: true),
+    ScheduleScreen(),
     DevelopmentScreen(shouldShowDrawer: true)
   ];
 
@@ -46,8 +47,10 @@ class _TabbarScreenState extends State<TabbarScreen>
       color: Colors.primary,
       items: _tabbarItems);
 
-  Widget _buildTabbar() =>
-      TabBarView(controller: controller.tabController, children: _tabbarBodies);
+  Widget _buildTabbar() => TabBarView(
+      physics: NeverScrollableScrollPhysics(),
+      controller: controller.tabController,
+      children: _tabbarBodies);
 
   Widget _buildBody() => controller.isBarVisible
       ? Scaffold(

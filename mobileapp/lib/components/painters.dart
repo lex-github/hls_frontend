@@ -9,20 +9,103 @@ import 'package:flutter/material.dart' as M;
 import 'package:hls/theme/styles.dart';
 import 'package:path_drawing/path_drawing.dart';
 
+class CircleDialPainter extends CustomPainter {
+  final Color color;
+  final List<int> values;
+  final double offset;
+  final double fontSize;
+
+  CircleDialPainter(
+      {@required this.color,
+      @required this.values,
+      this.offset = 0,
+      this.fontSize});
+
+  @override
+  void paint(Canvas canvas, M.Size size) {
+    final radius = min(size.width, size.height) / 2;
+    final textRadius = radius - Size.fontTiny;
+
+    final paint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = Size.border * 3
+      ..color = color
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawCircle(Offset(size.width / 2, size.height / 2), radius, paint);
+
+    final textPainter = TextPainter(
+        text: TextSpan(
+            text: '',
+            style: TextStyle.primary.copyWith(fontSize: fontSize ?? Size.fontTiny)),
+        textDirection: TextDirection.ltr);
+
+    final stepAngle = 2 * pi / values.length;
+    for (final value in values) {
+      textPainter.text =
+          TextSpan(text: '$value', style: textPainter.text.style);
+      textPainter.layout();
+
+      canvas.save();
+
+      final stepIndex = values.indexOf(value) + 1;
+
+      // determine where to draw
+      final offset = offsetFromAngle(
+          stepAngle * stepIndex - pi / 2 + this.offset, textRadius,
+          width: size.width / 2, height: size.height / 2);
+      canvas.translate(offset.dx - textPainter.width / 2,
+          offset.dy - textPainter.height / 2);
+
+      textPainter.paint(canvas, Offset.zero);
+
+      canvas.restore();
+    }
+  }
+
+  @override
+  bool shouldRepaint(_) => false;
+}
+
+// class NightPainter extends CustomPainter {
+//   final DateTime from;
+//   final Da endAngle;
+//   final double startAngle;
+//
+//   SectorPainter(
+//     {@required this.color, @required this.endAngle, this.startAngle = .0});
+//
+//   @override
+//   void paint(Canvas canvas, M.Size size) {
+//     final Paint paint = Paint()
+//       ..isAntiAlias = true
+//       ..strokeWidth = Size.border * 2
+//       ..color = color
+//       ..style = PaintingStyle.stroke;
+//     canvas.drawArc(Rect.fromLTWH(0.0, 0.0, size.width, size.height), startAngle,
+//       endAngle, false, paint);
+//   }
+//
+//   @override
+//   bool shouldRepaint(SectorPainter old) =>
+//     endAngle != old.endAngle || color != old.color;
+// }
+
 /// Paints simple circular progressbar
 class SectorPainter extends CustomPainter {
   final Color color;
   final double endAngle;
   final double startAngle;
+  final double width;
 
   SectorPainter(
-      {@required this.color, @required this.endAngle, this.startAngle = .0});
+      {@required this.color, @required this.endAngle, this.startAngle = .0, this.width});
 
   @override
   void paint(Canvas canvas, M.Size size) {
     final Paint paint = Paint()
       ..isAntiAlias = true
-      ..strokeWidth = Size.border * 2
+      ..strokeWidth = width ?? (Size.border * 2)
       ..color = color
       ..style = PaintingStyle.stroke;
     canvas.drawArc(Rect.fromLTWH(0.0, 0.0, size.width, size.height), startAngle,

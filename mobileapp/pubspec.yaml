@@ -60,8 +60,11 @@ dependencies:
   mime: ^0.9.7
   # macro graph dash
   path_drawing: 0.4.1+1
+  # output debug info
+  pretty_json: ^2.0.0
   # refresh list by pulling
-  pull_to_refresh: ^1.6.3
+  #pull_to_refresh: ^1.6.3
+  pull_to_refresh: ^1.6.4
   # share
   share: ^0.6.5+4
   # settings

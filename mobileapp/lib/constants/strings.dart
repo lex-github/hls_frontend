@@ -1,6 +1,7 @@
 const developmentText = 'Раздел в разработке';
 const requestWaitingText = 'Пожалуйста подождите';
 const selectionScreenTitle = 'Выберите значение(я)';
+const debugTitle = 'Дебаг инфо';
 
 // refresh control
 const idleRefreshText = '';
@@ -146,3 +147,8 @@ const submitButtonTitle = 'Готово';
 const clearButtonTitle = 'СБРОС';
 const filterFromLabel = 'от';
 const filterToLabel = 'до';
+
+// schedule
+const scheduleScreenTitle = 'Режим дня';
+const scheduleNightText = 'Отметьте на суточных часах время сна. Отбой и подъем.';
+const scheduleSwitchTitle = 'Выберите время отбоя/подъема';

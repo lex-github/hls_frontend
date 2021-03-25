@@ -33,20 +33,23 @@ Future showConfirm(
   AlertDialog alert = AlertDialog(
       insetPadding: Padding.content,
       titlePadding: Padding.content,
-      contentPadding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+      contentPadding:
+          EdgeInsets.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
       actionsPadding: shouldShowConfirm
           ? EdgeInsets.symmetric(vertical: Size.vertical)
           : EdgeInsets.only(bottom: Size.vertical),
       buttonPadding: Padding.zero,
       shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular),
       backgroundColor: backgroundColor,
-      title: title != null
-          ? TextPrimary(title, align: TextAlign.center)
-          : null,
+      title: title != null ? TextPrimary(title, align: TextAlign.center) : null,
       content: child != null
           ? child
           : description != null
-              ? TextSecondary(description)
+              ? SingleChildScrollView(
+                  child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: Size.horizontal),
+                      child: TextSecondary(description)))
               : null,
       actions: [
         if (shouldShowConfirm) button,

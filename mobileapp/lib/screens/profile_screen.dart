@@ -18,14 +18,18 @@ import 'package:hls/navigation/tabbar_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
+import 'package:pretty_json/pretty_json.dart';
 
 const ages = [0, 20, 30, 36, 38, 40, 50, 60];
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget with CommonDialog {
   UserData get profile => AuthService?.i?.profile;
   UserProgressData get progress => profile?.progress;
 
   // handlers
+  _debugHandler() => showConfirm(
+      title: debugTitle,
+      description: prettyJson(progress?.health?.debugInfo ?? noDataText));
 
   _resultsHandler() => Get.toNamed(chatResultsRoute);
   _restartHandler() {
@@ -144,6 +148,11 @@ class ProfileScreen extends StatelessWidget {
                       title: healthDynamicText, child: HealthYearGraph()),
                   VerticalSpace(),
                   _buildBlock(title: macroCycleText, child: MacroCycleGraph()),
+                  VerticalSpace(),
+                  Button(
+                      background: Colors.failure,
+                      title: debugTitle,
+                      onPressed: _debugHandler),
                   VerticalSpace()
                 ]))
           ]))));
@@ -415,11 +424,14 @@ class HealthYearGraph extends StatelessWidget {
               '$healthLevelLabel – ${values?.lastOrNull?.calculated?.round() ?? 0}%(${values?.lastOrNull?.empirical?.round() ?? 0}):',
               size: Size.fontTiny),
           VerticalSpace(),
-          TextSecondary('$healthMassIndexLabel – ${health?.queteletIndex ?? 0}%',
+          TextSecondary(
+              '$healthMassIndexLabel – ${health?.queteletIndex ?? 0}%',
               size: Size.fontTiny),
-          TextSecondary('$healthRobensonIndexLabel – ${health?.robinsonIndex ?? 0}%',
+          TextSecondary(
+              '$healthRobensonIndexLabel – ${health?.robinsonIndex ?? 0}%',
               size: Size.fontTiny),
-          TextSecondary('$healthRuffierIndexLabel – ${health?.ruffierIndex ?? 0}%',
+          TextSecondary(
+              '$healthRuffierIndexLabel – ${health?.ruffierIndex ?? 0}%',
               size: Size.fontTiny),
           TextSecondary(
               '$healthFunctionalStateLabel – ${health?.functionalityIndex ?? 0}%',
