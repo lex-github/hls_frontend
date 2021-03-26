@@ -181,7 +181,9 @@ class NightTab extends GetView<NightController> with CommonDialog {
                               //- 2 * pi / controller.innerValues.length,
                               fontSize: .8 * Size.fontTiny,
                               color: Colors.black)),
-                      Obx(() => asleepTime.isOuter || wakeupTime.isOuter
+                      Obx(() => asleepTime != null &&
+                              wakeupTime != null &&
+                              (asleepTime.isOuter || wakeupTime.isOuter)
                           ? CustomPaint(
                               size: M.Size(diameter, diameter),
                               painter: SectorPainter(
@@ -212,7 +214,9 @@ class NightTab extends GetView<NightController> with CommonDialog {
                                     endAngle: 2 * pi,
                                   ))
                               : Nothing()),
-                      Obx(() => wakeupTime.isInner || asleepTime.isInner
+                      Obx(() => asleepTime != null &&
+                              wakeupTime != null &&
+                              (wakeupTime.isInner || asleepTime.isInner)
                           ? CustomPaint(
                               size: M.Size(innerDiameter, innerDiameter),
                               painter: SectorPainter(
