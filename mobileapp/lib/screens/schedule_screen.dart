@@ -8,7 +8,6 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
-import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/controllers/nutrition_controller.dart';
 import 'package:hls/helpers/convert.dart';
@@ -21,6 +20,7 @@ const minutesInDegree = minutesInDay / 360;
 final sixOclock = DateTime(0, 0, 0, 6);
 
 final diameter = Size.screenWidth / 1.4;
+final innerDiameter = .6 * diameter;
 final iconBorder = Size.border * 2.25;
 final iconSize = Size.iconBig;
 
@@ -50,67 +50,26 @@ class ScheduleScreen extends GetView<NutritionController> {
               unselectedLabelStyle: TextStyle.primary,
               //unselectedLabelColor: Colors.secondaryText,
               tabs: [Text('Ночь'), Text('День')]),
-          child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              children: [NightTab(), DayTab()])));
+          child: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
+            GetBuilder(init: NightController(), builder: (_) => NightTab()),
+            DayTab()
+          ])));
 }
 
-class NightTab extends StatelessWidget with CommonDialog {
-  final _asleepOffset = Offset.zero.obs;
-  final _asleepTime = DateTime(0, 0, 0, 22).obs;
-  final _wakeupOffset = Offset(diameter - iconSize - 2 * iconBorder, 0).obs;
-  final _wakeupTime = DateTime(0, 0, 0, 9).obs;
+class NightTab extends GetView<NightController> with CommonDialog {
+  Offset get asleepOffset => controller.asleepOffset;
+  DateTime get asleepTime => controller.asleepTime;
+  Offset get wakeupOffset => controller.wakeupOffset;
+  DateTime get wakeupTime => controller.wakeupTime;
 
-  Offset get asleepOffset => _asleepOffset.value;
-  DateTime get asleepTime => _asleepTime.value;
-  Offset get wakeupOffset => _wakeupOffset.value;
-  DateTime get wakeupTime => _wakeupTime.value;
+  String _formatDate(String date) {
+    if (date == '00') return '24';
 
-  final innerValues = [for (int i = 6; i <= 17; i++) i];
-  final outerValues = [
-    for (int i = 1; i <= 6; i++) i,
-    for (int i = 19; i <= 24; i++) i
-  ];
+    //if (date == '18') return '6';
 
-  _displayAtOffset(Offset offset) {
-    // radial coordinate system
-    final coordinate = RadialCoordinate.fromOffset(offset);
+    if (date.startsWith('0')) return date.substring(1);
 
-    // closeness to dials
-    final center = diameter / 2;
-    final outerCloseness = (center - coordinate.radius).abs();
-    final innerCloseness = (.6 * center - coordinate.radius).abs();
-    final isCloserToInner = innerCloseness < outerCloseness;
-
-    // radius adjust
-    final radius = isCloserToInner ? .6 * diameter / 2 : diameter / 2;
-
-    // constraint
-    coordinate.radius = radius - Size.fontTiny;
-    final constrainedOffset = coordinate.offset;
-
-    // pm adjust
-    DateTime time = coordinate.time;
-    if (isCloserToInner && coordinate.degrees < 180 ||
-        !isCloserToInner && coordinate.degrees > 180)
-      time = time.add(Duration(hours: 12));
-
-    // print('ScheduleScreen._displayAtOffset'
-    //   '\n\tdegrees: ${coordinate.degrees}'
-    //   '\n\ttime: $time');
-
-    // closeness to asleep/wakeup
-    final asleepCloseness = (coordinate.offset - asleepOffset).distance;
-    final wakeupCloseness = (coordinate.offset - wakeupOffset).distance;
-    final isCloserToAsleep = asleepCloseness < wakeupCloseness;
-
-    final destinationOffset = isCloserToAsleep ? _asleepOffset : _wakeupOffset;
-    final destinationTime = isCloserToAsleep ? _asleepTime : _wakeupTime;
-
-    destinationOffset.value = Offset(
-        constrainedOffset.dx - (iconSize + iconBorder) / 2,
-        constrainedOffset.dy - (iconSize + iconBorder) / 2);
-    destinationTime.value = time;
+    return date;
   }
 
   // handlers
@@ -159,18 +118,19 @@ class NightTab extends StatelessWidget with CommonDialog {
   _onDrag(BuildContext context, DragUpdateDetails details) {
     // global to local coordinates
     final RenderBox box = context.findRenderObject();
-    _displayAtOffset(box.globalToLocal(details.globalPosition));
+    controller.setOffset(box.globalToLocal(details.globalPosition));
   }
 
   _onTap(BuildContext context, TapUpDetails details) {
     // global to local coordinates
     final RenderBox box = context.findRenderObject();
-    _displayAtOffset(box.globalToLocal(details.globalPosition));
+    controller.setOffset(box.globalToLocal(details.globalPosition));
   }
 
   // builders
 
-  Widget _buildIndicator(Offset offset, DateTime time, Color color) =>
+  Widget _buildIndicator(Offset offset, DateTime time, Color color,
+          [bool isNight = true]) =>
       AnimatedPositioned(
           left: offset.dx,
           top: offset.dy,
@@ -183,9 +143,15 @@ class NightTab extends StatelessWidget with CommonDialog {
                   borderRadius: BorderRadius.circular(iconSize / 2)),
               width: iconSize,
               height: iconSize,
+              // child: Center(
+              //     child: TextPrimary(dateToString(date: time, output: dateTime),
+              //         size: .9 * Size.fontTiny))
               child: Center(
-                  child: TextPrimary(dateToString(date: time, output: dateTime),
-                      size: .9 * Size.fontTiny))));
+                  child: time == null
+                      ? Icon(isNight ? Icons.nightlight_round : Icons.wb_sunny,
+                          color: color, size: .75 * iconSize)
+                      : TextPrimary(_formatDate(
+                          dateToString(date: time, output: 'H'))))));
 
   @override
   Widget build(_) => SingleChildScrollView(
@@ -205,12 +171,14 @@ class NightTab extends StatelessWidget with CommonDialog {
                       CustomPaint(
                           size: M.Size(diameter, diameter),
                           painter: CircleDialPainter(
-                              values: outerValues, color: Colors.black)),
+                              values: controller.outerValues,
+                              color: Colors.black)),
                       CustomPaint(
-                          size: M.Size(.6 * diameter, .6 * diameter),
+                          size: M.Size(innerDiameter, innerDiameter),
                           painter: CircleDialPainter(
-                              values: innerValues,
-                              offset: pi - 2 * pi / innerValues.length,
+                              values: controller.innerValues,
+                              offset: pi,
+                              //- 2 * pi / controller.innerValues.length,
                               fontSize: .8 * Size.fontTiny,
                               color: Colors.black)),
                       Obx(() => asleepTime.isOuter || wakeupTime.isOuter
@@ -246,7 +214,7 @@ class NightTab extends StatelessWidget with CommonDialog {
                               : Nothing()),
                       Obx(() => wakeupTime.isInner || asleepTime.isInner
                           ? CustomPaint(
-                              size: M.Size(.6 * diameter, .6 * diameter),
+                              size: M.Size(innerDiameter, innerDiameter),
                               painter: SectorPainter(
                                 width: iconBorder,
                                 color: Colors.scheduleNight,
@@ -271,17 +239,25 @@ class NightTab extends StatelessWidget with CommonDialog {
                                       wakeupTime.isAfter(sixOclock) &&
                                           (asleepTime.isAfter(wakeupTime)))
                               ? CustomPaint(
-                                  size: M.Size(.6 * diameter, .6 * diameter),
+                                  size: M.Size(innerDiameter, innerDiameter),
                                   painter: SectorPainter(
                                     width: iconBorder,
                                     color: Colors.scheduleNight,
                                     endAngle: 2 * pi,
                                   ))
                               : Nothing()),
+                      Obx(() => controller.shouldDisplayVerticalLine
+                          ? Positioned(
+                              bottom: .0,
+                              child: Container(
+                                  color: Colors.scheduleNight,
+                                  width: iconBorder,
+                                  height: (diameter - innerDiameter) / 2))
+                          : Nothing()),
                       Obx(() => _buildIndicator(
                           asleepOffset, asleepTime, Colors.scheduleNight)),
                       Obx(() => _buildIndicator(
-                          wakeupOffset, wakeupTime, Colors.scheduleDay))
+                          wakeupOffset, wakeupTime, Colors.scheduleDay, false))
                     ])))
       ]));
 }
@@ -290,6 +266,81 @@ class DayTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(color: Colors.scheduleDay);
+  }
+}
+
+class NightController extends GetxController {
+  final innerValues = [for (int i = 7; i <= 18; i++) i];
+  final outerValues = [
+    for (int i = 1; i <= 6; i++) i,
+    for (int i = 19; i <= 24; i++) i
+  ];
+
+  final _asleepOffset = Offset.zero.obs;
+  final _asleepTime = Rx<DateTime>(null);
+  final _wakeupOffset = Offset(diameter - iconSize - 2 * iconBorder, 0).obs;
+  final _wakeupTime = Rx<DateTime>(null);
+
+  Offset get asleepOffset => _asleepOffset.value;
+  DateTime get asleepTime => _asleepTime.value;
+  Offset get wakeupOffset => _wakeupOffset.value;
+  DateTime get wakeupTime => _wakeupTime.value;
+
+  bool get shouldDisplayVerticalLine {
+    if (asleepTime == null || wakeupTime == null) return false;
+
+    // print('-----');
+    // print('different orbit: ${asleepTime.isInner == wakeupTime.isOuter}');
+    // print('woke up after 6: ${wakeupTime.isAfter(sixOclock)}');
+    // print('asleep before 6: ${asleepTime.isBefore(sixOclock)}');
+
+    return asleepTime.isInner == wakeupTime.isOuter ||
+        wakeupTime.isAfter(sixOclock) && asleepTime.isBefore(sixOclock) ||
+        wakeupTime.isAfter(sixOclock) && asleepTime.isAfter(wakeupTime);
+  }
+
+  setOffset(Offset offset) {
+    // radial coordinate system
+    final coordinate = RadialCoordinate.fromOffset(offset);
+
+    // closeness to dials
+    final outerCloseness = (diameter / 2 - coordinate.radius).abs();
+    final innerCloseness = (innerDiameter / 2 - coordinate.radius).abs();
+    final isCloserToInner = innerCloseness < outerCloseness;
+
+    // radius adjust
+    final radius = isCloserToInner ? innerDiameter / 2 : diameter / 2;
+    final step =
+        isCloserToInner ? 360 / innerValues.length : 360 / outerValues.length;
+
+    // constraint
+    coordinate.radius = radius - Size.fontTiny;
+    coordinate.degrees = (coordinate.degrees / step).round() * step;
+    final constrainedOffset = coordinate.offset;
+
+    // pm adjust
+    DateTime time = coordinate.time;
+    if (isCloserToInner && coordinate.degrees <= 180 ||
+        !isCloserToInner && coordinate.degrees > 180)
+      time = time.add(Duration(hours: 12));
+    time = DateTime(0, 0, 0, time.hour);
+
+    // print('ScheduleScreen._displayAtOffset'
+    //   '\n\tdegrees: ${coordinate.degrees}'
+    //   '\n\ttime: $time');
+
+    // closeness to asleep/wakeup
+    final asleepCloseness = (coordinate.offset - asleepOffset).distance;
+    final wakeupCloseness = (coordinate.offset - wakeupOffset).distance;
+    final isCloserToAsleep = asleepCloseness < wakeupCloseness;
+
+    final destinationOffset = isCloserToAsleep ? _asleepOffset : _wakeupOffset;
+    final destinationTime = isCloserToAsleep ? _asleepTime : _wakeupTime;
+
+    destinationOffset.value = Offset(
+        constrainedOffset.dx - (iconSize + iconBorder) / 2,
+        constrainedOffset.dy - (iconSize + iconBorder) / 2);
+    destinationTime.value = time;
   }
 }
 
@@ -338,7 +389,11 @@ class RadialCoordinate {
 }
 
 extension DateTimeExtension on DateTime {
-  double get angle => (hour * 60 + minute) / minutesInRadian % (2 * pi);
-  bool get isOuter => hour >= 18 || hour < 6;
-  bool get isInner => !isOuter;
+  double get angle =>
+      this == null ? 0 : (hour * 60 + minute) / minutesInRadian % (2 * pi);
+  bool get isOuter => this == null ? false : hour > 18 || hour <= 6;
+  bool get isInner => this == null ? false : !isOuter;
+
+  bool isAfterOrEqual(DateTime date) =>
+      this.isAfter(date) || this.isAtSameMomentAs(date);
 }

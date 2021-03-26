@@ -22,7 +22,7 @@ const navigationTransitionDuration = Duration(milliseconds: 300);
 const rotationAnimationDuration = Duration(seconds: 60);
 const searchDelayDuration = Duration(seconds: 2);
 const submenuAnimationDuration = Duration(milliseconds: 300);
-const timeoutDuration = Duration(seconds: 5);
+const timeoutDuration = Duration(seconds: 10);
 const timerDuration = Duration(seconds: 1);
 const tooltipDelay = 5;
 

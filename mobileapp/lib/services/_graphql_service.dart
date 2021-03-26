@@ -4,6 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/_service.dart';
 import 'package:hls/services/auth_service.dart';
 
@@ -37,6 +38,9 @@ class GraphqlService extends Service {
           '\n\tresult ${result.data}');
 
     if (result.hasException) {
+      if (result?.exception?.graphqlErrors?.isNullOrEmpty ?? false)
+        return null;
+
       _error = result.exception?.graphqlErrors?.first;
       print('GraphqlService.query ERROR: $_error');
       //showConfirm(title: result.exception.toString());
