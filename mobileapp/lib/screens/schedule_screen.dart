@@ -375,7 +375,8 @@ class NightController extends GetxController with SingleGetTickerProviderMixin {
 
     return asleepTime.isInner == wakeupTime.isOuter ||
         wakeupTime.isAfter(sixOclock) && asleepTime.isBefore(sixOclock) ||
-        wakeupTime.isAfter(sixOclock) && asleepTime.isAfter(wakeupTime);
+        wakeupTime.isAfter(sixOclock) && asleepTime.isAfter(wakeupTime) ||
+        asleepTime.isBefore(sixOclock) && asleepTime.isAfter(wakeupTime);
   }
 
   setOffset(Offset offset) {
