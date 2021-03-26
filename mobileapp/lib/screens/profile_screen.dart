@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget with CommonDialog {
   _restartHandler() {
     Get.back(closeOverlays: true);
     tabbarScaffoldKey.currentState.openEndDrawer();
-    Get.find<ChatNavigationController>().init(canGoBack: true);
+    Get.find<ChatNavigationController>().init(shouldRestart: true);
   }
 
   _editHandler() => Get.toNamed(profileFormRoute);

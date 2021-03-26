@@ -9,6 +9,7 @@ import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/nutrition_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
@@ -262,7 +263,71 @@ class NightTab extends GetView<NightController> with CommonDialog {
                           asleepOffset, asleepTime, Colors.scheduleNight)),
                       Obx(() => _buildIndicator(
                           wakeupOffset, wakeupTime, Colors.scheduleDay, false))
-                    ])))
+                    ]))),
+        VerticalSpace(),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+              width: Size.horizontalMedium,
+              height: Size.border * 2,
+              color: Colors.scheduleNight),
+          HorizontalTinySpace(),
+          TextSecondary('отбой', size: Size.fontTiny),
+          HorizontalSpace(),
+          Container(
+              width: Size.horizontalMedium,
+              height: Size.border * 2,
+              color: Colors.scheduleDay),
+          HorizontalTinySpace(),
+          TextSecondary('подъём', size: Size.fontTiny),
+        ]),
+        VerticalBigSpace(),
+        Button(
+            borderColor: Colors.disabled,
+            onPressed: () => controller.toggle(1),
+            child: Column(children: [
+              Row(children: [
+                Container(height: Size.iconBig),
+                TextPrimaryHint('Вы недоспали'),
+                Expanded(child: HorizontalSpace()),
+                Obx(() => Transform.rotate(
+                    angle: controller.getRotationAngle(1),
+                    child: Icon(Icons.arrow_forward_ios,
+                        color: Colors.disabled, size: Size.iconSmall)))
+              ]),
+              Obx(() => SizeTransition(
+                  sizeFactor: controller.getSizeFactor(1),
+                  child: Container(
+                      padding: EdgeInsets.only(top: Size.vertical),
+                      child: TextSecondary(
+                          'Дипазан нормы сна для человека от 7 до 9 часов в сутки. '
+                          'Следовательно,  за неделю,  суммарно, это время составит от 49 до 63 часов. '
+                          'Разовое недосыпание можно "погасить" в последующие 3-4 дня без последствий для здоровья. '
+                          'Не накапливайте “недосып” более этого срока. '
+                          'Ситематическая депривация сна наносит необратимый вред здоровью.*'))))
+            ])),
+        VerticalMediumSpace(),
+        Button(
+            borderColor: Colors.disabled,
+            onPressed: () => controller.toggle(2),
+            child: Column(children: [
+              Row(children: [
+                Container(height: Size.iconBig),
+                TextPrimaryHint('Вы рано/позно легли'),
+                Expanded(child: HorizontalSpace()),
+                Obx(() => Transform.rotate(
+                    angle: controller.getRotationAngle(2),
+                    child: Icon(Icons.arrow_forward_ios,
+                        color: Colors.disabled, size: Size.iconSmall)))
+              ]),
+              Obx(() => SizeTransition(
+                  sizeFactor: controller.getSizeFactor(2),
+                  child: Container(
+                      padding: EdgeInsets.only(top: Size.vertical),
+                      child: TextSecondary(
+                          'Сдвиг времени сна в любую сторону, не соответствующую естественным биологическим ритмам '
+                          'нарушает синхронизацию в работе органов и систем, и вредит нашему здоровью.'
+                          '\nЛучше придерживаться циркадных ритмов!'))))
+            ]))
       ]));
 }
 
@@ -273,7 +338,13 @@ class DayTab extends StatelessWidget {
   }
 }
 
-class NightController extends GetxController {
+class NightController extends GetxController with SingleGetTickerProviderMixin {
+  NightController() {
+    _animationController =
+        AnimationController(vsync: this, duration: defaultAnimationDuration)
+          ..addListener(() => animationProgress = _animationController.value);
+  }
+
   final innerValues = [for (int i = 7; i <= 18; i++) i];
   final outerValues = [
     for (int i = 1; i <= 6; i++) i,
@@ -345,6 +416,46 @@ class NightController extends GetxController {
         constrainedOffset.dx - (iconSize + iconBorder) / 2,
         constrainedOffset.dy - (iconSize + iconBorder) / 2);
     destinationTime.value = time;
+  }
+
+  // accordion
+
+  final minRotationAngle = .0;
+  final maxRotationAngle = pi / 2;
+  final List<int> _openedItems = [];
+
+  final _animationProgress = .0.obs;
+  final _lastToggledItem = 0.obs;
+
+  AnimationController _animationController;
+
+  AnimationController get animationController => _animationController;
+  double get animationProgress => _animationProgress.value;
+  double get rotationAngle => maxRotationAngle * animationProgress;
+
+  set animationProgress(double value) => _animationProgress.value = value;
+
+  bool isOpened(int i) => _openedItems.contains(i);
+  double getRotationAngle(int i) => i == _lastToggledItem.value
+      ? rotationAngle
+      : isOpened(i)
+          ? maxRotationAngle
+          : minRotationAngle;
+
+  Animation<double> getSizeFactor(int i) => i == _lastToggledItem.value
+      ? Tween<double>(begin: .0, end: 1.0).animate(_animationController)
+      : AlwaysStoppedAnimation(isOpened(i) ? 1.0 : .0);
+
+  toggle(int i) {
+    _lastToggledItem(i);
+
+    if (isOpened(i)) {
+      _openedItems.remove(i);
+      _animationController.reverse(from: maxRotationAngle);
+    } else {
+      _openedItems.add(i);
+      _animationController.forward(from: minRotationAngle);
+    }
   }
 }
 

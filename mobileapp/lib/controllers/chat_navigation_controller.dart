@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/services/auth_service.dart';
 
@@ -56,17 +57,22 @@ class ChatNavigationController extends Controller {
     // make sure we start from first
     _index.value = 0;
   }
-  void init({ bool canGoBack = false}) async {
+
+  void init({bool shouldRestart = false}) async {
     clear();
 
-    _canGoBack.value = canGoBack;
+    _canGoBack.value = shouldRestart;
 
     // check which dialogs are not completed
-    final chatDialogsNotCompleted = AuthService.i.profile.dialogTypesToComplete;
+    final chatDialogsNotCompleted = shouldRestart
+        ? ChatDialogType.values
+            .where((x) => x != ChatDialogType.WELCOME)
+            .toList(growable: false)
+        : AuthService.i.profile.dialogTypesToComplete;
     // debugPrint(
     //     'ChatNavigationController.onInit completed: ${AuthService.i.profile.completedDialogs}');
-    // print(
-    //     'ChatNavigationController.onInit types to complete: $chatDialogsNotCompleted');
+    print(
+        'ChatNavigationController.onInit types to complete: $chatDialogsNotCompleted');
     if (chatDialogsNotCompleted.isNullOrEmpty) return;
 
     // create sequence for completing dialogs
