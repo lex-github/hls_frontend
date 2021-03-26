@@ -63,14 +63,19 @@ class NightTab extends GetView<NightController> with CommonDialog {
   Offset get wakeupOffset => controller.wakeupOffset;
   DateTime get wakeupTime => controller.wakeupTime;
 
-  String _formatDate(String date) {
-    if (date == '00') return '24';
+  String _format(DateTime time) {
+    final x = dateToString(date: time, output: 'HH:mm');
+    return x;
 
-    //if (date == '18') return '6';
+    //final x = dateToString(date: time, output: 'H');
 
-    if (date.startsWith('0')) return date.substring(1);
+    if (x == '00') return '24';
 
-    return date;
+    //if (x == '18') return '6';
+
+    if (x.startsWith('0')) return x.substring(1);
+
+    return x;
   }
 
   // handlers
@@ -151,8 +156,7 @@ class NightTab extends GetView<NightController> with CommonDialog {
                   child: time == null
                       ? Icon(isNight ? Icons.nightlight_round : Icons.wb_sunny,
                           color: color, size: .75 * iconSize)
-                      : TextPrimary(_formatDate(
-                          dateToString(date: time, output: 'H'))))));
+                      : TextPrimary(_format(time), size: .9 * Size.fontTiny))));
 
   @override
   Widget build(_) => SingleChildScrollView(
@@ -390,7 +394,7 @@ class NightController extends GetxController with SingleGetTickerProviderMixin {
 
     // constraint
     coordinate.radius = radius - Size.fontTiny;
-    coordinate.degrees = (coordinate.degrees / step).round() * step;
+    //coordinate.degrees = (coordinate.degrees / step).round() * step;
     final constrainedOffset = coordinate.offset;
 
     // pm adjust
@@ -398,7 +402,7 @@ class NightController extends GetxController with SingleGetTickerProviderMixin {
     if (isCloserToInner && coordinate.degrees <= 180 ||
         !isCloserToInner && coordinate.degrees > 180)
       time = time.add(Duration(hours: 12));
-    time = DateTime(0, 0, 0, time.hour);
+    //time = DateTime(0, 0, 0, time.hour);
 
     // print('ScheduleScreen._displayAtOffset'
     //   '\n\tdegrees: ${coordinate.degrees}'
@@ -506,7 +510,7 @@ class RadialCoordinate {
 extension DateTimeExtension on DateTime {
   double get angle =>
       this == null ? 0 : (hour * 60 + minute) / minutesInRadian % (2 * pi);
-  bool get isOuter => this == null ? false : hour > 18 || hour <= 6;
+  bool get isOuter => this == null ? false : hour > 17 || hour <= 5;
   bool get isInner => this == null ? false : !isOuter;
 
   bool isAfterOrEqual(DateTime date) =>
