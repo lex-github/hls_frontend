@@ -18,12 +18,12 @@ abstract class FormController extends GetxController {
 
   final _key = GlobalKey<FormState>();
   final _state = <String, FormControllerState>{};
-  final _submitState = Rx<SubmitState>();
+  final _submitState = Rx<SubmitState>(null);
   final _isDirty = false.obs;
   final _isAwaiting = false.obs;
   final _isKeyboardVisible = false.obs;
   final _isValid = false.obs;
-  final _error = RxString();
+  final _error = RxString(null);
 
   int _keyboardListenerId;
 

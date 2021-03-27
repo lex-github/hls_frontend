@@ -3,19 +3,20 @@ import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' hide Button;
 import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/controllers/profile_form_controller.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/_form_screen.dart';
 import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
     with CommonDialog {
   static final _key = GlobalKey(debugLabel: 'profileForm');
 
-  final _picker = ImagePicker();
+  //final _picker = ImagePicker();
 
   bool get tapOutsideToDismiss => false;
   bool get displayArrows => true;
@@ -29,16 +30,18 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
   // handlers
 
   _avatarHandler() async {
-    final source = await showSwitch<ImageSource>(
-        left: Icon(Icons.camera),
-        right: Icon(Icons.list),
-        onLeft: () => ImageSource.camera,
-        onRight: () => ImageSource.gallery);
-    if (source == null) return;
+    return showConfirm(title: developmentText);
 
-    final pickedFile = await _picker.getImage(source: source);
-
-    if (pickedFile != null) controller.onChanged('avatar', pickedFile);
+    // final source = await showSwitch<ImageSource>(
+    //     left: Icon(Icons.camera),
+    //     right: Icon(Icons.list),
+    //     onLeft: () => ImageSource.camera,
+    //     onRight: () => ImageSource.gallery);
+    // if (source == null) return;
+    //
+    // final pickedFile = await _picker.getImage(source: source);
+    //
+    // if (pickedFile != null) controller.onChanged('avatar', pickedFile);
   }
 
   // builders
@@ -46,7 +49,7 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
   @override
   Widget buildForm(_) => Obx(() {
         final isKeyboardVisible = controller.isKeyboardVisible;
-        final pickedFile = controller.getValue<PickedFile>('avatar');
+        final pickedFile = null;//controller.getValue<PickedFile>('avatar');
         final avatarUrl = pickedFile?.path ?? AuthService.i.profile.avatarUrl;
 
         return Column(

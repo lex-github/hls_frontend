@@ -24,7 +24,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   final maxRotationAngle = pi / 2;
   final List<String> _openedItems = [];
   final _animationProgress = .0.obs;
-  final _lastToggledItem = Rx<String>();
+  final _lastToggledItem = Rx<String>(null);
   AnimationController _animationController;
   FoodData item;
 

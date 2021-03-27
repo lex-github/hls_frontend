@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService extends Service {
   static SettingsService get i => Get.find<SettingsService>();
@@ -9,25 +9,27 @@ class SettingsService extends Service {
   static const _tokenKey = 'token';
   static const _shouldShowWelcomeKey = 'shouldShowWelcome';
 
-  SharedPreferences _preferences;
+  final _preferences = GetStorage();
 
   @override
   Future init() async {
-    _preferences = await SharedPreferences.getInstance();
-    _token.value = _preferences.get(_tokenKey);
+    //_token.value = _preferences.get(_tokenKey);
+    _token.value = _preferences.read<String>(_tokenKey);
   }
 
   // token observable
-  final _token = RxString();
+  final _token = RxString(null);
   String get token => _token.value;
   set token(String value) {
     value.isNullOrEmpty
         ? _preferences.remove(_tokenKey)
-        : _preferences.setString(_tokenKey, value);
+        // : _preferences.setString(_tokenKey, value);
+        : _preferences.write(_tokenKey, value);
 
     _token.value = value;
   }
 
   bool get shouldShowWelcome =>
-      _preferences.getBool(_shouldShowWelcomeKey) ?? true;
+      // _preferences.getBool(_shouldShowWelcomeKey) ?? true;
+      _preferences.read<bool>(_shouldShowWelcomeKey) ?? true;
 }

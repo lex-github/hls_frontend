@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:flutter/material.dart'
+    hide Colors, FormFieldValidator, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' as R;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'

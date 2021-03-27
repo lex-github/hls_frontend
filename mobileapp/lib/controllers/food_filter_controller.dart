@@ -25,7 +25,7 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   final maxRotationAngle = pi / 2;
   final _animationProgress = .0.obs;
   final List<String> _openedItems = [];
-  final _lastToggledItem = Rx<String>();
+  final _lastToggledItem = Rx<String>(null);
 
   List<Data> list;
   AnimationController _animationController;

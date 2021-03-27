@@ -3,11 +3,12 @@ import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/controllers/_form_controller.dart';
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class ProfileFormController extends FormController {
   UserData get profile => AuthService.i.profile;
@@ -32,8 +33,10 @@ class ProfileFormController extends FormController {
 
   @override
   Future<bool> onSubmitRequest() async {
+    return await showConfirm(title: developmentText);
+
     // avatar upload
-    final pickedFile = getValue<PickedFile>('avatar');
+    final pickedFile = null;//getValue<PickedFile>('avatar');
     // if (pickedFile != null) if (!await AuthService.i
     //     .avatar(path: pickedFile.path)) return false;
     if (pickedFile != null) {

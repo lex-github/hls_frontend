@@ -37,7 +37,7 @@ class AuthService extends GraphqlService {
   set version(String value) => _version.value = value;
 
   // profile
-  final _profile = Rx<UserData>();
+  final _profile = Rx<UserData>(null);
   UserData get profile => _profile.value;
   Rx<UserData> get profileReactive => _profile;
   set profile(UserData value) {

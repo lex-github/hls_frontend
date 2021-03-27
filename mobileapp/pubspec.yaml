@@ -29,7 +29,7 @@ dependencies:
   # resize text based on available space
   auto_size_text: ^2.1.0
   # cached images
-  cached_network_image: ^2.4.1
+  cached_network_image: ^3.0.0-nullsafety
   # window manipulation for desktop
   #desktop_window: ^0.4.0
   # date picker
@@ -37,21 +37,23 @@ dependencies:
   # chat animation indicator
   flutter_spinkit: ^4.1.2
   # svg images
-  flutter_svg: 0.19.1
+  flutter_svg: ^0.21.0-nullsafety.0
   # image provider (background repeat)
   flutter_svg_provider: ^0.1.7
   # validation
   form_field_validator: ^1.0.1
   # micro framework state/navigation manager
-  get: ^3.26.0
+  get: ^4.1.1
+  # memory fast storage
+  get_storage: ^2.0.1
   # fonts
-  google_fonts: ^1.1.1
+  google_fonts: ^2.0.0
   # api
-  graphql_flutter: ^4.0.1
+  graphql_flutter: ^5.0.0-nullsafety.1
   # selection of images (camera/gallery)
-  image_picker: ^0.6.7+22
+  #image_picker: ^0.7.3
   # needed for serializable classes
-  json_serializable: ^3.5.1
+  json_serializable: ^4.1.0
   # bar over keyboard
   keyboard_actions: ^3.3.1+1
   # keyboard state
@@ -61,7 +63,7 @@ dependencies:
   # content type
   mime: ^0.9.7
   # macro graph dash
-  path_drawing: 0.4.1+1
+  path_drawing: ^0.5.0-nullsafety.0
   # output debug info
   pretty_json: ^1.1.0
   # refresh list by pulling
@@ -70,7 +72,7 @@ dependencies:
   # share
   share: ^0.6.5+4
   # settings
-  shared_preferences: ^0.5.12+4
+  #shared_preferences: ^0.5.12+4
   # video player
   video_player: ^1.0.1
   # window size for desktop
@@ -86,7 +88,7 @@ dev_dependencies:
   # needed for serializable classes
   build_runner: ^1.10.9
   # generate icons
-  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
   android: 'ic_launcher'

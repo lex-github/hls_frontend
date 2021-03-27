@@ -26,7 +26,7 @@ class FoodCategoryController extends Controller
   final maxRotationAngle = pi / 2;
   final List<FoodCategoryData> _openedItems = [];
   final _animationProgress = .0.obs;
-  final _lastToggledItem = Rx<FoodCategoryData>();
+  final _lastToggledItem = Rx<FoodCategoryData>(null);
   AnimationController _animationController;
   FoodCategoryData item;
 

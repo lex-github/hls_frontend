@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide Image, Router;
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
@@ -20,6 +21,8 @@ void main() => initServices().then((_) => runApp(HLS()));
 
 Future initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await GetStorage.init();
 
   if (Platform.isWindows || Platform.isMacOS)
     //DesktopWindow.setWindowSize(Size(desktopWindowWidth, desktopWindowHeight));
