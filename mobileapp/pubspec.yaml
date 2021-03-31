@@ -25,17 +25,17 @@ dependencies:
     sdk: flutter
 
   # typer text animation for bot
-  animated_text_kit: ^3.1.0
+  animated_text_kit: ^4.1.1
   # resize text based on available space
   auto_size_text: ^2.1.0
   # cached images
   cached_network_image: ^3.0.0-nullsafety
-  # window manipulation for desktop
-  #desktop_window: ^0.4.0
+  # analytics
+  firebase_analytics: ^7.1.1
   # date picker
   flutter_datetime_picker: ^1.5.0
   # chat animation indicator
-  flutter_spinkit: ^4.1.2
+  flutter_spinkit: ^5.0.0
   # svg images
   flutter_svg: ^0.21.0-nullsafety.0
   # image provider (background repeat)
@@ -51,7 +51,7 @@ dependencies:
   # api
   graphql_flutter: ^5.0.0-nullsafety.1
   # selection of images (camera/gallery)
-  #image_picker: ^0.7.3
+  image_picker: ^0.7.3
   # needed for serializable classes
   json_serializable: ^4.1.0
   # bar over keyboard
@@ -61,20 +61,20 @@ dependencies:
   # used for phone mask
   mask_text_input_formatter: ^1.1.0
   # content type
-  mime: ^0.9.7
+  mime: ^1.0.0
   # macro graph dash
   path_drawing: ^0.5.0-nullsafety.0
+  # fullscreen viewer
+  photo_view: ^0.11.1
   # output debug info
-  pretty_json: ^1.1.0
+  pretty_json: ^2.0.0
   # refresh list by pulling
-  #pull_to_refresh: ^1.6.3
   pull_to_refresh: ^1.6.4
   # share
-  share: ^0.6.5+4
+  share: ^2.0.1
   # settings
-  #shared_preferences: ^0.5.12+4
   # video player
-  video_player: ^1.0.1
+  video_player: ^2.1.0
   # window size for desktop
   window_size:
     git:

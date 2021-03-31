@@ -14,6 +14,7 @@ import 'package:hls/models/user_model.dart';
 import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/services/_http_service.dart';
 import 'package:hls/services/_graphql_service.dart';
+import 'package:hls/services/analytics_service.dart';
 import 'package:hls/services/settings_service.dart';
 import 'package:mime/mime.dart';
 
@@ -46,6 +47,8 @@ class AuthService extends GraphqlService {
     if (value != null) {
       _profile.value.imageUrl = value.imageUrl;
       _profile.value.details = value.details;
+      _profile.value.progress = value.progress;
+      _profile.value.daily = value.daily;
     }
     _profile.refresh();
   }
@@ -109,6 +112,9 @@ class AuthService extends GraphqlService {
 
     final data =
         await query(currentUserQuery, fetchPolicy: FetchPolicy.networkOnly);
+
+    //print('AuthService.retrieve $data');
+
     if (data.isNullOrEmpty) {
       await logout();
       return null;
@@ -157,12 +163,21 @@ class AuthService extends GraphqlService {
 
     profile = UserData.fromJson(data.get(['authSignIn', 'user']));
     isAuthenticated = (profile?.id ?? 0) > 0;
+
+    if (isAuthenticated)
+      AnalyticsService.i.login();
+
+    if (profile != null)
+      AnalyticsService.i.user(profile.id.toString());
+    
     return profile != null;
   }
 
   Future<bool> logout() async {
+    print('AuthService.logout');
+
     final data = await mutation(authSignOutMutation);
-    print('AuthService.logout $data');
+    //print('AuthService.logout data: $data');
 
     afterLogout();
 

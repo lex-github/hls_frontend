@@ -38,7 +38,7 @@ abstract class FormController extends GetxController {
 
   @override
   void onClose() {
-    print('_FormController.onClose');
+    //print('_FormController.onClose');
 
     // free textInputField related resources
     for (final state in _state.values)

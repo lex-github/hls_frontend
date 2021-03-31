@@ -217,11 +217,15 @@ class StatusBlock extends StatelessWidget {
 
   // builders
 
-  Widget _buildRow({String title, String text}) =>
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        TextSecondary('$title:'),
-        TextPrimary(text ?? noDataText, size: Size.fontSmall, align: TextAlign.right)
-      ]);
+  Widget _buildRow({String title, String text}) => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextSecondary('$title:'),
+            Flexible(
+                child: TextPrimary(text ?? noDataText,
+                    size: Size.fontSmall, align: TextAlign.right, lines: 2))
+          ]);
 
   @override
   Widget build(BuildContext context) =>

@@ -194,7 +194,7 @@ class Input<T extends FormController> extends GetView<T> {
 
     return Obx(() => TextFormField(
         //enableInteractiveSelection: false,
-        onChanged: (s) => print(s),
+        //onChanged: (s) => print(s),
         autofocus: shouldFocus,
         inputFormatters: controller.getFormatters(field),
         maxLines: maxLines,

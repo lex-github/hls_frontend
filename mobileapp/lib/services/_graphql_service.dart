@@ -6,6 +6,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/_service.dart';
+import 'package:hls/services/analytics_service.dart';
 import 'package:hls/services/auth_service.dart';
 
 class GraphqlService extends Service {
@@ -25,10 +26,13 @@ class GraphqlService extends Service {
 
   Future<Map<String, dynamic>> query(String node,
       {Map<String, dynamic> parameters, FetchPolicy fetchPolicy}) async {
+
     isAwaiting = true;
+    AnalyticsService.i.queryStart(node, parameters: parameters);
     final client = await this.client();
     final result = await client.query(QueryOptions(
         document: gql(node), variables: parameters, fetchPolicy: fetchPolicy));
+    AnalyticsService.i.queryEnd(node, data: result.data);
     isAwaiting = false;
 
     if (isDebug)
@@ -38,8 +42,17 @@ class GraphqlService extends Service {
           '\n\tresult ${result.data}');
 
     if (result.hasException) {
-      if (result?.exception?.graphqlErrors?.isNullOrEmpty ?? false)
-        return null;
+      print('GraphqlService.query EXCEPTION: ${result?.exception}');
+      // print('GraphqlService.query '
+      //   '\n\toriginal: ${result.exception?.linkException?.originalException}'
+      //   '\n\tis equal: ${result.exception?.linkException?.originalException.toString() ==
+      //   'Null check operator used on a null value'}'
+      //   '\n\tdata not null: ${result.data != null}');
+      if (result.exception?.linkException?.originalException.toString() ==
+              'Null check operator used on a null value' &&
+          result.data != null) return result.data;
+
+      if (result.exception?.graphqlErrors?.isNullOrEmpty ?? false) return null;
 
       _error = result.exception?.graphqlErrors?.first;
       print('GraphqlService.query ERROR: $_error');
@@ -56,7 +69,9 @@ class GraphqlService extends Service {
 
   Future<Map<String, dynamic>> mutation(String node,
       {Map<String, dynamic> parameters}) async {
+
     isAwaiting = true;
+    AnalyticsService.i.mutationStart(node, parameters: parameters);
     final client = await this.client();
 
     try {
@@ -64,6 +79,7 @@ class GraphqlService extends Service {
           document: gql(node),
           variables: parameters,
           fetchPolicy: FetchPolicy.networkOnly));
+      AnalyticsService.i.mutationEnd(node, data: result.data);
 
       isAwaiting = false;
 

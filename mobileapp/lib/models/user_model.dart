@@ -41,6 +41,13 @@ class UserData extends GenericData {
   ChatDialogStatusData get activeDialog =>
       dialogs.firstWhere((x) => x.status == ChatDialogStatus.ACTIVE,
           orElse: () => null);
+  ChatDialogStatusData activeDialogOfType(ChatDialogType type) =>
+      dialogs.firstWhere(
+          (x) =>
+              (x.status == ChatDialogStatus.ACTIVE ||
+                  x.status == ChatDialogStatus.PENDING) &&
+              x.type == type,
+          orElse: () => null);
   List<ChatDialogStatusData> get completedDialogs => dialogs
       .where((x) => x.status == ChatDialogStatus.FINISHED)
       .toList(growable: false);
@@ -238,9 +245,9 @@ class HealthIndexData {
 
   @override
   String toString() => '${percent.round()}';
-    // 'HealthIndexData('
-    //   '\n\tpercent: $percent'
-    //   ')';
+  // 'HealthIndexData('
+  //   '\n\tpercent: $percent'
+  //   ')';
 }
 
 class GenderType extends GenericEnum<String> {

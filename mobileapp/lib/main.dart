@@ -10,6 +10,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/navigation/router.dart';
 import 'package:hls/services/_http_service.dart';
+import 'package:hls/services/analytics_service.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/services/settings_service.dart';
 import 'package:hls/theme/theme_data.dart';
@@ -30,6 +31,7 @@ Future initServices() async {
 
   await initializeDateFormatting(null, null);
   await Get.put(SettingsService()).init();
+  await Get.put(AnalyticsService()).init();
   await Get.put(HttpService()).init();
 }
 
@@ -55,6 +57,7 @@ class HLS extends StatelessWidget {
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),
               builder: (_) => GetMaterialApp(
+                  navigatorObservers: [AnalyticsService.i.observer],
                   smartManagement: SmartManagement.onlyBuilder,
                   theme: theme(context),
                   defaultTransition: Transition.rightToLeftWithFade,

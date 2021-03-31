@@ -15,12 +15,18 @@ class SettingsService extends Service {
   Future init() async {
     //_token.value = _preferences.get(_tokenKey);
     _token.value = _preferences.read<String>(_tokenKey);
+
+    print('SettingsService.init '
+      '\n\tkeys: ${_preferences.getKeys()}'
+      '\n\tvalues: ${_preferences.getValues()}');
   }
 
   // token observable
   final _token = RxString(null);
   String get token => _token.value;
   set token(String value) {
+    print('SettingsService.setToken $value');
+
     value.isNullOrEmpty
         ? _preferences.remove(_tokenKey)
         // : _preferences.setString(_tokenKey, value);

@@ -78,7 +78,7 @@ class ChatNavigationController extends Controller {
     // create sequence for completing dialogs
     for (int i = 0; i < chatDialogsNotCompleted.length; i++)
       _screens
-          .add(ChatScreen(key: ValueKey(i), type: chatDialogsNotCompleted[i]));
+          .add(ChatScreen(key: ValueKey(i), type: chatDialogsNotCompleted[i], shouldRestart: shouldRestart));
     _screens.add(Nothing(key: ValueKey(chatDialogsNotCompleted.length)));
 
     await Future.delayed(Duration.zero);

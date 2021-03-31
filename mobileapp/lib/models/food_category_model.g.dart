@@ -13,19 +13,16 @@ FoodCategoryData _$FoodCategoryDataFromJson(Map<String, dynamic> json) {
     ..image = json['icon'] == null
         ? null
         : ImageData.fromJson(json['icon'] as Map<String, dynamic>)
-    ..children = (json['subcategories'] as List)
-        ?.map((e) => e == null
-            ? null
-            : FoodCategoryData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..children = (json['subcategories'] as List<dynamic>)
+        .map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..parent = json['parentCategory'] == null
         ? null
         : FoodCategoryData.fromJson(
             json['parentCategory'] as Map<String, dynamic>)
-    ..foods = (json['foods'] as List)
-        ?.map((e) =>
-            e == null ? null : FoodData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..foods = (json['foods'] as List<dynamic>)
+        .map((e) => FoodData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 

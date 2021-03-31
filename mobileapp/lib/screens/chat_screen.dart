@@ -23,7 +23,9 @@ import '../components/generic.dart';
 class ChatScreen<Controller extends ChatController>
     extends GetView<Controller> {
   final ChatDialogType type;
-  ChatScreen({Key key, @required this.type}) : super(key: key);
+  final bool shouldRestart;
+  ChatScreen({Key key, @required this.type, this.shouldRestart = false})
+      : super(key: key);
 
   @override
   String get tag => type.title;
@@ -66,29 +68,46 @@ class ChatScreen<Controller extends ChatController>
   Widget _buildControlButton(
           {@required bool isSelected,
           ChatAnswerData answer,
-          Function(ChatAnswerData, bool) onSelected}) =>
-      Column(children: [
-        if (!answer.imageUrl.isNullOrEmpty) ...[
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxHeight: .75 *
-                      Size.screenHeight /
-                      controller.questionAnswers.length),
-              child: Image(title: answer.imageUrl)),
-          VerticalMediumSpace(),
-        ],
-        Button(
-            padding: Padding.chatButton,
-            title: answer.text,
-            titleStyle: TextStyle.buttonChat,
-            isSwitch: onSelected != null,
-            isSelected: isSelected,
-            onSelected: onSelected != null
-                ? (isSelected) => onSelected(answer, isSelected)
-                : null,
-            onPressed:
-                onSelected == null ? () => controller.post(answer.value) : null)
-      ]);
+          Function(ChatAnswerData, bool) onSelected,
+          bool isFirst = false,
+          bool isLast = false}) =>
+      Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (!answer.imageUrl.isNullOrEmpty) ...[
+              ConstrainedBox(
+                  constraints:
+                      BoxConstraints(maxHeight: .5 * Size.screenHeight),
+                  child: ChatImage(title: answer.imageUrl)),
+              VerticalMediumSpace(),
+            ],
+            Container(
+                margin: isFirst
+                    ? EdgeInsets.only(
+                        right: Size.horizontalSmall / 2,
+                        bottom: Size.verticalSmall)
+                    : isLast
+                        ? EdgeInsets.only(
+                            left: Size.horizontalSmall / 2,
+                            bottom: Size.verticalSmall)
+                        : EdgeInsets.only(
+                            left: Size.horizontalSmall / 2,
+                            right: Size.horizontalSmall / 2,
+                            bottom: Size.verticalSmall),
+                child: Button(
+                    padding: Padding.chatButton,
+                    title: answer.text,
+                    titleStyle: TextStyle.buttonChat,
+                    isSwitch: onSelected != null,
+                    isSelected: isSelected,
+                    onSelected: onSelected != null
+                        ? (isSelected) => onSelected(answer, isSelected)
+                        : null,
+                    onPressed: onSelected == null
+                        ? () => controller.post(answer.value)
+                        : null))
+          ]);
 
   Widget _buildInput() => _buildControlContainer(
       shouldShowLoading: false,
@@ -138,18 +157,23 @@ class ChatScreen<Controller extends ChatController>
                       left: Size.horizontal,
                       top: Size.vertical,
                       bottom: Size.vertical - Size.verticalSmall,
-                      right: Size.horizontal - Size.horizontalSmall),
+                      right: Size.horizontal),
                   child: Table(children: [
                     for (final row in rows)
                       TableRow(children: [
                         for (final column in columns)
-                          Container(
-                              padding: EdgeInsets.only(
-                                  bottom: Size.verticalSmall,
-                                  right: Size.horizontalSmall),
+                          TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.bottom,
+                              // padding: EdgeInsets.only(
+                              //     bottom: Size.verticalSmall,
+                              //     right: Size.horizontalSmall),
                               child: ((ChatAnswerData answer) => answer != null
                                       ? _buildControlButton(
-                                          isSelected: false, answer: answer)
+                                          isSelected: false,
+                                          answer: answer,
+                                          isFirst: column == columns.first,
+                                          isLast: column == columns.last)
                                       : Nothing())(
                                   controller.getQuestionAnswer(row, column)))
                       ])
@@ -195,7 +219,8 @@ class ChatScreen<Controller extends ChatController>
   Widget build(_) => GetX<Controller>(
       tag: tag,
       //global: false,
-      init: ChatController(type: type) as Controller,
+      init: ChatController(type: type, shouldRestart: shouldRestart)
+          as Controller,
       builder: (currentController) {
         // print('ChatScreen.build '
         //     '\n\tis registered: ${Get.isRegistered<Controller>(tag: tag)} '
@@ -211,6 +236,13 @@ class ChatScreen<Controller extends ChatController>
           else
             return LoadingScreen();
         }
+
+        // print('ChatScreen.build'
+        //     '\n\tSHOULD SHOW BLOCK: ${controller.messageQueue.firstWhere((x) => !x.isUser, orElse: () => null) == null && !controller.isTyping && !controller.isReadingPause}'
+        //     '\n\tqueue: ${controller.messageQueue}'
+        //     '\n\tmessage queue null or empty: ${controller.messageQueue.firstWhere((x) => !x.isUser, orElse: () => null) == null}'
+        //     '\n\tnot typing: ${!controller.isTyping}'
+        //     '\n\tnot reading: ${!controller.isReadingPause}');
 
         return Screen(
             shouldResize: true,
@@ -287,7 +319,8 @@ class ChatScreen<Controller extends ChatController>
                                 return ChatMessage(message,
                                     shouldShowCorner: shouldShowCorner);
                               }),
-                          controller.checkboxHasSelection
+                          controller.checkboxHasSelection &&
+                                  !controller.isAwaiting
                               ? Positioned(
                                   bottom: Size.vertical,
                                   right: Size.horizontal,
@@ -315,6 +348,8 @@ class ChatScreen<Controller extends ChatController>
                             _buildTimer()
                           else
                             _buildSubmit()
+                        else if (controller.isAwaiting)
+                          _buildControlContainer(child: Nothing())
                       ])
                     : LoadingPage()));
       });
@@ -369,13 +404,13 @@ class ChatMessage extends StatelessWidget {
                                 color: color))))
             ]),
             if (!message.imageUrl.isNullOrEmpty) ...[
+              VerticalMediumSpace(),
               ClipRRect(
                   borderRadius: borderRadiusCircular,
                   child: ConstrainedBox(
                       constraints:
                           BoxConstraints(maxHeight: .5 * Size.screenHeight),
-                      child: Image(title: message.imageUrl))),
-              VerticalMediumSpace()
+                      child: ChatImage(title: message.imageUrl)))
             ]
           ]))(
       margin: message.isUser
@@ -457,4 +492,16 @@ class ChatCornerClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(_) => false;
+}
+
+class ChatImage extends StatelessWidget {
+  final title;
+  ChatImage({@required this.title});
+
+  @override
+  Widget build(BuildContext context) =>
+      //Clickable(
+      //onPressed: () => Get.to(ImageScreen(imageUrl: url), transition: Transition.downToUp),
+      //child:
+      Hero(tag: title, child: Image(title: title, fit: BoxFit.fitWidth));
 }

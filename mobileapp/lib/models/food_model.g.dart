@@ -17,13 +17,11 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
         ? null
         : FoodCategoryData.fromJson(
             json['foodCategory'] as Map<String, dynamic>)
-    ..structure = (json['structure'] as List)
-        ?.map((e) => e == null
-            ? null
-            : FoodSectionData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..structure = (json['structure'] as List<dynamic>)
+        .map((e) => FoodSectionData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..championOn =
-        (json['championOn'] as List)?.map((e) => e as String)?.toList()
+        (json['championOn'] as List<dynamic>).map((e) => e as String).toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 

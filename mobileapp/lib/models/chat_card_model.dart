@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
+import 'package:hls/models/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/models/_generic_model.dart';
 
@@ -114,6 +115,7 @@ class ChatDialogStatusData extends GenericData {
       toJson: ChatDialogStatus.toJsonValue)
   ChatDialogStatus status;
   List<ChatHistoryData> history;
+  //UserData user;
 
   ChatDialogStatusData();
 

@@ -10,6 +10,7 @@ import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/chat_card_model.dart';
+import 'package:hls/models/user_model.dart';
 import 'package:hls/services/auth_service.dart';
 
 class ChatController extends Controller {
@@ -20,10 +21,13 @@ class ChatController extends Controller {
   final _messages = <ChatMessageData>[].obs;
   final _checkboxSelection = [];
   final _checkboxHasSelection = false.obs;
-  final ChatDialogType type;
   final _isTyping = false.obs;
   final _isReadingPause = false.obs;
-  ChatController({this.type});
+
+  final ChatDialogType type;
+  final bool shouldRestart;
+
+  ChatController({this.type, this.shouldRestart = false});
 
   int currentDialogId;
 
@@ -67,15 +71,15 @@ class ChatController extends Controller {
   @override
   void onInit() async {
     // check active chat bot dialog
-    final activeDialog = AuthService.i.profile.activeDialog;
-    final isDialogActive =
-        false && activeDialog != null && type == activeDialog.type;
+    final activeDialog = AuthService.i.profile.activeDialogOfType(type);
     final dialogId = activeDialog?.id;
+    final isDialogActive = !shouldRestart && activeDialog != null;
 
     // print('ChatController.onInit '
-    //   '\n\ttype: $type'
-    //   '\n\tdialogs: ${AuthService.i.profile.dialogs}'
-    //   '\n\tactive: $activeDialog');
+    //     '\n\tshould resume: ${!shouldRestart}'
+    //     '\n\ttype: $type'
+    //     '\n\tdialogs: ${AuthService.i.profile.dialogs}'
+    //     '\n\tactive: $activeDialog');
 
     // start dialog of type or continue mysterious previous dialog
     final mutation = !isDialogActive
@@ -85,6 +89,23 @@ class ChatController extends Controller {
         !isDialogActive ? {'name': type.value} : {'dialogId': dialogId};
     final result = await this.mutation(mutation, parameters: parameters);
     final key = !isDialogActive ? 'chatBotDialogStart' : 'chatBotDialogResume';
+
+    // process history
+    final historyListData = result.get([key, 'dialog', 'history']);
+    if (historyListData != null) {
+      final historyList = List<ChatHistoryData>.from(
+          historyListData.map((x) => ChatHistoryData.fromJson(x)));
+      historyList.sort((a, b) => a.order.compareTo(b.order));
+
+      final messages = <ChatMessageData>[];
+      for (final history in historyList) {
+        for (final question in history.question)
+          messages.add(ChatMessageData.fromQuestion(question));
+        for (final answer in history.answer)
+          messages.add(ChatMessageData(text: answer.text));
+      }
+      this.messages.addAll(messages);
+    }
 
     // add card and process messages
     final data = result.get([key, 'nextCard']);
@@ -142,9 +163,9 @@ class ChatController extends Controller {
   addMessage(ChatMessageData message) async {
     if (message == null || message.text.isNullOrEmpty) return;
 
-    print('ChatController.addMessage'
-      '\n\tmessages: ${_messages.lastOrNull?.text}'
-      '\n\tnew: ${message.text}');
+    // print('ChatController.addMessage'
+    //   '\n\tmessages: ${_messages.lastOrNull?.text}'
+    //   '\n\tnew: ${message.text}');
 
     if (_messages.lastOrNull?.text == message.text ||
         messageQueue.lastOrNull?.text == message.text) return;
@@ -246,14 +267,19 @@ class ChatController extends Controller {
     _checkboxSelection.removeWhere((_) => true);
     _checkboxHasSelection.value = false;
 
+    // update user
+    final user = result.get(['chatBotDialogContinue', 'dialog', 'user']);
+    if (user != null) AuthService.i.profile = UserData.fromJson(user);
+
     // check dialog results
-    final dialogResult = result.get(['chatBotDialogContinue', 'dialogResult']);
+    final dialogResult = result.get(['chatBotDialogContinue', 'dialog', 'result']);
     //print('ChatController.post result: $value');
     if (dialogResult != null && dialogResult is List) {
       _cards.removeWhere((_) => true);
 
       for (final data in dialogResult)
-        addMessage(ChatMessageData.fromQuestion(ChatQuestionData.fromJson(data)));
+        addMessage(
+            ChatMessageData.fromQuestion(ChatQuestionData.fromJson(data)));
 
       return true;
     }
@@ -264,7 +290,7 @@ class ChatController extends Controller {
 
     // process status
     final status = ChatDialogStatus.fromValue(
-        result.get(['chatBotDialogContinue', 'dialogStatus']));
+        result.get(['chatBotDialogContinue', 'dialog', 'status']));
     //print('ChatController.post status: $status');
     if (status != null) {
       switch (status) {
@@ -299,4 +325,9 @@ class ChatMessageData {
         imageUrl = question.imageUrl,
         text = question.text,
         isUser = false;
+  @override
+  String toString() => 'ChatMessageData('
+      '\n\ttext: $text'
+      '\n\tis user: $isUser'
+      ')';
 }

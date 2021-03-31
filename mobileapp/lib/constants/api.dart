@@ -91,9 +91,35 @@ const uploadFields =
     'url'
   '}';
 
+const chatBotDialogCommonFields =
+  //'chatBot $chatBotFields '
+  'id '
+  'name '
+  'status '
+  'result';
+
+const chatBotDialogHistoryFields =
+  '{'
+    '$chatBotDialogCommonFields '
+    'history $chatBotHistoryFields'
+  '}';
+
+const chatBotDialogFields =
+  '{'
+    '$chatBotDialogCommonFields '
+    'user $userFields'
+  '}';
+
 const chatBotFields =
   '{'
     ''
+  '}';
+
+const chatBotHistoryFields =
+  '{'
+    'order '
+    'question '
+    'answer'
   '}';
 
 const chatCardFields =
@@ -211,18 +237,7 @@ const chatHistoryQuery = 'query '
   '{'
     'currentUser '
     '{'
-      'chatBotDialogs '
-      '{'
-        'id '
-        'name '
-        'status '
-        'history '
-        '{'
-          'order '
-          'question '
-          'answer'
-        '}'
-      '}'
+      'chatBotDialogs $chatBotDialogHistoryFields'
     '}'
   '}';
 
@@ -371,9 +386,7 @@ const chatBotDialogStartMutation = 'mutation'
       'name: \$name'
     ') '
     '{'
-      'chatBot $chatBotFields '
       'dialogId '
-      'dialogStatus '
       'nextCard $chatCardFields'
     '}'
   '}';
@@ -388,7 +401,7 @@ const chatBotDialogResumeMutation = 'mutation'
       'dialogId: \$dialogId'
     ') '
     '{'
-      'dialogStatus '
+      'dialog $chatBotDialogHistoryFields '
       'nextCard $chatCardFields'
     '}'
   '}';
@@ -410,8 +423,7 @@ const chatBotDialogContinueMutation = 'mutation'
       '}'
     ') '
     '{'
-      'dialogResult '
-      'dialogStatus '
+      'dialog $chatBotDialogFields '
       'nextCard $chatCardFields'
     '}'
   '}';

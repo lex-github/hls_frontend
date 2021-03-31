@@ -8,9 +8,7 @@ part of '_http_service.dart';
 
 FormValidationData _$FormValidationDataFromJson(Map<String, dynamic> json) {
   return FormValidationData()
-    ..fields = (json['fields'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    )
+    ..fields = Map<String, String>.from(json['fields'] as Map)
     ..values = json['values'] as Map<String, dynamic>;
 }
 

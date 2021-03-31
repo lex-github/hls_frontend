@@ -354,10 +354,11 @@ class MicroCycle extends StatelessWidget {
 }
 
 class HealthYearGraph extends StatelessWidget {
-  final pointSize = .8 * Size.horizontalSmall;
+  final pointSize = .65 * Size.horizontalTiny;
   UserProgressData get progress => AuthService?.i?.profile?.progress;
   HealthData get health => progress?.health;
   List<HealthValueData> get values => health?.values;
+  HealthValueData get lastValue => values?.lastOrNull;
 
   double ordinate(double value) => Size.graph / 2 * value / 100 - pointSize / 2;
 
@@ -366,12 +367,19 @@ class HealthYearGraph extends StatelessWidget {
           Size.horizontal * 4 - // padding
           Size.horizontalTiny - // space between 100% and graph
           Size.fontTiny * 2 - // 100% width
-          Size.border * 2 - // borders
-          pointSize / 2) /
+          Size.border * 2 // borders
+          ) /
       365 *
-      date.difference(DateTime(date.year, 1, 1)).inDays;
+      date.difference(DateTime(date.year, 1, 1)).inDays - pointSize / 2;
 
   // build
+
+  Widget _buildPoint(HealthValueData point) => Container(
+      decoration: BoxDecoration(
+          color: Colors.light,
+          borderRadius: BorderRadius.circular(pointSize / 2)),
+      width: pointSize,
+      height: pointSize);
 
   @override
   Widget build(BuildContext context) => Row(children: [
@@ -402,12 +410,7 @@ class HealthYearGraph extends StatelessWidget {
                 Positioned(
                     bottom: ordinate(point.average),
                     left: abscissa(point.date),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.light,
-                            borderRadius: BorderRadius.circular(pointSize / 2)),
-                        width: pointSize,
-                        height: pointSize))
+                    child: _buildPoint(point))
           ]),
           VerticalTinySpace(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -421,7 +424,8 @@ class HealthYearGraph extends StatelessWidget {
           ]),
           VerticalSpace(),
           TextSecondary(
-              '$healthLevelLabel – ${values?.lastOrNull?.calculated?.round() ?? 0}%(${values?.lastOrNull?.empirical?.round() ?? 0}):',
+              '$healthLevelLabel – ${lastValue?.calculated?.round() ?? 0}%'
+              '${!(lastValue?.empirical?.isNullOrZero ?? true) ? '(' + lastValue?.empirical?.round().toString() + ')' : ''}',
               size: Size.fontTiny),
           VerticalSpace(),
           TextSecondary(
@@ -439,31 +443,85 @@ class HealthYearGraph extends StatelessWidget {
           TextSecondary(
               '$healthAdaptationPotentialLabel – ${health?.adaptiveCapacity ?? 0}%',
               size: Size.fontTiny),
-          TextSecondary(
-              '$healthHLSApplicationLabel – нет(${health?.hlsApplication?.round() ?? 0}%)',
-              size: Size.fontTiny)
+          if (!(health?.adaptiveCapacity?.isNullOrEmpty ?? true))
+            TextSecondary(
+                '$healthHLSApplicationLabel – ${health?.hlsApplication?.round() ?? 0}%',
+                size: Size.fontTiny)
         ]))
       ]);
 }
 
 class MacroCycleGraph extends StatelessWidget {
-  final pointSize = Size.icon;
+  //final pointSize = Size.icon;
+  final pointSize = .65 * Size.horizontalTiny;
   Map<int, double> get values =>
       AuthService?.i?.profile?.progress?.healthHistory;
 
   double ordinate(double value) => Size.graph / 2 * value / 100 - pointSize / 2;
 
-  double abscissa(int age) =>
-      (Size.screenWidth -
-          Size.horizontal * 4 - // padding
-          Size.horizontalTiny - // space between 100% and graph
-          Size.fontTiny * 2 - // 100% width
-          Size.border * 2 - // borders
-          pointSize / 2) /
-      7 *
-      ages.indexOf(age.round());
+  double abscissa(int age) {
+    age += 5;
+
+    final size = (Size.screenWidth -
+            Size.horizontal * 4 - // padding
+            Size.horizontalTiny - // space between 100% and graph
+            Size.fontTiny * 2 - // 100% width
+            Size.border * 2 // borders
+            ) /
+        (ages.length - 1);
+
+    //ages.indexOf(age.round())
+
+    // finding closest index
+    int closestIndex = -1;
+    for (int i = 0; i < ages.length; i++)
+      if (closestIndex == -1 ||
+          (ages[i] - age).abs() < (ages[closestIndex] - age).abs())
+        closestIndex = i;
+
+    // calculate non linear value
+    double value = 0;
+    double coefficient = 0;
+    if (closestIndex >= 0) {
+      value = closestIndex * 1.0;
+      final closestAge = ages[closestIndex];
+
+      if (age != closestAge) {
+        final deltaAge = age - closestAge;
+
+        if (!(deltaAge < 0 && closestIndex == 0 ||
+            deltaAge > 0 && closestIndex == ages.length - 1))
+          coefficient = deltaAge /
+              (closestAge - ages[closestIndex + deltaAge.sign]).abs();
+      }
+    }
+
+    // print('MacroCycleGraph.abscissa'
+    //     '\n\tage: $age'
+    //     '\n\tclosest index: $closestIndex'
+    //     '\n\tvalue: $value'
+    //     '\n\tcoefficient: $coefficient');
+
+    return size * (value + coefficient) - pointSize / 2;
+  }
 
   // builders
+
+  Widget _buildPoint(MapEntry<int, double> point) => Container(
+      decoration: BoxDecoration(
+          color: Colors.light,
+          borderRadius: BorderRadius.circular(pointSize / 2)),
+      width: pointSize,
+      height: pointSize);
+  // Container(
+  //   width: pointSize,
+  //   height: pointSize,
+  //   decoration: BoxDecoration(
+  //       color: Colors.light,
+  //       borderRadius: BorderRadius.circular(pointSize / 2)),
+  //   child: Center(
+  //       child: TextSecondary('${point.value.round()}%',
+  //           size: .8 * Size.fontTiny, color: Colors.darkText)));
 
   Widget _buildIndicator({@required Color color, @required String text}) =>
       Row(children: [
@@ -511,7 +569,9 @@ class MacroCycleGraph extends StatelessWidget {
                 top: 0,
                 right: 0,
                 bottom: 0,
-                child: CustomPaint(painter: MacroGraphPainter())),
+                child: Opacity(
+                  opacity: .5,
+                  child: CustomPaint(painter: MacroGraphPainter()))),
             // Positioned(
             //     left: -Size.width(20),
             //     bottom: -Size.height(48),
@@ -529,21 +589,11 @@ class MacroCycleGraph extends StatelessWidget {
             //             height: pointSize)),
             if (!values.isNullOrEmpty)
               for (final MapEntry<int, double> point in values.entries)
-                if (ages.contains(point.key))
-                  Positioned(
-                      bottom: ordinate(point.value),
-                      left: abscissa(point.key),
-                      child: Container(
-                          width: pointSize,
-                          height: pointSize,
-                          decoration: BoxDecoration(
-                              color: Colors.light,
-                              borderRadius:
-                                  BorderRadius.circular(pointSize / 2)),
-                          child: Center(
-                              child: TextSecondary('${point.value.round()}%',
-                                  size: .8 * Size.fontTiny,
-                                  color: Colors.darkText))))
+                //if (ages.contains(point.key))
+                Positioned(
+                    bottom: ordinate(point.value),
+                    left: abscissa(point.key),
+                    child: _buildPoint(point))
           ]),
           VerticalTinySpace(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

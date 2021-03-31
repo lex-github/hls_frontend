@@ -8,10 +8,9 @@ part of 'post_model.dart';
 
 PaginationData _$PaginationDataFromJson(Map<String, dynamic> json) {
   return PaginationData()
-    ..list = (json['nodes'] as List)
-        ?.map((e) =>
-            e == null ? null : PostData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..list = (json['nodes'] as List<dynamic>)
+        .map((e) => PostData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..meta = json['pageInfo'] == null
         ? null
         : PaginationMetaData.fromJson(json['pageInfo'] as Map<String, dynamic>);
@@ -38,10 +37,9 @@ PostData _$PostDataFromJson(Map<String, dynamic> json) {
     ..type = PostType.fromJsonValue(json['kind'])
     ..isHalf = toBool(json['isHalf'])
     ..date = toDate(json['publishedAt'])
-    ..texts = (json['text'] as List)?.map((e) => e as String)?.toList()
-    ..stories = (json['stories'] as List)
-        ?.map((e) =>
-            e == null ? null : StoryData.fromJson(e as Map<String, dynamic>))
+    ..texts = (json['text'] as List<dynamic>)?.map((e) => e as String)?.toList()
+    ..stories = (json['stories'] as List<dynamic>)
+        ?.map((e) => StoryData.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..videoUrl = json['videoUrl'] as String
     ..durationSeconds = json['videoDuration'] as int
@@ -75,7 +73,8 @@ StoryData _$StoryDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
-    ..texts = (json['text'] as List)?.map((e) => e as String)?.toList();
+    ..texts =
+        (json['text'] as List<dynamic>).map((e) => e as String).toList();
 }
 
 Map<String, dynamic> _$StoryDataToJson(StoryData instance) {

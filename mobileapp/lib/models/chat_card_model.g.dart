@@ -13,11 +13,9 @@ ChatCardData _$ChatCardDataFromJson(Map<String, dynamic> json) {
     ..imageUrl = json['imageUrl'] as String
     ..key = json['key'] as String
     ..questionType = ChatQuestionType.fromJsonValue(json['questionType'])
-    ..questions = (json['questions'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ChatQuestionData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..questions = (json['questions'] as List<dynamic>)
+        .map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..style = json['style'] == null
         ? null
         : ChatQuestionStyleData.fromJson(json['style'] as Map<String, dynamic>)
@@ -25,19 +23,13 @@ ChatCardData _$ChatCardDataFromJson(Map<String, dynamic> json) {
         ? null
         : ChatValidationData.fromJson(json['addons'] as Map<String, dynamic>)
     ..answers = (json['answers'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(
-          k,
-          e == null
-              ? null
-              : ChatAnswerData.fromJson(e as Map<String, dynamic>)),
+      (k, e) => MapEntry(k, ChatAnswerData.fromJson(e as Map<String, dynamic>)),
     )
     ..results = (json['results'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
           k,
-          (e as List)
-              ?.map((e) => e == null
-                  ? null
-                  : ChatQuestionData.fromJson(e as Map<String, dynamic>))
+          (e as List<dynamic>)
+              ?.map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
               ?.toList()),
     );
 }
@@ -160,11 +152,12 @@ ChatDialogStatusData _$ChatDialogStatusDataFromJson(Map<String, dynamic> json) {
     ..imageUrl = json['imageUrl'] as String
     ..type = ChatDialogType.fromJsonValue(json['name'])
     ..status = ChatDialogStatus.fromJsonValue(json['status'])
-    ..history = (json['history'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ChatHistoryData.fromJson(e as Map<String, dynamic>))
+    ..history = (json['history'] as List<dynamic>)
+        ?.map((e) => ChatHistoryData.fromJson(e as Map<String, dynamic>))
         ?.toList();
+    // ..user = json['user'] == null
+    //     ? null
+    //     : UserData.fromJson(json['user'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$ChatDialogStatusDataToJson(
@@ -183,22 +176,19 @@ Map<String, dynamic> _$ChatDialogStatusDataToJson(
   writeNotNull('name', ChatDialogType.toJsonValue(instance.type));
   writeNotNull('status', ChatDialogStatus.toJsonValue(instance.status));
   writeNotNull('history', instance.history);
+  //writeNotNull('user', instance.user);
   return val;
 }
 
 ChatHistoryData _$ChatHistoryDataFromJson(Map<String, dynamic> json) {
   return ChatHistoryData()
     ..order = json['order'] as int
-    ..question = (json['question'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ChatQuestionData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..answer = (json['answer'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ChatAnswerData.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..question = (json['question'] as List<dynamic>)
+        .map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..answer = (json['answer'] as List<dynamic>)
+        .map((e) => ChatAnswerData.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$ChatHistoryDataToJson(ChatHistoryData instance) {

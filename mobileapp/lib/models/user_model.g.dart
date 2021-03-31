@@ -16,16 +16,17 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..details = json['data'] == null
         ? null
         : UserDetailsData.fromJson(json['data'] as Map<String, dynamic>)
-    ..dialogs = (json['chatBotDialogs'] as List)
-        ?.map((e) => e == null
+    ..dialogs = (json['chatBotDialogs'] as List<dynamic>)
+        .map((e) => e == null
             ? null
             : ChatDialogStatusData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+        .toList()
     ..daily = json['dailyRating'] == null
         ? null
         : UserDailyData.fromJson(json['dailyRating'] as Map<String, dynamic>)
-    ..trainings =
-        (json['weeklyTrainings'] as List)?.map((e) => e as int)?.toList()
+    ..trainings = (json['weeklyTrainings'] as List<dynamic>)
+        .map((e) => e as int)
+        .toList()
     ..progress = json['progress'] == null
         ? null
         : UserProgressData.fromJson(json['progress'] as Map<String, dynamic>);
@@ -115,8 +116,8 @@ UserProgressData _$UserProgressDataFromJson(Map<String, dynamic> json) {
     ..health = json['health'] == null
         ? null
         : HealthData.fromJson(json['health'] as Map<String, dynamic>)
-    ..healthHistory = (json['agesDiagram'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(int.parse(k), (e as num)?.toDouble()),
+    ..healthHistory = (json['agesDiagram'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(int.parse(k), (e as num).toDouble()),
     );
 }
 
@@ -181,11 +182,9 @@ Map<String, dynamic> _$MacroCycleDataToJson(MacroCycleData instance) {
 
 HealthData _$HealthDataFromJson(Map<String, dynamic> json) {
   return HealthData()
-    ..values = (json['historyValues'] as List)
-        ?.map((e) => e == null
-            ? null
-            : HealthValueData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..values = (json['historyValues'] as List<dynamic>)
+        .map((e) => HealthValueData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..adaptiveCapacity = json['adaptiveCapacity'] == null
         ? null
         : HealthIndexData.fromJson(
@@ -205,7 +204,7 @@ HealthData _$HealthDataFromJson(Map<String, dynamic> json) {
     ..ruffierIndex = json['rufierProbe'] == null
         ? null
         : HealthIndexData.fromJson(json['rufierProbe'] as Map<String, dynamic>)
-    ..hlsApplication = (json['hlsApplication'] as num)?.toDouble()
+    ..hlsApplication = (json['hlsApplication'] as num).toDouble()
     ..debugInfo = json['debugInfo'] as Map<String, dynamic>;
 }
 
@@ -254,7 +253,7 @@ Map<String, dynamic> _$HealthValueDataToJson(HealthValueData instance) {
 }
 
 HealthIndexData _$HealthIndexDataFromJson(Map<String, dynamic> json) {
-  return HealthIndexData()..percent = (json['percent'] as num)?.toDouble();
+  return HealthIndexData()..percent = (json['percent'] as num).toDouble();
 }
 
 Map<String, dynamic> _$HealthIndexDataToJson(HealthIndexData instance) {
