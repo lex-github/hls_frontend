@@ -3,6 +3,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:get/get.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/_service.dart';
+import 'package:pretty_json/pretty_json.dart';
 
 class AnalyticsService extends Service {
   static AnalyticsService get i => Get.find<AnalyticsService>();
@@ -32,14 +33,18 @@ class AnalyticsService extends Service {
         if (!parameters.isNullOrEmpty) ...parameters
       });
   Future<void> queryEnd(String node, {Map<String, dynamic> data}) =>
-      log('graphqlQueryEnd',
-          parameters: {'node': node, if (!data.isNullOrEmpty) ...data});
+      log('graphqlQueryEnd', parameters: {
+        'node': node,
+        if (!data.isNullOrEmpty) 'data': prettyJson(data)
+      });
   Future<void> mutationStart(String node, {Map<String, dynamic> parameters}) =>
       log('graphqlMutationStart', parameters: {
         'node': node,
         if (!parameters.isNullOrEmpty) ...parameters
       });
   Future<void> mutationEnd(String node, {Map<String, dynamic> data}) =>
-      log('graphqlMutationEnd',
-          parameters: {'node': node, if (!data.isNullOrEmpty) ...data});
+      log('graphqlMutationEnd', parameters: {
+        'node': node,
+        if (!data.isNullOrEmpty) 'data': prettyJson(data)
+      });
 }
