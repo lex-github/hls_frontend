@@ -17,8 +17,8 @@ class SettingsService extends Service {
     _token.value = _preferences.read<String>(_tokenKey);
 
     print('SettingsService.init '
-      '\n\tkeys: ${_preferences.getKeys()}'
-      '\n\tvalues: ${_preferences.getValues()}');
+        '\n\tkeys: ${_preferences.getKeys()}'
+        '\n\tvalues: ${_preferences.getValues()}');
   }
 
   // token observable
@@ -38,4 +38,6 @@ class SettingsService extends Service {
   bool get shouldShowWelcome =>
       // _preferences.getBool(_shouldShowWelcomeKey) ?? true;
       _preferences.read<bool>(_shouldShowWelcomeKey) ?? true;
+  set shouldShowWelcome(bool value) =>
+      _preferences.write(_shouldShowWelcomeKey, value);
 }

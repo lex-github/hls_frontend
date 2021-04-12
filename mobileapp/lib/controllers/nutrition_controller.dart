@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
@@ -26,8 +28,14 @@ class NutritionController extends Controller {
   List<FoodCategoryData> list;
 
   Future retrieve() async {
-    final result = await query(foodCategoriesQuery);
-    print('NutritionController.retrieve result: $result');
+    final result =
+        await query(foodCategoriesQuery, fetchPolicy: FetchPolicy.cacheFirst);
+    //print('NutritionController.retrieve result: $result');
+
+    // final categories = result.get('foodCategories');
+    // if (categories != null)
+    //   for (final x in categories)
+    //     print('NutritionController.retrieve category: $x');
 
     list = result
         .get<List>('foodCategories')

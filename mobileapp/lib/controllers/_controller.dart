@@ -23,8 +23,9 @@ class Controller extends GetxController {
   String get message => AuthService.i.message;
 
   Future<Map<String, dynamic>> query(String node,
-          {Map<String, dynamic> parameters}) =>
-      AuthService.i.query(node, parameters: parameters);
+          {Map<String, dynamic> parameters, FetchPolicy fetchPolicy}) =>
+      AuthService.i
+          .query(node, parameters: parameters, fetchPolicy: fetchPolicy);
 
   Future<Map<String, dynamic>> mutation(String node,
           {Map<String, dynamic> parameters}) =>

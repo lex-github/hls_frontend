@@ -30,5 +30,7 @@ class FoodCategoryData extends GenericData {
   String toString() => 'FoodCategoryData('
       '\n\tid: $id'
       '\n\ttitle: $title'
+      '\n\tchildren: $children'
+      '\n\tfoods: $foods'
       ')';
 }

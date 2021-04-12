@@ -787,6 +787,7 @@ class TextPrimaryHint extends TextPrimary {
       Color color,
       TextAlign align = TextAlign.left,
       TextOverflow overflow = TextOverflow.visible,
+      int lines,
       double size,
       M.TextStyle style})
       : super(text,
@@ -796,7 +797,8 @@ class TextPrimaryHint extends TextPrimary {
             overflow: overflow,
             size: size ?? Size.fontSmall,
             weight: FontWeight.w500,
-            style: style);
+            style: style,
+            lines: lines);
 }
 
 class TextSecondary extends StatelessWidget {

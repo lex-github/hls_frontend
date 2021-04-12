@@ -18,11 +18,12 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
   final String title;
 
   @override
-  String get tag => title;
+  String get tag => category.title;
 
   FoodCategoryScreen()
       : category = (Get.arguments as Map).get('category'),
         title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
+
   // handlers
 
   _categoryHandler(FoodCategoryData item) {
@@ -34,9 +35,13 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
           arguments: {'title': category.title, 'category': item});
 
     // if (item.parent.id == category.id && !item.children.isNullOrEmpty)
-    if (!item.foods.isNullOrEmpty) return controller.toggle(item);
+    if (item.foods.isNullOrEmpty)
+      return showConfirm(title: noDataText);
 
-    return showConfirm(title: noDataText);
+    if (item.foods.length == 1)
+      return _foodHandler(item, item.foods.first);
+
+    return controller.toggle(item);
   }
 
   _foodHandler(FoodCategoryData category, FoodData item) =>
@@ -54,8 +59,8 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
         Row(children: [
           Image(width: Size.iconBig, title: item.imageUrl),
           HorizontalSpace(),
-          TextPrimaryHint(item.title),
-          Expanded(child: HorizontalSpace()),
+          Expanded(child: TextPrimaryHint(item.title)),
+          HorizontalSpace(),
           Obx(() => Transform.rotate(
               angle: controller.getRotationAngle(item),
               child: Icon(Icons.arrow_forward_ios,
@@ -99,6 +104,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
   Widget _buildBody() => GetBuilder<FoodCategoryController>(
       tag: tag,
       init: FoodCategoryController(id: category?.id),
+      //dispose: (_) => Get.delete<FoodCategoryController>(tag: tag),
       builder: (_) => controller.isInit
           ? controller.list.length > 0
               ? ListView.builder(
