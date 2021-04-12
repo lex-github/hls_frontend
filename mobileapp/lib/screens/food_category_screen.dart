@@ -18,7 +18,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
   final String title;
 
   @override
-  String get tag => category.title;
+  String get tag => category?.title;
 
   FoodCategoryScreen()
       : category = (Get.arguments as Map).get('category'),

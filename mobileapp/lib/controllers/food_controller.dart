@@ -29,7 +29,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   AnimationController _animationController;
   FoodData item;
 
-  Map<String, List<FoodSectionData>> get list => item.sections ?? [];
+  Map<String, List<FoodSectionData>> get list => item.sections ?? {};
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;
   double get rotationAngle => maxRotationAngle * animationProgress;

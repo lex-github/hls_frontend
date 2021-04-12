@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
@@ -145,7 +146,8 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   }
 
   Future retrieve() async {
-    final result = await query(foodFilterQuery);
+    final result =
+        await query(foodFilterQuery, fetchPolicy: FetchPolicy.cacheFirst);
     print('FoodFilterController.retrieve result: $result');
 
     list = result

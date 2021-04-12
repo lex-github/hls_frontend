@@ -48,6 +48,8 @@ class NutritionController extends Controller {
   List<FoodData> foods;
 
   Future retrieveFoods() async {
+    if (filters.isNullOrEmpty && search.isNullOrEmpty) return null;
+
     final result = await query(foodsQuery, parameters: {
       'filters': {
         if (!filters.isNullOrEmpty)

@@ -103,6 +103,7 @@ class AuthService extends GraphqlService {
 
   afterLogout() {
     SettingsService.i.token = null;
+    SettingsService.i.shouldShowWelcome = true;
     profile = null;
     isAuthenticated = false;
   }

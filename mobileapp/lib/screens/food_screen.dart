@@ -64,7 +64,7 @@ class FoodScreen extends GetView<FoodController> {
             Text(data?.quantity?.toString() ?? '0',
                 style:
                     TextStyle.primary.copyWith(fontSize: 1.1 * Size.fontTiny)),
-            Text(title ?? data.title.toLowerCase(),
+            Text(title ?? data?.title?.toLowerCase() ?? '',
                 style:
                     TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
@@ -102,10 +102,11 @@ class FoodScreen extends GetView<FoodController> {
                 children: [
                   Column(children: [
                     //_buildIndicator(food.water, color: Colors.water, value: .2),
-                    _buildIndicator(food.calories, color: Colors.water, value: .2),
+                    _buildIndicator(food.calories,
+                        color: Colors.water, value: .2),
                     VerticalSpace(),
                     _buildIndicator(food.proteins,
-                      color: Colors.proteins, value: .45)
+                        color: Colors.proteins, value: .45)
                   ]),
                   CircularProgress(
                       size: Size.buttonHuge,
@@ -121,7 +122,7 @@ class FoodScreen extends GetView<FoodController> {
                     _buildIndicator(food.fats, color: Colors.fats, value: .65),
                     VerticalSpace(),
                     _buildIndicator(food.carbs,
-                      title: foodCarbLabel, color: Colors.carbs, value: .35)
+                        title: foodCarbLabel, color: Colors.carbs, value: .35)
                   ])
                 ])),
         //VerticalBigSpace()
@@ -130,18 +131,20 @@ class FoodScreen extends GetView<FoodController> {
   Widget _buildBody() => GetBuilder<FoodController>(
       init: FoodController(id: food.id),
       builder: (_) => controller.isInit
-          ? ListView.builder(
-              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalBig,
-                  Size.horizontal, Size.vertical),
-              itemCount: controller.list.length * 2 - 1,
-              itemBuilder: (_, i) {
-                if (i.isOdd) return VerticalMediumSpace();
+          ? controller.list.length > 0
+              ? ListView.builder(
+                  padding: EdgeInsets.fromLTRB(Size.horizontal,
+                      Size.verticalBig, Size.horizontal, Size.vertical),
+                  itemCount: controller.list.length * 2 - 1,
+                  itemBuilder: (_, i) {
+                    if (i.isOdd) return VerticalMediumSpace();
 
-                final index = i ~/ 2;
+                    final index = i ~/ 2;
 
-                return _buildListItem(
-                    controller.getTitle(index), controller.getSection(index));
-              })
+                    return _buildListItem(controller.getTitle(index),
+                        controller.getSection(index));
+                  })
+              : Nothing()
           : Center(child: Loading()));
 
   @override
