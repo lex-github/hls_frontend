@@ -10,37 +10,25 @@ FoodCategoryData _$FoodCategoryDataFromJson(Map<String, dynamic> json) {
   return FoodCategoryData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..image = json['icon'] == null
-        ? null
-        : ImageData.fromJson(json['icon'] as Map<String, dynamic>)
+    ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..children = (json['subcategories'] as List<dynamic>)
-        .map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
-        .toList()
-    ..parent = json['parentCategory'] == null
-        ? null
-        : FoodCategoryData.fromJson(
-            json['parentCategory'] as Map<String, dynamic>)
+        ?.map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..parent = FoodCategoryData.fromJson(
+        json['parentCategory'] as Map<String, dynamic>)
     ..foods = (json['foods'] as List<dynamic>)
-        .map((e) => FoodData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => FoodData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 
-Map<String, dynamic> _$FoodCategoryDataToJson(FoodCategoryData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('icon', instance.image);
-  writeNotNull('subcategories', instance.children);
-  writeNotNull('parentCategory', instance.parent);
-  writeNotNull('foods', instance.foods);
-  writeNotNull('imageUrl', instance.imageUrl);
-  return val;
-}
+Map<String, dynamic> _$FoodCategoryDataToJson(FoodCategoryData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'icon': instance.image,
+      'subcategories': instance.children,
+      'parentCategory': instance.parent,
+      'foods': instance.foods,
+      'imageUrl': instance.imageUrl,
+    };

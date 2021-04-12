@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:get/get.dart';
@@ -22,15 +24,21 @@ class AnalyticsService extends Service {
   FirebaseAnalyticsObserver get observer => _observer;
 
   Future<void> log(String title, {Map<String, dynamic> parameters}) =>
-      _analytics.logEvent(name: title, parameters: parameters);
-  Future<void> open() => _analytics.logAppOpen();
-  Future<void> login() => _analytics.logLogin();
-  Future<void> user(String userId) => _analytics.setUserId(userId);
+      Platform.isWindows || Platform.isMacOS
+          ? null
+          : _analytics.logEvent(name: title, parameters: parameters);
+  Future<void> open() =>
+      Platform.isWindows || Platform.isMacOS ? null : _analytics.logAppOpen();
+  Future<void> login() =>
+      Platform.isWindows || Platform.isMacOS ? null : _analytics.logLogin();
+  Future<void> user(String userId) => Platform.isWindows || Platform.isMacOS
+      ? null
+      : _analytics.setUserId(userId);
 
   Future<void> queryStart(String node, {Map<String, dynamic> parameters}) =>
       log('graphqlQueryStart', parameters: {
         'node': node,
-        if (!parameters.isNullOrEmpty) ...parameters
+        if (!parameters.isNullOrEmpty) 'parameters': prettyJson(parameters)
       });
   Future<void> queryEnd(String node, {Map<String, dynamic> data}) =>
       log('graphqlQueryEnd', parameters: {
@@ -40,7 +48,7 @@ class AnalyticsService extends Service {
   Future<void> mutationStart(String node, {Map<String, dynamic> parameters}) =>
       log('graphqlMutationStart', parameters: {
         'node': node,
-        if (!parameters.isNullOrEmpty) ...parameters
+        if (!parameters.isNullOrEmpty) 'parameters': prettyJson(parameters)
       });
   Future<void> mutationEnd(String node, {Map<String, dynamic> data}) =>
       log('graphqlMutationEnd', parameters: {

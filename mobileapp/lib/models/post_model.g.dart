@@ -9,26 +9,17 @@ part of 'post_model.dart';
 PaginationData _$PaginationDataFromJson(Map<String, dynamic> json) {
   return PaginationData()
     ..list = (json['nodes'] as List<dynamic>)
-        .map((e) => PostData.fromJson(e as Map<String, dynamic>))
-        .toList()
-    ..meta = json['pageInfo'] == null
-        ? null
-        : PaginationMetaData.fromJson(json['pageInfo'] as Map<String, dynamic>);
+        ?.map((e) => PostData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..meta =
+        PaginationMetaData.fromJson(json['pageInfo'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$PaginationDataToJson(PaginationData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nodes', instance.list);
-  writeNotNull('pageInfo', instance.meta);
-  return val;
-}
+Map<String, dynamic> _$PaginationDataToJson(PaginationData instance) =>
+    <String, dynamic>{
+      'nodes': instance.list,
+      'pageInfo': instance.meta,
+    };
 
 PostData _$PostDataFromJson(Map<String, dynamic> json) {
   return PostData()
@@ -47,7 +38,10 @@ PostData _$PostDataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PostDataToJson(PostData instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'title': instance.title,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -55,16 +49,14 @@ Map<String, dynamic> _$PostDataToJson(PostData instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
   writeNotNull('kind', PostType.toJsonValue(instance.type));
-  writeNotNull('isHalf', instance.isHalf);
-  writeNotNull('publishedAt', instance.date?.toIso8601String());
-  writeNotNull('text', instance.texts);
-  writeNotNull('stories', instance.stories);
-  writeNotNull('videoUrl', instance.videoUrl);
-  writeNotNull('videoDuration', instance.durationSeconds);
-  writeNotNull('imageUrl', instance.imageUrl);
+  val['isHalf'] = instance.isHalf;
+  val['publishedAt'] = instance.date.toIso8601String();
+  val['text'] = instance.texts;
+  val['stories'] = instance.stories;
+  val['videoUrl'] = instance.videoUrl;
+  val['videoDuration'] = instance.durationSeconds;
+  val['imageUrl'] = instance.imageUrl;
   return val;
 }
 
@@ -73,25 +65,15 @@ StoryData _$StoryDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
-    ..texts =
-        (json['text'] as List<dynamic>).map((e) => e as String).toList();
+    ..texts = (json['text'] as List<dynamic>)?.map((e) => e as String)?.toList();
 }
 
-Map<String, dynamic> _$StoryDataToJson(StoryData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('imageUrl', instance.imageUrl);
-  writeNotNull('text', instance.texts);
-  return val;
-}
+Map<String, dynamic> _$StoryDataToJson(StoryData instance) => <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'imageUrl': instance.imageUrl,
+      'text': instance.texts,
+    };
 
 PaginationMetaData _$PaginationMetaDataFromJson(Map<String, dynamic> json) {
   return PaginationMetaData()
@@ -99,16 +81,8 @@ PaginationMetaData _$PaginationMetaDataFromJson(Map<String, dynamic> json) {
     ..hasNextPage = json['hasNextPage'] as bool;
 }
 
-Map<String, dynamic> _$PaginationMetaDataToJson(PaginationMetaData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('endCursor', instance.cursor);
-  writeNotNull('hasNextPage', instance.hasNextPage);
-  return val;
-}
+Map<String, dynamic> _$PaginationMetaDataToJson(PaginationMetaData instance) =>
+    <String, dynamic>{
+      'endCursor': instance.cursor,
+      'hasNextPage': instance.hasNextPage,
+    };

@@ -10,39 +10,26 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
   return FoodData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
-    ..image = json['icon'] == null
-        ? null
-        : ImageData.fromJson(json['icon'] as Map<String, dynamic>)
-    ..category = json['foodCategory'] == null
-        ? null
-        : FoodCategoryData.fromJson(
-            json['foodCategory'] as Map<String, dynamic>)
+    ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
+    ..category =
+        FoodCategoryData.fromJson(json['foodCategory'] as Map<String, dynamic>)
     ..structure = (json['structure'] as List<dynamic>)
-        .map((e) => FoodSectionData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => FoodSectionData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..championOn =
-        (json['championOn'] as List<dynamic>).map((e) => e as String).toList()
+        (json['championOn'] as List<dynamic>)?.map((e) => e as String)?.toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 
-Map<String, dynamic> _$FoodDataToJson(FoodData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('icon', instance.image);
-  writeNotNull('foodCategory', instance.category);
-  writeNotNull('structure', instance.structure);
-  writeNotNull('championOn', instance.championOn);
-  writeNotNull('imageUrl', instance.imageUrl);
-  return val;
-}
+Map<String, dynamic> _$FoodDataToJson(FoodData instance) => <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'icon': instance.image,
+      'foodCategory': instance.category,
+      'structure': instance.structure,
+      'championOn': instance.championOn,
+      'imageUrl': instance.imageUrl,
+    };
 
 FoodSectionData _$FoodSectionDataFromJson(Map<String, dynamic> json) {
   return FoodSectionData()
@@ -55,38 +42,21 @@ FoodSectionData _$FoodSectionDataFromJson(Map<String, dynamic> json) {
     ..unit = json['unit'] as String;
 }
 
-Map<String, dynamic> _$FoodSectionDataToJson(FoodSectionData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('imageUrl', instance.imageUrl);
-  writeNotNull('key', instance.key);
-  writeNotNull('quantity', instance.quantity);
-  writeNotNull('section', instance.section);
-  writeNotNull('unit', instance.unit);
-  return val;
-}
+Map<String, dynamic> _$FoodSectionDataToJson(FoodSectionData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'imageUrl': instance.imageUrl,
+      'key': instance.key,
+      'quantity': instance.quantity,
+      'section': instance.section,
+      'unit': instance.unit,
+    };
 
 ImageData _$ImageDataFromJson(Map<String, dynamic> json) {
   return ImageData()..url = json['url'] as String;
 }
 
-Map<String, dynamic> _$ImageDataToJson(ImageData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('url', instance.url);
-  return val;
-}
+Map<String, dynamic> _$ImageDataToJson(ImageData instance) => <String, dynamic>{
+      'url': instance.url,
+    };

@@ -2,7 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
-import 'package:hls/models/user_model.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/models/_generic_model.dart';
 
@@ -61,7 +61,7 @@ class ChatQuestionStyleData {
   ChatQuestionStyleData();
 
   factory ChatQuestionStyleData.fromJson(Map<String, dynamic> json) =>
-      _$ChatQuestionStyleDataFromJson(json);
+      json.isNullOrEmpty ? null : _$ChatQuestionStyleDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatQuestionStyleDataToJson(this);
 
   @override
@@ -79,7 +79,7 @@ class ChatValidationData {
   ChatValidationData();
 
   factory ChatValidationData.fromJson(Map<String, dynamic> json) =>
-      _$ChatValidationDataFromJson(json);
+      json.isNullOrEmpty ? null : _$ChatValidationDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatValidationDataToJson(this);
 
   @override

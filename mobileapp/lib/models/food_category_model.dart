@@ -1,7 +1,8 @@
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_model.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/models/_generic_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'food_category_model.g.dart';
 
@@ -22,12 +23,12 @@ class FoodCategoryData extends GenericData {
   String get imageUrl => image.url;
 
   factory FoodCategoryData.fromJson(Map<String, dynamic> json) =>
-      _$FoodCategoryDataFromJson(json);
+      json.isNullOrEmpty ? null : _$FoodCategoryDataFromJson(json);
   Map<String, dynamic> toJson() => _$FoodCategoryDataToJson(this);
 
   @override
   String toString() => 'FoodCategoryData('
-    '\n\tid: $id'
-    '\n\ttitle: $title'
-    ')';
+      '\n\tid: $id'
+      '\n\ttitle: $title'
+      ')';
 }

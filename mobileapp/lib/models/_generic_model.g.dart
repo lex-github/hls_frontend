@@ -13,17 +13,9 @@ GenericData _$GenericDataFromJson(Map<String, dynamic> json) {
     ..imageUrl = json['imageUrl'] as String;
 }
 
-Map<String, dynamic> _$GenericDataToJson(GenericData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('imageUrl', instance.imageUrl);
-  return val;
-}
+Map<String, dynamic> _$GenericDataToJson(GenericData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'imageUrl': instance.imageUrl,
+    };

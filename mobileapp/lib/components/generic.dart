@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
+//import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart' hide Svg;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/get.dart';
-// import 'package:get/route_manager.dart';
-// import 'package:get/utils.dart';
+//import 'package:get/route_manager.dart';
+//import 'package:get/utils.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/api.dart';
@@ -706,21 +706,21 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) => Screen(child: Center(child: Loading()));
 }
 
-class TextAnimated extends StatelessWidget {
-  final String text;
-  final Duration duration;
-  TextAnimated(this.text, {this.duration});
-
-  @override
-  Widget build(BuildContext context) => TyperAnimatedTextKit(
-        isRepeatingAnimation: false,
-        speed: duration ?? chatTyperAnimationDuration,
-        text: [text],
-        textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
-        //displayFullTextOnTap: true,
-        //stopPauseOnTap: true
-      );
-}
+// class TextAnimated extends StatelessWidget {
+//   final String text;
+//   final Duration duration;
+//   TextAnimated(this.text, {this.duration});
+//
+//   @override
+//   Widget build(BuildContext context) => TyperAnimatedTextKit(
+//         isRepeatingAnimation: false,
+//         speed: duration ?? chatTyperAnimationDuration,
+//         text: [text],
+//         textStyle: TextStyle.primary.copyWith(fontSize: Size.fontSmall),
+//         //displayFullTextOnTap: true,
+//         //stopPauseOnTap: true
+//       );
+// }
 
 class TextError extends StatelessWidget {
   final String text;
@@ -750,6 +750,7 @@ class TextPrimary extends StatelessWidget {
   final TextOverflow overflow;
   final int lines;
   final Color color;
+  final Shadow shadow;
 
   TextPrimary(this.text,
       {Key key,
@@ -759,14 +760,17 @@ class TextPrimary extends StatelessWidget {
       this.align = TextAlign.left,
       this.overflow = TextOverflow.visible,
       this.lines,
-      this.color})
+      this.color,
+      this.shadow})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(text.tr,
-      style: TextStyle.primary
-          .merge(style)
-          .copyWith(color: color, fontSize: size, fontWeight: weight),
+      style: TextStyle.primary.merge(style).copyWith(
+          color: color,
+          fontSize: size,
+          fontWeight: weight,
+          shadows: [if (shadow != null) shadow]),
       overflow: overflow,
       maxLines: lines,
       textAlign: align);
