@@ -55,11 +55,12 @@ class UserData extends GenericData {
       .where((x) => x.status == ChatDialogStatus.FINISHED)
       .toList(growable: false);
   List<ChatDialogType> get dialogTypesToComplete =>
-      dialogs.firstWhere((x) => x.status == ChatDialogStatus.PENDING,
-                  orElse: () => null) !=
-              null
-          ? []
-          : ((List<ChatDialogType> completedTypes) => [
+      // dialogs.firstWhere((x) => x.status == ChatDialogStatus.PENDING,
+      //             orElse: () => null) !=
+      //         null
+      //     ? []
+      //     :
+      ((List<ChatDialogType> completedTypes) => [
                 for (final type in ChatDialogType.values)
                   if (!completedTypes.contains(type)) type
               ])(completedDialogs.map((x) => x.type).toList(growable: false));

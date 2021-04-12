@@ -6,6 +6,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/screens/chat_screen.dart';
 import 'package:hls/services/auth_service.dart';
+import 'package:hls/services/settings_service.dart';
 
 class ChatNavigationController extends Controller {
   final _canGoBack = false.obs;
@@ -63,12 +64,16 @@ class ChatNavigationController extends Controller {
 
     _canGoBack.value = shouldRestart;
 
+    final shouldSkipChat = SettingsService.i.shouldSkipChat;
+
     // check which dialogs are not completed
-    final chatDialogsNotCompleted = shouldRestart
-        ? ChatDialogType.values
-            .where((x) => x != ChatDialogType.WELCOME)
-            .toList(growable: false)
-        : AuthService.i.profile.dialogTypesToComplete;
+    final chatDialogsNotCompleted = shouldSkipChat
+        ? shouldRestart
+            ? ChatDialogType.values
+                .where((x) => x != ChatDialogType.WELCOME)
+                .toList(growable: false)
+            : AuthService.i.profile.dialogTypesToComplete
+        : [];
     // debugPrint(
     //     'ChatNavigationController.onInit completed: ${AuthService.i.profile.completedDialogs}');
     print(
@@ -77,8 +82,10 @@ class ChatNavigationController extends Controller {
 
     // create sequence for completing dialogs
     for (int i = 0; i < chatDialogsNotCompleted.length; i++)
-      _screens
-          .add(ChatScreen(key: ValueKey(i), type: chatDialogsNotCompleted[i], shouldRestart: shouldRestart));
+      _screens.add(ChatScreen(
+          key: ValueKey(i),
+          type: chatDialogsNotCompleted[i],
+          shouldRestart: shouldRestart));
     _screens.add(Nothing(key: ValueKey(chatDialogsNotCompleted.length)));
 
     await Future.delayed(Duration.zero);

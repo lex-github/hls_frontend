@@ -414,7 +414,7 @@ class ListItemFoodButton extends ListItemButton {
                       children: [
                     Row(children: [
                       Expanded(
-                          child: TextPrimaryHint(item.title.capitalize,
+                          child: TextPrimaryHint(item.title,
                               overflow: TextOverflow.visible)),
                       HorizontalSpace(),
                       Icon(Icons.arrow_forward_ios,

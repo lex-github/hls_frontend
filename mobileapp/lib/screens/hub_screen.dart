@@ -230,11 +230,11 @@ class StatusBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        _buildRow(title: goalTitle, text: progress.goal.capitalizeFirst),
+        _buildRow(title: goalTitle, text: progress.goal),
         VerticalMediumSpace(),
         _buildRow(
             title: macrocycleTitle,
-            text: progress.macroCycle.title.capitalizeFirst),
+            text: progress.macroCycle.title),
         VerticalMediumSpace(),
         _buildRow(
             title: '$microcycleTitle',
