@@ -17,7 +17,7 @@ class FoodScreen extends GetView<FoodController> {
 
   FoodScreen()
       : food = (Get.arguments as Map).get('food'),
-        title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
+         title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
 
   // handlers
 
@@ -69,8 +69,8 @@ class FoodScreen extends GetView<FoodController> {
                     TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
 
-  Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
-        VerticalSpace(),
+  Widget _buildHeader(FoodData food) => Column(mainAxisSize: MainAxisSize.min, children: [
+        //VerticalSpace(),
         TextPrimary(food.title, align: TextAlign.center),
         if (!food.championOn.isNullOrEmpty) ...[
           VerticalSmallSpace(),
@@ -130,13 +130,13 @@ class FoodScreen extends GetView<FoodController> {
 
   Widget _buildBody() => GetBuilder<FoodController>(
       init: FoodController(id: food.id),
-      builder: (_) => controller.isInit
+      builder: (_) => controller.isInit && !controller.isAwaiting
           ? controller.list.length > 0
               ? ListView.builder(
-                  padding: EdgeInsets.fromLTRB(Size.horizontal,
-                      Size.verticalBig, Size.horizontal, Size.vertical),
-                  itemCount: controller.list.length * 2 - 1,
+                  padding: Padding.content,
+                  itemCount: controller.list.length * 2,
                   itemBuilder: (_, i) {
+                    if (i == 0) return _buildHeader(controller.item);
                     if (i.isOdd) return VerticalMediumSpace();
 
                     final index = i ~/ 2;
@@ -152,5 +152,7 @@ class FoodScreen extends GetView<FoodController> {
       padding: Padding.zero,
       shouldShowDrawer: true,
       title: title,
-      child: Column(children: [_buildHeader(), Expanded(child: _buildBody())]));
+      child: _buildBody()
+      //Column(children: [_buildHeader(), Expanded(child: _buildBody())])
+  );
 }
