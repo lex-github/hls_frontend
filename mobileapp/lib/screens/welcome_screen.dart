@@ -8,10 +8,18 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/welcome_controller.dart';
+import 'package:hls/services/settings_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class WelcomeScreen<Controller extends WelcomeController>
     extends GetView<Controller> {
+  // handlers
+
+  _proceedHandler() {
+    controller.next();
+    SettingsService.i.shouldShowWelcome = false;
+  }
+
   // builders
 
   Widget _buildIndicator({bool isSelected = true}) =>
@@ -31,7 +39,7 @@ class WelcomeScreen<Controller extends WelcomeController>
           fab: CircularButton(
               icon: Icons.arrow_forward_ios,
               iconSize: Size.iconSmall,
-              onPressed: () => controller.next()),
+              onPressed: _proceedHandler),
           padding: Padding.zero,
           leading: Nothing(),
           shouldHaveAppBar: false,

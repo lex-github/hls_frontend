@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
@@ -89,8 +90,14 @@ class FoodCategoryController extends Controller
   }
 
   Future retrieve() async {
-    final result = await query(foodCategoryQuery, parameters: {'id': id});
-    print('FoodCategoryController.retrieve result: $result');
+    final result = await query(foodCategoryQuery,
+        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheFirst);
+    //print('FoodCategoryController.retrieve result: $result');
+
+    // final subcategories = result.get(['foodCategory', 'subcategories']);
+    // if (subcategories != null)
+    //   for (final x in subcategories)
+    //     print('FoodCategoryController.retrieve subcategory: $x');
 
     item = FoodCategoryData.fromJson(result.get('foodCategory'));
     update();

@@ -12,6 +12,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/chat_card_model.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/services/auth_service.dart';
+import 'package:hls/services/settings_service.dart';
 
 class ChatController extends Controller {
   // fields
@@ -295,8 +296,10 @@ class ChatController extends Controller {
     if (status != null) {
       switch (status) {
         case ChatDialogStatus.PENDING:
-        // Get.find<ChatNavigationController>().skip();
-        // return true;
+          SettingsService.i.shouldSkipChat = true;
+
+          Get.find<ChatNavigationController>().skip();
+          return true;
         case ChatDialogStatus.FINISHED:
           Get.find<ChatNavigationController>().next();
           return true;

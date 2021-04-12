@@ -17,7 +17,7 @@ class FoodScreen extends GetView<FoodController> {
 
   FoodScreen()
       : food = (Get.arguments as Map).get('food'),
-        title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
+         title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
 
   // handlers
 
@@ -64,13 +64,13 @@ class FoodScreen extends GetView<FoodController> {
             Text(data?.quantity?.toString() ?? '0',
                 style:
                     TextStyle.primary.copyWith(fontSize: 1.1 * Size.fontTiny)),
-            Text(title ?? data.title.toLowerCase(),
+            Text(title ?? data?.title?.toLowerCase() ?? '',
                 style:
                     TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
 
-  Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
-        VerticalSpace(),
+  Widget _buildHeader(FoodData food) => Column(mainAxisSize: MainAxisSize.min, children: [
+        //VerticalSpace(),
         TextPrimary(food.title, align: TextAlign.center),
         if (!food.championOn.isNullOrEmpty) ...[
           VerticalSmallSpace(),
@@ -102,10 +102,11 @@ class FoodScreen extends GetView<FoodController> {
                 children: [
                   Column(children: [
                     //_buildIndicator(food.water, color: Colors.water, value: .2),
-                    _buildIndicator(food.calories, color: Colors.water, value: .2),
+                    _buildIndicator(food.calories,
+                        color: Colors.water, value: .2),
                     VerticalSpace(),
                     _buildIndicator(food.proteins,
-                      color: Colors.proteins, value: .45)
+                        color: Colors.proteins, value: .45)
                   ]),
                   CircularProgress(
                       size: Size.buttonHuge,
@@ -121,27 +122,29 @@ class FoodScreen extends GetView<FoodController> {
                     _buildIndicator(food.fats, color: Colors.fats, value: .65),
                     VerticalSpace(),
                     _buildIndicator(food.carbs,
-                      title: foodCarbLabel, color: Colors.carbs, value: .35)
+                        title: foodCarbLabel, color: Colors.carbs, value: .35)
                   ])
                 ])),
         //VerticalBigSpace()
       ]);
 
-  Widget _buildBody() => GetBuilder<FoodController>(
+  Widget _buildBody() => GetX<FoodController>(
       init: FoodController(id: food.id),
-      builder: (_) => controller.isInit
-          ? ListView.builder(
-              padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalBig,
-                  Size.horizontal, Size.vertical),
-              itemCount: controller.list.length * 2 - 1,
-              itemBuilder: (_, i) {
-                if (i.isOdd) return VerticalMediumSpace();
+      builder: (_) => controller.isInit && !controller.isAwaiting
+          ? controller.list.length > 0
+              ? ListView.builder(
+                  padding: Padding.content,
+                  itemCount: controller.list.length * 2,
+                  itemBuilder: (_, i) {
+                    if (i == 0) return _buildHeader(controller.item);
+                    if (i.isOdd) return VerticalMediumSpace();
 
-                final index = i ~/ 2;
+                    final index = i ~/ 2;
 
-                return _buildListItem(
-                    controller.getTitle(index), controller.getSection(index));
-              })
+                    return _buildListItem(controller.getTitle(index),
+                        controller.getSection(index));
+                  })
+              : Nothing()
           : Center(child: Loading()));
 
   @override
@@ -149,5 +152,7 @@ class FoodScreen extends GetView<FoodController> {
       padding: Padding.zero,
       shouldShowDrawer: true,
       title: title,
-      child: Column(children: [_buildHeader(), Expanded(child: _buildBody())]));
+      child: _buildBody()
+      //Column(children: [_buildHeader(), Expanded(child: _buildBody())])
+  );
 }

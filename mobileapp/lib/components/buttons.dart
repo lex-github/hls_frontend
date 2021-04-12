@@ -414,7 +414,7 @@ class ListItemFoodButton extends ListItemButton {
                       children: [
                     Row(children: [
                       Expanded(
-                          child: TextPrimaryHint(item.title.capitalize,
+                          child: TextPrimaryHint(item.title,
                               overflow: TextOverflow.visible)),
                       HorizontalSpace(),
                       Icon(Icons.arrow_forward_ios,
@@ -424,19 +424,26 @@ class ListItemFoodButton extends ListItemButton {
                     TextSecondary(item.category.title),
                     VerticalSmallSpace(),
                     Row(children: [
-                      ListItemFoodIndicator(
-                          title: foodCarbLabel,
-                          data: item.carbs,
-                          color: Colors.carbs),
-                      HorizontalSmallSpace(),
-                      ListItemFoodIndicator(
-                          data: item.fats, color: Colors.fats),
-                      HorizontalSmallSpace(),
-                      ListItemFoodIndicator(
-                          data: item.proteins, color: Colors.proteins),
-                      HorizontalSmallSpace(),
-                      ListItemFoodIndicator(
-                          data: item.water, color: Colors.water)
+                      if (item.carbs != null) ...[
+                        ListItemFoodIndicator(
+                            title: foodCarbLabel,
+                            data: item.carbs,
+                            color: Colors.carbs),
+                        HorizontalSmallSpace()
+                      ],
+                      if (item.fats != null) ...[
+                        ListItemFoodIndicator(
+                            data: item.fats, color: Colors.fats),
+                        HorizontalSmallSpace()
+                      ],
+                      if (item.proteins != null) ...[
+                        ListItemFoodIndicator(
+                            data: item.proteins, color: Colors.proteins),
+                        HorizontalSmallSpace()
+                      ],
+                      if (item.water != null)
+                        ListItemFoodIndicator(
+                            data: item.water, color: Colors.water)
                     ])
                   ]))
             ]),

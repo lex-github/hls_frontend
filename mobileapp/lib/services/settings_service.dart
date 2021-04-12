@@ -8,6 +8,7 @@ class SettingsService extends Service {
 
   static const _tokenKey = 'token';
   static const _shouldShowWelcomeKey = 'shouldShowWelcome';
+  static const _shouldSkipChatKey = 'shouldSkipChat';
 
   final _preferences = GetStorage();
 
@@ -17,8 +18,8 @@ class SettingsService extends Service {
     _token.value = _preferences.read<String>(_tokenKey);
 
     print('SettingsService.init '
-      '\n\tkeys: ${_preferences.getKeys()}'
-      '\n\tvalues: ${_preferences.getValues()}');
+        '\n\tkeys: ${_preferences.getKeys()}'
+        '\n\tvalues: ${_preferences.getValues()}');
   }
 
   // token observable
@@ -35,7 +36,16 @@ class SettingsService extends Service {
     _token.value = value;
   }
 
+  // welcome slides
   bool get shouldShowWelcome =>
       // _preferences.getBool(_shouldShowWelcomeKey) ?? true;
       _preferences.read<bool>(_shouldShowWelcomeKey) ?? true;
+  set shouldShowWelcome(bool value) =>
+      _preferences.write(_shouldShowWelcomeKey, value);
+
+  // chat skip
+  bool get shouldSkipChat =>
+      _preferences.read<bool>(_shouldSkipChatKey) ?? false;
+  set shouldSkipChat(bool value) =>
+      _preferences.write(_shouldSkipChatKey, value);
 }

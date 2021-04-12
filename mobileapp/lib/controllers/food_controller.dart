@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
@@ -28,7 +29,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   AnimationController _animationController;
   FoodData item;
 
-  Map<String, List<FoodSectionData>> get list => item.sections ?? [];
+  Map<String, List<FoodSectionData>> get list => item.sections ?? {};
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;
   double get rotationAngle => maxRotationAngle * animationProgress;
@@ -89,8 +90,9 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   }
 
   Future retrieve() async {
-    final result = await query(foodQuery, parameters: {'id': id});
-    print('FoodController.retrieve result: $result');
+    final result = await query(foodQuery,
+        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheFirst);
+    //print('FoodController.retrieve result: $result');
 
     item = FoodData.fromJson(result.get('food'));
     update();

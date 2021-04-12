@@ -55,10 +55,15 @@ class UserData extends GenericData {
       .where((x) => x.status == ChatDialogStatus.FINISHED)
       .toList(growable: false);
   List<ChatDialogType> get dialogTypesToComplete =>
+      // dialogs.firstWhere((x) => x.status == ChatDialogStatus.PENDING,
+      //             orElse: () => null) !=
+      //         null
+      //     ? []
+      //     :
       ((List<ChatDialogType> completedTypes) => [
-            for (final type in ChatDialogType.values)
-              if (!completedTypes.contains(type)) type
-          ])(completedDialogs.map((x) => x.type).toList(growable: false));
+                for (final type in ChatDialogType.values)
+                  if (!completedTypes.contains(type)) type
+              ])(completedDialogs.map((x) => x.type).toList(growable: false));
 
   bool get isTrainingDay => trainings.contains(DateTime.now().weekday);
 
@@ -163,7 +168,7 @@ class MicroCycleData {
   MicroCycleData();
 
   factory MicroCycleData.fromJson(Map<String, dynamic> json) =>
-      _$MicroCycleDataFromJson(json);
+      json == null ? null : _$MicroCycleDataFromJson(json);
   Map<String, dynamic> toJson() => _$MicroCycleDataToJson(this);
 
   @override
@@ -206,7 +211,7 @@ class HealthData {
   HealthData();
 
   factory HealthData.fromJson(Map<String, dynamic> json) =>
-      _$HealthDataFromJson(json);
+      json == null ? null : _$HealthDataFromJson(json);
   Map<String, dynamic> toJson() => _$HealthDataToJson(this);
 
   @override
