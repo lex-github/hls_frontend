@@ -215,6 +215,23 @@ const foodFields =
     'id '
     'title '
     '$iconFields '
+    // 'structure '
+    // '{'
+    //   'key '
+    //   'quantity '
+    //   'section '
+    //   'title '
+    //   'unit '
+    // '} '
+    'foodCategory $foodCategoryListFields '
+    'championOn'
+  '}';
+
+const foodFullFields =
+  '{'
+    'id '
+    'title '
+    '$iconFields '
     'structure '
     '{'
       'key '
@@ -314,7 +331,7 @@ const foodQuery = 'query '
     '('
       'id: \$id'
     ') '
-    '$foodFields'
+    '$foodFullFields'
   '}';
 
 const foodsQuery = 'query '
@@ -328,7 +345,7 @@ const foodsQuery = 'query '
       'search: \$search '
       'filters: \$filters'
     ') '
-    '$foodFields'
+    '$foodFullFields'
   '}';
 
 // mutations

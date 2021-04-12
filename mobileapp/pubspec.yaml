@@ -49,7 +49,7 @@ dependencies:
   # fonts
   google_fonts: ^2.0.0
   # api
-  graphql_flutter: ^5.0.0-nullsafety.2
+  graphql_flutter: ^4.0.1
   # selection of images (camera/gallery)
   image_picker: ^0.7.4
   # needed for serializable classes
@@ -81,10 +81,8 @@ dependencies:
       url: git://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-#dependency_overrides:
-#  analyzer: ^0.41.2
-#  build: ^2.0.0
-#  json_annotation: ^4.0.1
+dependency_overrides:
+  path_provider: ^2.0.0
 
 dev_dependencies:
   flutter_test:
