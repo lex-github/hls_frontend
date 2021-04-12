@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="791px" preserveAspectRatio="none" style="width:1989px;height:791px;" version="1.1" viewBox="0 0 1989 791" width="1989px" zoomAndPan="magnify"><defs><filter height="300%" id="f1l53az89jfmar" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="46.5" x2="46.5" y1="89.6094" y2="784.6406"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="353.5" x2="353.5" y1="89.6094" y2="784.6406"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="656.5" x2="656.5" y1="89.6094" y2="784.6406"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1013.5" x2="1013.5" y1="89.6094" y2="784.6406"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1424.5" x2="1424.5" y1="89.6094" y2="784.6406"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1932.5" x2="1932.5" y1="89.6094" y2="784.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="5" y="86.5332">Покупатель</text><ellipse cx="46.5" cy="15" fill="#FEFECE" filter="url(#f1l53az89jfmar)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M46.5,23 L46.5,50 M33.5,31 L59.5,31 M46.5,50 L33.5,65 M46.5,50 L59.5,65 " fill="none" filter="url(#f1l53az89jfmar)" style="stroke:#A80036;stroke-width:2.0;"/><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="47" x="330" y="49"/><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="47" x="326" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="333" y="74.5332">Сайт</text><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="115" x="599" y="49"/><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="115" x="595" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101" x="602" y="74.5332">ЛК_Менеджера</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="976.5" y="86.5332">Менеджер</text><ellipse cx="1013.5" cy="15" fill="#FEFECE" filter="url(#f1l53az89jfmar)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M1013.5,23 L1013.5,50 M1000.5,31 L1026.5,31 M1013.5,50 L1000.5,65 M1013.5,50 L1026.5,65 " fill="none" filter="url(#f1l53az89jfmar)" style="stroke:#A80036;stroke-width:2.0;"/><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="127" x="1361" y="49"/><rect fill="#FEFECE" filter="url(#f1l53az89jfmar)" height="31.6094" style="stroke:#A80036;stroke-width:1.5;" width="127" x="1357" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="1364" y="74.5332">ЛК_Исполнителя</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="1885.5" y="86.5332">Исполнитель</text><ellipse cx="1932.5" cy="15" fill="#FEFECE" filter="url(#f1l53az89jfmar)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M1932.5,23 L1932.5,50 M1919.5,31 L1945.5,31 M1932.5,50 L1919.5,65 M1932.5,50 L1945.5,65 " fill="none" filter="url(#f1l53az89jfmar)" style="stroke:#A80036;stroke-width:2.0;"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="3" style="stroke:#EEEEEE;stroke-width:1.0;" width="1974.5" x="5" y="118.7852"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="118.7852" y2="118.7852"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="121.7852" y2="121.7852"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="24.3516" style="stroke:#000000;stroke-width:2.0;" width="136" x="924.25" y="107.6094"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="118" x="930.25" y="125.1045">Покупка продукта</text><polygon fill="#A80036" points="341.5,160.3125,351.5,164.3125,341.5,168.3125,345.5,164.3125" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="46.5" x2="347.5" y1="164.3125" y2="164.3125"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="53.5" y="159.4561">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="211" x="64.5" y="159.4561">Выбор и покупка товара в каталоге</text><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="3" style="stroke:#EEEEEE;stroke-width:1.0;" width="1974.5" x="5" y="193.4883"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="193.4883" y2="193.4883"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="196.4883" y2="196.4883"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="24.3516" style="stroke:#000000;stroke-width:2.0;" width="138" x="923.25" y="182.3125"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="120" x="929.25" y="199.8076">Обработка заказа</text><polygon fill="#A80036" points="644.5,235.0156,654.5,239.0156,644.5,243.0156,648.5,239.0156" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="353.5" x2="650.5" y1="239.0156" y2="239.0156"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="360.5" y="234.1592">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="268" x="371.5" y="234.1592">Формирование списка поступивших заказов</text><polygon fill="#A80036" points="57.5,265.3672,47.5,269.3672,57.5,273.3672,53.5,269.3672" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="51.5" x2="352.5" y1="269.3672" y2="269.3672"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="63.5" y="264.5107">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="272" x="74.5" y="264.5107">Мы приступили к выполнению вашего заказа</text><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="3" style="stroke:#EEEEEE;stroke-width:1.0;" width="1974.5" x="5" y="298.543"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="298.543" y2="298.543"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="301.543" y2="301.543"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="24.3516" style="stroke:#000000;stroke-width:2.0;" width="148" x="918.25" y="287.3672"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="130" x="924.25" y="304.8623">Создание аукциона</text><polygon fill="#A80036" points="1412.5,340.0703,1422.5,344.0703,1412.5,348.0703,1416.5,344.0703" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1013.5" x2="1418.5" y1="344.0703" y2="344.0703"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1020.5" y="339.2139">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="339" x="1031.5" y="339.2139">Наполнение лент исполнителей поступившими заказами</text><polygon fill="#A80036" points="1435.5,370.4219,1425.5,374.4219,1435.5,378.4219,1431.5,374.4219" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1429.5" x2="1931.5" y1="374.4219" y2="374.4219"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1441.5" y="369.5654">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="473" x="1452.5" y="369.5654">Выбор из поступивших заявок на выполнение заказа с указанием даты старта</text><polygon fill="#A80036" points="1920.5,400.7734,1930.5,404.7734,1920.5,408.7734,1924.5,404.7734" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1424.5" x2="1926.5" y1="404.7734" y2="404.7734"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1431.5" y="399.917">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="320" x="1442.5" y="399.917">Вы достигли лимита одновременных заявок в работу</text><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="3" style="stroke:#EEEEEE;stroke-width:1.0;" width="1974.5" x="5" y="433.9492"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="433.9492" y2="433.9492"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="436.9492" y2="436.9492"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="24.3516" style="stroke:#000000;stroke-width:2.0;" width="151" x="916.75" y="422.7734"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="133" x="922.75" y="440.2686">Выполнение заказа</text><polygon fill="#A80036" points="1435.5,475.4766,1425.5,479.4766,1435.5,483.4766,1431.5,479.4766" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1920.5,475.4766,1930.5,479.4766,1920.5,483.4766,1924.5,479.4766" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1429.5" x2="1926.5" y1="479.4766" y2="479.4766"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1441.5" y="474.6201">7</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="144" x="1452.5" y="474.6201">Работа над заказом(ми)</text><polygon fill="#A80036" points="1435.5,505.8281,1425.5,509.8281,1435.5,513.8281,1431.5,509.8281" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1429.5" x2="1931.5" y1="509.8281" y2="509.8281"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1441.5" y="504.9717">8</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="96" x="1452.5" y="504.9717">Заказ выполнен</text><polygon fill="#A80036" points="667.5,536.1797,657.5,540.1797,667.5,544.1797,663.5,540.1797" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="661.5" x2="1423.5" y1="540.1797" y2="540.1797"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="673.5" y="535.3232">9</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="346" x="684.5" y="535.3232">Необходима проверка менеджером выполненного заказа</text><polygon fill="#A80036" points="1001.5,566.5313,1011.5,570.5313,1001.5,574.5313,1005.5,570.5313" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="656.5" x2="1007.5" y1="570.5313" y2="570.5313"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="663.5" y="565.6748">10</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="292" x="681.5" y="565.6748">Исполнитель уведомляет о завершённом заказе</text><polygon fill="#A80036" points="667.5,596.8828,657.5,600.8828,667.5,604.8828,663.5,600.8828" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="661.5" x2="1012.5" y1="600.8828" y2="600.8828"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="673.5" y="596.0264">11</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="315" x="691.5" y="596.0264">Просмотрены скриншоты, заказ успешно завершён.</text><polygon fill="#A80036" points="57.5,627.2344,47.5,631.2344,57.5,635.2344,53.5,631.2344" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="51.5" x2="1012.5" y1="631.2344" y2="631.2344"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="63.5" y="626.3779">12</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="441" x="81.5" y="626.3779">Уведомление: «Мы всё сделали! Можете проверить результаты работы.»</text><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="3" style="stroke:#EEEEEE;stroke-width:1.0;" width="1974.5" x="5" y="660.4102"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="660.4102" y2="660.4102"/><line style="stroke:#000000;stroke-width:1.0;" x1="5" x2="1979.5" y1="663.4102" y2="663.4102"/><rect fill="#EEEEEE" filter="url(#f1l53az89jfmar)" height="24.3516" style="stroke:#000000;stroke-width:2.0;" width="275" x="854.75" y="649.2344"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="257" x="860.75" y="666.7295">Смена исполнителя заказа по запросу</text><polygon fill="#A80036" points="1024.5,701.9375,1014.5,705.9375,1024.5,709.9375,1020.5,705.9375" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1018.5" x2="1931.5" y1="705.9375" y2="705.9375"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="1030.5" y="701.0811">13</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="303" x="1048.5" y="701.0811">Обращение к менеджеру через внешние системы</text><polygon fill="#A80036" points="1920.5,732.2891,1930.5,736.2891,1920.5,740.2891,1924.5,736.2891" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1424.5" x2="1926.5" y1="736.2891" y2="736.2891"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="1431.5" y="731.4326">14</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="299" x="1449.5" y="731.4326">Уведомлениие: «Заказ #[number] был снят с вас»</text><polygon fill="#A80036" points="1412.5,762.6406,1422.5,766.6406,1412.5,770.6406,1416.5,766.6406" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1013.5" x2="1418.5" y1="766.6406" y2="766.6406"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="1020.5" y="761.7842">15</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="369" x="1038.5" y="761.7842">Назначение нового исполнителя / передача заказа в аукцион</text><!--MD5=[5c74371fe3909aa10d9c805e6ba82e40]
+@startuml
+hide footbox
+autonumber
+!pragma teoz true
+
+' skinparam monochrome reverse
+' skinparam backgroundColor #272822
+
+actor Покупатель as user
+collections Сайт as site
+collections ЛК_Менеджера as m_panel
+actor Менеджер as manager
+collections ЛК_Исполнителя as b_panel
+actor Исполнитель as booster
+
+== Покупка продукта ==
+user -> site : Выбор и покупка товара в каталоге
+
+== Обработка заказа ==
+site -> m_panel : Формирование списка поступивших заказов
+site -> user : Мы приступили к выполнению вашего заказа
+
+== Создание аукциона ==
+manager -> b_panel : Наполнение лент исполнителей поступившими заказами
+booster -> b_panel : Выбор из поступивших заявок на выполнение заказа с указанием даты старта
+b_panel -> booster : Вы достигли лимита одновременных заявок в работу
+
+== Выполнение заказа ==
+
+booster <-> b_panel : Работа над заказом(ми)
+booster -> b_panel : Заказ выполнен
+b_panel - -> m_panel : Необходима проверка менеджером выполненного заказа
+m_panel -> manager : Исполнитель уведомляет о завершённом заказе
+manager -> m_panel : Просмотрены скриншоты, заказ успешно завершён. 
+manager -> user : Уведомление: «Мы всё сделали! Можете проверить результаты работы.» 
+
+
+== Смена исполнителя заказа по запросу ==
+
+booster -> manager : Обращение к менеджеру через внешние системы
+b_panel -> booster : Уведомлениие: «Заказ #[number] был снят с вас»
+manager -> b_panel : Назначение нового исполнителя / передача заказа в аукцион
+
+@enduml
+
+@startuml
+hide footbox
+autonumber
+!pragma teoz true
+
+
+actor Покупатель as user
+collections Сайт as site
+collections ЛК_Менеджера as m_panel
+actor Менеджер as manager
+collections ЛК_Исполнителя as b_panel
+actor Исполнитель as booster
+
+== Покупка продукта ==
+user -> site : Выбор и покупка товара в каталоге
+
+== Обработка заказа ==
+site -> m_panel : Формирование списка поступивших заказов
+site -> user : Мы приступили к выполнению вашего заказа
+
+== Создание аукциона ==
+manager -> b_panel : Наполнение лент исполнителей поступившими заказами
+booster -> b_panel : Выбор из поступивших заявок на выполнение заказа с указанием даты старта
+b_panel -> booster : Вы достигли лимита одновременных заявок в работу
+
+== Выполнение заказа ==
+
+booster <-> b_panel : Работа над заказом(ми)
+booster -> b_panel : Заказ выполнен
+b_panel - -> m_panel : Необходима проверка менеджером выполненного заказа
+m_panel -> manager : Исполнитель уведомляет о завершённом заказе
+manager -> m_panel : Просмотрены скриншоты, заказ успешно завершён. 
+manager -> user : Уведомление: «Мы всё сделали! Можете проверить результаты работы.» 
+
+
+== Смена исполнителя заказа по запросу ==
+
+booster -> manager : Обращение к менеджеру через внешние системы
+b_panel -> booster : Уведомлениие: «Заказ #[number] был снят с вас»
+manager -> b_panel : Назначение нового исполнителя / передача заказа в аукцион
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 13:25:05 MSK 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: Cp1251
+Language: en
+Country: US
+--></g></svg>

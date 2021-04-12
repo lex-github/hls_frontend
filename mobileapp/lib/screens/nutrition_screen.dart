@@ -46,7 +46,7 @@ class NutritionScreen extends GetView<NutritionController> {
       child: Obx(() => Row(children: [
             Icon(Icons.filter_alt_rounded, color: Colors.disabled),
             HorizontalSmallSpace(),
-            //TextPrimaryHint(nutritionFilterLabel),
+            // TextPrimaryHint(nutritionFilterLabel),
             TextSecondary(nutritionFilterLabel),
             if (!controller.filters.isNullOrEmpty) ...[
               HorizontalSmallSpace(),
@@ -75,34 +75,37 @@ class NutritionScreen extends GetView<NutritionController> {
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
-        TextPrimary(productsScreenHeaderTitle),
-        VerticalSmallSpace(),
-        TextSecondary(productsScreenHeaderDescription),
-        VerticalSpace(),
+        // TextPrimary(productsScreenHeaderTitle),
+        // VerticalSmallSpace(),
+        // TextSecondary(productsScreenHeaderDescription),
+        // VerticalSpace(),
         Container(
-            // padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+            padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
             child: Input<SearchFormController>(
                 field: 'search',
                 leading: Icon(Icons.search,
                     color: Colors.disabled, size: .9 * Size.icon))),
         VerticalMediumSpace(),
-        ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: .0, maxHeight: Size.buttonHeight),
-            child: ListView.builder(
-                //  padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-                scrollDirection: Axis.horizontal,
-                itemCount: 5 * 2 + 1,
-                itemBuilder: (_, i) {
-                  //if (i == 0) return _buildFilterItem(title: '?');
-                  if (i == 0) return _buildFilterFirst();
-
-                  if (i.isOdd) return HorizontalMediumSpace();
-
-                  //final index = i ~/ 2 - 1;
-
-                  return Nothing(); //_buildFilterItem(title: '$index');
-                }))
+        // ConstrainedBox(
+        //     constraints:
+        //         BoxConstraints(minHeight: .0, maxHeight: Size.buttonHeight),
+        //     child: ListView.builder(
+        //         padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+        //         scrollDirection: Axis.horizontal,
+        //         itemCount: 5 * 2 + 1,
+        //         itemBuilder: (_, i) {
+        //           //if (i == 0) return _buildFilterItem(title: '?');
+        //           if (i == 0) return _buildFilterFirst();
+        //
+        //           if (i.isOdd) return HorizontalMediumSpace();
+        //
+        //           //final index = i ~/ 2 - 1;
+        //
+        //           return Nothing(); //_buildFilterItem(title: '$index');
+        //         }))
+        Container(
+            padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+            child: _buildFilterFirst())
       ]);
 
   Widget _buildCategories() => controller.list.isNullOrEmpty
@@ -110,9 +113,9 @@ class NutritionScreen extends GetView<NutritionController> {
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
-          itemCount: controller.list.length * 2,
+          itemCount: controller.list.length * 2 - 1,
           itemBuilder: (_, i) {
-            if (i == 0) return _buildHeader();
+            //if (i == 0) return _buildHeader();
             if (i.isOdd) return VerticalMediumSpace();
 
             final index = i ~/ 2;
@@ -125,9 +128,9 @@ class NutritionScreen extends GetView<NutritionController> {
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
-          itemCount: controller.foods.length * 2,
+          itemCount: controller.foods.length * 2 - 1,
           itemBuilder: (_, i) {
-            if (i == 0) return _buildHeader();
+            //if (i == 0) return _buildHeader();
             if (i.isOdd) return VerticalMediumSpace();
 
             final index = i ~/ 2;
@@ -135,13 +138,11 @@ class NutritionScreen extends GetView<NutritionController> {
             return _buildFoodListItem(controller.foods[index]);
           });
 
-  Widget _buildBody() => GetX<NutritionController>(
-      init: NutritionController(),
-      builder: (_) => controller.isInit
-          ? controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
-              ? _buildCategories()
-              : _buildFoods()
-          : Center(child: Loading()));
+  Widget _buildBody() => controller.isInit && !controller.isAwaiting
+      ? controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
+          ? _buildCategories()
+          : _buildFoods()
+      : Center(child: Loading());
 
   @override
   Widget build(_) => Screen(
@@ -151,7 +152,8 @@ class NutritionScreen extends GetView<NutritionController> {
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
           child: Image(title: 'icons/question')),
-      child:
-          //Column(children: [_buildHeader(), Expanded(child: _buildBody())])
-          _buildBody());
+      child: GetX<NutritionController>(
+          init: NutritionController(),
+          builder: (_) => Column(
+              children: [_buildHeader(), Expanded(child: _buildBody())])));
 }
