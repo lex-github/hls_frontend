@@ -35,8 +35,7 @@ class NutritionScreen extends GetView<NutritionController> {
   _categoryHandler(FoodCategoryData data) =>
       Get.toNamed(foodCategoryRoute, arguments: {'category': data});
 
-  _foodHandler(FoodData item) =>
-    Get.toNamed(foodRoute,
+  _foodHandler(FoodData item) => Get.toNamed(foodRoute,
       arguments: {'title': item.category.title, 'food': item});
 
   // builders
@@ -81,7 +80,7 @@ class NutritionScreen extends GetView<NutritionController> {
         TextSecondary(productsScreenHeaderDescription),
         VerticalSpace(),
         Container(
-            padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+            // padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
             child: Input<SearchFormController>(
                 field: 'search',
                 leading: Icon(Icons.search,
@@ -91,7 +90,7 @@ class NutritionScreen extends GetView<NutritionController> {
             constraints:
                 BoxConstraints(minHeight: .0, maxHeight: Size.buttonHeight),
             child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+                //  padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
                 scrollDirection: Axis.horizontal,
                 itemCount: 5 * 2 + 1,
                 itemBuilder: (_, i) {
@@ -111,8 +110,9 @@ class NutritionScreen extends GetView<NutritionController> {
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
-          itemCount: controller.list.length * 2 - 1,
+          itemCount: controller.list.length * 2,
           itemBuilder: (_, i) {
+            if (i == 0) return _buildHeader();
             if (i.isOdd) return VerticalMediumSpace();
 
             final index = i ~/ 2;
@@ -125,8 +125,9 @@ class NutritionScreen extends GetView<NutritionController> {
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
-          itemCount: controller.foods.length * 2 - 1,
+          itemCount: controller.foods.length * 2,
           itemBuilder: (_, i) {
+            if (i == 0) return _buildHeader();
             if (i.isOdd) return VerticalMediumSpace();
 
             final index = i ~/ 2;
@@ -136,7 +137,7 @@ class NutritionScreen extends GetView<NutritionController> {
 
   Widget _buildBody() => GetX<NutritionController>(
       init: NutritionController(),
-      builder: (_) => controller.isInit && !controller.isAwaiting
+      builder: (_) => controller.isInit
           ? controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
               ? _buildCategories()
               : _buildFoods()
@@ -150,5 +151,7 @@ class NutritionScreen extends GetView<NutritionController> {
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
           child: Image(title: 'icons/question')),
-      child: Column(children: [_buildHeader(), Expanded(child: _buildBody())]));
+      child:
+          //Column(children: [_buildHeader(), Expanded(child: _buildBody())])
+          _buildBody());
 }
