@@ -132,16 +132,16 @@ const trainingTitle = 'Тренировки';
 
 // food items
 const nutritionScreenTitle = 'Продукты';
-const productsScreenHeaderTitle = 'Каталог продуктов';
-const productsScreenHeaderDescription = 'Полный биохимический состав';
-const nutritionSearchLabel = 'Введите название продукта';
-const nutritionFilterLabel = 'Фильтр';
-const foodCategoryScreenTitle = 'Каталог продуктов';
-const foodScreenTitle = 'Каталог продуктов';
+const productsScreenHeaderTitle = '';
+const productsScreenHeaderDescription = '';
+const nutritionSearchLabel = 'Название';
+const nutritionFilterLabel = 'Выбрать нутриенты продукта';
+const foodCategoryScreenTitle = 'Каталог каталог';
+// const foodScreenTitle = 'Каталог Каталог';
 const foodCarbLabel = 'углев.';
 
 // food filter
-const foodFilterScreenTitle = 'Каталог продуктов';
+const foodFilterScreenTitle = 'Выбрать нутриенты';
 const backButtonTitle = 'Назад';
 const submitButtonTitle = 'Готово';
 const clearButtonTitle = 'СБРОС';
