@@ -89,8 +89,8 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
           HorizontalSpace()
         ] else
           SizedBox(height: Size.iconBig),
-        TextPrimaryHint(item.title),
-        Expanded(child: HorizontalSpace()),
+        Expanded(child: TextPrimaryHint(item.title)),
+        HorizontalSpace(),
         Icon(Icons.arrow_forward_ios,
             color: Colors.disabled, size: Size.iconSmall)
       ]));

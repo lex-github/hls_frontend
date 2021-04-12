@@ -67,7 +67,7 @@ class ChatNavigationController extends Controller {
     final shouldSkipChat = SettingsService.i.shouldSkipChat;
 
     // check which dialogs are not completed
-    final chatDialogsNotCompleted = shouldSkipChat
+    final chatDialogsNotCompleted = !shouldSkipChat
         ? shouldRestart
             ? ChatDialogType.values
                 .where((x) => x != ChatDialogType.WELCOME)

@@ -128,7 +128,7 @@ class FoodScreen extends GetView<FoodController> {
         //VerticalBigSpace()
       ]);
 
-  Widget _buildBody() => GetBuilder<FoodController>(
+  Widget _buildBody() => GetX<FoodController>(
       init: FoodController(id: food.id),
       builder: (_) => controller.isInit && !controller.isAwaiting
           ? controller.list.length > 0
