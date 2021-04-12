@@ -163,7 +163,7 @@ class MicroCycleData {
   MicroCycleData();
 
   factory MicroCycleData.fromJson(Map<String, dynamic> json) =>
-      _$MicroCycleDataFromJson(json);
+      json == null ? null : _$MicroCycleDataFromJson(json);
   Map<String, dynamic> toJson() => _$MicroCycleDataToJson(this);
 
   @override
@@ -206,7 +206,7 @@ class HealthData {
   HealthData();
 
   factory HealthData.fromJson(Map<String, dynamic> json) =>
-      _$HealthDataFromJson(json);
+      json == null ? null : _$HealthDataFromJson(json);
   Map<String, dynamic> toJson() => _$HealthDataToJson(this);
 
   @override
