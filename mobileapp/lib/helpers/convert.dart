@@ -76,6 +76,8 @@ DateTime toDate(dynamic value, {format = dateTimeInternalFormat}) {
   }
 }
 
+DateTime toTime(value) => toDate(value, format: dateTime);
+
 DateTime toDateFromISO8601(dynamic value) {
   if (value == null || value is DateTime) return value;
 

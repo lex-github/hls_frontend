@@ -16,6 +16,7 @@ const avatarUploadPath = 'upload';
 // graphql types
 
 const userCommonFields = ''
+  'todaySchedule $scheduleFields'
   'data '
   '{'
     //'name '
@@ -226,6 +227,19 @@ const foodFields =
     'championOn'
   '}';
 
+const scheduleFields =
+  '{'
+    'items $scheduleItemFields '
+    'yesterdayAsleepTime'
+  '}';
+
+const scheduleItemFields =
+  '{'
+    'id '
+    'kind '
+    'plannedAt'
+  '}';
+
 // query
 
 const currentUserQuery = 'query '
@@ -425,6 +439,24 @@ const chatBotDialogContinueMutation = 'mutation'
     '{'
       'dialog $chatBotDialogFields '
       'nextCard $chatCardFields'
+    '}'
+  '}';
+
+const schedulesCreateMutation = 'mutation'
+  '('
+    '\$asleepTime: String! '
+    '\$wakeupTime: String! '
+    '\$trainingTime: String'
+  ') '
+  '{'
+    'schedulesCreate'
+    '('
+      'yesterdayAsleepTime: \$asleepTime '
+      'wakeUpTime: \$wakeupTime '
+      'trainingTime: \$trainingTime'
+    ') '
+    '{'
+      'schedule $scheduleFields'
     '}'
   '}';
 

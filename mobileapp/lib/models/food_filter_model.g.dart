@@ -12,29 +12,19 @@ FoodFilterData _$FoodFilterDataFromJson(Map<String, dynamic> json) {
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
     ..key = json['key'] as String
-    ..values = json['values'] == null
-        ? null
-        : FilterValueData.fromJson(json['values'] as Map<String, dynamic>)
+    ..values = FilterValueData.fromJson(json['values'] as Map<String, dynamic>)
     ..section = json['section'] as String;
 }
 
-Map<String, dynamic> _$FoodFilterDataToJson(FoodFilterData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('imageUrl', instance.imageUrl);
-  writeNotNull('key', instance.key);
-  writeNotNull('values', instance.values);
-  writeNotNull('section', instance.section);
-  return val;
-}
+Map<String, dynamic> _$FoodFilterDataToJson(FoodFilterData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'imageUrl': instance.imageUrl,
+      'key': instance.key,
+      'values': instance.values,
+      'section': instance.section,
+    };
 
 FilterValueData _$FilterValueDataFromJson(Map<String, dynamic> json) {
   return FilterValueData()
@@ -42,16 +32,8 @@ FilterValueData _$FilterValueDataFromJson(Map<String, dynamic> json) {
     ..max = toDouble(json['max']);
 }
 
-Map<String, dynamic> _$FilterValueDataToJson(FilterValueData instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('min', instance.min);
-  writeNotNull('max', instance.max);
-  return val;
-}
+Map<String, dynamic> _$FilterValueDataToJson(FilterValueData instance) =>
+    <String, dynamic>{
+      'min': instance.min,
+      'max': instance.max,
+    };

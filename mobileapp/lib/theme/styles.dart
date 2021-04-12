@@ -126,7 +126,8 @@ class Colors {
   static const champion = M.Color(0xFFF2994A);
 
   static const schedule = M.Color(0xFF8416FF);
-  static const nutrition = M.Color(0xFF99E600);
+  // static const nutrition = M.Color(0xFF99E600);
+  static const nutrition = M.Color(0xFF66D600);
   static const exercise = M.Color(0xFFD70010);
 
   static const scheduleNight = M.Color(0xFFC53DFF);

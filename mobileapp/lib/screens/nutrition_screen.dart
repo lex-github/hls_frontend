@@ -63,8 +63,8 @@ class NutritionScreen extends GetView<NutritionController> {
             ]
           ])));
 
-  Widget _buildFilterItem({String title}) =>
-      Button(borderColor: Colors.disabled, child: TextSecondary(title));
+  // Widget _buildFilterItem({String title}) =>
+  //     Button(borderColor: Colors.disabled, child: TextSecondary(title));
 
   Widget _buildCategoryListItem(FoodCategoryData item) => ListItemButton(
       imageTitle: item.imageUrl,
@@ -100,7 +100,7 @@ class NutritionScreen extends GetView<NutritionController> {
 
                   if (i.isOdd) return HorizontalMediumSpace();
 
-                  final index = i ~/ 2 - 1;
+                  //final index = i ~/ 2 - 1;
 
                   return Nothing(); //_buildFilterItem(title: '$index');
                 }))

@@ -176,8 +176,10 @@ class AuthService extends GraphqlService {
   Future<bool> logout() async {
     print('AuthService.logout');
 
-    final data = await mutation(authSignOutMutation);
+    //final data = await mutation(authSignOutMutation);
     //print('AuthService.logout data: $data');
+
+    await mutation(authSignOutMutation);
 
     afterLogout();
 

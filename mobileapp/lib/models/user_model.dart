@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Colors;
 import 'package:hls/constants/strings.dart';
 import 'package:hls/models/chat_card_model.dart';
+import 'package:hls/models/schedule_model.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
@@ -26,6 +27,8 @@ class UserData extends GenericData {
   @JsonKey(name: 'weeklyTrainings')
   List<int> trainings;
   UserProgressData progress;
+  @JsonKey(name: 'todaySchedule')
+  ScheduleData schedule;
 
   UserData();
 
@@ -56,6 +59,8 @@ class UserData extends GenericData {
             for (final type in ChatDialogType.values)
               if (!completedTypes.contains(type)) type
           ])(completedDialogs.map((x) => x.type).toList(growable: false));
+
+  bool get isTrainingDay => trainings.contains(DateTime.now().weekday);
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
@@ -214,11 +219,11 @@ class HealthData {
 class HealthValueData {
   @JsonKey(name: 'createdAt', fromJson: toDate)
   DateTime date;
-  @JsonKey(name: 'avgRating')
+  @JsonKey(name: 'avgRating', toJson: toDouble)
   double average;
-  @JsonKey(name: 'formulasRating')
+  @JsonKey(name: 'formulasRating', toJson: toDouble)
   double calculated;
-  @JsonKey(name: 'hlsApplication')
+  @JsonKey(name: 'hlsApplication', toJson: toDouble)
   double empirical;
 
   HealthValueData();

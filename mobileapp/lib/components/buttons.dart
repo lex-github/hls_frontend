@@ -12,23 +12,27 @@ import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
 class CircularButton extends Button {
-  CircularButton(
-      {Function onPressed,
-      Function onLongPressed,
-      double size,
-      Color color = Colors.light,
-      Color background = Colors.primary,
-      Color borderColor,
-      Widget child,
-      String title,
-      M.TextStyle titleStyle,
-      String imageTitle,
-      icon,
-      iconSize})
-      : super(
+  CircularButton({
+    Function onPressed,
+    Function onLongPressed,
+    double size,
+    Color color = Colors.light,
+    Color background = Colors.primary,
+    Color borderColor,
+    Widget child,
+    String title,
+    M.TextStyle titleStyle,
+    String imageTitle,
+    icon,
+    iconSize,
+    bool isLoading = false,
+  }) : super(
             onPressed: onPressed,
             onLongPressed: onLongPressed,
             isCircular: true,
+            isSwitch: isLoading,
+            isSelected: isLoading,
+            isLoading: isLoading,
             size: size ?? Size.buttonBig,
             padding: Padding.zero,
             color: color,

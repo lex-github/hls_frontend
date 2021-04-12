@@ -47,7 +47,7 @@ class StoryScreen extends GetView<FoodCategoryController> {
                         horizontal: .4 * Size.horizontalTiny),
                     tabs: [
                       for (final _ in stories)
-                        Stack(overflow: Overflow.visible, children: [
+                        Stack(clipBehavior: Clip.none, children: [
                           Positioned(
                               bottom: -2 * Size.border,
                               left: .4 * Size.horizontalTiny,

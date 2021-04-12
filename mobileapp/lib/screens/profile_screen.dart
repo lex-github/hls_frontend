@@ -319,7 +319,7 @@ class MicroCycle extends StatelessWidget {
           if (completed > 0)
             FractionallySizedBox(
                 widthFactor: completed / total,
-                child: Stack(overflow: Overflow.visible, children: [
+                child: Stack(clipBehavior: Clip.none, children: [
                   Container(
                       decoration: BoxDecoration(
                           color: Colors.primary,
@@ -390,7 +390,7 @@ class HealthYearGraph extends StatelessWidget {
         Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Stack(overflow: Overflow.visible, children: [
+          Stack(clipBehavior: Clip.none, children: [
             Container(
                 height: Size.graph / 2,
                 decoration: BoxDecoration(
@@ -549,7 +549,7 @@ class MacroCycleGraph extends StatelessWidget {
         HorizontalTinySpace(),
         Expanded(
             child: Column(children: [
-          Stack(overflow: Overflow.visible, children: [
+          Stack(clipBehavior: Clip.none, children: [
             Container(
                 height: Size.graph / 2,
                 decoration: BoxDecoration(

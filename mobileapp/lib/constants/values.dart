@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.2.0.0';
+const version = '0.2.1.0';
 
 // logic
 //const maxTrainings = 3;
@@ -131,8 +131,8 @@ const panelShadowVerticalOffset = -2.0;
 const panelShadowOffset =
     const Offset(panelShadowHorizontalOffset, panelShadowVerticalOffset);
 
-const submenuBlurStrength = 6.0;
-const submenuBlurVerticalCoefficient = 2;
+const submenuBlurStrength = 5.0;
+const submenuBlurVerticalCoefficient = 1.5;
 const submenuDistance = 200;
 
 // desktop window size

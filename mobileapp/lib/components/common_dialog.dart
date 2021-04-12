@@ -19,17 +19,17 @@ mixin CommonDialog {
   ///
   /// Display short message in a form of [SnackBar] i.e., a short informational widget from
   /// the bottom of teh screen.
-  showMessage(String text, {context}) {
-    print('CommonDialog.showMessage $text');
-
-    ScaffoldState scaffoldState =
-        context != null ? Scaffold.of(context) : scaffoldKey.currentState;
-    scaffoldState.showSnackBar(SnackBar(
-      content: Text(text, style: TextStyle.secondary),
-      action: SnackBarAction(
-          label: 'x', onPressed: scaffoldState.hideCurrentSnackBar),
-    ));
-  }
+  // showMessage(String text, {context}) {
+  //   print('CommonDialog.showMessage $text');
+  //
+  //   ScaffoldState scaffoldState =
+  //       context != null ? Scaffold.of(context) : scaffoldKey.currentState;
+  //   scaffoldState.showSnackBar(SnackBar(
+  //     content: Text(text, style: TextStyle.secondary),
+  //     action: SnackBarAction(
+  //         label: 'x', onPressed: scaffoldState.hideCurrentSnackBar),
+  //   ));
+  // }
 
   /// Display confirmation modal.
   ///
