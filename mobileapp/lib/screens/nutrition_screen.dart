@@ -8,6 +8,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/nutrition_controller.dart';
 import 'package:hls/controllers/search_form_controller.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_category_model.dart';
 import 'package:hls/models/food_filter_model.dart';
@@ -26,7 +27,7 @@ class NutritionScreen extends GetView<NutritionController> {
     final response =
         await Get.toNamed(foodFilterRoute, arguments: controller.filters);
     final filters = Map<String, FoodFilterData>.from(response);
-    print('NutritionScreen._filterHandler filters: $filters');
+    //print('NutritionScreen._filterHandler filters: $filters');
 
     // Map<String, FoodFilterData> filters = await Get.toNamed(foodFilterRoute);
     if (filters != null) controller.filters = filters;
@@ -70,8 +71,13 @@ class NutritionScreen extends GetView<NutritionController> {
       title: item.title,
       onPressed: () => _categoryHandler(item));
 
-  Widget _buildFoodListItem(FoodData item) =>
-      ListItemFoodButton(item: item, onPressed: () => _foodHandler(item));
+  Widget _buildFoodListItem(FoodData item) => ListItemFoodButton(
+      item: item,
+      filters: controller.filters.values
+          // .where((x) =>
+          //     !['carbohydrates', 'fats', 'proteins', 'water'].contains(x.key))
+          .toList(growable: false),
+      onPressed: () => _foodHandler(item));
 
   Widget _buildHeader() => Column(mainAxisSize: MainAxisSize.min, children: [
         VerticalSpace(),
@@ -128,21 +134,37 @@ class NutritionScreen extends GetView<NutritionController> {
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
-          itemCount: controller.foods.length * 2 - 1,
+          //itemCount: controller.foods.length * 2 - 1,
           itemBuilder: (_, i) {
             //if (i == 0) return _buildHeader();
             if (i.isOdd) return VerticalMediumSpace();
 
             final index = i ~/ 2;
 
-            return _buildFoodListItem(controller.foods[index]);
+            final data = controller.foods.get(index);
+            if (data != null) return _buildFoodListItem(data);
+
+            if (controller.hasNextPage) {
+              if (controller.isAwaiting && index == controller.foods.length)
+                return Center(child: Loading());
+
+              if (!controller.isAppending) {
+                print('RETRIEVING INDEX $index');
+                controller.retrieveFoods(shouldAppend: true);
+              }
+            }
+
+            return null;
           });
 
-  Widget _buildBody() => controller.isInit && !controller.isAwaiting
-      ? controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
-          ? _buildCategories()
-          : _buildFoods()
-      : Center(child: Loading());
+  Widget _buildBody() => !controller.isInit ||
+          controller.isAwaiting && controller.cursor.isNullOrEmpty
+      ? Center(child: Loading())
+      : controller.filters.isNullOrEmpty && controller.search.isNullOrEmpty
+          ? controller.isAwaiting
+              ? Center(child: Loading())
+              : _buildCategories()
+          : _buildFoods();
 
   @override
   Widget build(_) => Screen(

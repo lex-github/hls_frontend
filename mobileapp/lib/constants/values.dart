@@ -7,12 +7,13 @@ const version = '0.2.1.0';
 
 // logic
 //const maxTrainings = 3;
+const filterItemsCount = 10;
 
 // config
 const assetsDirectory = 'assets';
 
 // lists
-const defaultItemsPerPage = 20;
+const defaultItemsPerPage = 10;
 
 // time
 const chatTyperAnimationDuration = Duration(milliseconds: 20);

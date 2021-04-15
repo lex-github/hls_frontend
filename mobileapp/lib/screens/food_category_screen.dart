@@ -27,21 +27,20 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
   // handlers
 
   _categoryHandler(FoodCategoryData item) {
-    print('FoodCategoryScreen._categoryHandler $item');
+    //print('FoodCategoryScreen._categoryHandler $item');
+
+    if (item.canExpand)
+      return controller.toggle(item);
 
     if (!item.children.isNullOrEmpty)
       return Get.toNamed(foodCategoryRoute,
           preventDuplicates: false,
           arguments: {'title': category.title, 'category': item});
 
-    // if (item.parent.id == category.id && !item.children.isNullOrEmpty)
-    if (item.foods.isNullOrEmpty)
-      return showConfirm(title: noDataText);
+    if (!item.foods.isNullOrEmpty && item.foods.length == 1)
+      return _foodHandler(category, item.foods.first);
 
-    if (item.foods.length == 1)
-      return _foodHandler(item, item.foods.first);
-
-    return controller.toggle(item);
+    return showConfirm(title: noDataText);
   }
 
   _foodHandler(FoodCategoryData category, FoodData item) =>
@@ -61,11 +60,13 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
           HorizontalSpace(),
           Expanded(child: TextPrimaryHint(item.title)),
           HorizontalSpace(),
+          if (item.canExpand)
           Obx(() => Transform.rotate(
               angle: controller.getRotationAngle(item),
               child: Icon(Icons.arrow_forward_ios,
                   color: Colors.disabled, size: Size.iconSmall))),
         ]),
+        if (item.canExpand)
         Obx(() => SizeTransition(
             sizeFactor: controller.getSizeFactor(item),
             child:

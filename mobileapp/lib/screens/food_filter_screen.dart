@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/food_filter_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -18,68 +19,109 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
 
   _sectionHandler(String title) => controller.toggle(title);
 
-  _filterHandler(FoodFilterData data) => Get.bottomSheet(Container(
-      height: Size.bottomSheet,
-      color: Colors.background,
-      child: Column(children: [
-        Row(children: [
+  _filterHandler(FoodFilterData data) {
+    controller.composeFilterValues(data);
+
+    final values = controller.filterValues;
+    int from = values.indexOf(controller.getFilterFrom(data.key));
+    if (from == -1) from = 0;
+    int to = values.indexOf(controller.getFilterTo(data.key));
+    if (to == -1) to = values.length;
+    else to--;
+
+    print('FoodFilterScreen._filterHandler'
+        '\n\tdata: $data'
+        '\n\tvalues: $values'
+        '\n\tfrom: $from'
+        '\n\tto: $to');
+
+    Get.bottomSheet(Container(
+        height: Size.bottomSheet,
+        color: Colors.background,
+        child: Column(children: [
+          Row(children: [
+            Expanded(
+                child: Clickable(
+                    onPressed: Get.back,
+                    child: Container(
+                        padding: Padding.content,
+                        child: C.Row(children: [
+                          Icon(Icons.keyboard_arrow_down) ??
+                              TextPrimary(backButtonTitle)
+                        ])))),
+            Expanded(
+                child: TextPrimary(data.title,
+                    weight: FontWeight.bold, align: TextAlign.center)),
+            Expanded(
+                child: Clickable(
+                    child: Container(
+                        padding: Padding.content,
+                        child: Nothing() ??
+                            TextPrimary(submitButtonTitle,
+                                color: Colors.primary, align: TextAlign.end))))
+          ]),
           Expanded(
-              child: Clickable(
-                  onPressed: Get.back,
-                  child: Container(
-                      padding: Padding.content,
-                      child: C.Row(children: [
-                        Icon(Icons.keyboard_arrow_down) ??
-                            TextPrimary(backButtonTitle)
-                      ])))),
-          Expanded(
-              child: TextPrimary(data.title,
-                  weight: FontWeight.bold, align: TextAlign.center)),
-          Expanded(
-              child: Clickable(
-                  child: Container(
-                      padding: Padding.content,
-                      child: Nothing() ??
-                          TextPrimary(submitButtonTitle,
-                              color: Colors.primary, align: TextAlign.end))))
-        ]),
-        Expanded(
-            child: Row(children: [
-          Expanded(
-              child: C.CupertinoPicker(
-                  itemExtent: Size.picker,
-                  scrollController: FixedExtentScrollController(
-                      initialItem: controller.getFilterFrom(data.key) ?? 0),
-                  onSelectedItemChanged: (index) =>
-                      controller.setFilterFrom(data.key, data.min + index),
-                  children: _buildFilterFromSelection(data))),
-          Expanded(
-              child: C.CupertinoPicker(
-                  itemExtent: Size.picker,
-                  scrollController: FixedExtentScrollController(
-                      initialItem:
-                          (controller.getFilterTo(data.key) ?? data.max) - 1),
-                  onSelectedItemChanged: (index) =>
-                      controller.setFilterTo(data.key, data.min + index + 1),
-                  children: _buildFilterToSelection(data)))
-        ]))
-      ])));
+              child: Row(children: [
+            Expanded(
+                child: C.CupertinoPicker(
+                    itemExtent: Size.picker,
+                    scrollController:
+                        FixedExtentScrollController(initialItem: from),
+                    onSelectedItemChanged: (index) =>
+                        controller.setFilterFrom(data.key, data.min + index),
+                    children: _buildFilterFromSelection(data))),
+            Expanded(
+                child: C.CupertinoPicker(
+                    itemExtent: Size.picker,
+                    scrollController:
+                        FixedExtentScrollController(initialItem: to),
+                    onSelectedItemChanged: (index) =>
+                        controller.setFilterTo(data.key, data.min + index + 1),
+                    children: _buildFilterToSelection(data)))
+          ]))
+        ])));
+  }
 
   // builders
 
-  List<Widget> _buildFilterFromSelection(FoodFilterData data) => [
-        for (int i = toInt(data.min); i < toInt(data.max - 1); i += 1)
-          i == data.min
-              ? Center(child: TextPrimary(filterFromLabel, size: Size.fontBig))
-              : Center(child: TextPrimary('$i', size: Size.fontBig))
-      ];
+  List<Widget> _buildFilterFromSelection(FoodFilterData data) {
+    final values =
+        controller.filterValues.getRange(0, controller.filterValues.length - 1);
 
-  List<Widget> _buildFilterToSelection(FoodFilterData data) => [
-        for (int i = toInt(data.min + 1); i <= toInt(data.max); i += 1)
-          i == data.max
-              ? Center(child: TextPrimary(filterToLabel, size: Size.fontBig))
-              : Center(child: TextPrimary('$i', size: Size.fontBig))
-      ];
+    return [
+      for (int i in values)
+        if (i == values.first)
+          Center(child: TextPrimary(filterFromLabel, size: Size.fontBig))
+        else
+          Center(child: TextPrimary('$i', size: Size.fontBig))
+    ];
+
+    return [
+      for (int i = toInt(data.min); i < toInt(data.max - 1); i += 1)
+        i == data.min
+            ? Center(child: TextPrimary(filterFromLabel, size: Size.fontBig))
+            : Center(child: TextPrimary('$i', size: Size.fontBig))
+    ];
+  }
+
+  List<Widget> _buildFilterToSelection(FoodFilterData data) {
+    final values = controller.filterValues.getRange(1, controller.filterValues.length);
+
+    return [
+      for (int i in values)
+        if (i == values.last)
+          Center(child: TextPrimary(filterToLabel, size: Size.fontBig))
+        else
+          Center(child: TextPrimary('$i', size: Size.fontBig))
+    ];
+
+    return [
+      for (int i = toInt(data.min + 1); i <= toInt(data.max); i += 1)
+        i == data.max
+            ? Center(child: TextPrimary(filterToLabel, size: Size.fontBig))
+            : Center(child: TextPrimary('$i', size: Size.fontBig))
+    ];
+  }
 
   Widget _buildFilterValue(FoodFilterData data) => Obx(() => ((from, to) =>
           Row(children: [

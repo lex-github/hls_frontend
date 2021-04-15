@@ -136,8 +136,8 @@ const productsScreenHeaderTitle = '';
 const productsScreenHeaderDescription = '';
 const nutritionSearchLabel = 'Название';
 const nutritionFilterLabel = 'Выбрать нутриенты продукта';
-const foodCategoryScreenTitle = 'Каталог каталог';
-// const foodScreenTitle = 'Каталог Каталог';
+const foodCategoryScreenTitle = 'Каталог';
+const foodScreenTitle = 'Продукт';
 const foodCarbLabel = 'углев.';
 
 // food filter

@@ -20,7 +20,12 @@ class FoodFilterData extends GenericData {
   Map<String, dynamic> toJson() => _$FoodFilterDataToJson(this);
 
   @override
-  String toString() => 'FoodFilterData(key: $key)';
+  String toString() => 'FoodFilterData('
+      '\n\tkey: $key'
+      '\n\ttitle: $title'
+      '\n\tmin: $min'
+      '\n\tmax: $max'
+      ')';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -33,7 +38,7 @@ class FilterValueData {
   FilterValueData();
 
   factory FilterValueData.fromJson(Map<String, dynamic> json) =>
-    _$FilterValueDataFromJson(json);
+      _$FilterValueDataFromJson(json);
   Map<String, dynamic> toJson() => _$FilterValueDataToJson(this);
 
   @override

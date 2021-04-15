@@ -21,11 +21,15 @@ class FoodData extends GenericData {
   FoodSectionData getByKey(String key) =>
       structure?.firstWhere((x) => x.key == key, orElse: () => null);
 
+  bool shouldDisplay(String key) {
+    final data = getByKey(key);
+    return data != null && data.quantity > 0;
+  }
+
   // getters
   @override
   String get imageUrl => image?.url;
 
-  // getters
   FoodSectionData get water => getByKey('water');
   FoodSectionData get carbs => getByKey('carbohydrates');
   FoodSectionData get fats => getByKey('fats');
