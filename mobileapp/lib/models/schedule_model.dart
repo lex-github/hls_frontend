@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart' hide Size;
+import 'package:hls/constants/strings.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -19,8 +20,8 @@ class ScheduleData extends GenericData {
 
   ScheduleData();
 
-  factory ScheduleData.fromJson(Map<String, dynamic> json) => json.isNullOrEmpty ? null :
-      _$ScheduleDataFromJson(json);
+  factory ScheduleData.fromJson(Map<String, dynamic> json) =>
+      json.isNullOrEmpty ? null : _$ScheduleDataFromJson(json);
   Map<String, dynamic> toJson() => _$ScheduleDataToJson(this);
 }
 
@@ -35,6 +36,9 @@ class ScheduleItemData extends GenericData {
   DateTime time;
 
   ScheduleItemData();
+
+  @override
+  String get title => type.title;
 
   Offset get offset {
     final coordinate = RadialCoordinate.fromTime(time);
@@ -54,7 +58,7 @@ class ScheduleItemData extends GenericData {
     return resultOffset;
   }
 
-  Color get color => type.type.color;
+  Color get color => type.color ?? type.type.color;
   bool get isSmall =>
       type != ScheduleItemType.WAKEUP && type != ScheduleItemType.ASLEEP;
 
@@ -73,9 +77,14 @@ class ScheduleItemData extends GenericData {
 
 class ScheduleItemType extends GenericEnum<String> {
   final ActivityType type;
+  final Color color;
 
-  const ScheduleItemType({@required String value, @required this.type})
-      : super(value: value);
+  const ScheduleItemType(
+      {@required String value,
+      @required this.type,
+      @required String title,
+      @required this.color})
+      : super(value: value, title: title);
 
   static ScheduleItemType fromValue(value) => values.firstWhere(
       (x) => x.value.toLowerCase() == value.toString().toLowerCase(),
@@ -84,23 +93,48 @@ class ScheduleItemType extends GenericEnum<String> {
   static ScheduleItemType fromJsonValue(value) => fromValue(value);
   static int toJsonValue(item) => item?.value;
 
-  static const OTHER = ScheduleItemType(value: '?', type: ActivityType.OTHER);
-  static const WAKEUP =
-      ScheduleItemType(value: 'WAKE_UP', type: ActivityType.SCHEDULE);
-  static const ASLEEP =
-      ScheduleItemType(value: 'SLEEP', type: ActivityType.SCHEDULE);
-  static const BREAKFAST =
-      ScheduleItemType(value: 'BREAKFAST', type: ActivityType.NUTRITION);
-  static const LUNCH =
-      ScheduleItemType(value: 'LUNCH', type: ActivityType.NUTRITION);
-  static const DINNER =
-      ScheduleItemType(value: 'DINNER', type: ActivityType.NUTRITION);
-  static const SNACK =
-      ScheduleItemType(value: 'SNACK', type: ActivityType.NUTRITION);
-  static const ADDITIONAL =
-      ScheduleItemType(value: 'ADDITIONAL_FOOD', type: ActivityType.NUTRITION);
-  static const EXERCISE =
-      ScheduleItemType(value: 'TRAINING', type: ActivityType.EXERCISE);
+  static const OTHER = ScheduleItemType(
+      value: '?', type: ActivityType.OTHER, title: null, color: null);
+  static const WAKEUP = ScheduleItemType(
+      value: 'WAKE_UP',
+      type: ActivityType.SCHEDULE,
+      title: scheduleDayWakeupLabel,
+      color: Colors.scheduleDay);
+  static const ASLEEP = ScheduleItemType(
+      value: 'SLEEP',
+      type: ActivityType.SCHEDULE,
+      title: scheduleDayAsleepLabel,
+      color: Colors.scheduleNight);
+  static const BREAKFAST = ScheduleItemType(
+      value: 'BREAKFAST',
+      type: ActivityType.NUTRITION,
+      title: scheduleDayBreakfastLabel,
+      color: Colors.scheduleMainFood);
+  static const LUNCH = ScheduleItemType(
+      value: 'LUNCH',
+      type: ActivityType.NUTRITION,
+      title: scheduleDayLunchLabel,
+      color: Colors.scheduleMainFood);
+  static const DINNER = ScheduleItemType(
+      value: 'DINNER',
+      type: ActivityType.NUTRITION,
+      title: scheduleDayDinnerLabel,
+      color: Colors.scheduleMainFood);
+  static const SNACK = ScheduleItemType(
+      value: 'SNACK',
+      type: ActivityType.NUTRITION,
+      title: scheduleDaySnackLabel,
+      color: Colors.scheduleAdditionalFood);
+  static const ADDITIONAL = ScheduleItemType(
+      value: 'ADDITIONAL_FOOD',
+      type: ActivityType.NUTRITION,
+      title: scheduleDayProteinLabel,
+      color: Colors.scheduleProteinFood);
+  static const EXERCISE = ScheduleItemType(
+      value: 'TRAINING',
+      type: ActivityType.EXERCISE,
+      title: scheduleDayExerciseLabel,
+      color: null);
 
   static const values = [
     WAKEUP,

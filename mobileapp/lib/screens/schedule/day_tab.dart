@@ -7,10 +7,13 @@ import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/schedule_model.dart';
 import 'package:hls/screens/schedule/_schedule_tab.dart';
 import 'package:hls/screens/schedule/helpers.dart';
 import 'package:hls/theme/styles.dart';
@@ -44,18 +47,23 @@ class DayTab extends ScheduleTab {
   @override
   Widget build(_) => SingleChildScrollView(
       padding: Padding.content,
-      child: Column(children: [
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //if (!controller.shouldDayBeDisplayed)
         TextPrimary(scheduleDayText,
             weight: FontWeight.w400, align: TextAlign.center),
         VerticalBigSpace(),
         Builder(
             builder: (context) => GestureDetector(
                 onTapUp: (details) =>
-                    controller.isInit ? onTap(context, details) : null,
+                    controller.isInit && !controller.shouldDayBeDisplayed
+                        ? onTap(context, details)
+                        : null,
                 onPanUpdate: (details) =>
-                    controller.isInit ? onDrag(context, details) : null,
+                    controller.isInit && !controller.shouldDayBeDisplayed
+                        ? onDrag(context, details)
+                        : null,
                 child: Obx(() {
-                  //print('DayTab.build day items: ${controller.dayItems}');
+                  //print('DayTab.build ${controller.dayItems}');
 
                   return Stack(
                       alignment: Alignment.center,
@@ -117,9 +125,10 @@ class DayTab extends ScheduleTab {
                             Obx(() => buildIndicator(
                                 dayWakeupOffset, wakeupTime, Colors.scheduleDay,
                                 icon: Icons.wb_sunny)),
-                          Obx(() => buildIndicator(
-                              dayTrainingOffset, trainingTime, Colors.exercise,
-                              icon: Icons.fitness_center_rounded)),
+                          if (controller.isTrainingDay)
+                            Obx(() => buildIndicator(dayTrainingOffset,
+                                trainingTime, Colors.exercise,
+                                icon: Icons.fitness_center_rounded)),
                           Obx(() => controller.canRequestSchedule
                               ? CircularButton(
                                   icon: Icons.check,
@@ -140,6 +149,63 @@ class DayTab extends ScheduleTab {
                                       align: TextAlign.center)))
                       ]);
                 }))),
-        VerticalSpace()
+        VerticalSpace(),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          buildLegend(Colors.scheduleDay, scheduleAwakeLabel),
+          VerticalTinySpace(),
+          buildLegend(Colors.scheduleMainFood, scheduleMainFoodLabel),
+          VerticalTinySpace(),
+          buildLegend(
+              Colors.scheduleAdditionalFood, scheduleAdditionalFoodLabel),
+          VerticalTinySpace(),
+          buildLegend(Colors.scheduleProteinFood, scheduleProteinFoodLabel),
+          VerticalTinySpace(),
+          buildLegend(Colors.exercise, scheduleExerciseLabel),
+          VerticalTinySpace(),
+          buildLegend(Colors.scheduleNight, scheduleAsleepLabel),
+        ]),
+        VerticalBigSpace(),
+        buildAccordion(scheduleDayTriviaTitle1,
+            child: Column(children: [
+              for (final item in controller.dayItems) ...[
+                Container(padding: EdgeInsets.symmetric(horizontal: Size.horizontal), child: ScheduleItem(data: item)),
+                if (item != controller.dayItems.last) VerticalSmallSpace()
+              ]
+            ]))
       ]));
+}
+
+class ScheduleItem extends StatelessWidget {
+  final ScheduleItemData data;
+  ScheduleItem({this.data});
+
+  @override
+  Widget build(BuildContext context) => Container(
+      decoration: BoxDecoration(borderRadius: borderRadiusCircular, boxShadow: [
+        BoxShadow(
+            color: Colors.shadow.withOpacity(1),
+            blurRadius: 2 * panelShadowBlurRadius,
+            //spreadRadius: panelShadowSpreadRadius,
+            offset: -panelShadowOffset)
+      ]),
+      child: ClipRRect(
+          borderRadius: borderRadiusCircular,
+          child: IntrinsicHeight(
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                Container(
+                    color: data.type.type.color, width: Size.horizontalTiny),
+                Expanded(
+                    child: Container(
+                        color: Colors.background,
+                        padding: Padding.content,
+                        child: Row(children: [
+                          Expanded(
+                              child: TextPrimaryHint(data.title ?? noDataText)),
+                          HorizontalSpace(),
+                          TextPrimaryHint(
+                              dateToString(date: data.time, output: dateTime))
+                        ])))
+              ]))));
 }

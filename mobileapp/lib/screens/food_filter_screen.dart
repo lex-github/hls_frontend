@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
-import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/food_filter_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/null_awareness.dart';

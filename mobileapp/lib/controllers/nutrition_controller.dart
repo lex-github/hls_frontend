@@ -75,7 +75,7 @@ class NutritionController extends Controller {
       if (filter != null)
         'sort': {
           'component': filter.key,
-          'direction': filter.values.min != null && filter.values.max == null
+          'direction': filter.values.max != null && filter.values.min == null
               ? 'ASC'
               : 'DESC'
         },
