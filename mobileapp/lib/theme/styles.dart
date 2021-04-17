@@ -132,6 +132,9 @@ class Colors {
 
   static const scheduleNight = M.Color(0xFFC53DFF);
   static const scheduleDay = M.Color(0xFFECFF1F);
+  static const scheduleMainFood = M.Color(0xFFFF9900);
+  static const scheduleProteinFood = M.Color(0xFFFFF0F5);
+  static const scheduleAdditionalFood = M.Color(0xFF1982C4);
 
   static const water = M.Color(0xFF017CD0);
   static const carbs = M.Color(0xFF00A632);

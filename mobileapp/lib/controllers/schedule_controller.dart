@@ -28,17 +28,26 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
     for (int i = 19; i <= 24; i++) i
   ];
 
-  final _asleepOffset = Offset.zero.obs;
+  // final _asleepOffset = Offset.zero.obs;
+  // final _wakeupOffset = Offset(diameter - iconSize - 2 * iconBorder, 0).obs;
+
   final _asleepTime = Rx<DateTime>(null);
-  final _wakeupOffset = Offset(diameter - iconSize - 2 * iconBorder, 0).obs;
   final _wakeupTime = Rx<DateTime>(null);
 
   bool get isInit => asleepTime != null && wakeupTime != null;
 
-  Offset get asleepOffset => _asleepOffset.value;
+  // Offset get asleepOffset => _asleepOffset.value;
+  // Offset get wakeupOffset => _wakeupOffset.value;
+
   DateTime get asleepTime => _asleepTime.value;
-  Offset get wakeupOffset => _wakeupOffset.value;
   DateTime get wakeupTime => _wakeupTime.value;
+
+  Offset get nightAsleepOffset => asleepTime == null
+      ? Offset.zero
+      : offsetFromTime(asleepTime, isNight: true);
+  Offset get nightWakeupOffset => wakeupTime == null
+      ? Offset(diameter - iconSize - 2 * iconBorder, 0)
+      : offsetFromTime(wakeupTime, isNight: true);
 
   @override
   onInit() {
@@ -71,7 +80,7 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
     // print('woke up after 6: ${wakeupTime.isAfter(sixOclock)}');
     // print('asleep before 6: ${asleepTime.isBefore(sixOclock)}');
 
-    return asleepTime.isInner == wakeupTime.isOuter ||
+    return asleepTime.isNightInner == wakeupTime.isNightOuter ||
         wakeupTime.isAfter(sixOclock) && asleepTime.isBefore(sixOclock) ||
         wakeupTime.isAfter(sixOclock) && asleepTime.isAfter(wakeupTime) ||
         asleepTime.isBefore(sixOclock) && asleepTime.isAfter(wakeupTime);
@@ -109,29 +118,30 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
 
     // closeness to asleep/wakeup
     if (isNight) {
-      final asleepCloseness = (coordinate.offset - asleepOffset).distance;
-      final wakeupCloseness = (coordinate.offset - wakeupOffset).distance;
+      final asleepCloseness = (coordinate.offset - nightAsleepOffset).distance;
+      final wakeupCloseness = (coordinate.offset - nightWakeupOffset).distance;
 
       final isCloserToAsleep = asleepCloseness < wakeupCloseness;
 
-      final destinationOffset =
-          isCloserToAsleep ? _asleepOffset : _wakeupOffset;
+      // final destinationOffset =
+      //     isCloserToAsleep ? nightAsleepOffset : nightWakeupOffset;
       final destinationTime = isCloserToAsleep ? _asleepTime : _wakeupTime;
 
-      destinationOffset.value = Offset(
-          constrainedOffset.dx - (iconSize + iconBorder) / 2,
-          constrainedOffset.dy - (iconSize + iconBorder) / 2);
+      // destinationOffset.value = Offset(
+      //     constrainedOffset.dx - (iconSize + iconBorder) / 2,
+      //     constrainedOffset.dy - (iconSize + iconBorder) / 2);
       destinationTime.value = time;
     } else {
-      final wakeupCloseness = (coordinate.offset - wakeupOffset).distance;
+      final wakeupCloseness = (coordinate.offset - dayWakeupOffset).distance;
       final trainingCloseness =
           (coordinate.offset - dayTrainingOffset).distance;
 
-      final isCloserToWakeup = wakeupCloseness < trainingCloseness;
+      final isCloserToWakeup =
+          !isTrainingDay || wakeupCloseness < trainingCloseness;
       if (isCloserToWakeup) {
-        _wakeupOffset.value = Offset(
-            constrainedOffset.dx - (iconSize + iconBorder) / 2,
-            constrainedOffset.dy - (iconSize + iconBorder) / 2);
+        // _wakeupOffset.value = Offset(
+        //     constrainedOffset.dx - (iconSize + iconBorder) / 2,
+        //     constrainedOffset.dy - (iconSize + iconBorder) / 2);
         _wakeupTime.value = time;
       } else {
         _trainingTime.value = time;
@@ -140,13 +150,13 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   }
 
   Offset offsetFromTime(DateTime time, {bool isNight = true}) {
+    final isDay = !isNight;
+
     // radial coordinate system
     final coordinate = RadialCoordinate.fromTime(time);
-    final radius = isNight
-        ? 0
-        : time.isDayInner
-            ? innerDiameter / 2
-            : diameter / 2;
+    final radius = isNight && time.isNightInner || isDay && time.isDayInner
+        ? innerDiameter / 2
+        : diameter / 2;
 
     //print('ScheduleController.offsetFromTime time: $time hour: ${time.hour}');
 
@@ -171,10 +181,15 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   final _trainingTime = Rx<DateTime>(null);
   DateTime get trainingTime => _trainingTime.value;
 
+  DateTime get suggestedAsleepTime => dayItems
+      ?.firstWhere((x) => x.type == ScheduleItemType.ASLEEP, orElse: () => null)
+      ?.time;
+
   final dayInnerValues = [for (int i = 1; i <= 12; i++) i];
   final dayOuterValues = [for (int i = 13; i <= 24; i++) i];
 
-  Offset get dayAsleepOffset => offsetFromTime(asleepTime, isNight: false);
+  Offset get dayAsleepOffset =>
+      offsetFromTime(suggestedAsleepTime, isNight: false);
   Offset get dayWakeupOffset => offsetFromTime(wakeupTime, isNight: false);
   Offset get dayTrainingOffset => offsetFromTime(trainingTime, isNight: false);
 
@@ -182,26 +197,29 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   bool get shouldDayInnerBeDisplayed =>
       isInit &&
       (wakeupTime.isDayInner ||
-          asleepTime.isDayInner ||
+          suggestedAsleepTime.isDayInner ||
           shouldDayDisplayVerticalLine);
   bool get shouldDayOuterBeDisplayed =>
       isInit &&
       (wakeupTime.isDayOuter ||
-          asleepTime.isDayOuter ||
+          suggestedAsleepTime.isDayOuter ||
           shouldDayDisplayVerticalLine);
   bool get shouldDayDisplayVerticalLine {
     if (!isInit) return false;
 
-    return asleepTime.isDayInner == wakeupTime.isDayOuter ||
-        asleepTime.isAfter(twelveOclock) && asleepTime.isBefore(wakeupTime) ||
-        wakeupTime.isBefore(twelveOclock) && asleepTime.isBefore(wakeupTime);
+    return suggestedAsleepTime.isDayInner == wakeupTime.isDayOuter ||
+        suggestedAsleepTime.isAfter(twelveOclock) &&
+            suggestedAsleepTime.isBefore(wakeupTime) ||
+        wakeupTime.isBefore(twelveOclock) &&
+            suggestedAsleepTime.isBefore(wakeupTime);
   }
 
   double get dayOuterStartAngle =>
       -pi / 2 + (wakeupTime.isDayOuter ? wakeupTime.angle : 0);
   double get dayOuterEndAngle {
     final from = dayOuterStartAngle;
-    final to = -pi / 2 + (asleepTime.isDayOuter ? asleepTime.angle : 2 * pi);
+    final to = -pi / 2 +
+        (suggestedAsleepTime.isDayOuter ? suggestedAsleepTime.angle : 2 * pi);
     final angle = to - from;
 
     // print('ScheduleController.dayOuterEndAngle'
@@ -216,7 +234,8 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
       -pi / 2 + (wakeupTime.isDayInner ? wakeupTime.angle : 0);
   double get dayInnerEndAngle {
     final from = dayInnerStartAngle;
-    final to = -pi / 2 + (asleepTime.isDayInner ? asleepTime.angle : 2 * pi);
+    final to = -pi / 2 +
+        (suggestedAsleepTime.isDayInner ? suggestedAsleepTime.angle : 2 * pi);
     final angle = to - from;
 
     // print('ScheduleController.dayInnerEndAngle'
@@ -227,19 +246,25 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
     return angle < 0 ? 2 * pi + angle : angle;
   }
 
+  bool get isTrainingDay => AuthService.i.profile.isTrainingDay;
+
   bool get canRequestSchedule {
+    // print('ScheduleController.canRequestSchedule'
+    //     '\n\tasleepTime: $asleepTime'
+    //     '\n\twakeupTime: $wakeupTime'
+    //     '\n\ttrainingTime: $trainingTime'
+    //     '\n\tis training: $isTrainingDay');
+
     // always required
     if (asleepTime == null || wakeupTime == null) return false;
 
     // required only on day of training
-    if (AuthService.i.profile.isTrainingDay && trainingTime == null)
-      return false;
+    if (isTrainingDay && trainingTime == null) return false;
     return true;
   }
 
-  Future <bool> updateDayItems() async {
-    if (!canRequestSchedule)
-      return false;
+  Future<bool> updateDayItems() async {
+    if (!canRequestSchedule) return false;
 
     final response = await mutation(schedulesCreateMutation, parameters: {
       'asleepTime': dateToString(date: asleepTime, output: dateTime),

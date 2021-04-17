@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
@@ -45,11 +44,23 @@ class NutritionController extends Controller {
   }
 
   // foods
+  bool hasNextPage = true;
+  bool isAppending = false;
+  String cursor;
   List<FoodData> foods;
 
-  Future retrieveFoods() async {
-    if (filters.isNullOrEmpty && search.isNullOrEmpty) return null;
+  Future retrieveFoods({bool shouldAppend = false}) async {
+    if (!shouldAppend) {
+      cursor = null;
+      hasNextPage = true;
+    }
 
+    if (filters.isNullOrEmpty && search.isNullOrEmpty) return null;
+    final filter = filters.values.isNullOrEmpty || filters.values.length > 1
+        ? null
+        : filters.values.first;
+
+    isAppending = true;
     final result = await query(foodsQuery, parameters: {
       'filters': {
         if (!filters.isNullOrEmpty)
@@ -60,15 +71,34 @@ class NutritionController extends Controller {
               '${filter.key}_lteq': filter.values.max
           }
       },
-      'search': search
+      'search': search,
+      if (filter != null)
+        'sort': {
+          'component': filter.key,
+          'direction': filter.values.max != null && filter.values.min == null
+              ? 'ASC'
+              : 'DESC'
+        },
+      'first': defaultItemsPerPage,
+      if (cursor != null) 'after': cursor
     });
 
-    print('NutritionController.retrieveFoods result: $result');
-
-    foods = result
-        .get<List>('foods')
+    //print('NutritionController.retrieveFoods result: $result');
+    final foods = result
+        .get<List>(['foods', 'nodes'])
         ?.map((x) => FoodData.fromJson(x))
         ?.toList(growable: false);
+
+    if (shouldAppend)
+      this.foods += foods;
+    else
+      this.foods = foods;
+
+    hasNextPage = result
+        .get<bool>(['foods', 'pageInfo', 'hasNextPage'], defaultValue: false);
+    cursor = result.get<String>(['foods', 'pageInfo', 'endCursor']);
+
+    isAppending = false;
     update();
   }
 

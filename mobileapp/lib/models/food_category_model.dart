@@ -21,6 +21,7 @@ class FoodCategoryData extends GenericData {
   // getters
   @override
   String get imageUrl => image.url;
+  bool get canExpand => children.isNullOrEmpty && foods.length > 1;
 
   factory FoodCategoryData.fromJson(Map<String, dynamic> json) =>
       json.isNullOrEmpty ? null : _$FoodCategoryDataFromJson(json);

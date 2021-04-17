@@ -16,6 +16,12 @@ const avatarUploadPath = 'upload';
 
 // graphql types
 
+const pageInfoFields = ''
+  '{'
+    'endCursor '
+    'hasNextPage'
+  '}';
+
 const userCommonFields = ''
   'todaySchedule $scheduleFields'
   'data '
@@ -338,15 +344,24 @@ const foodQuery = 'query '
 const foodsQuery = 'query '
   '('
     '\$search: String '
-    '\$filters: Json'
+    '\$filters: Json '
+    '\$sort: FoodSortInput '
+    '\$first: Int '
+    '\$after: String'
   ')'
   '{'
     'foods '
     '('
       'search: \$search '
-      'filters: \$filters'
+      'filters: \$filters '
+      'sort: \$sort '
+      'first: \$first '
+      'after: \$after'
     ') '
-    '$foodFullFields'
+    '{'
+      'nodes $foodFullFields '
+      'pageInfo $pageInfoFields'
+    '}'
   '}';
 
 // mutations

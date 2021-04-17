@@ -78,14 +78,30 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
 
   // working with filters
 
+  List<int> filterValues = [];
+  composeFilterValues(FoodFilterData data) {
+    final start = toInt(data.min);
+    final end = toInt(data.max);
+
+    final step = (end - start) / filterItemsCount;
+    final values = [
+      for (int i = 0; i <= filterItemsCount; i++) (start + step * i).round()
+    ];
+
+    filterValues = [
+      ...{...values}
+    ];
+  }
+
   final _filtersFrom = RxMap<String, int>();
   final _filtersTo = RxMap<String, int>();
 
   int getFilterFrom(String key) => _filtersFrom.get(key);
   int getFilterTo(String key) => _filtersTo.get(key);
 
-  setFilterFrom(String key, int value) => _filtersFrom[key] = value;
-  setFilterTo(String key, int value) => _filtersTo[key] = value;
+  setFilterFrom(String key, int value) =>
+      _filtersFrom[key] = filterValues[value];
+  setFilterTo(String key, int value) => _filtersTo[key] = filterValues[value];
   setFilterClear(String key) {
     _filtersFrom[key] = null;
     _filtersTo[key] = null;
@@ -104,16 +120,23 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
 
     for (final filter in list) {
       final key = filter.key;
+      final title = filter.title;
       final from = _filtersFrom.get<int>(key);
       final to = _filtersTo.get<int>(key);
 
       if (from != null && from != filter.values.min ||
-          to != null && to != filter.values.max)
+          to != null && to != filter.values.max) {
+        final values = FilterValueData();
+        if (from != null && from != filter.values.min.round())
+          values.min = from.toDouble();
+        if (to != null && to != filter.values.max.round())
+          values.max = to.toDouble();
+
         data[key] = FoodFilterData()
           ..key = key
-          ..values = (FilterValueData()
-            ..min = from?.toDouble()
-            ..max = to?.toDouble());
+          ..title = title
+          ..values = values;
+      }
     }
 
     return data;
@@ -148,7 +171,7 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
   Future retrieve() async {
     final result =
         await query(foodFilterQuery, fetchPolicy: FetchPolicy.cacheFirst);
-    print('FoodFilterController.retrieve result: $result');
+    //print('FoodFilterController.retrieve result: $result');
 
     list = result
         .get<List>('foodFiltersList')

@@ -6,16 +6,17 @@ import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/schedule_controller.dart';
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/schedule/helpers.dart';
 import 'package:hls/theme/styles.dart';
 
 abstract class ScheduleTab extends GetView<ScheduleController>
     with CommonDialog {
-  Offset get asleepOffset => controller.asleepOffset;
+  Offset get nightAsleepOffset => controller.nightAsleepOffset;
   Offset get dayAsleepOffset => controller.dayAsleepOffset;
   DateTime get asleepTime => controller.asleepTime;
 
-  Offset get wakeupOffset => controller.wakeupOffset;
+  Offset get nightWakeupOffset => controller.nightWakeupOffset;
   Offset get dayWakeupOffset => controller.dayWakeupOffset;
   DateTime get wakeupTime => controller.wakeupTime;
 
@@ -23,8 +24,7 @@ abstract class ScheduleTab extends GetView<ScheduleController>
   DateTime get trainingTime => controller.trainingTime;
 
   String format(DateTime time) {
-    if (time.minute != 0)
-      return dateToString(date: time, output: 'HH:mm');
+    if (time.minute != 0) return dateToString(date: time, output: 'HH:mm');
 
     final x = dateToString(date: time, output: 'H');
 
@@ -94,7 +94,8 @@ abstract class ScheduleTab extends GetView<ScheduleController>
 
   // builders
 
-  Widget buildLegend(Color color, String text) => Row(children: [
+  Widget buildLegend(Color color, String text) =>
+      Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
             width: Size.horizontalMedium,
             height: Size.border * 2,
@@ -103,24 +104,34 @@ abstract class ScheduleTab extends GetView<ScheduleController>
         TextSecondary(text, size: Size.fontTiny)
       ]);
 
-  Widget buildAccordion(String title, String text) => Button(
+  Widget buildAccordion(String title, {String text, Widget child}) => Button(
+      padding: Padding.zero,
       borderColor: Colors.disabled,
       onPressed: () => controller.toggle(1),
       child: Column(children: [
-        Row(children: [
-          Container(height: Size.iconBig),
-          TextPrimaryHint(title),
-          Expanded(child: HorizontalSpace()),
-          Obx(() => Transform.rotate(
-              angle: controller.getRotationAngle(1),
-              child: Icon(Icons.arrow_forward_ios,
-                  color: Colors.disabled, size: Size.iconSmall)))
-        ]),
+        VerticalSmallSpace(),
+        Container(
+            padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+            child: Row(children: [
+              Container(height: Size.iconBig),
+              TextPrimaryHint(title),
+              Expanded(child: HorizontalSpace()),
+              Obx(() => Transform.rotate(
+                  angle: controller.getRotationAngle(1),
+                  child: Icon(Icons.arrow_forward_ios,
+                      color: Colors.disabled, size: Size.iconSmall)))
+            ])),
         Obx(() => SizeTransition(
             sizeFactor: controller.getSizeFactor(1),
             child: Container(
                 padding: EdgeInsets.only(top: Size.vertical),
-                child: TextSecondary(text))))
+                child: text.isNullOrEmpty
+                    ? child ?? Nothing()
+                    : Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: Size.horizontal),
+                        child: TextSecondary(text))))),
+        VerticalSmallSpace()
       ]));
 
   Widget buildIndicator(Offset offset, DateTime time, Color color,
@@ -137,16 +148,24 @@ abstract class ScheduleTab extends GetView<ScheduleController>
                   borderRadius: BorderRadius.circular(iconSize / 2)),
               width: isSmall ? iconSmallSize : iconSize,
               height: isSmall ? iconSmallSize : iconSize,
-              child: isSmall ? Nothing() : Center(
-                  child: time == null
-                      ? Icon(icon ?? Icons.error, // Icons.nightlight_round, Icons.wb_sunny,
-                          color: color, size: .75 * iconSize)
-                      : TextPrimary(format(time),
-                          size: isSmall ? .75 * Size.fontTiny : Size.fontSmall,
-                          shadow: Shadow(
-                              offset: Offset(0.5, 0.5),
-                              blurRadius: 2,
-                              color: Colors.shadow.withOpacity(1))))));
+              child: isSmall
+                  ? Nothing()
+                  : Center(
+                      child: time == null
+                          ? Icon(
+                              icon ??
+                                  Icons
+                                      .error, // Icons.nightlight_round, Icons.wb_sunny,
+                              color: color,
+                              size: .75 * iconSize)
+                          : TextPrimary(format(time),
+                              size: isSmall
+                                  ? .75 * Size.fontTiny
+                                  : Size.fontSmall,
+                              shadow: Shadow(
+                                  offset: Offset(0.5, 0.5),
+                                  blurRadius: 2,
+                                  color: Colors.shadow.withOpacity(1))))));
 
   @override
   Widget build(_);

@@ -23,8 +23,12 @@ class NightTab extends ScheduleTab {
         VerticalBigSpace(),
         Builder(
             builder: (context) => GestureDetector(
-                onTapUp: (details) => onTap(context, details),
-                onPanUpdate: (details) => onDrag(context, details),
+                onTapUp: (details) => controller.shouldDayBeDisplayed
+                    ? null
+                    : onTap(context, details),
+                onPanUpdate: (details) => controller.shouldDayBeDisplayed
+                    ? null
+                    : onDrag(context, details),
                 child: Stack(
                     alignment: Alignment.center,
                     clipBehavior: Clip.none,
@@ -44,28 +48,29 @@ class NightTab extends ScheduleTab {
                               color: Colors.black)),
                       Obx(() => asleepTime != null &&
                               wakeupTime != null &&
-                              (asleepTime.isOuter || wakeupTime.isOuter)
+                              (asleepTime.isNightOuter ||
+                                  wakeupTime.isNightOuter)
                           ? CustomPaint(
                               size: M.Size(diameter, diameter),
                               painter: SectorPainter(
                                 //from: asleepTime.value, to: wakeupTime.value
                                 width: iconBorder,
                                 color: Colors.scheduleNight,
-                                startAngle: (asleepTime.isOuter
+                                startAngle: (asleepTime.isNightOuter
                                         ? asleepTime.angle
                                         : pi) -
                                     pi / 2,
                                 endAngle: (2 * pi -
-                                        (asleepTime.isInner
+                                        (asleepTime.isNightInner
                                             ? pi
                                             : asleepTime.angle) +
-                                        (wakeupTime.isInner
+                                        (wakeupTime.isNightInner
                                             ? pi
                                             : wakeupTime.angle)) %
                                     (2 * pi),
                               ))
-                          : asleepTime.isInner &&
-                                  wakeupTime.isInner &&
+                          : asleepTime.isNightInner &&
+                                  wakeupTime.isNightInner &&
                                   wakeupTime.isBefore(asleepTime)
                               ? CustomPaint(
                                   size: M.Size(diameter, diameter),
@@ -77,25 +82,26 @@ class NightTab extends ScheduleTab {
                               : Nothing()),
                       Obx(() => asleepTime != null &&
                               wakeupTime != null &&
-                              (wakeupTime.isInner || asleepTime.isInner)
+                              (wakeupTime.isNightInner ||
+                                  asleepTime.isNightInner)
                           ? CustomPaint(
                               size: M.Size(innerDiameter, innerDiameter),
                               painter: SectorPainter(
                                 width: iconBorder,
                                 color: Colors.scheduleNight,
-                                startAngle: asleepTime.isInner
+                                startAngle: asleepTime.isNightInner
                                     ? asleepTime.angle - pi / 2
                                     : pi / 2,
-                                endAngle: (asleepTime.isOuter
+                                endAngle: (asleepTime.isNightOuter
                                         ? wakeupTime.angle - pi
                                         : -asleepTime.angle +
-                                            (wakeupTime.isInner
+                                            (wakeupTime.isNightInner
                                                 ? wakeupTime.angle
                                                 : pi)) %
                                     (2 * pi),
                               ))
-                          : wakeupTime.isOuter &&
-                                  asleepTime.isOuter &&
+                          : wakeupTime.isNightOuter &&
+                                  asleepTime.isNightOuter &&
                                   //wakeupTime.isBefore(asleepTime) &&
                                   ((asleepTime.isBefore(sixOclock) &&
                                           (wakeupTime.isAfter(sixOclock) ||
@@ -120,10 +126,10 @@ class NightTab extends ScheduleTab {
                                   height: (diameter - innerDiameter) / 2))
                           : Nothing()),
                       Obx(() => buildIndicator(
-                          asleepOffset, asleepTime, Colors.scheduleNight,
+                          nightAsleepOffset, asleepTime, Colors.scheduleNight,
                           icon: Icons.nightlight_round)),
                       Obx(() => buildIndicator(
-                          wakeupOffset, wakeupTime, Colors.scheduleDay,
+                          nightWakeupOffset, wakeupTime, Colors.scheduleDay,
                           icon: Icons.wb_sunny))
                     ]))),
         VerticalSpace(),
@@ -133,8 +139,10 @@ class NightTab extends ScheduleTab {
           buildLegend(Colors.scheduleDay, scheduleAwakeLabel)
         ]),
         VerticalBigSpace(),
-        buildAccordion(scheduleNightTriviaTitle1, scheduleNightTriviaText2),
+        buildAccordion(scheduleNightTriviaTitle1,
+            text: scheduleNightTriviaText2),
         VerticalMediumSpace(),
-        buildAccordion(scheduleNightTriviaTitle2, scheduleNightTriviaText2),
+        buildAccordion(scheduleNightTriviaTitle2,
+            text: scheduleNightTriviaText2),
       ]));
 }

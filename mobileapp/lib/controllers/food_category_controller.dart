@@ -31,7 +31,12 @@ class FoodCategoryController extends Controller
   AnimationController _animationController;
   FoodCategoryData item;
 
-  List<FoodCategoryData> get list => item.children;
+  List<FoodCategoryData> get list => item.children + foodsAsCategory;
+  List<FoodCategoryData> get foodsAsCategory =>
+      item.foods.map((x) => FoodCategoryData()
+        ..title = x.title
+        ..image = x.image
+        ..foods = [x]).toList(growable: false);
   List<FoodData> get foods => item.foods;
   AnimationController get animationController => _animationController;
   double get animationProgress => _animationProgress.value;

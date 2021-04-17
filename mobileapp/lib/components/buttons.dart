@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
@@ -8,6 +10,7 @@ import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/colors.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/food_filter_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -398,6 +401,7 @@ class ListItemButton extends Button {
 class ListItemFoodButton extends ListItemButton {
   ListItemFoodButton(
       {@required FoodData item,
+      List<FoodFilterData> filters,
       bool isSelected = false,
       bool isSwitch = false,
       bool isLoading = false,
@@ -410,41 +414,63 @@ class ListItemFoodButton extends ListItemButton {
               ],
               Expanded(
                   child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     Row(children: [
                       Expanded(
                           child: TextPrimaryHint(item.title,
                               overflow: TextOverflow.visible)),
-                      HorizontalSpace(),
-                      Icon(Icons.arrow_forward_ios,
-                          color: Colors.disabled, size: Size.iconSmall)
+                      // HorizontalSpace(),
+                      // Icon(Icons.arrow_forward_ios,
+                      //     color: Colors.disabled, size: Size.iconSmall)
                     ]),
                     VerticalTinySpace(),
                     TextSecondary(item.category.title),
                     VerticalSmallSpace(),
-                    Row(children: [
-                      if (item.carbs != null) ...[
-                        ListItemFoodIndicator(
-                            title: foodCarbLabel,
-                            data: item.carbs,
-                            color: Colors.carbs),
-                        HorizontalSmallSpace()
-                      ],
-                      if (item.fats != null) ...[
-                        ListItemFoodIndicator(
-                            data: item.fats, color: Colors.fats),
-                        HorizontalSmallSpace()
-                      ],
-                      if (item.proteins != null) ...[
-                        ListItemFoodIndicator(
-                            data: item.proteins, color: Colors.proteins),
-                        HorizontalSmallSpace()
-                      ],
-                      if (item.water != null)
-                        ListItemFoodIndicator(
-                            data: item.water, color: Colors.water)
-                    ])
+                    //Row(children: [
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [
+                          if (!filters.isNullOrEmpty)
+                            for (int i = 0;
+                                i < min(filters.length, 4);
+                                i++) ...[
+                              ListItemFoodIndicator(
+                                  title: filters[i].title.toLowerCase(),
+                                  data: item.getByKey(filters[i].key),
+                                  color: Colors.disabled),
+                              HorizontalSmallSpace()
+                            ],
+                          if (item.shouldDisplay('carbohydrates') &&
+                              !filters.isNullOrEmpty &&
+                              filters.length < 4) ...[
+                            ListItemFoodIndicator(
+                                title: foodCarbLabel,
+                                data: item.carbs,
+                                color: Colors.carbs),
+                            HorizontalSmallSpace()
+                          ],
+                          if (item.shouldDisplay('fats') &&
+                              !filters.isNullOrEmpty &&
+                              filters.length < 3) ...[
+                            ListItemFoodIndicator(
+                                data: item.fats, color: Colors.fats),
+                            HorizontalSmallSpace()
+                          ],
+                          if (item.shouldDisplay('proteins') &&
+                              !filters.isNullOrEmpty &&
+                              filters.length < 2) ...[
+                            ListItemFoodIndicator(
+                                data: item.proteins, color: Colors.proteins),
+                            HorizontalSmallSpace()
+                          ],
+                          if (item.shouldDisplay('water') &&
+                              !filters.isNullOrEmpty &&
+                              filters.length < 1)
+                            ListItemFoodIndicator(
+                                data: item.water, color: Colors.water)
+                        ]))
                   ]))
             ]),
             isSelected: isSelected,
@@ -461,16 +487,23 @@ class ListItemFoodIndicator extends StatelessWidget {
   ListItemFoodIndicator({this.color, this.title, @required this.data});
 
   @override
-  Widget build(BuildContext context) => Container(
-      decoration:
-          BoxDecoration(color: color, borderRadius: borderRadiusCircular),
-      padding: Padding.tiny,
-      child: Column(children: [
-        Text(data?.quantity?.toString() ?? '0',
-            style: TextStyle.primary.copyWith(
-                fontSize: 1.1 * Size.fontTiny, fontWeight: FontWeight.bold)),
-        Text(title ?? data.title.toLowerCase(),
-            style: TextStyle.secondary
-                .copyWith(fontSize: .9 * Size.fontTiny, color: Colors.light))
-      ]));
+  Widget build(BuildContext context) {
+    final value = data?.quantity ?? .0;
+    final valueText = value == value.roundToDouble()
+        ? value.round().toString()
+        : value.toString();
+
+    return Container(
+        decoration:
+            BoxDecoration(color: color, borderRadius: borderRadiusCircular),
+        padding: Padding.tiny,
+        child: Column(children: [
+          Text(valueText,
+              style: TextStyle.primary.copyWith(
+                  fontSize: 1.1 * Size.fontTiny, fontWeight: FontWeight.bold)),
+          Text(title ?? data.title.toLowerCase(),
+              style: TextStyle.secondary
+                  .copyWith(fontSize: .9 * Size.fontTiny, color: Colors.light))
+        ]));
+  }
 }

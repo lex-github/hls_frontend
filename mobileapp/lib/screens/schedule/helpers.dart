@@ -28,8 +28,8 @@ extension DateTimeExtension on DateTime {
       : hour == 0 && minute == 0
           ? 2 * pi
           : (hour * 60 + minute) / minutesInRadian % (2 * pi);
-  bool get isOuter => this == null ? false : hour > 18 || hour <= 6;
-  bool get isInner => this == null ? false : !isOuter;
+  bool get isNightOuter => this == null ? false : hour > 18 || hour <= 6;
+  bool get isNightInner => this == null ? false : !isNightOuter;
   bool get isDayOuter => this == null ? false : hour > 12 || hour == 0;
   bool get isDayInner => this == null ? false : !isDayOuter;
 
