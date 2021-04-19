@@ -121,35 +121,38 @@ class AppDrawer extends StatelessWidget {
       child: Container(
           width: Size.screenWidth - Size.horizontalBig * 2,
           child: Drawer(
-              child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-            _buildHeader(),
-            _buildItem(
-                icon: Icons.favorite,
-                title: drawerFavouriteLabel,
-                onPressed: _devHandler),
-            _buildItem(
-                icon: Icons.bar_chart,
-                title: drawerStatisticsLabel,
-                onPressed: _devHandler),
-            _buildItem(
-                icon: Icons.camera_alt,
-                title: drawerMeasuresLabel,
-                onPressed: _devHandler),
-            _buildItem(
-                icon: 'icons/ruler',
-                title: drawerInstrumentsLabel,
-                onPressed: _devHandler),
-            _buildItem(
-                icon: Icons.settings,
-                title: drawerSettingsLabel,
-                onPressed: _devHandler),
-            _buildItem(
-                icon: Icons.logout,
-                title: drawerLogoutLabel,
-                color: Colors.failure,
-                onPressed: () {
-                  Get.back();
-                  Get.find<AuthService>().logout();
-                })
-          ]))));
+              child: Container(
+            color: Colors.background,
+            child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+              _buildHeader(),
+              _buildItem(
+                  icon: Icons.favorite,
+                  title: drawerFavouriteLabel,
+                  onPressed: _devHandler),
+              _buildItem(
+                  icon: Icons.bar_chart,
+                  title: drawerStatisticsLabel,
+                  onPressed: _devHandler),
+              _buildItem(
+                  icon: Icons.camera_alt,
+                  title: drawerMeasuresLabel,
+                  onPressed: _devHandler),
+              _buildItem(
+                  icon: 'icons/ruler',
+                  title: drawerInstrumentsLabel,
+                  onPressed: _devHandler),
+              _buildItem(
+                  icon: Icons.settings,
+                  title: drawerSettingsLabel,
+                  onPressed: _devHandler),
+              _buildItem(
+                  icon: Icons.logout,
+                  title: drawerLogoutLabel,
+                  color: Colors.failure,
+                  onPressed: () {
+                    Get.back();
+                    Get.find<AuthService>().logout();
+                  })
+            ]),
+          ))));
 }

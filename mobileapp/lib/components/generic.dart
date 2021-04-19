@@ -629,6 +629,7 @@ class Screen extends StatelessWidget {
                                   preferredSize: M.Size.fromHeight(height ??
                                       Size.bar), // here the desired height
                                   child: AppBar(
+                                    backgroundColor: Colors.background,
                                       toolbarHeight: Size.bar,
                                       title: title == null
                                           ? null
