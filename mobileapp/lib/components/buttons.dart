@@ -444,7 +444,7 @@ class ListItemFoodButton extends ListItemButton {
                             ],
                           if (item.shouldDisplay('carbohydrates') &&
                               !filters.isNullOrEmpty &&
-                              filters.length < 4) ...[
+                              filters.length < 1) ...[
                             ListItemFoodIndicator(
                                 title: foodCarbLabel,
                                 data: item.carbs,
@@ -453,14 +453,14 @@ class ListItemFoodButton extends ListItemButton {
                           ],
                           if (item.shouldDisplay('fats') &&
                               !filters.isNullOrEmpty &&
-                              filters.length < 3) ...[
+                              filters.length < 1) ...[
                             ListItemFoodIndicator(
                                 data: item.fats, color: Colors.fats),
                             HorizontalSmallSpace()
                           ],
                           if (item.shouldDisplay('proteins') &&
                               !filters.isNullOrEmpty &&
-                              filters.length < 2) ...[
+                              filters.length < 1) ...[
                             ListItemFoodIndicator(
                                 data: item.proteins, color: Colors.proteins),
                             HorizontalSmallSpace()

@@ -74,7 +74,8 @@ dependencies:
   share: ^2.0.1
   # settings
   # video player
-  video_player: ^2.1.1
+  #video_player: ^2.1.1
+  youtube_player_flutter: ^8.0.0
   # window size for desktop
   window_size:
     git:

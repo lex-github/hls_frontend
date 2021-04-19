@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide Image, Router;
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -33,6 +34,8 @@ Future initServices() async {
   await Get.put(SettingsService()).init();
   await Get.put(AnalyticsService()).init();
   await Get.put(HttpService()).init();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
 class HLS extends StatelessWidget {

@@ -159,6 +159,21 @@ class FoodFilterController<Data extends FoodFilterData> extends Controller
         for (final data in filters.values)
           if (data.values.max != null) data.key: toInt(data.values.max)
       });
+      for (final data in filters.values) {
+        final key = data.key;
+        outer:
+        for (final section in sections.entries) {
+          final title = section.key;
+          final filterValues = section.value;
+
+          for (final filter in filterValues) {
+            if (filter.key == key) {
+              _openedItems.add(title);
+              break outer;
+            }
+          }
+        }
+      }
     }
   }
 
