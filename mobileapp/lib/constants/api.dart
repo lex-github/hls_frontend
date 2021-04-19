@@ -1,4 +1,5 @@
-const siteUrl = 'https://hls-backend-stage.herokuapp.com/';
+const siteUrl = 'https://hls.mobissa.ru/';
+// const siteUrl = 'https://hls-backend-stage.herokuapp.com/';
 //const siteUrl = 'http://213.183.48.100:3000/';
 const apiUri = '${siteUrl}graphql';
 const apiTokenKey = 'Client-Token';
