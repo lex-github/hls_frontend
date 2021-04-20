@@ -19,8 +19,10 @@ class OtpRequestFormController extends FormController {
             field: 'phone',
             label: otpPhoneLabel,
             validator: phoneValidator,
-            formatters: [MaskTextInputFormatter(
-              mask: phoneMaskPattern, filter: {"#": RegExp(r'[0-9]')})]),
+            formatters: [
+              MaskTextInputFormatter(
+                  mask: phoneMaskPattern, filter: {"#": RegExp(r'[0-9]')})
+            ]),
       ];
 
   // form controller implementation
@@ -34,4 +36,16 @@ class OtpRequestFormController extends FormController {
   @override
   onSubmitResponse(bool isSuccess) =>
       isSuccess ? Get.toNamed(otpVerifyRoute, arguments: phone) : null;
+
+  @override
+  void onChanged(String field, value,
+      {bool shouldUpdate = true, bool shouldUpdateController = true}) {
+    super.onChanged(field, value,
+        shouldUpdate: shouldUpdate,
+        shouldUpdateController: shouldUpdateController);
+
+    print('$value');
+
+    if (field == 'phone' && value.length == 18) submitHandler();
+  }
 }

@@ -8,7 +8,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class OtpVerifyFormController extends FormController {
   final String phone;
-  OtpVerifyFormController({@required this.phone});// : assert(!phone.isNullOrEmpty);
+  OtpVerifyFormController(
+      {@required this.phone}); // : assert(!phone.isNullOrEmpty);
 
   bool get shouldShowForm => ((AuthService auth) =>
       auth.isInit && !auth.isAuthenticated)(AuthService.i);
@@ -31,9 +32,18 @@ class OtpVerifyFormController extends FormController {
 
   @override
   Future<bool> onSubmitRequest() async => AuthService.i.otpVerify(
-    phone: phone,
-    code: getValue('code').replaceAll(RegExp('[^0-9.]'), ''));
+      phone: phone, code: getValue('code').replaceAll(RegExp('[^0-9.]'), ''));
 
   @override
   onSubmitResponse(bool isSuccess) => null;
+
+  @override
+  void onChanged(String field, value,
+      {bool shouldUpdate = true, bool shouldUpdateController = true}) {
+    super.onChanged(field, value,
+        shouldUpdate: shouldUpdate,
+        shouldUpdateController: shouldUpdateController);
+
+    if (field == 'code' && value.length == 6) submitHandler();
+  }
 }
