@@ -21,6 +21,7 @@ class VideoScreen extends GetView<FoodCategoryController> {
   Widget _buildPlayer(
           VideoScreenController controller) => //VideoPlayer(controller.video)
       YoutubePlayer(
+        //width: Size.screenHeight,
         controller: controller.video,
         showVideoProgressIndicator: true,
         progressIndicatorColor: Colors.primary,
@@ -37,15 +38,25 @@ class VideoScreen extends GetView<FoodCategoryController> {
         //     'aspect: ${controller.video.value.aspectRatio}'
         //     'width: ${controller.video.value.size}');
 
-        return Stack(children: [
-          Positioned.fill(child: _buildPlayer(controller)),
-          Positioned(
-              top: Size.vertical,
-              left: Size.horizontal,
-              child: CircularButton(
-                  child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
-                  onPressed: Get.back))
-        ]);
+        return Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              Positioned.fill(child: Container(color: Colors.black)),
+              Transform.scale(
+                  scale: Size.screenHeight / Size.screenWidth,
+                  child: Transform.rotate(
+                      angle: true //controller.video.value.aspectRatio > 1
+                          ? pi / 2
+                          : .0,
+                      child: _buildPlayer(controller))),
+              Positioned(
+                  top: Size.vertical,
+                  right: Size.horizontal,
+                  child: CircularButton(
+                      child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+                      onPressed: Get.back))
+            ]);
 
         // return Screen(
         //     padding: Padding.zero,
@@ -102,7 +113,6 @@ class VideoScreenController extends Controller {
         video = YoutubePlayerController(
             initialVideoId: 'iLnmTe5Q2Qw',
             flags: YoutubePlayerFlags(autoPlay: true)) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     //video.addListener(() => _isPlaying.value = video.value.isPlaying);
   }
 
@@ -127,10 +137,8 @@ class VideoScreenController extends Controller {
     //await video.initialize();
     play();
 
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.landscapeLeft
-    // ]);
+    //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
     super.onInit();
   }
@@ -142,14 +150,8 @@ class VideoScreenController extends Controller {
     video.pause();
     video.dispose();
 
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.landscapeLeft
-    // ]);
-
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     super.onClose();
   }
