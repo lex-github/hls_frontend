@@ -25,8 +25,10 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
     int from = values.indexOf(controller.getFilterFrom(data.key));
     if (from == -1) from = 0;
     int to = values.indexOf(controller.getFilterTo(data.key));
-    if (to == -1) to = values.length;
-    else to--;
+    if (to == -1)
+      to = values.length;
+    else
+      to--;
 
     print('FoodFilterScreen._filterHandler'
         '\n\tdata: $data'
@@ -104,7 +106,8 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
   }
 
   List<Widget> _buildFilterToSelection(FoodFilterData data) {
-    final values = controller.filterValues.getRange(1, controller.filterValues.length);
+    final values =
+        controller.filterValues.getRange(1, controller.filterValues.length);
 
     return [
       for (int i in values)
@@ -222,16 +225,21 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
   @override
   Widget build(_) => GetBuilder<FoodFilterController>(
       init: FoodFilterController(),
-      builder: (_) => Screen(
-          onBackPressed: () => Get.back(result: controller.values),
-          padding: Padding.zero,
-          shouldShowDrawer: true,
-          title: foodFilterScreenTitle,
-          trailing: Obx(() => ((int number) => number > 0
-              ? Clickable(
-                  onPressed: () => controller.setFilterClearAll(),
-                  child: TextPrimaryHint('$clearButtonTitle ($number)',
-                      color: Colors.failure))
-              : Nothing())(controller.filterNumber)),
-          child: _buildBody()));
+      builder: (_) => WillPopScope(
+          onWillPop: () async {
+            Get.back(result: controller.values);
+            return false;
+          },
+          child: Screen(
+              onBackPressed: () => Get.back(result: controller.values),
+              padding: Padding.zero,
+              shouldShowDrawer: true,
+              title: foodFilterScreenTitle,
+              trailing: Obx(() => ((int number) => number > 0
+                  ? Clickable(
+                      onPressed: () => controller.setFilterClearAll(),
+                      child: TextPrimaryHint('$clearButtonTitle ($number)',
+                          color: Colors.failure))
+                  : Nothing())(controller.filterNumber)),
+              child: _buildBody())));
 }

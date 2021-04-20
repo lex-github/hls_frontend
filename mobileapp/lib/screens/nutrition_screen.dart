@@ -26,11 +26,14 @@ class NutritionScreen extends GetView<NutritionController> {
   _filterHandler() async {
     final response =
         await Get.toNamed(foodFilterRoute, arguments: controller.filters);
+    if (response == null) return;
     final filters = Map<String, FoodFilterData>.from(response);
     //print('NutritionScreen._filterHandler filters: $filters');
 
     // Map<String, FoodFilterData> filters = await Get.toNamed(foodFilterRoute);
-    if (filters != null) controller.filters = filters;
+    if (filters == null) return;
+
+    controller.filters = filters;
   }
 
   _categoryHandler(FoodCategoryData data) =>

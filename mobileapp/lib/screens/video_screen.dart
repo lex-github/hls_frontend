@@ -22,6 +22,7 @@ class VideoScreen extends GetView<FoodCategoryController> {
           VideoScreenController controller) => //VideoPlayer(controller.video)
       YoutubePlayer(
         //width: Size.screenHeight,
+        aspectRatio: 9 / 16,
         controller: controller.video,
         showVideoProgressIndicator: true,
         progressIndicatorColor: Colors.primary,
@@ -44,9 +45,9 @@ class VideoScreen extends GetView<FoodCategoryController> {
             children: [
               Positioned.fill(child: Container(color: Colors.black)),
               Transform.scale(
-                  scale: Size.screenHeight / Size.screenWidth,
+                  scale: 1,//Size.screenHeight / Size.screenWidth,
                   child: Transform.rotate(
-                      angle: true //controller.video.value.aspectRatio > 1
+                      angle: false //controller.video.value.aspectRatio > 1
                           ? pi / 2
                           : .0,
                       child: _buildPlayer(controller))),
@@ -111,7 +112,8 @@ class VideoScreenController extends Controller {
       :
         //video = VideoPlayerController.network(url, videoPlayerOptions: VideoPlayerOptions())
         video = YoutubePlayerController(
-            initialVideoId: 'iLnmTe5Q2Qw',
+            //initialVideoId: 'iLnmTe5Q2Qw',
+            initialVideoId: 'EXo_1J4nzO4',
             flags: YoutubePlayerFlags(autoPlay: true)) {
     //video.addListener(() => _isPlaying.value = video.value.isPlaying);
   }
