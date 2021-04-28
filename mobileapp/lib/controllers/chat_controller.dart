@@ -298,7 +298,8 @@ class ChatController extends Controller {
         case ChatDialogStatus.PENDING:
           SettingsService.i.shouldSkipChat = true;
 
-          Get.find<ChatNavigationController>().skip();
+          //Get.find<ChatNavigationController>().skip();
+          Get.find<ChatNavigationController>().next();
           return true;
         case ChatDialogStatus.FINISHED:
           Get.find<ChatNavigationController>().next();
