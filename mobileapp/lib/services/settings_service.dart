@@ -15,7 +15,8 @@ class SettingsService extends Service {
   @override
   Future init() async {
     //_token.value = _preferences.get(_tokenKey);
-    _token.value = _preferences.read<String>(_tokenKey);
+    //_token.value = _preferences.read<String>(_tokenKey);
+    _token.value = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMiwiZXhwIjoxNjI2NDQ0MjA4fQ.9yO9s7q9M_Vg_WOm5dMDkwA7OUuLlJD2LW9Un9p0OeU';
 
     print('SettingsService.init '
         '\n\tkeys: ${_preferences.getKeys()}'

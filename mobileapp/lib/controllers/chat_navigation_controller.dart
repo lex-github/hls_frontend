@@ -60,11 +60,13 @@ class ChatNavigationController extends Controller {
   }
 
   void init({bool shouldRestart = false}) async {
+    print('ChatNavigationController.init shouldRestart: $shouldRestart');
+
     clear();
 
     _canGoBack.value = shouldRestart;
 
-    final shouldSkipChat = SettingsService.i.shouldSkipChat;
+    final shouldSkipChat = SettingsService.i.shouldSkipChat && !shouldRestart;
 
     // check which dialogs are not completed
     final chatDialogsNotCompleted = !shouldSkipChat
@@ -77,7 +79,7 @@ class ChatNavigationController extends Controller {
     // debugPrint(
     //     'ChatNavigationController.onInit completed: ${AuthService.i.profile.completedDialogs}');
     print(
-        'ChatNavigationController.onInit types to complete: $chatDialogsNotCompleted');
+        'ChatNavigationController.init types to complete: $chatDialogsNotCompleted');
     if (chatDialogsNotCompleted.isNullOrEmpty) return;
 
     // create sequence for completing dialogs
