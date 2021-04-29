@@ -134,12 +134,12 @@ class FoodScreen extends GetView<FoodController> {
           ? controller.list.length > 0
               ? ListView.builder(
                   padding: Padding.content,
-                  itemCount: controller.list.length * 2,
+                  itemCount: controller.list.length * 2 + 1,
                   itemBuilder: (_, i) {
                     if (i == 0) return _buildHeader(controller.item);
                     if (i.isOdd) return VerticalMediumSpace();
 
-                    final index = i ~/ 2;
+                    final index = i ~/ 2 - 1;
 
                     return _buildListItem(controller.getTitle(index),
                         controller.getSection(index));

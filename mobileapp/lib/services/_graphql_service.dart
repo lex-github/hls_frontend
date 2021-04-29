@@ -39,7 +39,7 @@ class GraphqlService extends Service {
       debugPrint('GraphqlService.query'
           '\n\tnode $node'
           '\n\tparameters $parameters'
-          //'\n\tresult ${result.data}'
+          '\n\tresult ${result.data}'
       );
 
     if (result.hasException) {

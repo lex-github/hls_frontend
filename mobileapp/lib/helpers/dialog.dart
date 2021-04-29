@@ -30,16 +30,20 @@ Future showConfirm(
           onPressed: buttonPressedHandler);
 
   // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
+  final alert = AlertDialog(
+      //elevation: 5,
       insetPadding: Padding.content,
-      titlePadding: Padding.content,
+      titlePadding: EdgeInsets.only(
+          top: Size.verticalBig, right: Size.horizontal, left: Size.horizontal),
       contentPadding:
           EdgeInsets.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
       actionsPadding: shouldShowConfirm
           ? EdgeInsets.symmetric(vertical: Size.vertical)
-          : EdgeInsets.only(bottom: Size.vertical),
+          : EdgeInsets.only(bottom: Size.verticalBig),
       buttonPadding: Padding.zero,
-      shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular),
+      shape: RoundedRectangleBorder(
+          borderRadius: borderRadiusCircular,
+          side: BorderSide(color: Colors.disabled)),
       backgroundColor: backgroundColor,
       title: title != null ? TextPrimary(title, align: TextAlign.center) : null,
       content: child != null
@@ -56,5 +60,6 @@ Future showConfirm(
       ]);
 
   // show the dialog
-  return await Get.dialog(alert, barrierColor: Colors.primary.withOpacity(.25));
+  return await Get.dialog(alert,
+      barrierColor: Colors.background.withOpacity(.9));
 }

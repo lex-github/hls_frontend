@@ -36,10 +36,12 @@ class FoodData extends GenericData {
   FoodSectionData get proteins => getByKey('proteins');
   FoodSectionData get calories => getByKey('energy_value');
 
-  Map<String, List<FoodSectionData>> get sections => structure?.fold(
-      {},
-      (sections, x) =>
-          x.section.isNullOrEmpty ? sections : sections.setList(x.section, x));
+  Map<String, List<FoodSectionData>> get sections =>
+      structure?.fold(
+          {},
+          (sections, x) => x.section.isNullOrEmpty
+              ? sections
+              : sections.setList(x.section, x));
 
   factory FoodData.fromJson(Map<String, dynamic> json) =>
       _$FoodDataFromJson(json);
