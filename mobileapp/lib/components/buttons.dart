@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:flutter/material.dart'
+    hide AnimatedCrossFade, Colors, CrossFadeState, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' hide TextStyle;
 import 'package:get/get.dart';
+import 'package:hls/components/animated_cross_fade.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
@@ -13,6 +15,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_filter_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/theme/styles.dart';
+import 'package:outline_gradient_button/outline_gradient_button.dart';
 
 class CircularButton extends Button {
   CircularButton({
@@ -95,13 +98,13 @@ class Button extends StatelessWidget {
         this.icon = icon != null
             ? Icon(icon,
                 color: color ?? Colors.icon,
-                size: iconSize ?? ((size ?? Size.iconHuge) * .5))
+                size: iconSize ?? ((size ?? Size.iconHuge) * .6))
             : null,
         this.image = !imageTitle.isNullOrEmpty
             ? Image(
                 title: imageTitle,
                 color: color ?? Colors.icon,
-                size: iconSize ?? ((size ?? Size.iconHuge) * .5))
+                size: iconSize ?? ((size ?? Size.iconHuge) * .6))
             : null,
         assert(child != null ||
             icon != null ||
@@ -268,7 +271,8 @@ class ButtonOuter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = isCircular
+    final radius = isCircular ? Radius.circular(size) : radiusCircular;
+    final borderRadius = isCircular
         ? BorderRadius.all(Radius.circular(size))
         : borderRadiusCircular;
     // final blurRadius = size / outerShadowBlurCoefficient;
@@ -278,10 +282,35 @@ class ButtonOuter extends StatelessWidget {
     return MouseRegion(
         cursor: isClickable ? SystemMouseCursors.click : MouseCursor.defer,
         child: Container(
+            decoration: BoxDecoration(borderRadius: borderRadius, boxShadow: [
+              BoxShadow(
+                  color: buttonShadowColor,
+                  blurRadius: buttonShadowBlurRadius,
+                  spreadRadius: buttonShadowSpreadRadius,
+                  offset: buttonShadowOffset)
+            ]),
+            child: OutlineGradientButton(
+                padding: padding,
+                //elevation: 5,
+                radius: radius,
+                strokeWidth: borderWidth / 2,
+                gradient: LinearGradient(colors: [
+                  Colors.light,
+                  borderColor ?? background ?? Colors.primary
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                backgroundColor: background ?? Colors.background,
+                child: SizedBox(
+                    height: isCircular ? size : null,
+                    width: isCircular ? size : null,
+                    child: Center(child: child)))));
+
+    return MouseRegion(
+        cursor: isClickable ? SystemMouseCursors.click : MouseCursor.defer,
+        child: Container(
             height: isCircular ? size : null,
             width: isCircular ? size : null,
             decoration: BoxDecoration(
-                borderRadius: radius,
+                borderRadius: borderRadius,
                 border: Border.all(
                     width: borderWidth / 2,
                     color: Colors.shadowLight.withOpacity(.01),
@@ -290,29 +319,35 @@ class ButtonOuter extends StatelessWidget {
                 duration: inputWaitingDuration,
                 curve: Curves.easeInQuint,
                 child: ClipRRect(
-                    borderRadius: radius,
+                    borderRadius: borderRadius,
                     child: Container(
                         padding: padding, child: Center(child: child))),
                 decoration: BoxDecoration(
-                  color: background ?? Colors.background,
-                  borderRadius: radius,
-                  border: Border.all(
-                      width: borderWidth / 2,
-                      color: borderColor ?? background ?? Colors.primary),
-                  // boxShadow: [
-                  //   if (isClickable)
-                  //     BoxShadow(
-                  //         color: background != null
-                  //             ? background.withOpacity(.2)
-                  //             : outerShadowColor,
-                  //         blurRadius: blurRadius,
-                  //         offset: -offset),
-                  //   BoxShadow(
-                  //       color: Colors.shadowLight,
-                  //       blurRadius: blurRadius,
-                  //       offset: offset)
-                  // ]
-                ))));
+                    color: background ?? Colors.background,
+                    borderRadius: borderRadius,
+                    border: Border.all(
+                        width: borderWidth / 2,
+                        color: borderColor ?? background ?? Colors.primary),
+                    boxShadow: [
+                      // if (isClickable)
+                      //   BoxShadow(
+                      //       color: background != null
+                      //           ? background.withOpacity(.2)
+                      //           : outerShadowColor,
+                      //       blurRadius: buttonShadowBlurRadius,
+                      //       spreadRadius: buttonShadowSpreadRadius,
+                      //       offset: -buttonShadowOffset),
+                      // BoxShadow(
+                      //     color: Colors.shadowLight,
+                      //   blurRadius: buttonShadowBlurRadius,
+                      //   spreadRadius: buttonShadowSpreadRadius,
+                      //     offset: buttonShadowOffset)
+                      BoxShadow(
+                          color: buttonShadowColor,
+                          blurRadius: buttonShadowBlurRadius,
+                          spreadRadius: buttonShadowSpreadRadius,
+                          offset: buttonShadowOffset)
+                    ]))));
   }
 }
 

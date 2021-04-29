@@ -22,7 +22,7 @@ class TrainingStoryScreen extends StatelessWidget {
       //         width: Size.iconBig,
       //         height: Size.iconBig,
       //         child: Center(
-      //             child: Icon(Icons.arrow_back_ios, size: Size.iconSmall))),
+      //             child: Icon(Icons.arrow_back, size: Size.icon))),
       //     onPressed: Get.back),
       leading: Nothing(),
       trailingRight: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,

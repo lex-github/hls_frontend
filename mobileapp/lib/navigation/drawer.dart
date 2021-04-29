@@ -84,8 +84,8 @@ class AppDrawer extends StatelessWidget {
                                 right: Size.horizontal, bottom: Size.vertical),
                             child: Hero(
                                 tag: 'icon-back',
-                                child: Icon(Icons.arrow_forward_ios,
-                                    size: .5 * Size.icon, color: Colors.light)))
+                                child: Icon(Icons.arrow_forward,
+                                    size: Size.icon, color: Colors.light)))
                       ]))
             ]));
   }

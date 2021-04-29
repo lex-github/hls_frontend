@@ -68,7 +68,7 @@ class ArticleScreen extends GetView<FoodCategoryController> {
               width: Size.iconBig,
               height: Size.iconBig,
               child: Center(
-                  child: Icon(Icons.arrow_back_ios, size: Size.iconSmall))),
+                  child: Icon(Icons.arrow_back, size: Size.icon))),
           onPressed: Get.back),
       child: SingleChildScrollView(
           child:

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart' hide Colors, Image, Padding;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' hide Button;
-import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/profile_form_controller.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/_form_screen.dart';
 import 'package:hls/screens/profile_screen.dart';
@@ -11,8 +11,7 @@ import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
-    with CommonDialog {
+class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T> {
   static final _key = GlobalKey(debugLabel: 'profileForm');
 
   final _picker = ImagePicker();
@@ -114,7 +113,7 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T>
                   child: Hero(
                       tag: 'icon-back',
                       child:
-                          Icon(Icons.arrow_back_ios, size: Size.iconSmall)))),
+                          Icon(Icons.arrow_back, size: Size.icon)))),
           onPressed: Get.back),
       child: child);
 

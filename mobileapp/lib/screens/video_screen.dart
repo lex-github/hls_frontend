@@ -55,7 +55,7 @@ class VideoScreen extends GetView<FoodCategoryController> {
                   top: Size.vertical,
                   right: Size.horizontal,
                   child: CircularButton(
-                      child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+                      child: Icon(Icons.arrow_back, size: Size.icon),
                       onPressed: Get.back))
             ]);
 
@@ -71,7 +71,7 @@ class VideoScreen extends GetView<FoodCategoryController> {
         //             height: Size.iconBig,
         //             child: Center(
         //                 child:
-        //                     Icon(Icons.arrow_back_ios, size: Size.iconSmall))),
+        //                     Icon(Icons.arrow_back, size: Size.icon))),
         //         onPressed: Get.back),
         //     fab: controller.isInit
         //         ? CircularButton(

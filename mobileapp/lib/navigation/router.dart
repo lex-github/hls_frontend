@@ -13,6 +13,7 @@ import 'package:hls/screens/otp_verify_form_screen.dart';
 import 'package:hls/screens/profile_form_screen.dart';
 import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
+import 'package:hls/screens/schedule_add_screen.dart';
 import 'package:hls/screens/story_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
 import 'package:hls/screens/training_story_screen.dart';
@@ -59,6 +60,10 @@ class Router {
         name: welcomeRoute,
         page: () => WelcomeScreen(),
         transitionDuration: navigationTransitionDuration),
+    GetPage(
+      name: scheduleRoute,
+      page: () => ScheduleAddScreen(),
+      transitionDuration: navigationTransitionDuration),
     GetPage(
         name: profileRoute,
         page: () => ProfileScreen(),

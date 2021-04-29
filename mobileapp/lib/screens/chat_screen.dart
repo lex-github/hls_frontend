@@ -249,14 +249,14 @@ class ChatScreen<Controller extends ChatController>
             padding: Padding.zero,
             leading: Obx(() => !Get.find<ChatNavigationController>().canGoBack
                 ? Clickable(
-                    child: Icon(Icons.logout, size: Size.iconSmall),
+                    child: Icon(Icons.logout, size: Size.icon),
                     onPressed: _logoutHandler)
                 : Clickable(
-                    child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+                    child: Icon(Icons.arrow_back, size: Size.icon),
                     onPressed: _skipHandler)),
             trailing: Obx(() => !Get.find<ChatNavigationController>().canGoBack
                 ? Clickable(
-                    child: Icon(Icons.arrow_forward_ios, size: Size.iconSmall),
+                    child: Icon(Icons.arrow_forward, size: Size.icon),
                     onPressed: _skipHandler)
                 : Nothing()),
             title: Column(

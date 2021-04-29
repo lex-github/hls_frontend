@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Colors, Padding;
+import 'package:flutter/material.dart' hide Colors, Padding, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -23,23 +23,26 @@ Future showConfirm(
 
   // set up the button
   final button = confirm ??
-      Button(
-          isCircular: true,
+      CircularButton(
           icon: confirmImageTitle ?? Icons.check,
-          padding: Padding.tiny,
+          //padding: Padding.tiny,
+          size: 1.2 * Size.button,
           onPressed: buttonPressedHandler);
 
   // set up the AlertDialog
   final alert = AlertDialog(
-      //elevation: 5,
+      //elevation: 50,
       insetPadding: Padding.content,
       titlePadding: EdgeInsets.only(
-          top: Size.verticalBig, right: Size.horizontal, left: Size.horizontal),
+          top: 2 * Size.verticalBig,
+          right: Size.horizontal,
+          left: Size.horizontal),
       contentPadding:
-          EdgeInsets.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
+          Padding.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
       actionsPadding: shouldShowConfirm
-          ? EdgeInsets.symmetric(vertical: Size.vertical)
-          : EdgeInsets.only(bottom: Size.verticalBig),
+          // ? EdgeInsets.symmetric(vertical: 2 * Size.verticalBig)
+          ? Padding.zero
+          : EdgeInsets.only(bottom: 2 * Size.verticalBig),
       buttonPadding: Padding.zero,
       shape: RoundedRectangleBorder(
           borderRadius: borderRadiusCircular,
@@ -56,7 +59,73 @@ Future showConfirm(
                       child: TextSecondary(description)))
               : null,
       actions: [
-        if (shouldShowConfirm) button,
+        if (shouldShowConfirm)
+          Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Size.horizontal, vertical: 2 * Size.verticalBig),
+              child: button),
+      ]);
+
+  // show the dialog
+  return await Get.dialog(alert,
+      barrierColor: Colors.background.withOpacity(.9));
+}
+
+Future<T> showSwitch<T>(
+    {title,
+    description,
+    @required Widget left,
+    @required Widget right,
+    T Function() onLeft,
+    T Function() onRight}) async {
+  // onLeft ??= () => null;
+  // onRight ??= () => null;
+
+  // color
+  final Color textColor = Colors.primary;
+  final Color backgroundColor = Colors.background;
+
+  // set up the buttons
+  Widget leftButton =
+      CircularButton(onPressed: () => Get.back(result: onLeft()), child: left);
+
+  Widget rightButton = CircularButton(
+      onPressed: () => Get.back(result: onRight()), child: right);
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+      titlePadding: EdgeInsets.only(
+          top: 2 * Size.verticalBig,
+          right: Size.horizontal,
+          left: Size.horizontal),
+      contentPadding:
+          Padding.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
+      actionsPadding: Padding.zero,
+      buttonPadding: Padding.zero,
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.disabled),
+          borderRadius: borderRadiusCircular),
+      backgroundColor: backgroundColor,
+      title: title != null
+          ? Container(
+              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+              child: Text(title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle.primary.copyWith(color: textColor)))
+          : null,
+      content: description != null
+          ? description is String
+              ? Text(description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle.primary.copyWith(color: textColor))
+              : description
+          : null,
+      actions: [
+        leftButton,
+        Container(
+            padding: EdgeInsets.symmetric(vertical: 2 * Size.verticalBig),
+            width: Size.horizontalBig),
+        rightButton
       ]);
 
   // show the dialog

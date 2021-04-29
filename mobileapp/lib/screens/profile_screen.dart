@@ -2,7 +2,6 @@ import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
-import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/strings.dart';
@@ -22,7 +21,7 @@ import 'package:pretty_json/pretty_json.dart';
 
 const ages = [0, 20, 30, 36, 38, 40, 50, 60];
 
-class ProfileScreen extends StatelessWidget with CommonDialog {
+class ProfileScreen extends StatelessWidget {
   UserData get profile => AuthService?.i?.profile;
   UserProgressData get progress => profile?.progress;
 
@@ -77,7 +76,7 @@ class ProfileScreen extends StatelessWidget with CommonDialog {
                   child: Hero(
                       tag: 'icon-back',
                       child:
-                          Icon(Icons.arrow_back_ios, size: Size.iconSmall)))),
+                          Icon(Icons.arrow_back, size: Size.icon)))),
           onPressed: Get.back),
       trailing: Clickable(
           borderRadius: Size.iconBig / 2,
@@ -213,8 +212,7 @@ class ProfileHeader extends StatelessWidget {
       ]));
 }
 
-class TrainingCalendar extends GetView<TrainingCalendarController>
-    with CommonDialog {
+class TrainingCalendar extends GetView<TrainingCalendarController> {
   final List<DayType> selected;
 
   TrainingCalendar({@required List<int> selected})

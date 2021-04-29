@@ -2,7 +2,6 @@ import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
-import 'package:hls/components/common_dialog.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/controllers/schedule_controller.dart';
 import 'package:hls/helpers/convert.dart';
@@ -10,8 +9,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/schedule/helpers.dart';
 import 'package:hls/theme/styles.dart';
 
-abstract class ScheduleTab extends GetView<ScheduleController>
-    with CommonDialog {
+abstract class ScheduleTab extends GetView<ScheduleController> {
   Offset get nightAsleepOffset => controller.nightAsleepOffset;
   Offset get dayAsleepOffset => controller.dayAsleepOffset;
   DateTime get asleepTime => controller.asleepTime;

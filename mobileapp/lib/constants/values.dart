@@ -40,6 +40,7 @@ const chatRoute = '/chat';
 const chatResultsRoute = '/chat-results';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
+const scheduleRoute = '/schedule';
 const profileRoute = '/profile';
 const profileFormRoute = '/profile-form';
 const trainingStoryRoute = '/training-story';
@@ -52,7 +53,7 @@ const foodCategoryRoute = '/food-category';
 const foodRoute = '/food';
 
 // styles related
-const elevation = 5.0;
+const elevation = 20.0;
 
 const sliderIndicatorHeightCoefficient = .75;
 const sliderIndicatorWidthCoefficient = 5;
@@ -131,6 +132,15 @@ const panelShadowHorizontalOffset = -2.0;
 const panelShadowVerticalOffset = -2.0;
 const panelShadowOffset =
     const Offset(panelShadowHorizontalOffset, panelShadowVerticalOffset);
+
+const buttonShadowColor = Colors.shadow;
+//const buttonShadowColor = Colors.nutrition;
+const buttonShadowBlurRadius = 5.0;
+const buttonShadowSpreadRadius = .0;
+const buttonShadowHorizontalOffset = .0;
+const buttonShadowVerticalOffset = 3.0;
+const buttonShadowOffset =
+    const Offset(buttonShadowHorizontalOffset, buttonShadowVerticalOffset);
 
 const submenuBlurStrength = 5.0;
 const submenuBlurVerticalCoefficient = 1.5;

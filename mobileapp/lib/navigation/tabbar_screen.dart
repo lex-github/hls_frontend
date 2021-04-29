@@ -8,7 +8,6 @@ import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/screens/nutrition_screen.dart';
-import 'package:hls/screens/schedule_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 final tabbarScaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'tabbarKey');
@@ -30,7 +29,7 @@ class _TabbarScreenState extends State<TabbarScreen>
   final List<Widget> _tabbarBodies = <Widget>[
     HubScreen(),
     NutritionScreen(),
-    ScheduleScreen(),
+    DevelopmentScreen(shouldShowDrawer: true), //ScheduleScreen(),
     DevelopmentScreen(shouldShowDrawer: true)
   ];
 

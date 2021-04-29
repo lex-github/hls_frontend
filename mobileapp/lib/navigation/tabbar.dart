@@ -2,7 +2,9 @@ import 'package:flutter/material.dart' hide Colors, Image, Padding;
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:vector_math/vector_math.dart' hide Colors, Matrix4;
 
@@ -103,7 +105,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     background: Colors.schedule,
                     size: 1.2 * Size.buttonBig,
                     iconSize: .5 * Size.buttonBig,
-                    onPressed: (_) => null)),
+                    onPressed: () => Get.toNamed(scheduleRoute))),
             _buildCentralGroupOffset(
                 degrees: 90,
                 animation: _degTwoTranslationAnimation,
@@ -112,7 +114,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     background: Colors.nutrition,
                     size: 1.2 * Size.buttonBig,
                     iconSize: .4 * Size.buttonBig,
-                    onPressed: (_) => null)),
+                    onPressed: () => showConfirm(title: developmentText))),
             _buildCentralGroupOffset(
                 degrees: 60,
                 animation: _degThreeTranslationAnimation,
@@ -121,7 +123,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     background: Colors.exercise,
                     size: 1.2 * Size.buttonBig,
                     iconSize: .45 * Size.buttonBig,
-                    onPressed: (_) => null)),
+                    onPressed: () => showConfirm(title: developmentText))),
             Container(height: Size.bar, child: Center(child: child))
           ]))
       : Container(

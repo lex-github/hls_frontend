@@ -105,7 +105,7 @@ class Button<T extends FormController> extends GetView<T> {
           : Colors.failure,
       padding: padding ?? Padding.zero,
       icon: icon ?? Icons.arrow_forward_ios,
-      iconSize: iconSize ?? Size.iconSmall,
+      //iconSize: iconSize ?? Size.iconSmall,
       color: color,
       isSelected: controller.isAwaiting,
       isLoading: controller.isAwaiting,

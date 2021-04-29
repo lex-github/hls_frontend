@@ -562,7 +562,7 @@ class Screen extends StatelessWidget {
       ? leading
       : !Get.rawRoute.isFirst
           ? Clickable(
-              child: Icon(Icons.arrow_back_ios, size: Size.iconSmall),
+              child: Icon(Icons.arrow_back, size: Size.icon),
               onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? Clickable(
@@ -577,8 +577,8 @@ class Screen extends StatelessWidget {
               size: Size.iconBig,
               background: Colors.transparent,
               borderColor: Colors.primary,
-              icon: Icons.arrow_back_ios,
-              iconSize: Size.iconTiny,
+              icon: Icons.arrow_back,
+              //iconSize: Size.icon,
               onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
               ? CircularButton(
