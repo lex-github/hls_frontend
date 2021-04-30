@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -74,14 +75,18 @@ class DayTab extends ScheduleTab {
                             size: M.Size(diameter, diameter),
                             painter: CircleDialPainter(
                                 values: controller.dayOuterValues,
-                                color: Colors.black)),
+                                color: Colors.black,
+                                width: iconBorder
+                            )),
                         // inner dial
                         CustomPaint(
                             size: M.Size(innerDiameter, innerDiameter),
                             painter: CircleDialPainter(
                                 values: controller.dayInnerValues,
                                 fontSize: .8 * Size.fontTiny,
-                                color: Colors.black)),
+                                color: Colors.black,
+                                width: iconBorder
+                            )),
                         // outer line
                         if (controller.shouldDayBeDisplayed) ...[
                           Obx(() => controller.shouldDayOuterBeDisplayed
@@ -124,14 +129,14 @@ class DayTab extends ScheduleTab {
                           if (wakeupTime != null)
                             Obx(() => buildIndicator(
                                 dayWakeupOffset, wakeupTime, Colors.scheduleDay,
-                                icon: Icons.wb_sunny)),
+                                icon: FontAwesomeIcons.sun)),
                           if (controller.isTrainingDay)
                             Obx(() => buildIndicator(dayTrainingOffset,
                                 trainingTime, Colors.exercise,
-                                icon: Icons.fitness_center_rounded)),
+                                icon: FontAwesomeIcons.dumbbell)),
                           Obx(() => controller.canRequestSchedule
                               ? CircularButton(
-                                  icon: Icons.check,
+                                  icon: FontAwesomeIcons.check,
                                   isLoading: controller.isAwaiting,
                                   onPressed: _updateDayItemsHandler)
                               : Nothing())

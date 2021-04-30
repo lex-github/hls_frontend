@@ -84,7 +84,7 @@ const iconSmallSize = 15.0;
 const iconSize = 25.0;
 const iconBigSize = 35.0;
 const iconHugeSize = 45.0;
-const tabbarIconSize = 20.0;
+const tabbarIconSize = 30.0;
 
 const barHeight = 75.0;
 const chatBarHeight = 40.0;

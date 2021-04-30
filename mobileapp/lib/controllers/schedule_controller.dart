@@ -73,10 +73,10 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   }
 
   bool get shouldDisplayVerticalLine {
-    if (!isInit) return false;
+    if (asleepTime == null || wakeupTime == null) return false;
 
     // print('-----');
-    // print('different orbit: ${asleepTime.isInner == wakeupTime.isOuter}');
+    // print('different orbit: ${asleepTime.isNightInner == wakeupTime.isNightOuter}');
     // print('woke up after 6: ${wakeupTime.isAfter(sixOclock)}');
     // print('asleep before 6: ${asleepTime.isBefore(sixOclock)}');
 
@@ -102,7 +102,7 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
     coordinate.radius = radius - Size.fontTiny;
     coordinate.degrees =
         (coordinate.degrees / degreesInHour).round() * degreesInHour;
-    final constrainedOffset = coordinate.offset;
+    //final constrainedOffset = coordinate.offset;
 
     // pm adjust
     DateTime time = coordinate.time;
@@ -322,6 +322,164 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
     } else {
       _openedItems.add(i);
       _animationController.forward(from: minRotationAngle);
+    }
+  }
+}
+
+class ScheduleAddController extends Controller
+    with SingleGetTickerProviderMixin {
+  // dial values
+
+  final nightInnerValues = [for (int i = 7; i <= 18; i++) i];
+  final nightOuterValues = [
+    for (int i = 1; i <= 6; i++) i,
+    for (int i = 19; i <= 24; i++) i
+  ];
+
+  final dayInnerValues = [for (int i = 1; i <= 12; i++) i];
+  final dayOuterValues = [for (int i = 13; i <= 24; i++) i];
+
+  // time
+
+  final _asleepTime = Rx<DateTime>(null);
+  final _wakeupTime = Rx<DateTime>(null);
+  final _trainingTime = Rx<DateTime>(null);
+
+  DateTime get asleepTime => _asleepTime.value;
+  DateTime get wakeupTime => _wakeupTime.value;
+  DateTime get trainingTime => _trainingTime.value;
+
+  // state
+
+  final _isNightInit = false.obs;
+  final _isDayInit = false.obs;
+
+  bool get isTrainingDay => AuthService.i.profile.isTrainingDay;
+  bool get isNightInit => _isNightInit.value;
+  bool get isDayInit => _isDayInit.value;
+  bool get isInit => isNightInit && isDayInit;
+
+  bool get shouldDisplayVerticalLine {
+    if (asleepTime == null || wakeupTime == null) return false;
+
+    // print('-----');
+    // print('different orbit: ${asleepTime.isInner == wakeupTime.isOuter}');
+    // print('woke up after 6: ${wakeupTime.isAfter(sixOclock)}');
+    // print('asleep before 6: ${asleepTime.isBefore(sixOclock)}');
+
+    return asleepTime.isNightInner == wakeupTime.isNightOuter ||
+        wakeupTime.isAfter(sixOclock) && asleepTime.isBefore(sixOclock) ||
+        wakeupTime.isAfter(sixOclock) && asleepTime.isAfter(wakeupTime) ||
+        asleepTime.isBefore(sixOclock) && asleepTime.isAfter(wakeupTime);
+  }
+
+  set isNightInit(bool value) => _isNightInit(value);
+  set isDayInit(bool value) => _isDayInit(value);
+
+  // offsets
+
+  Offset get nightAsleepOffset => asleepTime == null
+      ? Offset.zero
+      : offsetFromTime(asleepTime, isNight: true);
+  Offset get nightWakeupOffset => wakeupTime == null
+      ? Offset(diameter - iconSize - 2 * iconBorder, 0)
+      : offsetFromTime(wakeupTime, isNight: true);
+
+  // Offset get dayAsleepOffset =>
+  //   offsetFromTime(suggestedAsleepTime, isNight: false);
+  Offset get dayWakeupOffset => offsetFromTime(wakeupTime, isNight: false);
+  Offset get dayTrainingOffset => offsetFromTime(trainingTime, isNight: false);
+
+  // methods
+
+  Offset offsetFromTime(DateTime time, {bool isNight = true}) {
+    final isDay = !isNight;
+
+    // radial coordinate system
+    final coordinate = RadialCoordinate.fromTime(time);
+    final radius = isNight && time.isNightInner || isDay && time.isDayInner
+        ? innerDiameter / 2
+        : diameter / 2;
+
+    //print('ScheduleController.offsetFromTime time: $time hour: ${time.hour}');
+
+    // constraint
+    coordinate.radius = radius - Size.fontTiny;
+    coordinate.degrees =
+        (coordinate.degrees / degreesInHour).round() * degreesInHour;
+    final offset = coordinate.offset;
+
+    // factoring in indicator size
+    final resultOffset =
+        Offset(offset.dx - iconSize / 2, offset.dy - iconSize / 2);
+
+    return resultOffset;
+  }
+
+  setOffset(Offset offset, {bool isNight = true}) {
+    // radial coordinate system
+    final coordinate = RadialCoordinate.fromOffset(offset);
+
+    // closeness to dials
+    final outerCloseness = (diameter / 2 - coordinate.radius).abs();
+    final innerCloseness = (innerDiameter / 2 - coordinate.radius).abs();
+    final isCloserToInner = innerCloseness < outerCloseness;
+
+    // radius adjust
+    final radius = isCloserToInner ? innerDiameter / 2 : diameter / 2;
+
+    // constraint
+    coordinate.radius = radius - Size.fontTiny;
+    coordinate.degrees =
+        (coordinate.degrees / degreesInHour).round() * degreesInHour;
+    //final constrainedOffset = coordinate.offset;
+
+    // pm adjust
+    DateTime time = coordinate.time;
+    if (isNight &&
+            (isCloserToInner && coordinate.degrees <= 180 ||
+                !isCloserToInner && coordinate.degrees > 180) ||
+        !isNight && !isCloserToInner) time = time.add(Duration(hours: 12));
+    time = DateTime(0, 0, 0, time.hour);
+
+    // print('ScheduleScreen._displayAtOffset'
+    //   '\n\tdegrees: ${coordinate.degrees}'
+    //   '\n\ttime: $time');
+
+    // closeness to asleep/wakeup
+    if (isNight) {
+      final asleepCloseness = (coordinate.offset - nightAsleepOffset).distance;
+      final wakeupCloseness = (coordinate.offset - nightWakeupOffset).distance;
+
+      //final isCloserToAsleep = asleepCloseness < wakeupCloseness;
+      final isCloserToAsleep = asleepTime != null && wakeupTime != null
+          ? asleepCloseness < wakeupCloseness
+          : asleepTime == null;
+
+      // final destinationOffset =
+      //     isCloserToAsleep ? nightAsleepOffset : nightWakeupOffset;
+      final destinationTime = isCloserToAsleep ? _asleepTime : _wakeupTime;
+
+      // destinationOffset.value = Offset(
+      //     constrainedOffset.dx - (iconSize + iconBorder) / 2,
+      //     constrainedOffset.dy - (iconSize + iconBorder) / 2);
+      destinationTime.value = time;
+    } else {
+      final wakeupCloseness = (coordinate.offset - dayWakeupOffset).distance;
+      final trainingCloseness =
+          (coordinate.offset - dayTrainingOffset).distance;
+
+      // final isCloserToWakeup =
+      //     !isTrainingDay || wakeupCloseness < trainingCloseness;
+      final isCloserToWakeup = false;
+      if (isCloserToWakeup) {
+        // _wakeupOffset.value = Offset(
+        //     constrainedOffset.dx - (iconSize + iconBorder) / 2,
+        //     constrainedOffset.dy - (iconSize + iconBorder) / 2);
+        _wakeupTime.value = time;
+      } else {
+        _trainingTime.value = time;
+      }
     }
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/components/buttons.dart';
@@ -35,7 +36,7 @@ class TrainingStoryScreen extends StatelessWidget {
               child: Center(
                   child: Transform.rotate(
                       angle: pi / 4,
-                      child: Icon(Icons.add_circle_outline,
+                      child: Icon(FontAwesomeIcons.plusCircle,
                           size: .8 * Size.icon)))),
           onPressed: Get.back),
       child:

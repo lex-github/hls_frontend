@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Colors, Image, Padding;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' as B;
 import 'package:hls/components/generic.dart';
@@ -51,7 +52,7 @@ class ResetFormScreen<T extends ResetFormController> extends FormScreen<T> {
       fab: Button<T>(
           isCircular: true,
           size: Size.buttonBig,
-          icon: Icons.arrow_forward_ios,
+          icon: FontAwesomeIcons.chevronRight,
           iconSize: Size.iconSmall),
       padding: Padding.zero,
       shouldHaveAppBar: false,

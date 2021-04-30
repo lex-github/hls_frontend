@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart' hide Colors, Image, Padding;
+import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' hide Button;
 import 'package:hls/components/generic.dart';
@@ -29,8 +30,8 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T> {
 
   _avatarHandler() async {
     final source = await showSwitch<ImageSource>(
-        left: Icon(Icons.camera),
-        right: Icon(Icons.list),
+        left: Icon(FontAwesomeIcons.camera),
+        right: Icon(FontAwesomeIcons.images),
         onLeft: () => ImageSource.camera,
         onRight: () => ImageSource.gallery);
     if (source == null) return;
@@ -113,7 +114,7 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T> {
                   child: Hero(
                       tag: 'icon-back',
                       child:
-                          Icon(Icons.arrow_back, size: Size.icon)))),
+                          Icon(FontAwesomeIcons.arrowLeft, size: Size.icon)))),
           onPressed: Get.back),
       child: child);
 

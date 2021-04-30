@@ -4,11 +4,13 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:flutter/material.dart'
+    hide Colors, Icon, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart' hide Svg;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 //import 'package:get/route_manager.dart';
 //import 'package:get/utils.dart';
@@ -209,7 +211,7 @@ class Card extends StatelessWidget {
                                           subject: 'Статья HLS'),
                                       child: Container(
                                           padding: Padding.tiny,
-                                          child: Icon(Icons.share,
+                                          child: Icon(FontAwesomeIcons.shareAlt,
                                               color: Colors.secondaryText)))
                                 ]))
                       ])))));
@@ -289,6 +291,20 @@ class HLBigSpace extends SizedBox {
   HLBigSpace() : super(width: Size.widthLimited(horizontalBigPadding));
 }
 
+class Icon extends StatelessWidget {
+  final IconData icon;
+  final double size;
+  final Color color;
+
+  /// Creates an icon.
+  ///
+  /// The [size] and [color] default to the value given by the current [IconTheme].
+  const Icon(this.icon, {Key key, this.size, this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FaIcon(icon, size: size, color: color);
+}
+
 /// Widget which displays image
 ///
 /// Different widgets will be used to display image based on value of [image] and [title]. Image is
@@ -353,7 +369,7 @@ class Image extends StatelessWidget {
       width: width,
       height: height,
       color: Colors.failure,
-      child: Icon(Icons.error, color: Colors.white));
+      child: Icon(FontAwesomeIcons.exclamationCircle, color: Colors.white));
 
   @override
   Widget build(_) => image != null
@@ -561,13 +577,15 @@ class Screen extends StatelessWidget {
   Widget _buildLeading() => leading != null
       ? leading
       : !Get.rawRoute.isFirst
-          ? Clickable(
-              child: Icon(Icons.arrow_back, size: Size.icon),
-              onPressed: onBackPressed ?? Get.back)
+          ? Center(
+              child: Clickable(
+                  child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon),
+                  onPressed: onBackPressed ?? Get.back))
           : drawer != null || shouldShowDrawer
-              ? Clickable(
-                  child: Icon(Icons.menu, size: Size.icon),
-                  onPressed: tabbarScaffoldKey.currentState.openDrawer)
+              ? Center(
+                  child: Clickable(
+                      child: Icon(FontAwesomeIcons.bars, size: Size.icon),
+                      onPressed: tabbarScaffoldKey.currentState.openDrawer))
               : null;
 
   Widget _buildLeadingButton() => leading != null
@@ -577,7 +595,7 @@ class Screen extends StatelessWidget {
               size: Size.iconBig,
               background: Colors.transparent,
               borderColor: Colors.primary,
-              icon: Icons.arrow_back,
+              icon: FontAwesomeIcons.arrowLeft,
               //iconSize: Size.icon,
               onPressed: onBackPressed ?? Get.back)
           : drawer != null || shouldShowDrawer
@@ -585,7 +603,7 @@ class Screen extends StatelessWidget {
                   size: Size.iconBig,
                   background: Colors.transparent,
                   borderColor: Colors.primary,
-                  icon: Icons.menu,
+                  icon: FontAwesomeIcons.bars,
                   iconSize: Size.iconTiny,
                   onPressed: () => Scaffold.of(Get.context).openDrawer())
               : null;
@@ -629,7 +647,7 @@ class Screen extends StatelessWidget {
                                   preferredSize: M.Size.fromHeight(height ??
                                       Size.bar), // here the desired height
                                   child: AppBar(
-                                    backgroundColor: Colors.background,
+                                      backgroundColor: Colors.background,
                                       toolbarHeight: Size.bar,
                                       title: title == null
                                           ? null

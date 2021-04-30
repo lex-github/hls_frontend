@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -143,7 +144,7 @@ class ChatScreen<Controller extends ChatController>
                                   height: Size.iconSmall,
                                   child: Loading()))
                           : Clickable(
-                              child: Icon(Icons.send,
+                              child: Icon(FontAwesomeIcons.paperPlane,
                                   color: Colors.primary, size: Size.iconSmall),
                               onPressed: formController.submitHandler))
                   : Nothing())
@@ -198,7 +199,7 @@ class ChatScreen<Controller extends ChatController>
                   size: Size.iconBig,
                   background: Colors.transparent,
                   borderColor: Colors.primary,
-                  icon: Icons.timer,
+                  icon: FontAwesomeIcons.clock,
                   iconSize: Size.iconTiny,
                   onPressed: _timerHandler))));
 
@@ -211,7 +212,7 @@ class ChatScreen<Controller extends ChatController>
                   size: Size.iconBig,
                   background: Colors.transparent,
                   borderColor: Colors.primary,
-                  icon: Icons.check,
+                  icon: FontAwesomeIcons.check,
                   iconSize: Size.iconTiny,
                   onPressed: Get.find<ChatNavigationController>().next))));
 
@@ -249,14 +250,14 @@ class ChatScreen<Controller extends ChatController>
             padding: Padding.zero,
             leading: Obx(() => !Get.find<ChatNavigationController>().canGoBack
                 ? Clickable(
-                    child: Icon(Icons.logout, size: Size.icon),
+                    child: Icon(FontAwesomeIcons.signOutAlt, size: Size.icon),
                     onPressed: _logoutHandler)
                 : Clickable(
-                    child: Icon(Icons.arrow_back, size: Size.icon),
+                    child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon),
                     onPressed: _skipHandler)),
             trailing: Obx(() => !Get.find<ChatNavigationController>().canGoBack
                 ? Clickable(
-                    child: Icon(Icons.arrow_forward, size: Size.icon),
+                    child: Icon(FontAwesomeIcons.arrowRight, size: Size.icon),
                     onPressed: _skipHandler)
                 : Nothing()),
             title: Column(
@@ -326,7 +327,7 @@ class ChatScreen<Controller extends ChatController>
                                   right: Size.horizontal,
                                   child: CircularButton(
                                       size: Size.iconBig,
-                                      icon: Icons.check,
+                                      icon: FontAwesomeIcons.check,
                                       iconSize: Size.iconSmall,
                                       onPressed: () => controller
                                           .post(controller.checkboxSelection)))

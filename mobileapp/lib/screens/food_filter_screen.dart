@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart' as C;
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -152,7 +153,7 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
                               horizontal: Size.horizontal),
                           child: Transform.rotate(
                               angle: pi / 4,
-                              child: Icon(Icons.add_circle_outline,
+                              child: Icon(FontAwesomeIcons.plusCircle,
                                   size: Size.iconSmall)))))
           ]))(
       controller.getFilterFrom(data.key), controller.getFilterTo(data.key)));
@@ -171,7 +172,7 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
                   Expanded(child: HorizontalSpace()),
                   Obx(() => Transform.rotate(
                       angle: controller.getRotationAngle(title),
-                      child: Icon(Icons.arrow_forward_ios,
+                      child: Icon(FontAwesomeIcons.chevronRight,
                           color: Colors.disabled, size: Size.iconSmall)))
                 ]),
                 Obx(() => SizeTransition(

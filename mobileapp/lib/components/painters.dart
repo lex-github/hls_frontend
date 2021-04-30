@@ -14,10 +14,14 @@ class CircleDialPainter extends CustomPainter {
   final List<int> values;
   final double offset;
   final double fontSize;
+  final double width;
+  final int numToOffset;
 
   CircleDialPainter(
       {@required this.color,
       @required this.values,
+      @required this.width,
+      this.numToOffset,
       this.offset = 0,
       this.fontSize});
 
@@ -28,7 +32,7 @@ class CircleDialPainter extends CustomPainter {
 
     final paint = Paint()
       ..isAntiAlias = true
-      ..strokeWidth = Size.border * 3
+      ..strokeWidth = width
       ..color = color
       ..style = PaintingStyle.stroke;
 
@@ -37,7 +41,8 @@ class CircleDialPainter extends CustomPainter {
     final textPainter = TextPainter(
         text: TextSpan(
             text: '',
-            style: TextStyle.primary.copyWith(fontSize: fontSize ?? Size.fontTiny)),
+            style: TextStyle.primary
+                .copyWith(fontSize: fontSize ?? Size.fontTiny)),
         textDirection: TextDirection.ltr);
 
     final stepAngle = 2 * pi / values.length;
@@ -54,7 +59,11 @@ class CircleDialPainter extends CustomPainter {
       final offset = offsetFromAngle(
           stepAngle * stepIndex - pi / 2 + this.offset, textRadius,
           width: size.width / 2, height: size.height / 2);
-      canvas.translate(offset.dx - textPainter.width / 2,
+      final dx = value == numToOffset ? textPainter.width + width : 0;
+
+      print('$dx');
+
+      canvas.translate(offset.dx - textPainter.width / 2 + dx,
           offset.dy - textPainter.height / 2);
 
       textPainter.paint(canvas, Offset.zero);
@@ -64,7 +73,7 @@ class CircleDialPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_) => false;
+  bool shouldRepaint(CircleDialPainter old) => numToOffset != old.numToOffset;
 }
 
 // class NightPainter extends CustomPainter {
@@ -99,7 +108,10 @@ class SectorPainter extends CustomPainter {
   final double width;
 
   SectorPainter(
-      {@required this.color, @required this.endAngle, this.startAngle = .0, this.width});
+      {@required this.color,
+      @required this.endAngle,
+      this.startAngle = .0,
+      this.width});
 
   @override
   void paint(Canvas canvas, M.Size size) {

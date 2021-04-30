@@ -24,18 +24,17 @@ void main() => initServices().then((_) => runApp(HLS()));
 Future initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await GetStorage.init();
-
   if (Platform.isWindows || Platform.isMacOS)
     //DesktopWindow.setWindowSize(Size(desktopWindowWidth, desktopWindowHeight));
-    await setWindowMaxSize(Size(desktopWindowWidth, desktopWindowHeight));
+    setWindowMaxSize(Size(desktopWindowWidth, desktopWindowHeight));
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await GetStorage.init();
   await initializeDateFormatting(null, null);
+
   await Get.put(SettingsService()).init();
   await Get.put(AnalyticsService()).init();
   await Get.put(HttpService()).init();
-
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
 class HLS extends StatelessWidget {

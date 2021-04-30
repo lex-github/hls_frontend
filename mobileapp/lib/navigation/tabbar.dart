@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart' hide Colors, Image, Padding;
+import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -105,7 +106,10 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     background: Colors.schedule,
                     size: 1.2 * Size.buttonBig,
                     iconSize: .5 * Size.buttonBig,
-                    onPressed: () => Get.toNamed(scheduleRoute))),
+                    onPressed: () {
+                      Get.toNamed(scheduleRoute);
+                      _controller.toggleSubmenu();
+                    })),
             _buildCentralGroupOffset(
                 degrees: 90,
                 animation: _degTwoTranslationAnimation,
@@ -138,7 +142,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
               alignment: Alignment.center,
               transform:
                   Matrix4.rotationZ(radians(_centralRotationAnimation.value)),
-              child: Icon(Icons.add,
+              child: Icon(FontAwesomeIcons.plus,
                   color: Colors.icon, size: Size.buttonBig * .5))));
 
   Widget _buildItem(int index, bool isSelected) {
@@ -181,16 +185,17 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     spreadRadius: panelShadowSpreadRadius,
                     offset: -panelShadowOffset)
               ]),
-              padding: EdgeInsets.symmetric(horizontal: Size.horizontalSmall),
+              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
               height: Size.bar,
               child: Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         for (int index = 0;
                             index < widget.items.length;
                             index++) ...[
                           _buildItem(index, _controller.index == index),
-                          if (index == 1) _buildCentralItem()
+                          if (index == widget.items.length / 2 - 1)
+                            _buildCentralItem()
                         ]
                       ]))));
 }

@@ -18,8 +18,8 @@ final twelveOclock = DateTime(0, 0, 0, 12);
 
 final diameter = Size.screenWidth / 1.4;
 final innerDiameter = .6 * diameter;
-final iconBorder = Size.border * 2.25;
-final iconSize = Size.iconBig;
+final iconBorder = 4 * Size.border;
+final iconSize = 1.1 * Size.iconHuge;
 final iconSmallSize = .3 * iconSize;
 
 extension DateTimeExtension on DateTime {

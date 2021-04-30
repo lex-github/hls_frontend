@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -76,14 +77,14 @@ class ProfileScreen extends StatelessWidget {
                   child: Hero(
                       tag: 'icon-back',
                       child:
-                          Icon(Icons.arrow_back, size: Size.icon)))),
+                          Icon(FontAwesomeIcons.arrowLeft, size: Size.icon)))),
           onPressed: Get.back),
       trailing: Clickable(
           borderRadius: Size.iconBig / 2,
           child: Container(
               width: Size.iconBig,
               height: Size.iconBig,
-              child: Center(child: Icon(Icons.edit, size: .9 * Size.icon))),
+              child: Center(child: Icon(FontAwesomeIcons.edit, size: .9 * Size.icon))),
           onPressed: _editHandler),
       child: Obx(() => SingleChildScrollView(
               child: Column(children: [
@@ -200,7 +201,7 @@ class ProfileHeader extends StatelessWidget {
                                     width: Size.avatar,
                                     height: Size.avatar,
                                     child: showDefaultAvatar
-                                        ? Icon(Icons.person,
+                                        ? Icon(FontAwesomeIcons.user,
                                             color: Colors.light,
                                             size: .65 * Size.avatar)
                                         : Nothing()))

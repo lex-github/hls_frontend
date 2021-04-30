@@ -7,7 +7,6 @@ import 'package:hls/navigation/drawer.dart';
 import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
-import 'package:hls/screens/nutrition_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 final tabbarScaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'tabbarKey');
@@ -28,16 +27,16 @@ class _TabbarScreenState extends State<TabbarScreen>
 
   final List<Widget> _tabbarBodies = <Widget>[
     HubScreen(),
-    NutritionScreen(),
+    //NutritionScreen(),
     DevelopmentScreen(shouldShowDrawer: true), //ScheduleScreen(),
-    DevelopmentScreen(shouldShowDrawer: true)
+    //DevelopmentScreen(shouldShowDrawer: true)
   ];
 
   final List<AnimatedBottomNavigationBarItem> _tabbarItems = [
     AnimatedBottomNavigationBarItem(title: 'icons/dots'),
-    AnimatedBottomNavigationBarItem(title: 'icons/cutlery'),
+    //AnimatedBottomNavigationBarItem(title: 'icons/cutlery'),
     AnimatedBottomNavigationBarItem(title: 'icons/list'),
-    AnimatedBottomNavigationBarItem(title: 'icons/barbell'),
+    //AnimatedBottomNavigationBarItem(title: 'icons/barbell'),
   ];
 
   Widget _buildBar({bool isSubmenuVisible = false}) => Tabbar(

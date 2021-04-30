@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -64,7 +65,7 @@ class AppDrawer extends StatelessWidget {
                                                   Colors.light.withOpacity(.25),
                                               width: 1.15 * Size.buttonBig,
                                               height: 1.15 * Size.buttonBig,
-                                              child: Icon(Icons.person,
+                                              child: Icon(FontAwesomeIcons.user,
                                                   color: Colors.light,
                                                   size: .65 *
                                                       1.15 *
@@ -84,7 +85,7 @@ class AppDrawer extends StatelessWidget {
                                 right: Size.horizontal, bottom: Size.vertical),
                             child: Hero(
                                 tag: 'icon-back',
-                                child: Icon(Icons.arrow_forward,
+                                child: Icon(FontAwesomeIcons.arrowRight,
                                     size: Size.icon, color: Colors.light)))
                       ]))
             ]));
@@ -126,27 +127,27 @@ class AppDrawer extends StatelessWidget {
             child: ListView(padding: EdgeInsets.zero, children: <Widget>[
               _buildHeader(),
               _buildItem(
-                  icon: Icons.favorite,
+                  icon: FontAwesomeIcons.heart,
                   title: drawerFavouriteLabel,
                   onPressed: _devHandler),
               _buildItem(
-                  icon: Icons.bar_chart,
+                  icon: FontAwesomeIcons.chartBar,
                   title: drawerStatisticsLabel,
                   onPressed: _devHandler),
               _buildItem(
-                  icon: Icons.camera_alt,
+                  icon: FontAwesomeIcons.camera,
                   title: drawerMeasuresLabel,
                   onPressed: _devHandler),
               _buildItem(
-                  icon: 'icons/ruler',
+                  icon: FontAwesomeIcons.tools,
                   title: drawerInstrumentsLabel,
                   onPressed: _devHandler),
               _buildItem(
-                  icon: Icons.settings,
+                  icon: FontAwesomeIcons.cog,
                   title: drawerSettingsLabel,
                   onPressed: _devHandler),
               _buildItem(
-                  icon: Icons.logout,
+                  icon: FontAwesomeIcons.signOutAlt,
                   title: drawerLogoutLabel,
                   color: Colors.failure,
                   onPressed: () {

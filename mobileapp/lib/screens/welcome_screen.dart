@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -37,7 +38,7 @@ class WelcomeScreen<Controller extends WelcomeController>
       dispose: (_) => Get.delete<Controller>(),
       builder: (_) => Screen(
           fab: CircularButton(
-              icon: Icons.arrow_forward_ios,
+              icon: FontAwesomeIcons.chevronRight,
               iconSize: Size.iconSmall,
               onPressed: _proceedHandler),
           padding: Padding.zero,

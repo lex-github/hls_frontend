@@ -4,8 +4,9 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart'
-    hide Card, Colors, Image, Padding, Size, TextStyle;
+    hide Card, Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/components/buttons.dart';
@@ -158,7 +159,7 @@ class HubScreen extends GetView<HubController> {
       title: hubScreenTitle,
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
-          child: Icon(Icons.notifications)),
+          child: Icon(FontAwesomeIcons.bell)),
       child: SingleChildScrollView(
           child: Column(children: [
         VerticalBigSpace(),

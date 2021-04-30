@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -26,7 +27,7 @@ class StoryScreen extends GetView<FoodCategoryController> {
               width: Size.iconBig,
               height: Size.iconBig,
               child: Center(
-                  child: Icon(Icons.arrow_back, size: Size.icon))),
+                  child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon))),
           onPressed: Get.back),
       child: DefaultTabController(
           length: stories.length,

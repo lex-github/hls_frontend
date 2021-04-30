@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -48,7 +49,7 @@ class NutritionScreen extends GetView<NutritionController> {
       borderColor: Colors.disabled,
       onPressed: _filterHandler,
       child: Obx(() => Row(children: [
-            Icon(Icons.filter_alt_rounded, color: Colors.disabled),
+            Icon(FontAwesomeIcons.filter, color: Colors.disabled),
             HorizontalSmallSpace(),
             // TextPrimaryHint(nutritionFilterLabel),
             TextSecondary(nutritionFilterLabel),
@@ -92,7 +93,7 @@ class NutritionScreen extends GetView<NutritionController> {
             padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
             child: Input<SearchFormController>(
                 field: 'search',
-                leading: Icon(Icons.search,
+                leading: Icon(FontAwesomeIcons.search,
                     color: Colors.disabled, size: .9 * Size.icon))),
         VerticalMediumSpace(),
         // ConstrainedBox(

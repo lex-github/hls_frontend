@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -55,7 +56,7 @@ class VideoScreen extends GetView<FoodCategoryController> {
                   top: Size.vertical,
                   right: Size.horizontal,
                   child: CircularButton(
-                      child: Icon(Icons.arrow_back, size: Size.icon),
+                      child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon),
                       onPressed: Get.back))
             ]);
 

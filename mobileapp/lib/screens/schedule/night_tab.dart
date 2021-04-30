@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
@@ -37,7 +38,7 @@ class NightTab extends ScheduleTab {
                           size: M.Size(diameter, diameter),
                           painter: CircleDialPainter(
                               values: controller.nightOuterValues,
-                              color: Colors.black)),
+                              color: Colors.black, width: iconBorder)),
                       CustomPaint(
                           size: M.Size(innerDiameter, innerDiameter),
                           painter: CircleDialPainter(
@@ -45,7 +46,7 @@ class NightTab extends ScheduleTab {
                               offset: pi,
                               //- 2 * pi / controller.innerValues.length,
                               fontSize: .8 * Size.fontTiny,
-                              color: Colors.black)),
+                              color: Colors.black, width: iconBorder)),
                       Obx(() => asleepTime != null &&
                               wakeupTime != null &&
                               (asleepTime.isNightOuter ||
@@ -127,10 +128,10 @@ class NightTab extends ScheduleTab {
                           : Nothing()),
                       Obx(() => buildIndicator(
                           nightAsleepOffset, asleepTime, Colors.scheduleNight,
-                          icon: Icons.nightlight_round)),
+                          icon: FontAwesomeIcons.sun)),
                       Obx(() => buildIndicator(
                           nightWakeupOffset, wakeupTime, Colors.scheduleDay,
-                          icon: Icons.wb_sunny))
+                          icon: FontAwesomeIcons.moon))
                     ]))),
         VerticalSpace(),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [

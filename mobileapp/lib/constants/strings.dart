@@ -160,10 +160,14 @@ const scheduleNightTabTitle = 'Ночь';
 const scheduleDayTabTitle = 'День';
 const scheduleNightText =
     'Отметьте на суточных часах время сна. Отбой и подъем.';
+const scheduleNightText1 = 'Отметьте на суточных часах, во сколько удалось заснуть';
+const scheduleNightText2 = 'Отметьте на суточных часах, во сколько был подъём';
+const scheduleNightText3 = 'Скорректируйте значения и подтвердите выбор';
 //const scheduleSwitchTitle = 'Выберите время отбоя/подъема';
 const scheduleDayText =
     'Отметьте предполагаемое время тренировки на суточных часах, '
     'и приложение выстроит вам оптимальный режим дня и питания.';
+const scheduleDayText1 = 'Сегодня есть тренировка, во сколько начнём?';
 const scheduleAsleepLabel = 'отбой';
 const scheduleAwakeLabel = 'подъем';
 const scheduleMainFoodLabel = 'основная еда';

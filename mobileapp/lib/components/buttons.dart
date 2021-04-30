@@ -2,9 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
-    hide AnimatedCrossFade, Colors, CrossFadeState, Image, Padding, TextStyle;
+    hide
+        AnimatedCrossFade,
+        Colors,
+        CrossFadeState,
+        Icon,
+        Image,
+        Padding,
+        TextStyle;
 import 'package:flutter/material.dart' as M;
 import 'package:flutter/rendering.dart' hide TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/animated_cross_fade.dart';
 import 'package:hls/components/generic.dart';
@@ -32,6 +40,7 @@ class CircularButton extends Button {
     icon,
     iconSize,
     bool isLoading = false,
+    bool isDisabled = false,
   }) : super(
             onPressed: onPressed,
             onLongPressed: onLongPressed,
@@ -39,6 +48,7 @@ class CircularButton extends Button {
             isSwitch: isLoading,
             isSelected: isLoading,
             isLoading: isLoading,
+            isDisabled: isDisabled,
             size: size ?? Size.buttonBig,
             padding: Padding.zero,
             color: color,
@@ -172,7 +182,7 @@ class Button extends StatelessWidget {
               child: _buildChild(),
               isCircular: isCircular),
           secondChild: ButtonOuter(
-              background: background ?? (isDisabled ? Colors.disabled : null),
+              background: isDisabled ? Colors.disabled : background,
               borderColor: borderColor,
               padding: padding,
               size: size,
@@ -422,7 +432,7 @@ class ListItemButton extends Button {
                   ],
                   TextPrimaryHint(title),
                   Expanded(child: HorizontalSpace()),
-                  Icon(Icons.arrow_forward_ios,
+                  Icon(FontAwesomeIcons.chevronRight,
                       color: Colors.disabled, size: Size.iconSmall)
                 ]),
             isSelected: isSelected,

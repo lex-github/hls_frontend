@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -63,7 +64,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
           if (item.canExpand)
           Obx(() => Transform.rotate(
               angle: controller.getRotationAngle(item),
-              child: Icon(Icons.arrow_forward_ios,
+              child: Icon(FontAwesomeIcons.chevronRight,
                   color: Colors.disabled, size: Size.iconSmall))),
         ]),
         if (item.canExpand)
@@ -92,7 +93,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
           SizedBox(height: Size.iconBig),
         Expanded(child: TextPrimaryHint(item.title)),
         HorizontalSpace(),
-        Icon(Icons.arrow_forward_ios,
+        Icon(FontAwesomeIcons.chevronRight,
             color: Colors.disabled, size: Size.iconSmall)
       ]));
 

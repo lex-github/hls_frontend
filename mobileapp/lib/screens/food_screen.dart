@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Size, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -37,7 +38,7 @@ class FoodScreen extends GetView<FoodController> {
           Expanded(child: HorizontalSpace()),
           Obx(() => Transform.rotate(
               angle: controller.getRotationAngle(title),
-              child: Icon(Icons.arrow_forward_ios,
+              child: Icon(FontAwesomeIcons.chevronRight,
                   color: Colors.disabled, size: Size.iconSmall))),
         ]),
         Obx(() => SizeTransition(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Colors, Image, Padding, TextStyle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
@@ -69,7 +70,7 @@ class SelectionScreen<Type extends GenericEnum> extends StatelessWidget {
           title: selectionScreenTitle,
           trailing: isMultiple
               ? Button(
-                  icon: Icons.error,
+                  icon: FontAwesomeIcons.exclamationCircle,
                   size: Size.iconBig,
                   //isDisabled: model.selection == null,
                   onPressed: () => _submitHandler(controller))
