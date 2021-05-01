@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:hls/theme/styles.dart';
 
 const isDebug = true;
-const version = '0.2.2.2';
+const version = '0.2.2.3';
 
 // logic
 //const maxTrainings = 3;

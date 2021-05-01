@@ -61,8 +61,6 @@ class CircleDialPainter extends CustomPainter {
           width: size.width / 2, height: size.height / 2);
       final dx = value == numToOffset ? textPainter.width + width : 0;
 
-      print('$dx');
-
       canvas.translate(offset.dx - textPainter.width / 2 + dx,
           offset.dy - textPainter.height / 2);
 

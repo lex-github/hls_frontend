@@ -12,7 +12,9 @@ import 'package:hls/constants/strings.dart';
 import 'package:hls/controllers/schedule_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/screens/schedule/day_tab.dart';
 import 'package:hls/screens/schedule/helpers.dart';
+import 'package:hls/screens/schedule/night_tab.dart';
 import 'package:hls/theme/styles.dart';
 
 class ScheduleAddScreen extends GetView<ScheduleAddController> {
@@ -59,14 +61,26 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
   }
 
   _onSubmit() async {
-    if (!controller.isNightInit) {
+    if (controller.isAwaiting) {
+      return showConfirm(title: requestWaitingText);
+    }
+
+    // proceed past night dial
+    if (controller.isTrainingDay && !controller.isNightInit) {
       controller.isNightInit = true;
       return;
     }
 
-    return showConfirm(title: developmentText);
+    // send request
+    if (!controller.isNightInit || !controller.isDayInit) {
+      if (!await controller.updateDayItems())
+        return showConfirm(title: controller.message ?? errorGenericText);
 
-    controller.isDayInit = true;
+      controller.isNightInit = true;
+      controller.isDayInit = true;
+    }
+
+    return showConfirm(title: errorGenericText);
   }
 
   // builders
@@ -126,10 +140,7 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
               tabs: [Text(scheduleNightTabTitle), Text(scheduleDayTabTitle)]),
           child: TabBarView(
               //physics: NeverScrollableScrollPhysics(),
-              children: [
-                Container(color: Colors.scheduleNight),
-                Container(color: Colors.scheduleDay)
-              ])));
+              children: [NightTab(), DayTab()])));
 
   Widget _buildNight() =>
       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -156,9 +167,10 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                               values: controller.nightOuterValues,
                               color: Colors.black,
                               width: iconBorder,
-                              numToOffset: controller.shouldDisplayVerticalLine
-                                  ? 6
-                                  : 0))),
+                              numToOffset:
+                                  controller.shouldNightDisplayVerticalLine
+                                      ? 6
+                                      : 0))),
                       CustomPaint(
                           size: M.Size(innerDiameter, innerDiameter),
                           painter: CircleDialPainter(
@@ -239,7 +251,7 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                                     endAngle: 2 * pi,
                                   ))
                               : Nothing()),
-                      Obx(() => controller.shouldDisplayVerticalLine
+                      Obx(() => controller.shouldNightDisplayVerticalLine
                           ? Positioned(
                               bottom: .0,
                               child: Container(
@@ -316,6 +328,7 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
           : Screen(
               title: scheduleScreenTitle,
               fab: CircularButton(
+                  isLoading: controller.isAwaiting,
                   isDisabled: !controller.isNightInit &&
                           (asleepTime == null || wakeupTime == null) ||
                       controller.isNightInit &&
@@ -324,7 +337,11 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                   icon: FontAwesomeIcons.check,
                   iconSize: Size.iconSmall,
                   onPressed: _onSubmit),
-              child: !controller.isNightInit ? _buildNight() : _buildDay()));
+              child: controller.isAwaiting && false
+                  ? LoadingPage()
+                  : !controller.isNightInit
+                      ? _buildNight()
+                      : _buildDay()));
 
   // @override
   // Widget build(_) => GetBuilder(

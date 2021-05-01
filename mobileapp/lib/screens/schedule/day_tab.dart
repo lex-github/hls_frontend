@@ -49,111 +49,55 @@ class DayTab extends ScheduleTab {
   Widget build(_) => SingleChildScrollView(
       padding: Padding.content,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //if (!controller.shouldDayBeDisplayed)
-        TextPrimary(scheduleDayText,
-            weight: FontWeight.w400, align: TextAlign.center),
-        VerticalBigSpace(),
-        Builder(
-            builder: (context) => GestureDetector(
-                onTapUp: (details) =>
-                    controller.isInit && !controller.shouldDayBeDisplayed
-                        ? onTap(context, details)
-                        : null,
-                onPanUpdate: (details) =>
-                    controller.isInit && !controller.shouldDayBeDisplayed
-                        ? onDrag(context, details)
-                        : null,
-                child: Obx(() {
-                  //print('DayTab.build ${controller.dayItems}');
-
-                  return Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        // outer dial
-                        CustomPaint(
-                            size: M.Size(diameter, diameter),
-                            painter: CircleDialPainter(
-                                values: controller.dayOuterValues,
-                                color: Colors.black,
-                                width: iconBorder
-                            )),
-                        // inner dial
-                        CustomPaint(
-                            size: M.Size(innerDiameter, innerDiameter),
-                            painter: CircleDialPainter(
-                                values: controller.dayInnerValues,
-                                fontSize: .8 * Size.fontTiny,
-                                color: Colors.black,
-                                width: iconBorder
-                            )),
-                        // outer line
-                        if (controller.shouldDayBeDisplayed) ...[
-                          Obx(() => controller.shouldDayOuterBeDisplayed
-                              ? CustomPaint(
-                                  size: M.Size(diameter, diameter),
-                                  painter: SectorPainter(
-                                      width: iconBorder,
-                                      color: Colors.scheduleDay,
-                                      startAngle: controller.dayOuterStartAngle,
-                                      endAngle: controller.dayOuterEndAngle))
-                              : Nothing()),
-                          // inner line
-                          Obx(() => controller.shouldDayInnerBeDisplayed
-                              ? CustomPaint(
-                                  size: M.Size(innerDiameter, innerDiameter),
-                                  painter: SectorPainter(
-                                      width: iconBorder,
-                                      color: Colors.scheduleDay,
-                                      startAngle: controller.dayInnerStartAngle,
-                                      endAngle: controller.dayInnerEndAngle))
-                              : Nothing()),
-                          // connection line
-                          Obx(() => controller.shouldDayDisplayVerticalLine
-                              ? Positioned(
-                                  top: .0,
-                                  child: Container(
-                                      color: Colors.scheduleDay,
-                                      width: iconBorder,
-                                      height: (diameter - innerDiameter) / 2))
-                              : Nothing()),
-                          // points
-                          if (!controller.dayItems.isNullOrEmpty)
-                            for (final item in controller.dayItems)
-                              buildIndicator(item.offset, item.time, item.color,
-                                  isSmall: item.isSmall)
-                        ],
-                        // Obx(() => buildIndicator(
-                        //     dayAsleepOffset, asleepTime, Colors.scheduleNight)),
-                        if (!controller.shouldDayBeDisplayed) ...[
-                          if (wakeupTime != null)
-                            Obx(() => buildIndicator(
-                                dayWakeupOffset, wakeupTime, Colors.scheduleDay,
-                                icon: FontAwesomeIcons.sun)),
-                          if (controller.isTrainingDay)
-                            Obx(() => buildIndicator(dayTrainingOffset,
-                                trainingTime, Colors.exercise,
-                                icon: FontAwesomeIcons.dumbbell)),
-                          Obx(() => controller.canRequestSchedule
-                              ? CircularButton(
-                                  icon: FontAwesomeIcons.check,
-                                  isLoading: controller.isAwaiting,
-                                  onPressed: _updateDayItemsHandler)
-                              : Nothing())
-                        ],
-                        if (!controller.isInit)
-                          BackdropFilter(
-                              filter: ImageFilter.blur(
-                                  sigmaX: submenuBlurStrength,
-                                  sigmaY: submenuBlurStrength *
-                                      submenuBlurVerticalCoefficient),
-                              child: Container(
-                                  width: diameter,
-                                  child: TextPrimary(
-                                      'Выберите время отбоя и подъема на предыдущей диаграмме',
-                                      align: TextAlign.center)))
-                      ]);
-                }))),
+        Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
+          // outer dial
+          CustomPaint(
+              size: M.Size(diameter, diameter),
+              painter: CircleDialPainter(
+                  values: controller.dayOuterValues,
+                  color: Colors.black,
+                  width: iconBorder)),
+          // inner dial
+          CustomPaint(
+              size: M.Size(innerDiameter, innerDiameter),
+              painter: CircleDialPainter(
+                  values: controller.dayInnerValues,
+                  fontSize: .8 * Size.fontTiny,
+                  color: Colors.black,
+                  width: iconBorder)),
+          // outer line
+          if (controller.shouldDayOuterBeDisplayed)
+            CustomPaint(
+                size: M.Size(diameter, diameter),
+                painter: SectorPainter(
+                    width: iconBorder,
+                    color: Colors.scheduleDay,
+                    startAngle: controller.dayOuterStartAngle,
+                    endAngle: controller.dayOuterEndAngle)),
+          // inner line
+          if (controller.shouldDayInnerBeDisplayed)
+            CustomPaint(
+                size: M.Size(innerDiameter, innerDiameter),
+                painter: SectorPainter(
+                    width: iconBorder,
+                    color: Colors.scheduleDay,
+                    startAngle: controller.dayInnerStartAngle,
+                    endAngle: controller.dayInnerEndAngle)),
+          // connection line
+          controller.shouldDayDisplayVerticalLine
+              ? Positioned(
+                  top: .0,
+                  child: Container(
+                      color: Colors.scheduleDay,
+                      width: iconBorder,
+                      height: (diameter - innerDiameter) / 2))
+              : Nothing(),
+          // points
+          if (!controller.dayItems.isNullOrEmpty)
+            for (final item in controller.dayItems)
+              buildIndicator(item.offset, item.time, item.color,
+                  isSmall: item.isSmall)
+        ]),
         VerticalSpace(),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           buildLegend(Colors.scheduleDay, scheduleAwakeLabel),
@@ -173,7 +117,9 @@ class DayTab extends ScheduleTab {
         buildAccordion(scheduleDayTriviaTitle1,
             child: Column(children: [
               for (final item in controller.dayItems) ...[
-                Container(padding: EdgeInsets.symmetric(horizontal: Size.horizontal), child: ScheduleItem(data: item)),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+                    child: ScheduleItem(data: item)),
                 if (item != controller.dayItems.last) VerticalSmallSpace()
               ]
             ]))

@@ -10,7 +10,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/screens/schedule/helpers.dart';
 import 'package:hls/theme/styles.dart';
 
-abstract class ScheduleTab extends GetView<ScheduleController> {
+abstract class ScheduleTab extends GetView<ScheduleAddController> {
   Offset get nightAsleepOffset => controller.nightAsleepOffset;
   Offset get dayAsleepOffset => controller.dayAsleepOffset;
   DateTime get asleepTime => controller.asleepTime;
