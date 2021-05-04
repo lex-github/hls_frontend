@@ -28,9 +28,7 @@ Map<String, dynamic> _$ScheduleDataToJson(ScheduleData instance) =>
 
 ScheduleItemData _$ScheduleItemDataFromJson(Map<String, dynamic> json) {
   return ScheduleItemData()
-    ..id = toInt(json['id'])
-    ..title = json['title'] as String
-    ..imageUrl = json['imageUrl'] as String
+    ..id = json['id'] as String
     ..type = ScheduleItemType.fromJsonValue(json['kind'])
     ..time = toTime(json['plannedAt'] as String);
 }
@@ -38,8 +36,6 @@ ScheduleItemData _$ScheduleItemDataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ScheduleItemDataToJson(ScheduleItemData instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'title': instance.title,
-    'imageUrl': instance.imageUrl,
   };
 
   void writeNotNull(String key, dynamic value) {

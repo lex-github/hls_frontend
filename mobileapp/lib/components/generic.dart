@@ -575,7 +575,7 @@ class Screen extends StatelessWidget {
         super(key: key);
 
   Widget _buildLeading() => leading != null
-      ? leading
+      ? Center(child: leading)
       : !Get.rawRoute.isFirst
           ? Center(
               child: Clickable(
@@ -604,7 +604,7 @@ class Screen extends StatelessWidget {
                   background: Colors.transparent,
                   borderColor: Colors.primary,
                   icon: FontAwesomeIcons.bars,
-                  iconSize: Size.iconTiny,
+                  //iconSize: Size.iconTiny,
                   onPressed: () => Scaffold.of(Get.context).openDrawer())
               : null;
 

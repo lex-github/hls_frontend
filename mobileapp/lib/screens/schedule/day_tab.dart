@@ -3,16 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart'
     hide Colors, Image, Padding, Size, TextStyle;
 import 'package:flutter/material.dart' as M;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/convert.dart';
-import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/schedule_model.dart';
 import 'package:hls/screens/schedule/_schedule_tab.dart';
@@ -38,10 +34,10 @@ class DayTab extends ScheduleTab {
         isNight: false);
   }
 
-  _updateDayItemsHandler() async {
-    if (!await controller.updateDayItems())
-      showConfirm(title: controller.message ?? errorGenericText);
-  }
+  // _updateDayItemsHandler() async {
+  //   if (!await controller.updateDayItems())
+  //     showConfirm(title: controller.message ?? errorGenericText);
+  // }
 
   // builders
 
@@ -56,7 +52,8 @@ class DayTab extends ScheduleTab {
               painter: CircleDialPainter(
                   values: controller.dayOuterValues,
                   color: Colors.black,
-                  width: iconBorder)),
+                  width: iconBorder,
+                  numToOffset: 24)),
           // inner dial
           CustomPaint(
               size: M.Size(innerDiameter, innerDiameter),
@@ -99,19 +96,18 @@ class DayTab extends ScheduleTab {
                   isSmall: item.isSmall)
         ]),
         VerticalSpace(),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          buildLegend(Colors.scheduleDay, scheduleAwakeLabel),
-          VerticalTinySpace(),
-          buildLegend(Colors.scheduleMainFood, scheduleMainFoodLabel),
-          VerticalTinySpace(),
-          buildLegend(
-              Colors.scheduleAdditionalFood, scheduleAdditionalFoodLabel),
-          VerticalTinySpace(),
-          buildLegend(Colors.scheduleProteinFood, scheduleProteinFoodLabel),
-          VerticalTinySpace(),
-          buildLegend(Colors.exercise, scheduleExerciseLabel),
-          VerticalTinySpace(),
-          buildLegend(Colors.scheduleNight, scheduleAsleepLabel),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            buildLegend(Colors.scheduleDay, scheduleAwakeLabel),
+            VerticalSpace(),
+            buildLegend(Colors.scheduleMainFood, scheduleMainFoodLabel),
+          ]),
+          HorizontalSpace(),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            buildLegend(Colors.scheduleAdditionalFood, scheduleAwakeLabel),
+            VerticalSpace(),
+            buildLegend(Colors.exercise, scheduleMainFoodLabel),
+          ])
         ]),
         VerticalBigSpace(),
         buildAccordion(scheduleDayTriviaTitle1,

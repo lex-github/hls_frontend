@@ -1,17 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
-import 'package:flutter/material.dart' as M;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:hls/components/generic.dart';
-import 'package:hls/components/painters.dart';
-import 'package:hls/constants/strings.dart';
-import 'package:hls/screens/schedule/_schedule_tab.dart';
-import 'package:hls/screens/schedule/helpers.dart';
-import 'package:hls/theme/styles.dart';
-
 /*
 class NightTab extends ScheduleTab {
   // builders

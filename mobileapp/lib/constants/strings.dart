@@ -19,6 +19,8 @@ const timeoutExceptionText =
 
 const errorNotAuthorized = 'Errors::Auth';
 const errorTrainingLimitExceeded = 'Errors::MicrocycleWeekTrainingLimit';
+const errorGoalNotSelected = 'Errors::GoalNotSelected';
+
 
 // validation
 const errorRequiredText = 'Обязательно к заполнению';

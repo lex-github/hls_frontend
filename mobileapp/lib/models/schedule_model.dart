@@ -26,7 +26,8 @@ class ScheduleData extends GenericData {
 }
 
 @JsonSerializable(includeIfNull: false)
-class ScheduleItemData extends GenericData {
+class ScheduleItemData {
+  String id;
   @JsonKey(
       name: 'kind',
       fromJson: ScheduleItemType.fromJsonValue,
@@ -37,7 +38,7 @@ class ScheduleItemData extends GenericData {
 
   ScheduleItemData();
 
-  @override
+  //@override
   String get title => type.title;
 
   Offset get offset {
@@ -129,7 +130,7 @@ class ScheduleItemType extends GenericEnum<String> {
       value: 'ADDITIONAL_FOOD',
       type: ActivityType.NUTRITION,
       title: scheduleDayProteinLabel,
-      color: Colors.scheduleProteinFood);
+      color: Colors.scheduleAdditionalFood);
   static const EXERCISE = ScheduleItemType(
       value: 'TRAINING',
       type: ActivityType.EXERCISE,

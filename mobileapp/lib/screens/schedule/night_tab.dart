@@ -119,11 +119,11 @@ class NightTab extends ScheduleTab {
           HorizontalSpace(),
           buildLegend(Colors.scheduleDay, scheduleAwakeLabel)
         ]),
-        VerticalBigSpace(),
-        buildAccordion(scheduleNightTriviaTitle1,
-            text: scheduleNightTriviaText2),
-        VerticalMediumSpace(),
-        buildAccordion(scheduleNightTriviaTitle2,
-            text: scheduleNightTriviaText2),
+        // VerticalBigSpace(),
+        // buildAccordion(scheduleNightTriviaTitle1,
+        //     text: scheduleNightTriviaText2),
+        // VerticalMediumSpace(),
+        // buildAccordion(scheduleNightTriviaTitle2,
+        //     text: scheduleNightTriviaText2),
       ]));
 }

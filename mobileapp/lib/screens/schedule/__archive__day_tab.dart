@@ -1,24 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart'
-    hide Colors, Image, Padding, Size, TextStyle;
-import 'package:flutter/material.dart' as M;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:hls/components/buttons.dart';
-import 'package:hls/components/generic.dart';
-import 'package:hls/components/painters.dart';
-import 'package:hls/constants/formats.dart';
-import 'package:hls/constants/strings.dart';
-import 'package:hls/constants/values.dart';
-import 'package:hls/helpers/convert.dart';
-import 'package:hls/helpers/dialog.dart';
-import 'package:hls/helpers/null_awareness.dart';
-import 'package:hls/models/schedule_model.dart';
-import 'package:hls/screens/schedule/_schedule_tab.dart';
-import 'package:hls/screens/schedule/helpers.dart';
-import 'package:hls/theme/styles.dart';
-
 /*
 class DayTab extends ScheduleTab {
   // handlers

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding, TextStyle;
+import 'package:flutter/material.dart'
+    hide Colors, Icon, Image, Padding, TextStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -65,11 +66,13 @@ class AppDrawer extends StatelessWidget {
                                                   Colors.light.withOpacity(.25),
                                               width: 1.15 * Size.buttonBig,
                                               height: 1.15 * Size.buttonBig,
-                                              child: Icon(FontAwesomeIcons.user,
-                                                  color: Colors.light,
-                                                  size: .65 *
-                                                      1.15 *
-                                                      Size.buttonBig)))
+                                              child: Center(
+                                                  child: Icon(
+                                                      FontAwesomeIcons.user,
+                                                      color: Colors.light,
+                                                      size: .65 *
+                                                          1.15 *
+                                                          Size.buttonBig))))
                                       : Avatar(
                                           imageUrl: profile.avatarUrl,
                                           isLink: false,

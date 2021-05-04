@@ -84,7 +84,8 @@ class ProfileScreen extends StatelessWidget {
           child: Container(
               width: Size.iconBig,
               height: Size.iconBig,
-              child: Center(child: Icon(FontAwesomeIcons.edit, size: .9 * Size.icon))),
+              child: Center(
+                  child: Icon(FontAwesomeIcons.edit, size: .9 * Size.icon))),
           onPressed: _editHandler),
       child: Obx(() => SingleChildScrollView(
               child: Column(children: [
@@ -201,9 +202,10 @@ class ProfileHeader extends StatelessWidget {
                                     width: Size.avatar,
                                     height: Size.avatar,
                                     child: showDefaultAvatar
-                                        ? Icon(FontAwesomeIcons.user,
-                                            color: Colors.light,
-                                            size: .65 * Size.avatar)
+                                        ? Center(
+                                            child: Icon(FontAwesomeIcons.user,
+                                                color: Colors.light,
+                                                size: .65 * Size.avatar))
                                         : Nothing()))
                             : Avatar(
                                 imageUrl: avatarUrl,
@@ -363,13 +365,14 @@ class HealthYearGraph extends StatelessWidget {
 
   double abscissa(DateTime date) =>
       (Size.screenWidth -
-          Size.horizontal * 4 - // padding
-          Size.horizontalTiny - // space between 100% and graph
-          Size.fontTiny * 2 - // 100% width
-          Size.border * 2 // borders
+              Size.horizontal * 4 - // padding
+              Size.horizontalTiny - // space between 100% and graph
+              Size.fontTiny * 2 - // 100% width
+              Size.border * 2 // borders
           ) /
-      365 *
-      date.difference(DateTime(date.year, 1, 1)).inDays - pointSize / 2;
+          365 *
+          date.difference(DateTime(date.year, 1, 1)).inDays -
+      pointSize / 2;
 
   // build
 
@@ -466,7 +469,7 @@ class MacroCycleGraph extends StatelessWidget {
             Size.horizontalTiny - // space between 100% and graph
             Size.fontTiny * 2 - // 100% width
             Size.border * 2 // borders
-            ) /
+        ) /
         (ages.length - 1);
 
     //ages.indexOf(age.round())
@@ -569,8 +572,8 @@ class MacroCycleGraph extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: Opacity(
-                  opacity: .5,
-                  child: CustomPaint(painter: MacroGraphPainter()))),
+                    opacity: .5,
+                    child: CustomPaint(painter: MacroGraphPainter()))),
             // Positioned(
             //     left: -Size.width(20),
             //     bottom: -Size.height(48),

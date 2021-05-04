@@ -105,7 +105,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/time',
                     background: Colors.schedule,
                     size: 1.2 * Size.buttonBig,
-                    iconSize: .5 * Size.buttonBig,
+                    //iconSize: .5 * Size.buttonBig,
                     onPressed: () {
                       Get.toNamed(scheduleRoute);
                       _controller.toggleSubmenu();
@@ -117,7 +117,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/cutlery',
                     background: Colors.nutrition,
                     size: 1.2 * Size.buttonBig,
-                    iconSize: .4 * Size.buttonBig,
+                    //iconSize: .4 * Size.buttonBig,
                     onPressed: () => showConfirm(title: developmentText))),
             _buildCentralGroupOffset(
                 degrees: 60,
@@ -126,7 +126,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/running',
                     background: Colors.exercise,
                     size: 1.2 * Size.buttonBig,
-                    iconSize: .45 * Size.buttonBig,
+                    //iconSize: .45 * Size.buttonBig,
                     onPressed: () => showConfirm(title: developmentText))),
             Container(height: Size.bar, child: Center(child: child))
           ]))

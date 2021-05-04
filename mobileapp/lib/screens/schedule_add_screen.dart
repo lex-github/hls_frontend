@@ -78,6 +78,8 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
 
       controller.isNightInit = true;
       controller.isDayInit = true;
+
+      return;
     }
 
     return showConfirm(title: errorGenericText);
@@ -335,7 +337,7 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                           controller.isTrainingDay &&
                           trainingTime == null,
                   icon: FontAwesomeIcons.check,
-                  iconSize: Size.iconSmall,
+                  //iconSize: Size.iconSmall,
                   onPressed: _onSubmit),
               child: controller.isAwaiting && false
                   ? LoadingPage()

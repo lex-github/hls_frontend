@@ -39,7 +39,7 @@ class WelcomeScreen<Controller extends WelcomeController>
       builder: (_) => Screen(
           fab: CircularButton(
               icon: FontAwesomeIcons.chevronRight,
-              iconSize: Size.iconSmall,
+              //iconSize: Size.iconSmall,
               onPressed: _proceedHandler),
           padding: Padding.zero,
           leading: Nothing(),

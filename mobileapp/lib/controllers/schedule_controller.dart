@@ -338,7 +338,7 @@ class ScheduleAddController extends Controller
       _asleepTime.value = schedule.asleepTime;
     }
 
-    final items = schedule.items;
+    final items = schedule?.items;
     if (!items.isNullOrEmpty) {
       _dayItems.assignAll(items);
       _wakeupTime.value = suggestedWakeupTime;
@@ -554,9 +554,9 @@ class ScheduleAddController extends Controller
       //     constrainedOffset.dy - (iconSize + iconBorder) / 2);
       destinationTime.value = time;
     } else {
-      final wakeupCloseness = (coordinate.offset - dayWakeupOffset).distance;
-      final trainingCloseness =
-          (coordinate.offset - dayTrainingOffset).distance;
+      // final wakeupCloseness = (coordinate.offset - dayWakeupOffset).distance;
+      // final trainingCloseness =
+      //     (coordinate.offset - dayTrainingOffset).distance;
 
       // final isCloserToWakeup =
       //     !isTrainingDay || wakeupCloseness < trainingCloseness;
@@ -578,9 +578,12 @@ class ScheduleAddController extends Controller
     if (!canRequestSchedule) return false;
 
     final response = await mutation(schedulesCreateMutation, parameters: {
-      'asleepTime': dateToString(date: asleepTime, output: dateTime),
-      'wakeupTime': dateToString(date: wakeupTime, output: dateTime),
-      'trainingTime': dateToString(date: trainingTime, output: dateTime)
+      if (asleepTime != null)
+        'asleepTime': dateToString(date: asleepTime, output: dateTime),
+      if (wakeupTime != null)
+        'wakeupTime': dateToString(date: wakeupTime, output: dateTime),
+      if (trainingTime != null)
+        'trainingTime': dateToString(date: trainingTime, output: dateTime)
     });
 
     if (response == null) return false;
