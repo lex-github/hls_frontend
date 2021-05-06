@@ -5,6 +5,7 @@ import 'package:hls/navigation/home_switch.dart';
 import 'package:hls/screens/article_screen.dart';
 import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/chat_results_screen.dart';
+import 'package:hls/screens/food_add_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
@@ -61,8 +62,12 @@ class Router {
         page: () => WelcomeScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: scheduleRoute,
+      name: scheduleAddRoute,
       page: () => ScheduleAddScreen(),
+      transitionDuration: navigationTransitionDuration),
+    GetPage(
+      name: foodAddRoute,
+      page: () => FoodAddScreen(),
       transitionDuration: navigationTransitionDuration),
     GetPage(
         name: profileRoute,

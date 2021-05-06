@@ -50,6 +50,11 @@ const userHealthLevelField =
     //'value'
   '}';
 
+const desiredFoodsField =
+  '{'
+    'title '
+  '}';
+
 const userFields =
   '{'
     '$userCommonFields '
@@ -88,7 +93,8 @@ const userFields =
       'id '
       'name '
       'status'
-    '}'
+    '} '
+    'desiredFoods $desiredFoodsField'
   '}';
 
 const uploadFields =
@@ -253,6 +259,7 @@ const foodFullFields =
 
 const scheduleFields =
   '{'
+    'id '
     'items $scheduleItemFields '
     'yesterdayAsleepTime'
   '}';
@@ -490,6 +497,49 @@ const schedulesCreateMutation = 'mutation'
     ') '
     '{'
       'schedule $scheduleFields'
+    '}'
+  '}';
+
+const desiredFoodsCreateMutation = 'mutation'
+  '('
+    '\$title: String!'
+  ') '
+  '{'
+    'desiredFoodsCreate'
+    '('
+      'title: \$title'
+    ') '
+    '{'
+      'desiredFood '
+      '{'
+        'user '
+        '{'
+          'desiredFoods $desiredFoodsField'
+        '}'
+      '}'
+    '}'
+  '}';
+
+const schedulesEatingsCreateMutation = 'mutation'
+  '('
+    '\$scheduleId: ID! '
+    '\$scheduleItemId: ID '
+    '\$foodId: ID! '
+    '\$portion: Float!'
+  ') '
+  '{'
+    'schedulesEatingsCreate'
+    '('
+      'scheduleId: \$scheduleId '
+      'itemId: \$scheduleItemId '
+      'foodId: \$foodId '
+      'portion: \$portion'
+    ') '
+    '{'
+      'scheduleEating '
+      '{'
+        'id'
+      '}'
     '}'
   '}';
 

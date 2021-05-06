@@ -108,13 +108,13 @@ class Button extends StatelessWidget {
         this.icon = icon != null
             ? Icon(icon,
                 color: color ?? Colors.icon,
-                size: iconSize ?? ((size ?? Size.iconHuge) * .6))
+                size: iconSize ?? ((size ?? Size.iconHuge) * .55))
             : null,
         this.image = !imageTitle.isNullOrEmpty
             ? Image(
                 title: imageTitle,
                 color: color ?? Colors.icon,
-                size: iconSize ?? ((size ?? Size.iconHuge) * .6))
+                size: iconSize ?? ((size ?? Size.iconHuge) * .55))
             : null,
         assert(child != null ||
             icon != null ||

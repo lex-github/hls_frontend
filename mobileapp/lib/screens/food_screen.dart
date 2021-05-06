@@ -1,15 +1,22 @@
+import 'package:flutter/cupertino.dart' as C;
 import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/food_controller.dart';
+import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_model.dart';
+import 'package:hls/models/schedule_model.dart';
+import 'package:hls/models/user_model.dart';
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class FoodScreen extends GetView<FoodController> {
@@ -18,11 +25,91 @@ class FoodScreen extends GetView<FoodController> {
 
   FoodScreen()
       : food = (Get.arguments as Map).get('food'),
-         title = (Get.arguments as Map).get('title') ?? foodScreenTitle;
+        title = (Get.arguments as Map).get('title') ?? foodScreenTitle;
 
   // handlers
 
   _sectionHandler(String title) => controller.toggle(title);
+
+  _addHandler() async {
+    final contentPadding = EdgeInsets.only(
+      //left: Size.horizontal,
+      top: Size.verticalBig,
+      //right: Size.horizontal
+    );
+    final fontSize = .9 * Size.fontBig;
+
+    final portionStep = 50;
+    final portionMax = portionStep * 10;
+    final portions = [
+      for (int i = portionStep; i <= portionMax; i += portionStep) i
+    ];
+    int portion = portionStep;
+
+    await showConfirm(
+        contentPadding: contentPadding,
+        title: foodAddPortionTitle,
+        child: SizedBox(
+            height: Size.cupertinoPicker,
+            child: C.CupertinoPicker(
+                useMagnifier: true,
+                magnification: 1.1,
+                itemExtent: 1.75 * fontSize,
+                onSelectedItemChanged: (i) => portion = portions[i],
+                children: [
+                  for (final portion in portions)
+                    Center(
+                        child:
+                            TextPrimary('$portion гр', size: 1.15 * fontSize))
+                ])));
+    if (portion == null) return;
+
+    final schedule = AuthService.i.profile.schedule;
+    final scheduleItems = [
+      for (final scheduleItem in schedule.items)
+        if (scheduleItem.type.type == ActivityType.NUTRITION) scheduleItem
+    ];
+    ScheduleItemData scheduleItem = scheduleItems.first;
+
+    await showConfirm(
+        contentPadding: contentPadding,
+        title: foodAddTimeTitle,
+        child: SizedBox(
+            height: Size.cupertinoPicker,
+            width: Size.screenWidth,
+            child: C.CupertinoPicker(
+                useMagnifier: true,
+                magnification: 1.1,
+                itemExtent: 1.75 * fontSize,
+                onSelectedItemChanged: (i) => scheduleItem = scheduleItems[i],
+                children: [
+                  for (final scheduleItem in scheduleItems)
+                    if (scheduleItem.type.type == ActivityType.NUTRITION)
+                      Center(
+                          widthFactor: 1,
+                          child: Container(
+                              width: Size.screenWidth - 4 * Size.horizontal,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Size.horizontal),
+                              child: TextPrimary(
+                                  '${dateToString(date: scheduleItem.time, output: dateTime)} '
+                                  '${scheduleItem.title}',
+                                  size: 1.15 * fontSize,
+                                  lines: 1)))
+                ])));
+    if (scheduleItem == null) return;
+
+    if (controller.isAwaiting) return showConfirm(title: requestWaitingText);
+
+    if (!await controller.add(
+        scheduleId: schedule.id,
+        scheduleItemId: scheduleItem.id,
+        foodId: food.id,
+        portion: portion))
+      return showConfirm(title: controller.message ?? errorGenericText);
+
+    Get.close(3);
+  }
 
   // builds
 
@@ -70,7 +157,8 @@ class FoodScreen extends GetView<FoodController> {
                     TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
 
-  Widget _buildHeader(FoodData food) => Column(mainAxisSize: MainAxisSize.min, children: [
+  Widget _buildHeader(FoodData food) =>
+      Column(mainAxisSize: MainAxisSize.min, children: [
         //VerticalSpace(),
         TextPrimary(food.title, align: TextAlign.center),
         if (!food.championOn.isNullOrEmpty) ...[
@@ -153,7 +241,11 @@ class FoodScreen extends GetView<FoodController> {
       padding: Padding.zero,
       shouldShowDrawer: true,
       title: title,
+      fab: CircularButton(
+          icon: FontAwesomeIcons.plus,
+          background: Colors.success,
+          onPressed: _addHandler),
       child: _buildBody()
       //Column(children: [_buildHeader(), Expanded(child: _buildBody())])
-  );
+      );
 }

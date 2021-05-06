@@ -369,7 +369,9 @@ class Image extends StatelessWidget {
       width: width,
       height: height,
       color: Colors.failure,
-      child: Icon(FontAwesomeIcons.exclamationCircle, color: Colors.white));
+      child: Center(
+          child:
+              Icon(FontAwesomeIcons.exclamationCircle, color: Colors.white)));
 
   @override
   Widget build(_) => image != null

@@ -21,7 +21,6 @@ const errorNotAuthorized = 'Errors::Auth';
 const errorTrainingLimitExceeded = 'Errors::MicrocycleWeekTrainingLimit';
 const errorGoalNotSelected = 'Errors::GoalNotSelected';
 
-
 // validation
 const errorRequiredText = 'Обязательно к заполнению';
 const errorNumericText = 'Поле должно быть числом';
@@ -147,6 +146,18 @@ const nutritionFilterLabel = 'Выбрать нутриенты продукта
 const foodCategoryScreenTitle = 'Каталог';
 const foodScreenTitle = 'Продукт';
 const foodCarbLabel = 'углев.';
+const foodEmptyTitle = 'Продукт не найден в системе';
+const foodEmptySubtitle =
+    'Вы можете отправит запрос системе для добавления продукта в список';
+const foodEmptyAlreadyRequestedText =
+    'Вы уже отправили запрос для добавления данного продукта';
+const foodEmptyRequestSentTitle = 'Спасибо за запрос';
+const foodEmptyRequestSentText =
+    'Продукт будет добавлен в систему после рассмотрения';
+const foodAddPortionTitle = 'Каков размер порции?';
+const foodAddTimeTitle = 'В какое время?';
+const foodNeedScheduleTitle =
+    'Для внесения данных о питании необходимо сначала сформировать режим';
 
 // food filter
 const foodFilterScreenTitle = 'Выбрать нутриенты';
@@ -162,7 +173,8 @@ const scheduleNightTabTitle = 'Ночь';
 const scheduleDayTabTitle = 'День';
 const scheduleNightText =
     'Отметьте на суточных часах время сна. Отбой и подъем.';
-const scheduleNightText1 = 'Отметьте на суточных часах, во сколько удалось заснуть';
+const scheduleNightText1 =
+    'Отметьте на суточных часах, во сколько удалось заснуть';
 const scheduleNightText2 = 'Отметьте на суточных часах, во сколько был подъём';
 const scheduleNightText3 = 'Скорректируйте значения и подтвердите выбор';
 //const scheduleSwitchTitle = 'Выберите время отбоя/подъема';

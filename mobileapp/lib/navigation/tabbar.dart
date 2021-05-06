@@ -6,6 +6,8 @@ import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/dialog.dart';
+import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:vector_math/vector_math.dart' hide Colors, Matrix4;
 
@@ -105,9 +107,9 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/time',
                     background: Colors.schedule,
                     size: 1.2 * Size.buttonBig,
-                    //iconSize: .5 * Size.buttonBig,
+                    //iconSize: .55 * Size.buttonBig,
                     onPressed: () {
-                      Get.toNamed(scheduleRoute);
+                      Get.toNamed(scheduleAddRoute);
                       _controller.toggleSubmenu();
                     })),
             _buildCentralGroupOffset(
@@ -117,8 +119,16 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/cutlery',
                     background: Colors.nutrition,
                     size: 1.2 * Size.buttonBig,
-                    //iconSize: .4 * Size.buttonBig,
-                    onPressed: () => showConfirm(title: developmentText))),
+                    //iconSize: .55 * Size.buttonBig,
+                    onPressed: () {
+                      if (AuthService
+                              .i.profile?.schedule?.items?.isNullOrEmpty ??
+                          true)
+                        return showConfirm(title: foodNeedScheduleTitle);
+
+                      Get.toNamed(foodAddRoute);
+                      _controller.toggleSubmenu();
+                    })),
             _buildCentralGroupOffset(
                 degrees: 60,
                 animation: _degThreeTranslationAnimation,
@@ -126,7 +136,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     imageTitle: 'icons/running',
                     background: Colors.exercise,
                     size: 1.2 * Size.buttonBig,
-                    //iconSize: .45 * Size.buttonBig,
+                    //iconSize: .55 * Size.buttonBig,
                     onPressed: () => showConfirm(title: developmentText))),
             Container(height: Size.bar, child: Center(child: child))
           ]))

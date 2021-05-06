@@ -15,7 +15,7 @@ class GraphqlService extends Service {
   // messages
   GraphQLError _error;
   GraphQLError get error => _error;
-  String get message => error.message;
+  String get message => error?.message;
 
   Future<GraphQLClient> client() async {
     // this might be a bit bold

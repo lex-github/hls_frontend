@@ -24,7 +24,11 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..progress =
         UserProgressData.fromJson(json['progress'] as Map<String, dynamic>)
     ..schedule =
-        ScheduleData.fromJson(json['todaySchedule'] as Map<String, dynamic>);
+        ScheduleData.fromJson(json['todaySchedule'] as Map<String, dynamic>)
+    ..desiredFoods = (json['desiredFoods'] as List<dynamic>)
+      ?.map((e) => GenericData.fromJson(e as Map<String, dynamic>))
+      ?.toList()
+  ;
 }
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{

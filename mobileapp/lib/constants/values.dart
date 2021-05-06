@@ -40,7 +40,8 @@ const chatRoute = '/chat';
 const chatResultsRoute = '/chat-results';
 const timerRoute = '/timer';
 const welcomeRoute = '/welcome';
-const scheduleRoute = '/schedule';
+const scheduleAddRoute = '/schedule-add';
+const foodAddRoute = '/food-add';
 const profileRoute = '/profile';
 const profileFormRoute = '/profile-form';
 const trainingStoryRoute = '/training-story';
@@ -98,6 +99,7 @@ const buttonSize = 39.0;
 const buttonBigSize = 56.0;
 const buttonHugeSize = 115.0;
 const buttonHeightSize = 48.0;
+const cupertinoPickerSize = 140;
 
 const horizontalTinyPadding = 5.0;
 const horizontalSmallPadding = 10.0;

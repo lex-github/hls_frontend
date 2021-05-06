@@ -29,6 +29,7 @@ class UserData extends GenericData {
   UserProgressData progress;
   @JsonKey(name: 'todaySchedule')
   ScheduleData schedule;
+  List<GenericData> desiredFoods;
 
   UserData();
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
@@ -7,9 +8,11 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/_generic_model.dart';
 import 'package:hls/models/food_category_model.dart';
 import 'package:hls/models/food_filter_model.dart';
 import 'package:hls/models/food_model.dart';
+import 'package:hls/services/auth_service.dart';
 
 class NutritionController extends Controller {
   // filters
@@ -100,6 +103,27 @@ class NutritionController extends Controller {
 
     isAppending = false;
     update();
+  }
+
+  Future<bool> requestFood({@required String title}) async {
+    final result = await mutation(desiredFoodsCreateMutation,
+        parameters: {'title': title});
+
+    if (result == null) return false;
+
+    final desiredFoods = result.get<List>(
+        ['desiredFoodsCreate', 'desiredFood', 'user', 'desiredFoods']);
+
+    print('NutritionController.requestFood RESULT $result');
+    print('NutritionController.requestFood FOODS $desiredFoods');
+
+    if (desiredFoods == null) return false;
+
+    AuthService.i.profile.desiredFoods = desiredFoods
+        .map((e) => GenericData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+
+    return !desiredFoods.isNullOrEmpty;
   }
 
   @override

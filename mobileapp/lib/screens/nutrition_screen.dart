@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'
-    hide Colors, Icon, Image, Padding, Size, TextStyle;
+    hide Colors, Icon, Image, Padding, Page, Size, TextStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -15,6 +15,7 @@ import 'package:hls/models/food_category_model.dart';
 import 'package:hls/models/food_filter_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/screens/_form_screen.dart' hide Button;
+import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class NutritionScreen extends GetView<NutritionController> {
@@ -42,6 +43,25 @@ class NutritionScreen extends GetView<NutritionController> {
 
   _foodHandler(FoodData item) => Get.toNamed(foodRoute,
       arguments: {'title': item.category.title, 'food': item});
+
+  _reportHandler() async {
+    if (controller.isAwaiting) return showConfirm(title: requestWaitingText);
+
+    final user = AuthService.i.profile;
+    final title = Get.find<SearchFormController>().search;
+
+    if (title.isNullOrEmpty) return showConfirm(title: noDataText);
+
+    if (user.desiredFoods?.map((e) => e.title)?.contains(title) ?? false)
+      return showConfirm(title: foodEmptyAlreadyRequestedText);
+
+    if (!await controller.requestFood(title: title))
+      return showConfirm(title: controller.message ?? errorGenericText);
+
+    return showConfirm(
+        title: foodEmptyRequestSentTitle,
+        description: foodEmptyRequestSentText);
+  }
 
   // builders
 
@@ -133,8 +153,18 @@ class NutritionScreen extends GetView<NutritionController> {
             return _buildCategoryListItem(controller.list[index]);
           });
 
+  Widget _buildEmptyFoods() => Page(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        TextPrimary(foodEmptyTitle),
+        VerticalSpace(),
+        TextSecondary(foodEmptySubtitle, align: TextAlign.center),
+        VerticalBigSpace(),
+        CircularButton(
+            icon: FontAwesomeIcons.solidPaperPlane, onPressed: _reportHandler)
+      ]));
+
   Widget _buildFoods() => controller.foods.isNullOrEmpty
-      ? EmptyPage()
+      ? _buildEmptyFoods()
       : ListView.builder(
           padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
               Size.horizontal, Size.vertical),
@@ -180,6 +210,7 @@ class NutritionScreen extends GetView<NutritionController> {
           child: Image(title: 'icons/question')),
       child: GetX<NutritionController>(
           init: NutritionController(),
+          dispose: (_) => Get.delete<SearchFormController>(),
           builder: (_) => Column(
               children: [_buildHeader(), Expanded(child: _buildBody())])));
 }

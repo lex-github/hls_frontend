@@ -97,4 +97,21 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
     item = FoodData.fromJson(result.get('food'));
     update();
   }
+
+  Future<bool> add(
+      {@required int scheduleId,
+      @required String scheduleItemId,
+      @required int foodId,
+      @required int portion}) async {
+    final result = await mutation(schedulesEatingsCreateMutation, parameters: {
+      'scheduleId': scheduleId,
+      'scheduleItemId': scheduleItemId,
+      'foodId': foodId,
+      'portion': portion
+    });
+
+    print('FoodController.add result: $result');
+
+    return result != null;
+  }
 }

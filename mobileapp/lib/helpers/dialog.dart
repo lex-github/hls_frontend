@@ -10,8 +10,19 @@ Future showConfirm(
     description,
     Widget child,
     Widget confirm,
+    EdgeInsets titlePadding,
+    EdgeInsets contentPadding,
+    EdgeInsets buttonPadding,
     bool shouldShowConfirm = true,
     String confirmImageTitle}) async {
+  titlePadding ??= EdgeInsets.only(
+      top: Size.verticalBig, right: Size.horizontal, left: Size.horizontal);
+  contentPadding ??= description == null && child == null
+      ? Padding.zero
+      : EdgeInsets.only(top: Size.vertical);
+  buttonPadding ??= EdgeInsets.symmetric(
+      horizontal: Size.horizontal, vertical: Size.verticalBig);
+
   // colors
   final Color backgroundColor = Colors.background;
 
@@ -33,12 +44,8 @@ Future showConfirm(
   final alert = AlertDialog(
       //elevation: 50,
       insetPadding: Padding.content,
-      titlePadding: EdgeInsets.only(
-          top: 2 * Size.verticalBig,
-          right: Size.horizontal,
-          left: Size.horizontal),
-      contentPadding:
-          Padding.zero, //EdgeInsets.symmetric(horizontal: Size.horizontal),
+      titlePadding: titlePadding,
+      contentPadding: contentPadding,
       actionsPadding: shouldShowConfirm
           // ? EdgeInsets.symmetric(vertical: 2 * Size.verticalBig)
           ? Padding.zero
@@ -59,11 +66,7 @@ Future showConfirm(
                       child: TextSecondary(description)))
               : null,
       actions: [
-        if (shouldShowConfirm)
-          Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Size.horizontal, vertical: 2 * Size.verticalBig),
-              child: button),
+        if (shouldShowConfirm) Container(padding: buttonPadding, child: button),
       ]);
 
   // show the dialog

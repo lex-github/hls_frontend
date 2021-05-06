@@ -10,6 +10,8 @@ class SearchFormController extends FormController {
   List<FormConfig> get config =>
       [FormConfig(field: field, label: nutritionSearchLabel)];
 
+  String get search => getValue(field);
+
   // form controller implementation
 
   @override

@@ -77,6 +77,7 @@ class Size {
   static double get image => ratio(imageHeight);
   static double get bottomSheet => ratio(bottomSheetSize);
   static double get picker => ratio(pickerSize);
+  static double get cupertinoPicker => ratio(cupertinoPickerSize);
   static double get button => ratio(buttonSize);
   static double get buttonBig => ratio(buttonBigSize);
   static double get buttonHuge => ratio(buttonHugeSize);
@@ -104,7 +105,7 @@ class Colors {
   //static const background = M.Color(0xFF1F191A);
   static const background = M.Color(0xFF1D1C1D);
   static const primary = M.Color(0xFF347CFF);
-  static const success = M.Color(0xFF13D99C);
+  static const success = M.Color(0xFF92E300);
   static const failure = M.Color(0xFFD9134C);
   static const disabled = M.Color(0xFF404040);
   static const light = Colors.white;
@@ -126,6 +127,7 @@ class Colors {
   // project specific
   static const champion = M.Color(0xFFF2994A);
 
+  //static const schedule = M.Color(0xFF8416FF);
   static const schedule = M.Color(0xFF8416FF);
   // static const nutrition = M.Color(0xFF99E600);
   static const nutrition = M.Color(0xFF66D600);
