@@ -305,7 +305,7 @@ class ButtonOuter extends StatelessWidget {
                 radius: radius,
                 strokeWidth: borderWidth / 2,
                 gradient: LinearGradient(colors: [
-                  Colors.light,
+                  Colors.upperBorder,
                   borderColor ?? background ?? Colors.primary
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 backgroundColor: background ?? Colors.background,

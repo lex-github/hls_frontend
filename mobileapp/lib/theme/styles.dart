@@ -109,6 +109,7 @@ class Colors {
   static const failure = M.Color(0xFFD9134C);
   static const disabled = M.Color(0xFF404040);
   static const light = Colors.white;
+  static const upperBorder = M.Color(0xFF888888);
 
   static const transparent = M.Colors.transparent;
   static const black = M.Colors.black;

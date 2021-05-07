@@ -56,18 +56,19 @@ Future showConfirm(
           side: BorderSide(color: Colors.disabled)),
       backgroundColor: backgroundColor,
       title: title != null ? TextPrimary(title, align: TextAlign.center) : null,
-      content: child != null
-          ? child
-          : description != null
-              ? SingleChildScrollView(
-                  child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: Size.horizontal),
-                      child: TextSecondary(description)))
-              : null,
-      actions: [
-        if (shouldShowConfirm) Container(padding: buttonPadding, child: button),
-      ]);
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        if (child != null) child,
+        if (description != null)
+          SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+                  child: TextSecondary(description))),
+        if (shouldShowConfirm) Container(padding: buttonPadding, child: button)
+      ])
+      // actions: [
+      //   if (shouldShowConfirm) Container(padding: buttonPadding, child: button),
+      // ]
+      );
 
   // show the dialog
   return await Get.dialog(alert,
