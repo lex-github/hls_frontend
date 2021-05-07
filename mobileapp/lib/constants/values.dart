@@ -117,7 +117,7 @@ const screenShadowBlurRadius = 10.0;
 const screenShadowSpreadRadius = .0;
 const screenShadowOffset = const Offset(-2, -2);
 
-final innerShadowColor = Colors.primary.withOpacity(.75);
+final innerShadowColor = Colors.light.withOpacity(.5);//Colors.primary.withOpacity(.75);
 const innerShadowBlurCoefficient = 8.0;
 const innerShadowHorizontalOffsetCoefficient = 20.0;
 const innerShadowVerticalOffsetCoefficient = 15.0;
