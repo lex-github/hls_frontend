@@ -9,8 +9,8 @@ part of 'post_model.dart';
 PaginationData _$PaginationDataFromJson(Map<String, dynamic> json) {
   return PaginationData()
     ..list = (json['nodes'] as List<dynamic>)
-        .map((e) => PostData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => PostData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..meta =
         PaginationMetaData.fromJson(json['pageInfo'] as Map<String, dynamic>);
 }
@@ -65,7 +65,7 @@ StoryData _$StoryDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
-    ..texts = (json['text'] as List<dynamic>).map((e) => e as String).toList();
+    ..texts = (json['text'] as List<dynamic>)?.map((e) => e as String)?.toList();
 }
 
 Map<String, dynamic> _$StoryDataToJson(StoryData instance) => <String, dynamic>{

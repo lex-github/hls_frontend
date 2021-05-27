@@ -12,11 +12,11 @@ ExerciseCategoryData _$ExerciseCategoryDataFromJson(Map<String, dynamic> json) {
     ..title = json['title'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..children = (json['subcategories'] as List<dynamic>)
-        .map((e) => ExerciseCategoryData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ExerciseCategoryData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..exercises = (json['trainings'] as List<dynamic>)
-        .map((e) => ExerciseData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ExerciseData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 

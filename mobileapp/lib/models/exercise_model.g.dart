@@ -12,8 +12,8 @@ ExerciseData _$ExerciseDataFromJson(Map<String, dynamic> json) {
     ..title = json['title'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..input = (json['inputData'] as List<dynamic>)
-        .map((e) => ExerciseInputData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ExerciseInputData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..type = ExerciseType.fromJsonValue(json['kind'])
     ..videoUrl = json['videoUrl'] as String
     ..imageUrl = json['imageUrl'] as String;

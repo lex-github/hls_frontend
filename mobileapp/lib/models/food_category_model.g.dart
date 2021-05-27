@@ -12,13 +12,13 @@ FoodCategoryData _$FoodCategoryDataFromJson(Map<String, dynamic> json) {
     ..title = json['title'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..children = (json['subcategories'] as List<dynamic>)
-        .map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..parent = FoodCategoryData.fromJson(
         json['parentCategory'] as Map<String, dynamic>)
     ..foods = (json['foods'] as List<dynamic>)
-        .map((e) => FoodData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => FoodData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 

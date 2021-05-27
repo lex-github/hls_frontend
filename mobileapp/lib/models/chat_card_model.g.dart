@@ -157,11 +157,11 @@ ChatHistoryData _$ChatHistoryDataFromJson(Map<String, dynamic> json) {
   return ChatHistoryData()
     ..order = json['order'] as int
     ..question = (json['question'] as List<dynamic>)
-        .map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..answer = (json['answer'] as List<dynamic>)
-        .map((e) => ChatAnswerData.fromJson(e as Map<String, dynamic>))
-        .toList();
+        ?.map((e) => ChatAnswerData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$ChatHistoryDataToJson(ChatHistoryData instance) =>

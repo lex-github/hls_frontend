@@ -28,15 +28,11 @@ class _State extends State<ExerciseCategoryScreen> {
   _categoryHandler(ExerciseCategoryData data) =>
       Get.toNamed(exerciseCategoryRoute, arguments: data);
 
-  _itemHandler(ExerciseData data) {
-    print('ExerciseCategoryScreen._itemHandler $data');
-
-    Get.toNamed(
+  _itemHandler(ExerciseData data) => Get.toNamed(
         data.type == ExerciseType.REALTIME
             ? exerciseRealtimeRoute
             : exerciseRoute,
         arguments: data);
-  }
 
   /// builders
 
@@ -85,17 +81,13 @@ class _State extends State<ExerciseCategoryScreen> {
         return _buildListItem(items[index]);
       });
 
-  Widget _buildBody() {
-    print('ExerciseCategoryScreen._buildBody $category');
-
-    return category == null
+  Widget _buildBody() => category == null
         ? _buildEmpty()
         : !category.children.isNullOrEmpty
             ? _buildCategories()
             : !category.exercises.isNullOrEmpty
                 ? _buildItems()
                 : _buildEmpty();
-  }
 
   @override
   Widget build(_) => Screen(

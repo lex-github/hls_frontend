@@ -13,8 +13,8 @@ ScheduleData _$ScheduleDataFromJson(Map<String, dynamic> json) {
     ..imageUrl = json['imageUrl'] as String
     ..asleepTime = toTime(json['yesterdayAsleepTime'])
     ..items = (json['items'] as List<dynamic>)
-        .map((e) => ScheduleItemData.fromJson(e as Map<String, dynamic>))
-        .toList();
+        ?.map((e) => ScheduleItemData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$ScheduleDataToJson(ScheduleData instance) =>

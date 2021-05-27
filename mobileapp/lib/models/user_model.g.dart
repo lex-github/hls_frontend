@@ -15,8 +15,8 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..phone = json['phoneNumber'] as String
     ..details = UserDetailsData.fromJson(json['data'] as Map<String, dynamic>)
     ..dialogs = (json['chatBotDialogs'] as List<dynamic>)
-        .map((e) => ChatDialogStatusData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ChatDialogStatusData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..daily =
         UserDailyData.fromJson(json['dailyRating'] as Map<String, dynamic>)
     ..trainings =
@@ -26,8 +26,8 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..schedule =
         ScheduleData.fromJson(json['todaySchedule'] as Map<String, dynamic>)
     ..desiredFoods = (json['desiredFoods'] as List<dynamic>)
-        .map((e) => GenericData.fromJson(e as Map<String, dynamic>))
-        .toList();
+        ?.map((e) => GenericData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
@@ -96,7 +96,7 @@ UserProgressData _$UserProgressDataFromJson(Map<String, dynamic> json) {
     ..macroCycle =
         MacroCycleData.fromJson(json['macrocycle'] as Map<String, dynamic>)
     ..health = HealthData.fromJson(json['health'] as Map<String, dynamic>)
-    ..healthHistory = (json['agesDiagram'] as Map<String, dynamic>).map(
+    ..healthHistory = (json['agesDiagram'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(int.parse(k), (e as num).toDouble()),
     );
 }
@@ -108,7 +108,7 @@ Map<String, dynamic> _$UserProgressDataToJson(UserProgressData instance) =>
       'macrocycle': instance.macroCycle,
       'health': instance.health,
       'agesDiagram':
-          instance.healthHistory.map((k, e) => MapEntry(k.toString(), e)),
+          instance.healthHistory?.map((k, e) => MapEntry(k.toString(), e)),
     };
 
 MicroCycleData _$MicroCycleDataFromJson(Map<String, dynamic> json) {
@@ -139,8 +139,8 @@ Map<String, dynamic> _$MacroCycleDataToJson(MacroCycleData instance) =>
 HealthData _$HealthDataFromJson(Map<String, dynamic> json) {
   return HealthData()
     ..values = (json['historyValues'] as List<dynamic>)
-        .map((e) => HealthValueData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => HealthValueData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..adaptiveCapacity = HealthIndexData.fromJson(
         json['adaptiveCapacity'] as Map<String, dynamic>)
     ..functionalityIndex = HealthIndexData.fromJson(
