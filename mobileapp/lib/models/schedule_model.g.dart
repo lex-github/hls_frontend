@@ -11,10 +11,10 @@ ScheduleData _$ScheduleDataFromJson(Map<String, dynamic> json) {
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..imageUrl = json['imageUrl'] as String
+    ..asleepTime = toTime(json['yesterdayAsleepTime'])
     ..items = (json['items'] as List<dynamic>)
-        ?.map((e) => ScheduleItemData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..asleepTime = toTime(json['yesterdayAsleepTime']);
+        .map((e) => ScheduleItemData.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$ScheduleDataToJson(ScheduleData instance) =>
@@ -22,15 +22,15 @@ Map<String, dynamic> _$ScheduleDataToJson(ScheduleData instance) =>
       'id': instance.id,
       'title': instance.title,
       'imageUrl': instance.imageUrl,
+      'yesterdayAsleepTime': instance.asleepTime.toIso8601String(),
       'items': instance.items,
-      'yesterdayAsleepTime': instance.asleepTime,
     };
 
 ScheduleItemData _$ScheduleItemDataFromJson(Map<String, dynamic> json) {
   return ScheduleItemData()
     ..id = json['id'] as String
     ..type = ScheduleItemType.fromJsonValue(json['kind'])
-    ..time = toTime(json['plannedAt'] as String);
+    ..time = toTime(json['plannedAt']);
 }
 
 Map<String, dynamic> _$ScheduleItemDataToJson(ScheduleItemData instance) {

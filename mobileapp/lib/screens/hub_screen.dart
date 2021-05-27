@@ -175,15 +175,18 @@ class HubScreen extends GetView<HubController> {
                           : Stack(alignment: Alignment.center, children: [
                               _buildSector(
                                   type: ActivityType.SCHEDULE,
-                                  value: profileDaily.schedule / 100,
+                                  value:
+                                      profileDaily.schedule.clamp(0, 100) / 100,
                                   startAngle: startAngle),
                               _buildSector(
                                   type: ActivityType.NUTRITION,
-                                  value: profileDaily.nutrition / 100,
+                                  value: profileDaily.nutrition.clamp(0, 100) /
+                                      100,
                                   startAngle: startAngle + angle),
                               _buildSector(
                                   type: ActivityType.EXERCISE,
-                                  value: profileDaily.exercise / 100,
+                                  value:
+                                      profileDaily.exercise.clamp(0, 100) / 100,
                                   startAngle: startAngle + angle * 2)
                             ])),
                   CircularProgress(size: radius, child: _buildCenter())
@@ -233,9 +236,7 @@ class StatusBlock extends StatelessWidget {
       Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         _buildRow(title: goalTitle, text: progress.goal),
         VerticalMediumSpace(),
-        _buildRow(
-            title: macrocycleTitle,
-            text: progress.macroCycle.title),
+        _buildRow(title: macrocycleTitle, text: progress.macroCycle.title),
         VerticalMediumSpace(),
         _buildRow(
             title: '$microcycleTitle',

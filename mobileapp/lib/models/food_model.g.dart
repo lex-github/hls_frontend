@@ -14,10 +14,10 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
     ..category =
         FoodCategoryData.fromJson(json['foodCategory'] as Map<String, dynamic>)
     ..structure = (json['structure'] as List<dynamic>)
-        ?.map((e) => FoodSectionData.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+        .map((e) => FoodSectionData.fromJson(e as Map<String, dynamic>))
+        .toList()
     ..championOn =
-        (json['championOn'] as List<dynamic>)?.map((e) => e as String)?.toList()
+        (json['championOn'] as List<dynamic>).map((e) => e as String).toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 
@@ -51,12 +51,4 @@ Map<String, dynamic> _$FoodSectionDataToJson(FoodSectionData instance) =>
       'quantity': instance.quantity,
       'section': instance.section,
       'unit': instance.unit,
-    };
-
-ImageData _$ImageDataFromJson(Map<String, dynamic> json) {
-  return ImageData()..url = json['url'] as String;
-}
-
-Map<String, dynamic> _$ImageDataToJson(ImageData instance) => <String, dynamic>{
-      'url': instance.url,
     };

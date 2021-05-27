@@ -271,6 +271,46 @@ const scheduleItemFields =
     'plannedAt'
   '}';
 
+const trainingCategoryFields =
+  '{'
+    'title '
+    '$iconFields '
+    'subcategories $trainingSubcategory1Fields'
+    'trainings $trainingFields'
+  '}';
+
+const trainingSubcategory1Fields =
+  '{'
+    'title '
+    '$iconFields '
+    'subcategories $trainingSubcategory2Fields '
+    'trainings $trainingFields'
+  '}';
+
+const trainingSubcategory2Fields =
+  '{'
+    'title '
+    '$iconFields '
+    'trainings $trainingFields'
+  '}';
+
+const trainingFields =
+  '{'
+    'id '
+    'title '
+    '$iconFields '
+    'description '
+    'kind '
+    'videoUrl '
+    'inputData'
+    '{'
+      'title '
+      'inputType '
+      'max '
+      'min'
+    '}'
+  '}';
+
 // query
 
 const currentUserQuery = 'query '
@@ -367,6 +407,33 @@ const foodsQuery = 'query '
     ') '
     '{'
       'nodes $foodFullFields '
+      'pageInfo $pageInfoFields'
+    '}'
+  '}';
+
+const trainingCategoriesQuery = 'query '
+  '{'
+    'trainingCategories '
+    '{'
+      'nodes $trainingCategoryFields'
+    '}'
+  '}';
+
+const trainingsQuery = 'query '
+  '('
+    '\$search: String '
+    '\$first: Int '
+    '\$after: String'
+  ')'
+  '{'
+    'trainings '
+    '('
+      'filter: {titleCont: \$search}'
+      'first: \$first '
+      'after: \$after'
+    ') '
+    '{'
+      'nodes $trainingFields '
       'pageInfo $pageInfoFields'
     '}'
   '}';
@@ -520,7 +587,7 @@ const desiredFoodsCreateMutation = 'mutation'
     '}'
   '}';
 
-const schedulesEatingsCreateMutation = 'mutation'
+const scheduleEatingsCreateMutation = 'mutation'
   '('
     '\$scheduleId: ID! '
     '\$scheduleItemId: ID '
@@ -537,6 +604,29 @@ const schedulesEatingsCreateMutation = 'mutation'
     ') '
     '{'
       'scheduleEating '
+      '{'
+        'id'
+      '}'
+    '}'
+  '}';
+
+const scheduleTrainingsCreateMutation = 'mutation'
+  '('
+    '\$scheduleId: ID! '
+    '\$exerciseId: ID! '
+    '\$type: TrainingInputType! '
+    '\$value: Int!'
+  ') '
+  '{'
+    'scheduleTrainingsCreate'
+    '('
+      'scheduleId: \$scheduleId '
+      'trainingId: \$exerciseId '
+      'inputType: \$type '
+      'inputValue: \$value'
+    ') '
+    '{'
+      'scheduleTraining '
       '{'
         'id'
       '}'

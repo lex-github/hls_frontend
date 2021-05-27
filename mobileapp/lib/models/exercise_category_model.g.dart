@@ -1,34 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'food_category_model.dart';
+part of 'exercise_category_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FoodCategoryData _$FoodCategoryDataFromJson(Map<String, dynamic> json) {
-  return FoodCategoryData()
+ExerciseCategoryData _$ExerciseCategoryDataFromJson(Map<String, dynamic> json) {
+  return ExerciseCategoryData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..children = (json['subcategories'] as List<dynamic>)
-        .map((e) => FoodCategoryData.fromJson(e as Map<String, dynamic>))
+        .map((e) => ExerciseCategoryData.fromJson(e as Map<String, dynamic>))
         .toList()
-    ..parent = FoodCategoryData.fromJson(
-        json['parentCategory'] as Map<String, dynamic>)
-    ..foods = (json['foods'] as List<dynamic>)
-        .map((e) => FoodData.fromJson(e as Map<String, dynamic>))
+    ..exercises = (json['trainings'] as List<dynamic>)
+        .map((e) => ExerciseData.fromJson(e as Map<String, dynamic>))
         .toList()
     ..imageUrl = json['imageUrl'] as String;
 }
 
-Map<String, dynamic> _$FoodCategoryDataToJson(FoodCategoryData instance) =>
+Map<String, dynamic> _$ExerciseCategoryDataToJson(
+        ExerciseCategoryData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'icon': instance.image,
       'subcategories': instance.children,
-      'parentCategory': instance.parent,
-      'foods': instance.foods,
+      'trainings': instance.exercises,
       'imageUrl': instance.imageUrl,
     };

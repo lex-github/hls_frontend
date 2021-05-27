@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart'
     hide Colors, FormFieldValidator, Icon, Image, Padding, TextStyle;
 import 'package:flutter/material.dart' as M;
+import 'package:flutter/cupertino.dart' as C;
 import 'package:flutter/rendering.dart' as R;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'
     as DatePickerProvider;
@@ -11,8 +12,10 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart' as B;
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_form_controller.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/validation.dart';
@@ -257,12 +260,14 @@ class Select<T extends FormController, Type extends GenericEnum>
 
     // check that config type set correctly
     final type = controller.getType(field);
+    final title = controller.getLabel(field);
     final types = [FieldType.SELECT, FieldType.MULTI_SELECT];
     if (!types.contains(type))
       throw 'Associated FormController field does should be one of $types';
 
     // show select
     final result = await Get.to(SelectionScreen<Type>(
+        title: title,
         listBuilder: listBuilder,
         initialValue: value,
         values: values,
@@ -297,6 +302,117 @@ class Select<T extends FormController, Type extends GenericEnum>
         cursor: R.SystemMouseCursors.click,
         child: GestureDetector(
             onTap: _optionHandler,
+            child: AbsorbPointer(
+                child: Obx(() => TextFormField(
+                    style: TextStyle.primary,
+                    cursorColor: Colors.primary,
+                    decoration: decoration,
+                    controller: controller.getController(field),
+                    focusNode: controller.getNode(field),
+                    validator: (_) => validator(controller.getValue(field)),
+                    autovalidateMode: controller.shouldValidate
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.onUserInteraction,
+                    onEditingComplete: () => controller.submitHandler())))));
+  }
+}
+
+class SelectDrum<T extends FormController, Type extends GenericEnum>
+    extends GetView<T> {
+  final String field;
+  final List<Type> values;
+  final int errorMaxLines;
+  final bool isErrorVisible;
+  final EdgeInsets contentPadding;
+
+  SelectDrum(
+      {Key key,
+      @required this.field,
+      @required this.values,
+      this.errorMaxLines = defaultErrorMaxLines,
+      this.isErrorVisible = true,
+      this.contentPadding})
+      : super(key: key);
+
+  // handlers
+
+  void optionHandler() async {
+    // get current value
+    final value = ((value) => value == null
+        ? null
+        : value is List
+            ? List<Type>.from(value)
+            : <Type>[value])(controller.getValue(field));
+
+    // check that config type set correctly
+    final type = controller.getType(field);
+    final title = controller.getLabel(field);
+    final types = [FieldType.SELECT, FieldType.MULTI_SELECT];
+    if (!types.contains(type))
+      throw 'Associated FormController field should be one of $types';
+
+    // print('SelectDrum.optionHandler'
+    //     '\n\tvalues: $values'
+    //     '\n\tvalue: ${value?.first}'
+    //     '\n\tindex: ${values.indexOf(value?.first)}');
+
+    // show select
+    dynamic result = value;
+    await showConfirm(
+        contentPadding: contentPadding,
+        title: title ?? selectionScreenSingleTitle,
+        child: SizedBox(
+            height: Size.cupertinoPicker,
+            width: Size.screenWidth,
+            child: C.CupertinoPicker(
+                scrollController: C.FixedExtentScrollController(
+                    initialItem:
+                        values.indexWhere((x) => x.value == value?.first?.value)),
+                useMagnifier: true,
+                magnification: 1.1,
+                itemExtent: 1.75 * fontSize,
+                onSelectedItemChanged: (i) => result = values[i],
+                children: [
+                  for (final value in values)
+                    Center(
+                        //widthFactor: 1,
+                        // child: Container(
+                        //     width: Size.screenWidth - 4 * Size.horizontal,
+                        //     padding: EdgeInsets.symmetric(
+                        //         horizontal: Size.horizontal),
+                        child: TextPrimary(value.title,
+                            size: 1.15 * fontSize, lines: 1))
+                ])));
+    if (result == null) return;
+
+    //print('Select._optionHandler $result');
+
+    // change controller value
+    controller.onChanged(field, result);
+  }
+
+  @override
+  Widget build(_) {
+    final remoteValidationMessage = controller.validation
+        ?.getMessageForValue(field, controller.getValue(field));
+    //final focusNode = form?.getNode(field);
+
+    final validator = _composeValidator(
+        controller: controller,
+        field: field,
+        validationMessage: remoteValidationMessage);
+
+    final decoration = _getInputDecoration(
+        controller: controller,
+        field: field,
+        contentPadding: contentPadding,
+        isErrorVisible: isErrorVisible,
+        errorMaxLines: errorMaxLines);
+
+    return MouseRegion(
+        cursor: R.SystemMouseCursors.click,
+        child: GestureDetector(
+            onTap: optionHandler,
             child: AbsorbPointer(
                 child: Obx(() => TextFormField(
                     style: TextStyle.primary,

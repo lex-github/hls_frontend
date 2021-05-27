@@ -234,7 +234,7 @@ class ButtonInner extends StatelessWidget {
     final decoration = BoxDecoration(
         borderRadius: radius,
         border: Border.all(
-            width: borderWidth,
+            width: 0, //borderWidth,
             color:
                 shouldUseBackgroundColor ? background.darken(.2) : shadowColor,
             style: BorderStyle.solid),
@@ -289,6 +289,8 @@ class ButtonOuter extends StatelessWidget {
     // final offset = Offset(size / outerShadowHorizontalOffsetCoefficient,
     //     size / outerShadowVerticalOffsetCoefficient);
 
+    final borderColorBottom = borderColor ?? background ?? Colors.primary;
+
     return MouseRegion(
         cursor: isClickable ? SystemMouseCursors.click : MouseCursor.defer,
         child: Container(
@@ -305,8 +307,10 @@ class ButtonOuter extends StatelessWidget {
                 radius: radius,
                 strokeWidth: borderWidth / 2,
                 gradient: LinearGradient(colors: [
-                  Colors.upperBorder,
-                  borderColor ?? background ?? Colors.primary
+                  isCircular
+                      ? Colors.white
+                      : Color.alphaBlend(borderColorBottom.withOpacity(.3), Colors.upperBorder),
+                  borderColorBottom
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 backgroundColor: background ?? Colors.background,
                 child: SizedBox(
@@ -430,8 +434,8 @@ class ListItemButton extends Button {
                     Image(width: Size.iconBig, title: imageTitle),
                     HorizontalSpace()
                   ],
-                  TextPrimaryHint(title),
-                  Expanded(child: HorizontalSpace()),
+                  Expanded(child: TextPrimaryHint(title)),
+                  HorizontalSpace(),
                   Icon(FontAwesomeIcons.chevronRight,
                       color: Colors.disabled, size: Size.iconSmall)
                 ]),
@@ -440,7 +444,9 @@ class ListItemButton extends Button {
             isLoading: isLoading,
             isCircular: false,
             onPressed: onPressed,
-            padding: padding);
+            padding: padding) {
+    //print('ListItemButton imageTitle: $imageTitle');
+  }
 }
 
 class ListItemFoodButton extends ListItemButton {

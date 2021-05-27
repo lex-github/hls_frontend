@@ -103,7 +103,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
       @required String scheduleItemId,
       @required int foodId,
       @required int portion}) async {
-    final result = await mutation(schedulesEatingsCreateMutation, parameters: {
+    final result = await mutation(scheduleEatingsCreateMutation, parameters: {
       'scheduleId': scheduleId,
       'scheduleItemId': scheduleItemId,
       'foodId': foodId,

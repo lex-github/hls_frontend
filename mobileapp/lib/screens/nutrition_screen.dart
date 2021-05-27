@@ -18,9 +18,9 @@ import 'package:hls/screens/_form_screen.dart' hide Button;
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
-class NutritionScreen extends GetView<NutritionController> {
+class NutritionScreen<Controller extends NutritionController> extends GetView<Controller> {
   NutritionScreen() {
-    Get.lazyPut(() => SearchFormController());
+    Get.lazyPut(() => SearchFormController<Controller>());
   }
 
   // handlers
@@ -111,7 +111,7 @@ class NutritionScreen extends GetView<NutritionController> {
         // VerticalSpace(),
         Container(
             padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-            child: Input<SearchFormController>(
+            child: Input<SearchFormController<Controller>>(
                 field: 'search',
                 leading: Icon(FontAwesomeIcons.search,
                     color: Colors.disabled, size: .9 * Size.icon))),
@@ -208,9 +208,9 @@ class NutritionScreen extends GetView<NutritionController> {
       trailing: Clickable(
           onPressed: () => showConfirm(title: developmentText),
           child: Image(title: 'icons/question')),
-      child: GetX<NutritionController>(
-          init: NutritionController(),
-          dispose: (_) => Get.delete<SearchFormController>(),
+      child: GetX<Controller>(
+          init: NutritionController() as Controller,
+          dispose: (_) => Get.delete<SearchFormController<Controller>>(),
           builder: (_) => Column(
               children: [_buildHeader(), Expanded(child: _buildBody())])));
 }

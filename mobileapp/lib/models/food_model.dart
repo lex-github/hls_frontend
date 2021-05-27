@@ -68,17 +68,3 @@ class FoodSectionData extends GenericData {
   @override
   String toString() => 'FoodSectionData(title: $title)';
 }
-
-@JsonSerializable(includeIfNull: false)
-class ImageData {
-  String url;
-
-  ImageData();
-
-  factory ImageData.fromJson(Map<String, dynamic> json) =>
-      _$ImageDataFromJson(json);
-  Map<String, dynamic> toJson() => _$ImageDataToJson(this);
-
-  @override
-  String toString() => 'ImageData(url: $url)';
-}

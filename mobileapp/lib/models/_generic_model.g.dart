@@ -19,3 +19,11 @@ Map<String, dynamic> _$GenericDataToJson(GenericData instance) =>
       'title': instance.title,
       'imageUrl': instance.imageUrl,
     };
+
+ImageData _$ImageDataFromJson(Map<String, dynamic> json) {
+  return ImageData()..url = json['url'] as String;
+}
+
+Map<String, dynamic> _$ImageDataToJson(ImageData instance) => <String, dynamic>{
+      'url': instance.url,
+    };

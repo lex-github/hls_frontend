@@ -36,3 +36,11 @@ extension GraphQLErrorExtension on GraphQLError {
   int get code => extensions?.get('status');
   String get status => extensions?.get('exception');
 }
+
+class SearchController extends Controller {
+  // search
+  final _search = ''.obs;
+  RxString get searchReactive => _search;
+  String get search => _search.value;
+  set search(String value) => _search.value = value;
+}

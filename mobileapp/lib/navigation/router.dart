@@ -5,6 +5,10 @@ import 'package:hls/navigation/home_switch.dart';
 import 'package:hls/screens/article_screen.dart';
 import 'package:hls/screens/auth_form_screen.dart';
 import 'package:hls/screens/chat_results_screen.dart';
+import 'package:hls/screens/exercise_catalog_screen.dart';
+import 'package:hls/screens/exercise_category_screen.dart';
+import 'package:hls/screens/exercise_realtime_screen.dart';
+import 'package:hls/screens/exercise_screen.dart';
 import 'package:hls/screens/food_add_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
@@ -62,13 +66,29 @@ class Router {
         page: () => WelcomeScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: scheduleAddRoute,
-      page: () => ScheduleAddScreen(),
-      transitionDuration: navigationTransitionDuration),
+        name: scheduleAddRoute,
+        page: () => ScheduleAddScreen(),
+        transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: foodAddRoute,
-      page: () => FoodAddScreen(),
-      transitionDuration: navigationTransitionDuration),
+        name: foodAddRoute,
+        page: () => FoodAddScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: exerciseCatalogRoute,
+        page: () => ExerciseCatalogScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: exerciseCategoryRoute,
+        page: () => ExerciseCategoryScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: exerciseRoute,
+        page: () => ExerciseScreen(item: Get.arguments),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: exerciseRealtimeRoute,
+        page: () => ExerciseRealtimeScreen(),
+        transitionDuration: navigationTransitionDuration),
     GetPage(
         name: profileRoute,
         page: () => ProfileScreen(),

@@ -165,7 +165,7 @@ class Card extends StatelessWidget {
                                           ? Size.horizontalBig
                                           : 0),
                                   height: Size.verticalBig,
-                                  child: TextPrimary(title.toUpperCase(),
+                                  child: TextPrimary(title?.toUpperCase() ?? '',
                                       size: Size.fontSmall,
                                       weight: FontWeight.normal,
                                       overflow: TextOverflow.ellipsis,

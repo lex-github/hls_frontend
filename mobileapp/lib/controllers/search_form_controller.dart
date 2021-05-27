@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/_form_controller.dart';
-import 'package:hls/controllers/nutrition_controller.dart';
 
-class SearchFormController extends FormController {
+class SearchFormController<C extends SearchController> extends FormController {
   static final field = 'search';
 
   @override
@@ -29,6 +29,6 @@ class SearchFormController extends FormController {
 
     if (field != SearchFormController.field) return;
 
-    Get.find<NutritionController>().search = value;
+    Get.find<C>().search = value;
   }
 }

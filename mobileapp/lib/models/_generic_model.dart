@@ -28,3 +28,17 @@ class GenericData extends GenericEnum {
   @override
   int get hashCode => id;
 }
+
+@JsonSerializable(includeIfNull: false)
+class ImageData {
+  String url;
+
+  ImageData();
+
+  factory ImageData.fromJson(Map<String, dynamic> json) =>
+    _$ImageDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ImageDataToJson(this);
+
+  @override
+  String toString() => 'ImageData(url: $url)';
+}

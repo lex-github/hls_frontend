@@ -14,16 +14,11 @@ import 'package:hls/models/food_filter_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/services/auth_service.dart';
 
-class NutritionController extends Controller {
+class NutritionController extends SearchController {
   // filters
   final _filters = RxMap<String, FoodFilterData>();
   Map<String, FoodFilterData> get filters => _filters;
   set filters(Map<String, FoodFilterData> values) => _filters.assignAll(values);
-
-  // search
-  final _search = ''.obs;
-  String get search => _search.value;
-  set search(String value) => _search.value = value;
 
   // categories
 
@@ -132,7 +127,7 @@ class NutritionController extends Controller {
 
     // retrieve foods on filter change or search change
     ever(_filters, (_) => retrieveFoods());
-    debounce(_search, (_) => retrieveFoods(), time: searchDelayDuration);
+    debounce(searchReactive, (_) => retrieveFoods(), time: searchDelayDuration);
 
     super.onInit();
   }

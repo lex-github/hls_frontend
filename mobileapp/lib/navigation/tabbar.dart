@@ -124,7 +124,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                       if (AuthService
                               .i.profile?.schedule?.items?.isNullOrEmpty ??
                           true)
-                        return showConfirm(title: foodNeedScheduleTitle);
+                        return showConfirm(title: foodNeedScheduleText);
 
                       Get.toNamed(foodAddRoute);
                       _controller.toggleSubmenu();
@@ -137,7 +137,15 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
                     background: Colors.exercise,
                     size: 1.2 * Size.buttonBig,
                     //iconSize: .55 * Size.buttonBig,
-                    onPressed: () => showConfirm(title: developmentText))),
+                    onPressed: () {
+                      if (AuthService
+                        .i.profile?.schedule?.items?.isNullOrEmpty ??
+                        true)
+                        return showConfirm(title: exerciseNeedScheduleText);
+
+                      Get.toNamed(exerciseCatalogRoute);
+                      _controller.toggleSubmenu();
+                    })),
             Container(height: Size.bar, child: Center(child: child))
           ]))
       : Container(

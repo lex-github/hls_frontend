@@ -1,6 +1,7 @@
 const developmentText = 'Раздел в разработке';
 const requestWaitingText = 'Пожалуйста подождите';
 const selectionScreenTitle = 'Выберите значение(я)';
+const selectionScreenSingleTitle = 'Выберите значение';
 const debugTitle = 'Дебаг инфо';
 
 // refresh control
@@ -137,13 +138,14 @@ const microcycleTitle = 'Микроцикл';
 const weekTitle = 'Неделя';
 const trainingTitle = 'Тренировки';
 
+const categoryScreenTitle = 'Каталог';
+
 // food items
 const nutritionScreenTitle = 'Продукты';
 const productsScreenHeaderTitle = '';
 const productsScreenHeaderDescription = '';
 const nutritionSearchLabel = 'Название';
 const nutritionFilterLabel = 'Выбрать нутриенты продукта';
-const foodCategoryScreenTitle = 'Каталог';
 const foodScreenTitle = 'Продукт';
 const foodCarbLabel = 'углев.';
 const foodEmptyTitle = 'Продукт не найден в системе';
@@ -156,7 +158,7 @@ const foodEmptyRequestSentText =
     'Продукт будет добавлен в систему после рассмотрения';
 const foodAddPortionTitle = 'Каков размер порции?';
 const foodAddTimeTitle = 'В какое время?';
-const foodNeedScheduleTitle =
+const foodNeedScheduleText =
     'Для внесения данных о питании необходимо сначала сформировать режим';
 
 // food filter
@@ -209,3 +211,14 @@ const scheduleDayDinnerLabel = 'Ужин';
 const scheduleDaySnackLabel = 'Доп. прием пищи';
 const scheduleDayProteinLabel = 'Доп. белок';
 const scheduleDayExerciseLabel = 'Тренировка';
+
+// exercise
+const exerciseCatalogScreenTitle = 'Движение';
+const exerciseScreenTitle = 'Добавить данные';
+const exerciseTypeTitle = 'Выберите параметр';
+const exerciseNeedScheduleText =
+  'Для внесения данных о тренировках необходимо сначала сформировать режим';
+const exerciseNeedTypeText = 'Выберите тип данных тренировки';
+const exerciseNeedValueText = 'Внесите данные тренировки';
+const exerciseStartTitle = 'Начать тренировку';
+const exerciseZoneTitle = 'Рекомендуемая пульсовая зона';

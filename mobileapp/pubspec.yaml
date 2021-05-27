@@ -28,6 +28,8 @@ dependencies:
   #animated_text_kit: ^4.1.1
   # resize text based on available space
   auto_size_text: ^3.0.0-nullsafety.0
+  # player for exercises
+  better_player: ^0.0.68
   # cached images
   cached_network_image: ^3.0.0
   # analytics
@@ -55,7 +57,7 @@ dependencies:
   # selection of images (camera/gallery)
   image_picker: ^0.7.4
   # needed for serializable classes
-  json_serializable: ^4.1.0
+  json_serializable: ^4.1.2
   # bar over keyboard
   keyboard_actions: ^3.4.0
   # keyboard state

@@ -9,6 +9,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/theme/styles.dart';
 
 class SelectionScreen<Type extends GenericEnum> extends StatelessWidget {
+  final String title;
   final List<Type> values;
   final List<Type> initialValue;
   final bool isMultiple;
@@ -16,7 +17,8 @@ class SelectionScreen<Type extends GenericEnum> extends StatelessWidget {
   final Widget Function(SelectionLogicController<Type>, Type) itemBuilder;
 
   SelectionScreen(
-      {@required this.values,
+      {this.title,
+      @required this.values,
       this.initialValue,
       this.isMultiple = false,
       this.listBuilder,
@@ -67,7 +69,9 @@ class SelectionScreen<Type extends GenericEnum> extends StatelessWidget {
           : _SingleLogicController<Type>(selection: initialValue?.first),
       builder: (controller) => Screen(
           padding: Padding.zero,
-          title: selectionScreenTitle,
+          title: title ?? (isMultiple
+              ? selectionScreenTitle
+              : selectionScreenSingleTitle),
           trailing: isMultiple
               ? Button(
                   icon: FontAwesomeIcons.exclamationCircle,

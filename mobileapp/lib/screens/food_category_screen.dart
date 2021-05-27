@@ -23,7 +23,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
 
   FoodCategoryScreen()
       : category = (Get.arguments as Map).get('category'),
-        title = (Get.arguments as Map).get('title') ?? foodCategoryScreenTitle;
+        title = (Get.arguments as Map).get('title') ?? categoryScreenTitle;
 
   // handlers
 

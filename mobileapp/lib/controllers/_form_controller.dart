@@ -135,7 +135,7 @@ abstract class FormController extends GetxController {
     if (shouldUpdate && state.value != value) {
       state.setValue(value, shouldUpdate: shouldUpdateController);
 
-      if (state.controller == null) update();
+      if (state.controller == null || state.config.shouldUpdateOnChange) update();
     }
 
     // global validation
@@ -158,6 +158,7 @@ abstract class FormController extends GetxController {
             ..node = FocusNode();
           break;
         case FieldType.SWITCH:
+        case FieldType.NONE:
           break;
         default:
           state
@@ -303,6 +304,7 @@ class FormConfig {
   final value;
   final String Function(dynamic) toRepresentation;
   final dynamic Function(String) toValue;
+  final bool shouldUpdateOnChange;
 
   FormConfig(
       {@required this.field,
@@ -313,7 +315,7 @@ class FormConfig {
       this.type = FieldType.INPUT,
       this.value,
       this.toRepresentation,
-      this.toValue});
+      this.toValue, this.shouldUpdateOnChange = false});
 
   @override
   String toString() => 'FormConfig(field: $field, value: $value)';
@@ -322,6 +324,7 @@ class FormConfig {
 class FieldType extends Enum<int> {
   const FieldType(v) : super(v);
 
+  static const NONE = const FieldType(0);
   static const INPUT = const FieldType(1);
   static const SELECT = const FieldType(2);
   static const MULTI_SELECT = const FieldType(3);

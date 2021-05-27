@@ -25,6 +25,12 @@ abstract class Enum<T> extends Object {
   T get value => _value;
 
   static String string(Enum x) => x.value.toString();
+
+  // @override
+  // bool operator ==(Object other) => other is Enum<T> && other.value == value;
+  //
+  // @override
+  // int get hashCode => value.hashCode;
 }
 
 class GenericEnum<T> extends Enum<T> {
@@ -32,8 +38,9 @@ class GenericEnum<T> extends Enum<T> {
   final String imageTitle;
   final IconData icon;
 
-  const GenericEnum({value, this.title, this.imageTitle, this.icon}) : super(value);
+  const GenericEnum({value, this.title, this.imageTitle, this.icon})
+      : super(value);
 
   @override
-  String toString() => title;
+  String toString() => "$title";
 }

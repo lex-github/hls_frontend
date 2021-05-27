@@ -108,7 +108,7 @@ class FoodScreen extends GetView<FoodController> {
         portion: portion))
       return showConfirm(title: controller.message ?? errorGenericText);
 
-    Get.close(3);
+    Get.until((route) => route.settings.name == '/');
   }
 
   // builds
