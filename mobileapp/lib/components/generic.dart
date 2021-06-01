@@ -302,7 +302,8 @@ class Icon extends StatelessWidget {
   const Icon(this.icon, {Key key, this.size, this.color}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FaIcon(icon, size: size, color: color);
+  Widget build(BuildContext context) =>
+      FaIcon(icon, size: size, color: color ?? Colors.light);
 }
 
 /// Widget which displays image

@@ -20,7 +20,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
     ..daily =
         UserDailyData.fromJson(json['dailyRating'] as Map<String, dynamic>)
     ..trainings =
-        (json['weeklyTrainings'] as List<dynamic>).map((e) => e as int).toList()
+        (json['weeklyTrainings'] as List<dynamic>)?.map((e) => e as int)?.toList()
     ..progress =
         UserProgressData.fromJson(json['progress'] as Map<String, dynamic>)
     ..schedule =
@@ -151,7 +151,7 @@ HealthData _$HealthDataFromJson(Map<String, dynamic> json) {
         HealthIndexData.fromJson(json['robinsonIndex'] as Map<String, dynamic>)
     ..ruffierIndex =
         HealthIndexData.fromJson(json['rufierProbe'] as Map<String, dynamic>)
-    ..hlsApplication = (json['hlsApplication'] as num).toDouble()
+    ..hlsApplication = (json['hlsApplication'] as num)?.toDouble()
     ..debugInfo = json['debugInfo'] as Map<String, dynamic>;
 }
 

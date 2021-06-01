@@ -1,4 +1,6 @@
+import 'package:flutter/rendering.dart';
 import 'package:hls/helpers/enums.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/models/_generic_model.dart';
@@ -11,13 +13,14 @@ class ExerciseData extends GenericData {
   ImageData image;
   @JsonKey(name: 'inputData')
   List<ExerciseInputData> input;
+  @JsonKey(name: 'pulseZones')
+  List<ExercisePulseData> pulse;
   @JsonKey(
       name: 'kind',
       fromJson: ExerciseType.fromJsonValue,
       toJson: ExerciseType.toJsonValue)
   ExerciseType type;
   String videoUrl;
-
 
   ExerciseData();
 
@@ -27,7 +30,9 @@ class ExerciseData extends GenericData {
 
   List<GenericEnum> get values => [
         for (final i in input)
-          GenericEnum<String>(title: i.title, value: i.type),
+          GenericEnum<String>(
+              title: [i.title, if (!i.unit.isNullOrEmpty) i.unit].join(', '),
+              value: i.type),
       ];
 
   List<GenericEnum> valuesFor(String type) {
@@ -37,7 +42,7 @@ class ExerciseData extends GenericData {
     if (input == null) return null;
 
     return [
-      for (int i = input.min; i <= input.max; i++)
+      for (int i = input.min; i <= input.max; i+=input.step)
         GenericEnum(title: "$i", value: i)
     ];
   }
@@ -48,17 +53,19 @@ class ExerciseData extends GenericData {
 
   @override
   String toString() => 'ExerciseData('
-    '\n\ttitle: $title'
-    '\n\ttype: $type'
-    ')';
+      '\n\ttitle: $title'
+      '\n\ttype: $type'
+      ')';
 }
 
 @JsonSerializable(includeIfNull: false)
 class ExerciseInputData extends GenericData {
+  String unit;
   @JsonKey(name: 'inputType')
   String type;
   int min;
   int max;
+  int step;
 
   ExerciseInputData();
 
@@ -68,6 +75,29 @@ class ExerciseInputData extends GenericData {
 
   @override
   String toString() => 'ExerciseInputData(title: $title)';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ExercisePulseData extends GenericData {
+  @JsonKey(fromJson: toColor, toJson: colorToString)
+  Color color;
+  String description;
+  String heartRate;
+  @JsonKey(fromJson: toBool)
+  bool isRecommended;
+
+  ExercisePulseData();
+
+  factory ExercisePulseData.fromJson(Map<String, dynamic> json) =>
+      _$ExercisePulseDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ExercisePulseDataToJson(this);
+
+  @override
+  String toString() => 'ExercisePulseData('
+      '\n\ttitle: $title'
+      '\n\tdescription: $description'
+      '\n\theartRate: $heartRate'
+      ')';
 }
 
 class ExerciseType extends GenericEnum<String> {

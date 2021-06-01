@@ -53,11 +53,13 @@ class ExerciseCatalogScreen<Controller extends ExerciseCatalogController>
 
   Widget _buildCategoryListItem(ExerciseCategoryData item) => ListItemButton(
       imageTitle: item.imageUrl,
+      imageSize: Size.icon,
       title: item.title,
       onPressed: () => _categoryHandler(item));
 
   Widget _buildListItem(item) => ListItemButton(
       imageTitle: item.imageUrl,
+      imageSize: Size.icon,
       title: item.title,
       onPressed: () => null //_foodHandler(item)
       );

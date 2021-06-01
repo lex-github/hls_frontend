@@ -29,10 +29,10 @@ class _State extends State<ExerciseCategoryScreen> {
       Get.toNamed(exerciseCategoryRoute, arguments: data);
 
   _itemHandler(ExerciseData data) => Get.toNamed(
-        data.type == ExerciseType.REALTIME
-            ? exerciseRealtimeRoute
-            : exerciseRoute,
-        arguments: data);
+      data.type == ExerciseType.REALTIME
+          ? exerciseRealtimeRoute
+          : exerciseRoute,
+      arguments: data);
 
   /// builders
 
@@ -45,11 +45,13 @@ class _State extends State<ExerciseCategoryScreen> {
 
   Widget _buildCategoryListItem(ExerciseCategoryData item) => ListItemButton(
       imageTitle: item.imageUrl,
+      imageSize: Size.icon,
       title: item.title,
       onPressed: () => _categoryHandler(item));
 
   Widget _buildListItem(ExerciseData item) => ListItemButton(
       imageTitle: item.imageUrl,
+      imageSize: Size.icon,
       title: item.title,
       onPressed: () => _itemHandler(item));
 
@@ -82,12 +84,12 @@ class _State extends State<ExerciseCategoryScreen> {
       });
 
   Widget _buildBody() => category == null
-        ? _buildEmpty()
-        : !category.children.isNullOrEmpty
-            ? _buildCategories()
-            : !category.exercises.isNullOrEmpty
-                ? _buildItems()
-                : _buildEmpty();
+      ? _buildEmpty()
+      : !category.children.isNullOrEmpty
+          ? _buildCategories()
+          : !category.exercises.isNullOrEmpty
+              ? _buildItems()
+              : _buildEmpty();
 
   @override
   Widget build(_) => Screen(

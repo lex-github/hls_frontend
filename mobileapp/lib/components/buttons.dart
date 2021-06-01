@@ -309,7 +309,8 @@ class ButtonOuter extends StatelessWidget {
                 gradient: LinearGradient(colors: [
                   isCircular
                       ? Colors.white
-                      : Color.alphaBlend(borderColorBottom.withOpacity(.3), Colors.upperBorder),
+                      : Color.alphaBlend(borderColorBottom.withOpacity(.3),
+                          Colors.upperBorder),
                   borderColorBottom
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 backgroundColor: background ?? Colors.background,
@@ -420,6 +421,7 @@ class ListItemButton extends Button {
   ListItemButton(
       {Widget child,
       String imageTitle,
+      double imageSize,
       String title,
       bool isSelected = false,
       bool isSwitch = false,
@@ -431,7 +433,14 @@ class ListItemButton extends Button {
             child: child ??
                 Row(children: [
                   if (!imageTitle.isNullOrEmpty) ...[
-                    Image(width: Size.iconBig, title: imageTitle),
+                    SizedBox(
+                        height: imageSize,
+                        width: imageSize ?? Size.iconBig,
+                        child: Center(
+                            child: Image(
+                                height: imageSize,
+                                width: imageSize ?? Size.iconBig,
+                                title: imageTitle))),
                     HorizontalSpace()
                   ],
                   Expanded(child: TextPrimaryHint(title)),

@@ -95,6 +95,10 @@ class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
                                   .firstWhere((x) => x.type == form.type?.value,
                                       orElse: () => item.input.first)
                                   .max,
+                              step: item.input
+                                  .firstWhere((x) => x.type == form.type?.value,
+                                      orElse: () => item.input.first)
+                                  .step,
                               values: item.valuesFor(
                                   form.type?.value ?? item.values.first.value))
                         //Indicator<T>()
@@ -106,6 +110,7 @@ class SelectExercise<T extends FormController, Type extends GenericEnum>
   final String label;
   final int min;
   final int max;
+  final int step;
 
   SelectExercise(
       {Key key,
@@ -113,7 +118,8 @@ class SelectExercise<T extends FormController, Type extends GenericEnum>
       @required List<Type> values,
       this.label,
       this.min,
-      this.max})
+      this.max,
+      this.step})
       : super(key: key, field: field, values: values);
 
   int get value {
@@ -154,6 +160,7 @@ class SelectExercise<T extends FormController, Type extends GenericEnum>
             inactiveColor: Colors.disabled,
             min: min.toDouble(),
             max: max.toDouble(),
+            divisions: ((max - min).toDouble() / step).round(),
             value: value.toDouble(),
             onChanged: (value) => controller.onChanged(
                 field, values.firstWhere((x) => x.value == value.round())))

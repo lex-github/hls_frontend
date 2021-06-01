@@ -62,9 +62,9 @@ class UserData extends GenericData {
       //     ? []
       //     :
       ((List<ChatDialogType> completedTypes) => [
-                for (final type in ChatDialogType.values)
-                  if (!completedTypes.contains(type)) type
-              ])(completedDialogs.map((x) => x.type).toList(growable: false));
+            for (final type in ChatDialogType.values)
+              if (!completedTypes.contains(type)) type
+          ])(completedDialogs.map((x) => x.type).toList(growable: false));
 
   bool get isTrainingDay => trainings.contains(DateTime.now().weekday);
 
@@ -225,11 +225,11 @@ class HealthData {
 class HealthValueData {
   @JsonKey(name: 'createdAt', fromJson: toDate)
   DateTime date;
-  @JsonKey(name: 'avgRating', toJson: toDouble)
+  @JsonKey(name: 'avgRating', fromJson: toDouble, toJson: toDouble)
   double average;
-  @JsonKey(name: 'formulasRating', toJson: toDouble)
+  @JsonKey(name: 'formulasRating', fromJson: toDouble, toJson: toDouble)
   double calculated;
-  @JsonKey(name: 'hlsApplication', toJson: toDouble)
+  @JsonKey(name: 'hlsApplication', fromJson: toDouble, toJson: toDouble)
   double empirical;
 
   HealthValueData();

@@ -115,9 +115,10 @@ class Colors {
   static const black = M.Colors.black;
   static const white = M.Colors.white;
 
-  //static const shadow = M.Color(0x66121212);
-  static const shadow = M.Color(0xFF000000);
-  static const shadowLight = M.Color(0x662f2d3e);
+  //static const shadow = M.Color(0xFF000000);
+  static const shadow = M.Color(0x66121212);
+  //static const shadowLight = M.Color(0x662f2d3e);
+  static const shadowLight = shadow;
   static const icon = Colors.light;
 
   // text
