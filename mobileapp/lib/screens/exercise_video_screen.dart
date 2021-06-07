@@ -57,6 +57,9 @@ class ExerciseVideoScreen extends VideoScreen {
             duration: defaultAnimationDuration,
             opacity: controller.isPlaying ? 0 : playerButtonOpacity,
             child: CircularButton(
-                icon: FontAwesomeIcons.play, onPressed: controller.toggle)))
+              icon: FontAwesomeIcons.solidPlayCircle,
+              size: Size.buttonHuge,
+              iconSize: .8 * Size.buttonHuge,
+              onPressed: controller.toggle)))
       ]);
 }

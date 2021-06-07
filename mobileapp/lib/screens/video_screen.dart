@@ -21,8 +21,9 @@ class VideoScreen extends GetView<VideoScreenController> {
 
   // builders
 
-  Widget buildPlayer() =>
-      VideoPlayer(controller.video);
+  Widget buildPlayer() => Hero(
+    tag: url,
+    child: VideoPlayer(controller.video));
 
   // YoutubePlayer(
   //   //width: Size.screenHeight,
@@ -35,14 +36,13 @@ class VideoScreen extends GetView<VideoScreenController> {
   //   //onReady: () => controller.listener()
   // );
 
-  Widget _buildBackButton() =>
-      Obx(() => AnimatedOpacity(
-          duration: defaultAnimationDuration,
-          opacity: controller.isPlaying ? 0 : playerButtonOpacity,
-          child: CircularButton(
-              size: Size.button,
-              icon: FontAwesomeIcons.arrowLeft,
-              onPressed: Get.back)));
+  Widget _buildBackButton() => Obx(() => AnimatedOpacity(
+      duration: defaultAnimationDuration,
+      opacity: controller.isPlaying ? 0 : playerButtonOpacity,
+      child: CircularButton(
+          size: Size.button,
+          icon: FontAwesomeIcons.arrowLeft,
+          onPressed: Get.back)));
 
   @override
   Widget build(_) => GetBuilder<VideoScreenController>(
@@ -85,7 +85,9 @@ class VideoScreen extends GetView<VideoScreenController> {
                   duration: defaultAnimationDuration,
                   opacity: controller.isPlaying ? 0 : playerButtonOpacity,
                   child: CircularButton(
-                      icon: FontAwesomeIcons.play,
+                      icon: FontAwesomeIcons.solidPlayCircle,
+                      size: Size.buttonHuge,
+                      iconSize: .8 * Size.buttonHuge,
                       onPressed: controller.toggle)))
             ]);
 

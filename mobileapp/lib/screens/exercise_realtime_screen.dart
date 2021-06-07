@@ -37,22 +37,47 @@ class _State extends State<ExerciseRealtimeScreen> {
 
   Widget _buildPlayer() => GetBuilder<VideoScreenController>(
       init: VideoScreenController(url: item.videoUrl, autoPlay: false),
-      builder: (controller) => SizedBox(
-          height: Size.image,
-          width: Size.image * controller.video.value.aspectRatio,
-          child: controller.isInit
-              ? Stack(alignment: Alignment.center, children: [
-                  GestureDetector(
+      builder: (controller) => ClipRect(
+          child: SizedBox(
+              height: Size.image,
+              //width: Size.image * controller.video.value.aspectRatio,
+              width: Size.screenWidth,
+              child: controller.isInit
+                  ? GestureDetector(
                       onTap: controller.toggle,
-                      child: VideoPlayer(controller.video)),
-                  Obx(() => AnimatedOpacity(
-                      duration: defaultAnimationDuration,
-                      opacity: controller.isPlaying ? 0 : playerButtonOpacity,
-                      child: CircularButton(
-                          icon: FontAwesomeIcons.play,
-                          onPressed: controller.toggle)))
-                ])
-              : Center(child: Loading())));
+                      child: Stack(
+                          //clipBehavior: Clip.antiAlias,
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                                width: Size.screenWidth,
+                                height: Size.screenWidth /
+                                    controller.video.value.aspectRatio,
+                                child: FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: SizedBox(
+                                        width: Size.screenWidth,
+                                        height: Size.screenWidth /
+                                            controller.video.value.aspectRatio,
+                                        child: Hero(
+                                            tag: item.videoUrl,
+                                            child: VideoPlayer(
+                                                controller.video))))),
+                            Obx(() => AnimatedOpacity(
+                                duration: defaultAnimationDuration,
+                                opacity: controller.isPlaying
+                                    ? 0
+                                    : playerButtonOpacity,
+                                child: CircularButton(
+                                    // background: Colors.transparent,
+                                    // borderColor: Colors.primary,
+                                    // color: Colors.primary,
+                                    icon: FontAwesomeIcons.solidPlayCircle,
+                                    size: Size.buttonBig,
+                                    iconSize: .8 * Size.buttonBig,
+                                    onPressed: controller.toggle)))
+                          ]))
+                  : Center(child: Loading()))));
 
   // GetBuilder<VideoScreenController>(
   //     init: VideoScreenController(url: item.videoUrl),
@@ -116,6 +141,9 @@ class _State extends State<ExerciseRealtimeScreen> {
                         background: Colors.primary,
                         title: exerciseStartTitle,
                         onPressed: () {
+                          if (item.videoUrl.isNullOrEmpty)
+                            return showConfirm(title: noDataText);
+
                           final controller = Get.find<VideoScreenController>();
                           if (controller == null)
                             return showConfirm(title: errorGenericText);
