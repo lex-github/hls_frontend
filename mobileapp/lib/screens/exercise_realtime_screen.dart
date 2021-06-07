@@ -12,7 +12,9 @@ import 'package:hls/controllers/exercise_catalog_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/hub_screen.dart';
+import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
+import 'package:video_player/video_player.dart';
 
 class ExerciseRealtimeScreen extends StatefulWidget {
   @override
@@ -33,33 +35,34 @@ class _State extends State<ExerciseRealtimeScreen> {
 
   /// builders
 
-  Widget _buildPlayer() =>
-      //VideoPlayer(controller.video)
+  Widget _buildPlayer() => GetBuilder<VideoScreenController>(
+      init: VideoScreenController(url: item.videoUrl),
+      builder: (controller) => VideoPlayer(controller.video));
 
-      // GetBuilder<VideoScreenController>(
-      //     init: VideoScreenController(url: item.videoUrl),
-      //     builder: (controller) => YoutubePlayer(
-      //           //width: Size.screenHeight,
-      //           //aspectRatio: 9 / 16,
-      //           controller: controller.video,
-      //           showVideoProgressIndicator: true,
-      //           progressIndicatorColor: Colors.primary,
-      //           progressColors: ProgressBarColors(
-      //               playedColor: Colors.primary, handleColor: Colors.disabled),
-      //           //onReady: () => controller.listener()
-      //         ));
+  // GetBuilder<VideoScreenController>(
+  //     init: VideoScreenController(url: item.videoUrl),
+  //     builder: (controller) => YoutubePlayer(
+  //           //width: Size.screenHeight,
+  //           //aspectRatio: 9 / 16,
+  //           controller: controller.video,
+  //           showVideoProgressIndicator: true,
+  //           progressIndicatorColor: Colors.primary,
+  //           progressColors: ProgressBarColors(
+  //               playedColor: Colors.primary, handleColor: Colors.disabled),
+  //           //onReady: () => controller.listener()
+  //         ));
 
-      // BetterPlayer.network(
-      //     'https://eng-demo.cablecast.tv/segmented-captions/vod.m3u8'
-      //     //item.videoUrl,
-      //
-      //     // betterPlayerConfiguration: BetterPlayerConfiguration(
-      //     //   aspectRatio: 16 / 9,
-      //     // )
-      //     );
+  // BetterPlayer.network(
+  //     'https://eng-demo.cablecast.tv/segmented-captions/vod.m3u8'
+  //     //item.videoUrl,
+  //
+  //     // betterPlayerConfiguration: BetterPlayerConfiguration(
+  //     //   aspectRatio: 16 / 9,
+  //     // )
+  //     );
 
-      VimeoPlayer(
-          id: '233685439', autoPlay: false, loaderColor: Colors.primary);
+  // VimeoPlayer(
+  //     id: '233685439', autoPlay: false, loaderColor: Colors.primary);
 
   @override
   Widget build(_) => Screen(
@@ -75,7 +78,8 @@ class _State extends State<ExerciseRealtimeScreen> {
                 padding: Padding.content,
                 child: Column(children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Button(background: Colors.primary, title: exerciseStartTitle)
+                    Button(
+                        background: Colors.primary, title: exerciseStartTitle)
                   ]),
                   VerticalSpace(),
                   Container(
