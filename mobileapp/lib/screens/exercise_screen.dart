@@ -162,8 +162,20 @@ class SelectExercise<T extends FormController, Type extends GenericEnum>
             max: max.toDouble(),
             divisions: ((max - min).toDouble() / step).round(),
             value: value.toDouble(),
-            onChanged: (value) => controller.onChanged(
-                field, values.firstWhere((x) => x.value == value.round())))
+            onChanged: (value) {
+              print('SLIDER: ${value.round()} $values');
+
+              var selectedItem;
+              for (final item in values)
+                if (selectedItem == null ||
+                    (value - item.value).abs() <
+                        (value - selectedItem.value).abs()) selectedItem = item;
+
+              // controller.onChanged(
+              //     field, values.firstWhere((x) => x.value == value.round()));
+
+              controller.onChanged(field, selectedItem);
+            })
       ]);
 }
 

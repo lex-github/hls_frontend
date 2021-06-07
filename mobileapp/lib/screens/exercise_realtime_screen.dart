@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/components/videoplayer/vimeoplayer_trinity.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/exercise_catalog_controller.dart';
@@ -49,14 +50,17 @@ class _State extends State<ExerciseRealtimeScreen> {
       //           //onReady: () => controller.listener()
       //         ));
 
-      BetterPlayer.network(
-          'https://eng-demo.cablecast.tv/segmented-captions/vod.m3u8'
-          //item.videoUrl,
+      // BetterPlayer.network(
+      //     'https://eng-demo.cablecast.tv/segmented-captions/vod.m3u8'
+      //     //item.videoUrl,
+      //
+      //     // betterPlayerConfiguration: BetterPlayerConfiguration(
+      //     //   aspectRatio: 16 / 9,
+      //     // )
+      //     );
 
-          // betterPlayerConfiguration: BetterPlayerConfiguration(
-          //   aspectRatio: 16 / 9,
-          // )
-          );
+      VimeoPlayer(
+          id: '233685439', autoPlay: false, loaderColor: Colors.primary);
 
   @override
   Widget build(_) => Screen(
@@ -66,46 +70,49 @@ class _State extends State<ExerciseRealtimeScreen> {
       child: item == null
           ? EmptyPage()
           : SingleChildScrollView(
-              child: Container(
-                  padding: Padding.content,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    if (!item.videoUrl.isNullOrEmpty || true) _buildPlayer(),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+              if (!item.videoUrl.isNullOrEmpty || true) _buildPlayer(),
+              Container(
+                padding: Padding.content,
+                child: Column(children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Button(background: Colors.primary, title: exerciseStartTitle)
+                  ]),
+                  VerticalSpace(),
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.background,
+                          borderRadius: borderRadiusCircular,
+                          border: Border.all(
+                              width: borderWidth,
+                              color: Colors.disabled,
+                              style: BorderStyle.solid)),
+                      padding: Padding.content,
+                      child: StatusBlock()),
+                  if (!item.pulse.isNullOrEmpty) ...[
                     VerticalSpace(),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Button(
-                          background: Colors.primary, title: exerciseStartTitle)
-                    ]),
-                    VerticalSpace(),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: Colors.background,
-                            borderRadius: borderRadiusCircular,
-                            border: Border.all(
-                                width: borderWidth,
-                                color: Colors.disabled,
-                                style: BorderStyle.solid)),
-                        padding: Padding.content,
-                        child: StatusBlock()),
-                    if (!item.pulse.isNullOrEmpty) ...[
-                      VerticalSpace(),
-                      Accordion(
-                          icon: FontAwesomeIcons.infoCircle,
-                          title: exerciseZoneTitle,
-                          child: Column(children: [
-                            VerticalMediumSpace(),
-                            for (final p in item.pulse) ...[
-                              Heartbeat(
-                                  color: p.color,
-                                  title: p.title,
-                                  description: p.description,
-                                  heartbeat: p.heartRate),
-                              if (p.title != item.pulse.last.title)
-                                VerticalSmallSpace()
-                            ],
-                            VerticalMediumSpace()
-                          ]))
-                    ]
-                  ]))));
+                    Accordion(
+                        icon: FontAwesomeIcons.infoCircle,
+                        title: exerciseZoneTitle,
+                        child: Column(children: [
+                          VerticalMediumSpace(),
+                          for (final p in item.pulse) ...[
+                            Opacity(
+                                opacity: p.isRecommended ? 1 : .2,
+                                child: Heartbeat(
+                                    color: p.color,
+                                    title: p.title,
+                                    description: p.description,
+                                    heartbeat: p.heartRate)),
+                            if (p.title != item.pulse.last.title)
+                              VerticalSmallSpace()
+                          ],
+                          VerticalMediumSpace()
+                        ]))
+                  ]
+                ]),
+              )
+            ])));
 }
 
 class Heartbeat extends StatelessWidget {

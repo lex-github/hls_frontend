@@ -34,8 +34,11 @@ class ExerciseCatalogScreen<Controller extends ExerciseCatalogController>
         arguments: data.exercises.first);
   }
 
-  // _itemHandler(ExerciseData item) => Get.toNamed(foodRoute,
-  //   arguments: {'title': item.category.title, 'food': item});
+  _itemHandler(ExerciseData data) => Get.toNamed(
+    data.type == ExerciseType.REALTIME
+      ? exerciseRealtimeRoute
+      : exerciseRoute,
+    arguments: data);
 
   /// builders
 
@@ -61,7 +64,7 @@ class ExerciseCatalogScreen<Controller extends ExerciseCatalogController>
       imageTitle: item.imageUrl,
       imageSize: Size.icon,
       title: item.title,
-      onPressed: () => null //_foodHandler(item)
+      onPressed: () => _itemHandler(item)
       );
 
   Widget _buildCategories() => controller.list.isNullOrEmpty

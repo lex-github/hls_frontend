@@ -80,8 +80,9 @@ dependencies:
   share: ^2.0.1
   # settings
   # video player
-  #video_player: ^2.1.1
+  video_player: ^2.1.1
   youtube_player_flutter: ^8.0.0
+  #vimeoplayer_trinity: ^0.1.9
   # window size for desktop
   window_size:
     git:
@@ -89,7 +90,7 @@ dependencies:
       path: plugins/window_size
 
 dependency_overrides:
-  path_provider: ^2.0.0
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
