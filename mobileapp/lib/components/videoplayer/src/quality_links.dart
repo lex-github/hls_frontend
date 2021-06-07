@@ -23,6 +23,9 @@ class QualityLinks {
       SplayTreeMap videoList = SplayTreeMap.fromIterable(jsonData,
           key: (item) => "${item['quality']} ${item['fps']}",
           value: (item) => item['url']);
+
+      print('QualityLinks.getQualitiesAsync $videoList');
+
       return videoList;
     } catch (error) {
       print('=====> REQUEST ERROR: $error');

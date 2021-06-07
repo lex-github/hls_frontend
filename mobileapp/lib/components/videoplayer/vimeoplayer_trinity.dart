@@ -121,7 +121,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   }
 
   _onPlay() {
-    print('VimeoPlayer._onPlay position: ${_controller.value.position.inSeconds}');
+    print(
+        'VimeoPlayer._onPlay position: ${_controller.value.position.inSeconds}');
   }
 
   //Отрисовываем элементы плеера
@@ -298,7 +299,10 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       _qualityValue = value;
                       _controller =
                           VideoPlayerController.network(_qualityValue);
-                      _controller.setLooping(true);
+                      _controller.setLooping(looping);
+
+                      _controller.addListener(_onPlay);
+
                       _seek = true;
                       initFuture = _controller.initialize();
                       _controller.play();

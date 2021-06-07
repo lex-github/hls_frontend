@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding, Page;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
