@@ -9,6 +9,7 @@ part 'exercise_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class ExerciseData extends GenericData {
+  String description;
   @JsonKey(name: 'icon')
   ImageData image;
   @JsonKey(name: 'inputData')

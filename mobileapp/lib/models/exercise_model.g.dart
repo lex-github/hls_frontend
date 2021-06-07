@@ -10,6 +10,7 @@ ExerciseData _$ExerciseDataFromJson(Map<String, dynamic> json) {
   return ExerciseData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
+    ..description = json['description'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..input = (json['inputData'] as List<dynamic>)
         ?.map((e) => ExerciseInputData.fromJson(e as Map<String, dynamic>))
@@ -26,6 +27,7 @@ Map<String, dynamic> _$ExerciseDataToJson(ExerciseData instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'title': instance.title,
+    'description': instance.description,
     'icon': instance.image,
     'inputData': instance.input,
     'pulseZones': instance.pulse,

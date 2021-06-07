@@ -5,10 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
-import 'package:hls/components/videoplayer/vimeoplayer_trinity.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/exercise_catalog_controller.dart';
+import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/hub_screen.dart';
@@ -36,8 +36,23 @@ class _State extends State<ExerciseRealtimeScreen> {
   /// builders
 
   Widget _buildPlayer() => GetBuilder<VideoScreenController>(
-      init: VideoScreenController(url: item.videoUrl),
-      builder: (controller) => VideoPlayer(controller.video));
+      init: VideoScreenController(url: item.videoUrl, autoPlay: false),
+      builder: (controller) => SizedBox(
+          height: Size.image,
+          width: Size.image * controller.video.value.aspectRatio,
+          child: controller.isInit
+              ? Stack(alignment: Alignment.center, children: [
+                  GestureDetector(
+                      onTap: controller.toggle,
+                      child: VideoPlayer(controller.video)),
+                  Obx(() => AnimatedOpacity(
+                      duration: defaultAnimationDuration,
+                      opacity: controller.isPlaying ? 0 : playerButtonOpacity,
+                      child: CircularButton(
+                          icon: FontAwesomeIcons.play,
+                          onPressed: controller.toggle)))
+                ])
+              : Center(child: Loading())));
 
   // GetBuilder<VideoScreenController>(
   //     init: VideoScreenController(url: item.videoUrl),
@@ -64,6 +79,17 @@ class _State extends State<ExerciseRealtimeScreen> {
   // VimeoPlayer(
   //     id: '233685439', autoPlay: false, loaderColor: Colors.primary);
 
+  Widget _buildBlock({Widget child}) => Container(
+      decoration: BoxDecoration(
+          color: Colors.background,
+          borderRadius: borderRadiusCircular,
+          border: Border.all(
+              width: borderWidth,
+              color: Colors.disabled,
+              style: BorderStyle.solid)),
+      padding: Padding.content,
+      child: child);
+
   @override
   Widget build(_) => Screen(
       padding: Padding.zero,
@@ -73,25 +99,34 @@ class _State extends State<ExerciseRealtimeScreen> {
           ? EmptyPage()
           : SingleChildScrollView(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-              if (!item.videoUrl.isNullOrEmpty || true) _buildPlayer(),
+              if (!item.videoUrl.isNullOrEmpty)
+                _buildPlayer()
+              else ...[VerticalSpace(), TextError(noDataText)],
               Container(
                 padding: Padding.content,
                 child: Column(children: [
+                  if (!item.description.isNullOrEmpty) ...[
+                    _buildBlock(
+                        child: TextPrimary(item.description,
+                            size: Size.fontSmall)),
+                    VerticalSpace()
+                  ],
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Button(
-                        background: Colors.primary, title: exerciseStartTitle)
+                        background: Colors.primary,
+                        title: exerciseStartTitle,
+                        onPressed: () {
+                          final controller = Get.find<VideoScreenController>();
+                          if (controller == null)
+                            return showConfirm(title: errorGenericText);
+
+                          controller.reset();
+                          controller.play();
+                          Get.toNamed(exerciseVideoRoute, arguments: item);
+                        })
                   ]),
                   VerticalSpace(),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.background,
-                          borderRadius: borderRadiusCircular,
-                          border: Border.all(
-                              width: borderWidth,
-                              color: Colors.disabled,
-                              style: BorderStyle.solid)),
-                      padding: Padding.content,
-                      child: StatusBlock()),
+                  _buildBlock(child: StatusBlock()),
                   if (!item.pulse.isNullOrEmpty) ...[
                     VerticalSpace(),
                     Accordion(

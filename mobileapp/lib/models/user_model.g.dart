@@ -170,9 +170,9 @@ Map<String, dynamic> _$HealthDataToJson(HealthData instance) =>
 HealthValueData _$HealthValueDataFromJson(Map<String, dynamic> json) {
   return HealthValueData()
     ..date = toDate(json['createdAt'])
-    ..average = (json['avgRating'] as num)?.toDouble()
-    ..calculated = (json['formulasRating'] as num)?.toDouble()
-    ..empirical = (json['hlsApplication'] as num)?.toDouble();
+    ..average = toDouble(json['avgRating'])
+    ..calculated = toDouble(json['formulasRating'])
+    ..empirical = toDouble(json['hlsApplication']);
 }
 
 Map<String, dynamic> _$HealthValueDataToJson(HealthValueData instance) {

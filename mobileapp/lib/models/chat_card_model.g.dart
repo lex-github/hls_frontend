@@ -14,21 +14,21 @@ ChatCardData _$ChatCardDataFromJson(Map<String, dynamic> json) {
     ..key = json['key'] as String
     ..questionType = ChatQuestionType.fromJsonValue(json['questionType'])
     ..questions = (json['questions'] as List<dynamic>)
-        .map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
-        .toList()
+        ?.map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..style =
         ChatQuestionStyleData.fromJson(json['style'] as Map<String, dynamic>)
     ..addons =
         ChatValidationData.fromJson(json['addons'] as Map<String, dynamic>)
-    ..answers = (json['answers'] as Map<String, dynamic>).map(
+    ..answers = (json['answers'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, ChatAnswerData.fromJson(e as Map<String, dynamic>)),
     )
-    ..results = (json['results'] as Map<String, dynamic>).map(
+    ..results = (json['results'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
           k,
           (e as List<dynamic>)
-              .map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
-              .toList()),
+              ?.map((e) => ChatQuestionData.fromJson(e as Map<String, dynamic>))
+              ?.toList()),
     );
 }
 

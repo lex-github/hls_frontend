@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:flutter/services.dart';
@@ -10,20 +9,19 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
-import 'package:hls/controllers/food_category_controller.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoScreen extends GetView<FoodCategoryController> {
-  static const _buttonOpacity = .8;
-
+class VideoScreen extends GetView<VideoScreenController> {
   final String url;
 
-  VideoScreen({this.url});
+  VideoScreen({this.url}) {
+    print('VideoScreen url: ${this.url}');
+  }
 
   // builders
 
-  Widget _buildPlayer(VideoScreenController controller) =>
+  Widget buildPlayer() =>
       VideoPlayer(controller.video);
 
   // YoutubePlayer(
@@ -37,10 +35,10 @@ class VideoScreen extends GetView<FoodCategoryController> {
   //   //onReady: () => controller.listener()
   // );
 
-  Widget _buildBackButton(VideoScreenController controller) =>
+  Widget _buildBackButton() =>
       Obx(() => AnimatedOpacity(
           duration: defaultAnimationDuration,
-          opacity: controller.isPlaying ? 0 : _buttonOpacity,
+          opacity: controller.isPlaying ? 0 : playerButtonOpacity,
           child: CircularButton(
               size: Size.button,
               icon: FontAwesomeIcons.arrowLeft,
@@ -71,21 +69,21 @@ class VideoScreen extends GetView<FoodCategoryController> {
                           angle: controller.video.value.aspectRatio > 1
                               ? pi / 2
                               : .0,
-                          child: _buildPlayer(controller)))),
+                          child: buildPlayer()))),
               if (controller.video.value.aspectRatio > 1)
                 Positioned(
                     top: Size.vertical,
                     right: Size.horizontal,
                     child: Transform.rotate(
-                        angle: pi / 2, child: _buildBackButton(controller)))
+                        angle: pi / 2, child: _buildBackButton()))
               else
                 Positioned(
                     top: Size.vertical,
                     left: Size.horizontal,
-                    child: _buildBackButton(controller)),
+                    child: _buildBackButton()),
               Obx(() => AnimatedOpacity(
                   duration: defaultAnimationDuration,
-                  opacity: controller.isPlaying ? 0 : _buttonOpacity,
+                  opacity: controller.isPlaying ? 0 : playerButtonOpacity,
                   child: CircularButton(
                       icon: FontAwesomeIcons.play,
                       onPressed: controller.toggle)))
@@ -136,11 +134,12 @@ class VideoScreen extends GetView<FoodCategoryController> {
 
 class VideoScreenController extends Controller {
   final VideoPlayerController video;
+  final bool autoPlay;
   //final YoutubePlayerController video;
 
   final _isPlaying = false.obs;
 
-  VideoScreenController({@required String url})
+  VideoScreenController({@required String url, this.autoPlay = true})
       : video = VideoPlayerController.network(url,
             videoPlayerOptions: VideoPlayerOptions())
   // video = YoutubePlayerController(
@@ -157,6 +156,8 @@ class VideoScreenController extends Controller {
 
   void toggle() => video.value.isPlaying ? pause() : play();
 
+  void reset() => video.seekTo(Duration.zero);
+
   void play() {
     final duration = video.value.duration;
     final position = video.value.position;
@@ -170,7 +171,8 @@ class VideoScreenController extends Controller {
   @override
   void onInit() async {
     await video.initialize();
-    play();
+
+    if (autoPlay) play();
 
     //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

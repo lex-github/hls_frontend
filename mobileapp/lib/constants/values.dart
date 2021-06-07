@@ -46,6 +46,7 @@ const exerciseCatalogRoute = '/exercise-catalog';
 const exerciseCategoryRoute = '/exercise-category';
 const exerciseRoute = '/exercise';
 const exerciseRealtimeRoute = '/exercise-realtime';
+const exerciseVideoRoute = '/exercise-video';
 const profileRoute = '/profile';
 const profileFormRoute = '/profile-form';
 const trainingStoryRoute = '/training-story';
@@ -59,6 +60,7 @@ const foodRoute = '/food';
 
 // styles related
 const elevation = 20.0;
+const playerButtonOpacity = .8;
 
 const sliderIndicatorHeightCoefficient = .75;
 const sliderIndicatorWidthCoefficient = 5;

@@ -9,6 +9,7 @@ import 'package:hls/screens/exercise_catalog_screen.dart';
 import 'package:hls/screens/exercise_category_screen.dart';
 import 'package:hls/screens/exercise_realtime_screen.dart';
 import 'package:hls/screens/exercise_screen.dart';
+import 'package:hls/screens/exercise_video_screen.dart';
 import 'package:hls/screens/food_add_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
@@ -89,6 +90,10 @@ class Router {
         name: exerciseRealtimeRoute,
         page: () => ExerciseRealtimeScreen(),
         transitionDuration: navigationTransitionDuration),
+    GetPage(
+      name: exerciseVideoRoute,
+      page: () => ExerciseVideoScreen(),
+      transitionDuration: navigationTransitionDuration),
     GetPage(
         name: profileRoute,
         page: () => ProfileScreen(),
