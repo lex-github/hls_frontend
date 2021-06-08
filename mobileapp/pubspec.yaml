@@ -24,12 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # typer text animation for bot
-  #animated_text_kit: ^4.1.1
   # resize text based on available space
   auto_size_text: ^3.0.0-nullsafety.0
-  # player for exercises
-  better_player: ^0.0.68
   # cached images
   cached_network_image: ^3.0.0
   # analytics
@@ -78,11 +74,8 @@ dependencies:
   pull_to_refresh: ^1.6.4
   # share
   share: ^2.0.1
-  # settings
   # video player
   video_player: ^2.1.1
-  youtube_player_flutter: ^8.0.0
-  #vimeoplayer_trinity: ^0.1.9
   # window size for desktop
   window_size:
     git:

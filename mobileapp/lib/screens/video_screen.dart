@@ -22,8 +22,16 @@ class VideoScreen extends GetView<VideoScreenController> {
   // builders
 
   Widget buildPlayer() => Hero(
-    tag: url,
-    child: VideoPlayer(controller.video));
+      tag: url,
+      child: SizedBox(
+          width: Size.screenWidth,
+          height: Size.screenHeight,
+          child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                  width: Size.screenWidth,
+                  height: Size.screenWidth / controller.video.value.aspectRatio,
+                  child: VideoPlayer(controller.video)))));
 
   // YoutubePlayer(
   //   //width: Size.screenHeight,

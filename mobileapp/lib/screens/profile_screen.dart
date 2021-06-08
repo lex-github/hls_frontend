@@ -67,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
       padding: Padding.zero,
       shouldHaveAppBar: false,
       leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
-      leadingTop: Size.vertical + Size.top, // - Size.iconBig / 2,
       leading: Clickable(
           borderRadius: Size.iconBig / 2,
           child: Container(
