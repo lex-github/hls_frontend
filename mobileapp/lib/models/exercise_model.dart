@@ -143,14 +143,15 @@ class ExerciseType extends GenericEnum<String> {
 // }
 
 Future<String> retrieveExerciseUrl(String url) async {
-  return 'https://getfile.dokpub.com/yandex/get/$url';
+  //return 'https://getfile.dokpub.com/yandex/get/$url';
 
   final response = await HttpService.i.request(HttpRequest(
-      path: 'https://cloud-api.yandex.net/v1/disk/resources/download?path=$url', headers: {
-    'Authorization': 'OAuth AQAEA7qi57QFAADLW6ArSFtAJkEFsqzrLISI3IY'
-  }));
-  if (!response.valid)
-    return null;
+      path:
+          'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=$url',
+      headers: {
+        'Authorization': 'OAuth AQAEA7qi57QFAADLW6ArSFtAJkEFsqzrLISI3IY'
+      }));
+  if (!response.valid) return null;
 
   print('retrieveExerciseUrl $response');
 
