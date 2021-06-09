@@ -1,6 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/services/_http_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/models/_generic_model.dart';
@@ -43,7 +44,7 @@ class ExerciseData extends GenericData {
     if (input == null) return null;
 
     return [
-      for (int i = input.min; i <= input.max; i+=input.step)
+      for (int i = input.min; i <= input.max; i += input.step)
         GenericEnum(title: "$i", value: i)
     ];
   }
@@ -140,3 +141,18 @@ class ExerciseType extends GenericEnum<String> {
 //   @override
 //   String toString() => '$value';
 // }
+
+Future<String> retrieveExerciseUrl(String url) async {
+  return 'https://getfile.dokpub.com/yandex/get/$url';
+
+  final response = await HttpService.i.request(HttpRequest(
+      path: 'https://cloud-api.yandex.net/v1/disk/resources/download?path=$url', headers: {
+    'Authorization': 'OAuth AQAEA7qi57QFAADLW6ArSFtAJkEFsqzrLISI3IY'
+  }));
+  if (!response.valid)
+    return null;
+
+  print('retrieveExerciseUrl $response');
+
+  return response.data['href'];
+}

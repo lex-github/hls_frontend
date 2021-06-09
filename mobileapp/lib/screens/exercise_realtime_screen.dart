@@ -35,49 +35,58 @@ class _State extends State<ExerciseRealtimeScreen> {
 
   /// builders
 
-  Widget _buildPlayer() => GetBuilder<VideoScreenController>(
-      init: VideoScreenController(url: item.videoUrl, autoPlay: false),
-      builder: (controller) => ClipRect(
-          child: SizedBox(
-              height: Size.image,
-              //width: Size.image * controller.video.value.aspectRatio,
-              width: Size.screenWidth,
-              child: controller.isInit
-                  ? GestureDetector(
-                      onTap: controller.toggle,
-                      child: Stack(
-                          //clipBehavior: Clip.antiAlias,
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                                width: Size.screenWidth,
-                                height: Size.screenWidth /
-                                    controller.video.value.aspectRatio,
-                                child: FittedBox(
-                                    fit: BoxFit.cover,
-                                    child: SizedBox(
+  Widget _buildPlayerLoading() =>
+      SizedBox(height: Size.image, child: Center(child: Loading()));
+
+  Widget _buildPlayer() => FutureBuilder<String>(
+    future: retrieveExerciseUrl(item.videoUrl),
+      builder: (_, snapshot) => !snapshot.hasData
+          ? _buildPlayerLoading()
+          : GetBuilder<VideoScreenController>(
+              init: VideoScreenController(url: snapshot.data, autoPlay: false),
+              builder: (controller) => ClipRect(
+                  child: controller.isInit
+                      ? SizedBox(
+                          height: Size.image,
+                          //width: Size.image * controller.video.value.aspectRatio,
+                          width: Size.screenWidth,
+                          child: GestureDetector(
+                              onTap: controller.toggle,
+                              child: Stack(
+                                  //clipBehavior: Clip.antiAlias,
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
                                         width: Size.screenWidth,
                                         height: Size.screenWidth /
                                             controller.video.value.aspectRatio,
-                                        child: Hero(
-                                            tag: item.videoUrl,
-                                            child: VideoPlayer(
-                                                controller.video))))),
-                            Obx(() => AnimatedOpacity(
-                                duration: defaultAnimationDuration,
-                                opacity: controller.isPlaying
-                                    ? 0
-                                    : playerButtonOpacity,
-                                child: CircularButton(
-                                    // background: Colors.transparent,
-                                    // borderColor: Colors.primary,
-                                    // color: Colors.primary,
-                                    icon: FontAwesomeIcons.solidPlayCircle,
-                                    size: Size.buttonBig,
-                                    iconSize: .8 * Size.buttonBig,
-                                    onPressed: controller.toggle)))
-                          ]))
-                  : Center(child: Loading()))));
+                                        child: FittedBox(
+                                            fit: BoxFit.cover,
+                                            child: SizedBox(
+                                                width: Size.screenWidth,
+                                                height: Size.screenWidth /
+                                                    controller.video.value
+                                                        .aspectRatio,
+                                                child: Hero(
+                                                    tag: item.videoUrl,
+                                                    child: VideoPlayer(
+                                                        controller.video))))),
+                                    Obx(() => AnimatedOpacity(
+                                        duration: defaultAnimationDuration,
+                                        opacity: controller.isPlaying
+                                            ? 0
+                                            : playerButtonOpacity,
+                                        child: CircularButton(
+                                            // background: Colors.transparent,
+                                            // borderColor: Colors.primary,
+                                            // color: Colors.primary,
+                                            icon: FontAwesomeIcons
+                                                .solidPlayCircle,
+                                            size: Size.buttonBig,
+                                            iconSize: .8 * Size.buttonBig,
+                                            onPressed: controller.toggle)))
+                                  ])))
+                      : _buildPlayerLoading())));
 
   // GetBuilder<VideoScreenController>(
   //     init: VideoScreenController(url: item.videoUrl),

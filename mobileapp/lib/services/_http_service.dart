@@ -49,6 +49,7 @@ class HttpResponse {
             error ?? ((m) => m is List ? m.join(', ') : m)(data.get('message'));
 
   String getHeader(String header) => headers?.get(header);
+  bool get valid => error.isNullOrEmpty && data != null;
 
   @override
   String toString() =>
