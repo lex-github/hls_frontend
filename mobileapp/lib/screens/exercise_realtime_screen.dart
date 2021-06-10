@@ -157,8 +157,11 @@ class _State extends State<ExerciseRealtimeScreen> {
                           if (controller == null)
                             return showConfirm(title: errorGenericText);
 
-                          controller.reset();
-                          controller.play();
+                          Future.delayed(navigationTransitionDuration, () {
+                            controller.reset();
+                            controller.play();
+                          });
+
                           Get.toNamed(exerciseVideoRoute, arguments: item);
                         })
                   ]),

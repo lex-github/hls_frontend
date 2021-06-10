@@ -26,40 +26,47 @@ class ExerciseVideoScreen extends VideoScreen {
           size: Size.button,
           background: Colors.failure,
           icon: FontAwesomeIcons.times,
-          onPressed: () {
-            controller.pause();
-            controller.reset();
-            Get.back();
-          })));
+          onPressed: Get.back)));
 
   @override
-  Widget build(_) =>
-      Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
-        Positioned.fill(child: Container(color: Colors.black)),
-        GestureDetector(
-            onTap: controller.toggle,
-            child: Transform.scale(
-                scale: 1, //Size.screenHeight / Size.screenWidth,
-                child: Transform.rotate(
-                    angle: controller.video.value.aspectRatio > 1 ? pi / 2 : .0,
-                    child: buildPlayer()))),
-        if (controller.video.value.aspectRatio > 1)
-          Positioned(
-              bottom: Size.vertical,
-              right: Size.horizontal,
-              child: Transform.rotate(angle: pi / 2, child: buildBackButton()))
-        else
-          Positioned(
-              top: Size.vertical,
-              right: Size.horizontal,
-              child: buildBackButton()),
-        Obx(() => AnimatedOpacity(
-            duration: defaultAnimationDuration,
-            opacity: controller.isPlaying ? 0 : playerButtonOpacity,
-            child: CircularButton(
-              icon: FontAwesomeIcons.solidPlayCircle,
-              size: Size.buttonHuge,
-              iconSize: .8 * Size.buttonHuge,
-              onPressed: controller.toggle)))
-      ]);
+  Widget build(_) => WillPopScope(
+      onWillPop: () async {
+        controller.pause();
+        controller.reset();
+        return true;
+      },
+      child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(child: Container(color: Colors.black)),
+            GestureDetector(
+                onTap: controller.toggle,
+                child: Transform.scale(
+                    scale: 1, //Size.screenHeight / Size.screenWidth,
+                    child: Transform.rotate(
+                        angle: controller.video.value.aspectRatio > 1
+                            ? pi / 2
+                            : .0,
+                        child: buildPlayer()))),
+            if (controller.video.value.aspectRatio > 1)
+              Positioned(
+                  bottom: Size.vertical,
+                  right: Size.horizontal,
+                  child:
+                      Transform.rotate(angle: pi / 2, child: buildBackButton()))
+            else
+              Positioned(
+                  top: Size.vertical,
+                  right: Size.horizontal,
+                  child: buildBackButton()),
+            Obx(() => AnimatedOpacity(
+                duration: defaultAnimationDuration,
+                opacity: controller.isPlaying ? 0 : playerButtonOpacity,
+                child: CircularButton(
+                    icon: FontAwesomeIcons.solidPlayCircle,
+                    size: Size.buttonHuge,
+                    iconSize: .8 * Size.buttonHuge,
+                    onPressed: controller.toggle)))
+          ]));
 }

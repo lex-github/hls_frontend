@@ -17,7 +17,8 @@ const defaultItemsPerPage = 10;
 
 // time
 const chatTyperAnimationDuration = Duration(milliseconds: 20);
-const defaultAnimationDuration = Duration(milliseconds: 150);
+const defaultAnimationDurationValue = 150;
+const defaultAnimationDuration = Duration(milliseconds: defaultAnimationDurationValue);
 const inputWaitingDuration = Duration(milliseconds: 300);
 const navigationTransitionDuration = Duration(milliseconds: 300);
 const rotationAnimationDuration = Duration(seconds: 60);

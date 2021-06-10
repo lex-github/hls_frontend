@@ -27,7 +27,7 @@ class VideoScreen extends GetView<VideoScreenController> {
           width: Size.screenWidth,
           height: Size.screenHeight,
           child: FittedBox(
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               child: SizedBox(
                   width: Size.screenWidth,
                   height: Size.screenWidth / controller.video.value.aspectRatio,
