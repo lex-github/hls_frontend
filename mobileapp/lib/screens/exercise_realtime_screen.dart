@@ -149,7 +149,7 @@ class _State extends State<ExerciseRealtimeScreen> {
                     Button(
                         background: Colors.primary,
                         title: exerciseStartTitle,
-                        onPressed: () {
+                        onPressed: () async {
                           if (item.videoUrl.isNullOrEmpty)
                             return showConfirm(title: noDataText);
 
@@ -157,10 +157,8 @@ class _State extends State<ExerciseRealtimeScreen> {
                           if (controller == null)
                             return showConfirm(title: errorGenericText);
 
-                          Future.delayed(navigationTransitionDuration, () {
-                            controller.reset();
-                            controller.play();
-                          });
+                          controller.reset();
+                          controller.play();
 
                           Get.toNamed(exerciseVideoRoute, arguments: item);
                         })
