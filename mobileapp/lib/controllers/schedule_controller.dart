@@ -370,6 +370,7 @@ class ScheduleAddController extends Controller
 
   DateTime get asleepTime => _asleepTime.value;
   DateTime get wakeupTime => _wakeupTime.value;
+  DateTime get dayWakeupTime => suggestedWakeupTime ?? wakeupTime;
   DateTime get trainingTime => _trainingTime.value;
   DateTime get suggestedWakeupTime => dayItems
       ?.firstWhere((x) => x.type == ScheduleItemType.WAKEUP, orElse: () => null)
@@ -427,28 +428,28 @@ class ScheduleAddController extends Controller
 
   Offset get dayAsleepOffset =>
       offsetFromTime(suggestedAsleepTime, isNight: false);
-  Offset get dayWakeupOffset => offsetFromTime(wakeupTime, isNight: false);
+  Offset get dayWakeupOffset => offsetFromTime(dayWakeupTime, isNight: false);
   Offset get dayTrainingOffset => offsetFromTime(trainingTime, isNight: false);
 
   bool get shouldDayInnerBeDisplayed =>
       isInit &&
-      (wakeupTime.isDayInner ||
+      (dayWakeupTime.isDayInner ||
           suggestedAsleepTime.isDayInner ||
           shouldDayDisplayVerticalLine);
   bool get shouldDayOuterBeDisplayed =>
       isInit &&
-      (wakeupTime.isDayOuter ||
+      (dayWakeupTime.isDayOuter ||
           suggestedAsleepTime.isDayOuter ||
           shouldDayDisplayVerticalLine);
   bool get shouldDayDisplayVerticalLine =>
-      suggestedAsleepTime.isDayInner == wakeupTime.isDayOuter ||
+      suggestedAsleepTime.isDayInner == dayWakeupTime.isDayOuter ||
       suggestedAsleepTime.isAfter(twelveOclock) &&
-          suggestedAsleepTime.isBefore(wakeupTime) ||
-      wakeupTime.isBefore(twelveOclock) &&
-          suggestedAsleepTime.isBefore(wakeupTime);
+          suggestedAsleepTime.isBefore(dayWakeupTime) ||
+      dayWakeupTime.isBefore(twelveOclock) &&
+          suggestedAsleepTime.isBefore(dayWakeupTime);
 
   double get dayOuterStartAngle =>
-      -pi / 2 + (wakeupTime.isDayOuter ? wakeupTime.angle : 0);
+      -pi / 2 + (dayWakeupTime.isDayOuter ? dayWakeupTime.angle : 0);
   double get dayOuterEndAngle {
     final from = dayOuterStartAngle;
     final to = -pi / 2 +
@@ -464,7 +465,7 @@ class ScheduleAddController extends Controller
   }
 
   double get dayInnerStartAngle =>
-      -pi / 2 + (wakeupTime.isDayInner ? wakeupTime.angle : 0);
+      -pi / 2 + (dayWakeupTime.isDayInner ? dayWakeupTime.angle : 0);
   double get dayInnerEndAngle {
     final from = dayInnerStartAngle;
     final to = -pi / 2 +
