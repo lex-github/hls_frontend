@@ -22,7 +22,7 @@ class OtpRequestFormController extends FormController {
             formatters: [
               MaskTextInputFormatter(
                   mask: phoneMaskPattern, filter: {"#": RegExp(r'[0-9]')})
-            ]),
+            ])
       ];
 
   // form controller implementation
@@ -43,8 +43,6 @@ class OtpRequestFormController extends FormController {
     super.onChanged(field, value,
         shouldUpdate: shouldUpdate,
         shouldUpdateController: shouldUpdateController);
-
-    print('$value');
 
     if (field == 'phone' && value.length == 18) submitHandler();
   }

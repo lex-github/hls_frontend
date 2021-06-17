@@ -30,12 +30,11 @@ class HttpRequest {
       : this.path = path.startsWith('http') ? path : '${siteUrl}api/$path';
 
   @override
-  String toString() =>
-      'HttpRequest('
-        '\n\tpath: $path'
-        '\n\tmethod: ${method.value}'
-        '\n\tparameters: $parameters'
-        ')';
+  String toString() => 'HttpRequest('
+      '\n\tpath: $path'
+      '\n\tmethod: ${method.value}'
+      '\n\tparameters: $parameters'
+      ')';
 }
 
 class HttpResponse {
@@ -52,12 +51,11 @@ class HttpResponse {
   bool get valid => error.isNullOrEmpty && data != null;
 
   @override
-  String toString() =>
-      'HttpResponse('
-        '\n\tstatus: $status'
-        '\n\theaders: $headers'
-        '\n\terror: $error'
-        '\n\tdata: $data)';
+  String toString() => 'HttpResponse('
+      '\n\tstatus: $status'
+      '\n\theaders: $headers'
+      '\n\terror: $error'
+      '\n\tdata: $data)';
 }
 
 class HttpService extends Service {
@@ -78,7 +76,7 @@ class HttpService extends Service {
   }
 
   Future<HttpResponse> request(HttpRequest request) async {
-    print('HttpService.request request: $request');
+    if (isDebug && false) print('HttpService.request request: $request');
 
     final path = request.method == RequestMethod.GET
         ? request.path +
@@ -109,21 +107,21 @@ class HttpService extends Service {
       final body = json.decode(utf8.decode(response.bodyBytes));
       final data = body is List ? {'list': body} : body;
 
-      print('HttpService.request data: $data');
+      if (isDebug) print('HttpService.request data: $data');
 
       return HttpResponse(
           status: response.statusCode, headers: response.headers, data: data);
-    } on TimeoutException catch(e) {
+    } on TimeoutException catch (e) {
       print('HttpService.request ERROR (timeout): $e');
 
       return HttpResponse(
           error: timeoutExceptionText.replaceAll(
               '{duration}', timeoutDuration.inSeconds.toString()));
-    } on SocketException catch(e) {
+    } on SocketException catch (e) {
       print('HttpService.request ERROR (socket): $e');
 
       return HttpResponse(error: connectionExceptionText);
-    } on FormatException catch(e) {
+    } on FormatException catch (e) {
       print('HttpService.request ERROR (format): $e');
 
       return HttpResponse(error: formatExceptionText);

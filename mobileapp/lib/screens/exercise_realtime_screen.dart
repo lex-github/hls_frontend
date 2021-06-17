@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding, Page;
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -14,7 +15,6 @@ import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/hub_screen.dart';
 import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
-import 'package:video_player/video_player.dart';
 
 class ExerciseRealtimeScreen extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _State extends State<ExerciseRealtimeScreen> {
   final ExerciseData item;
 
   _State({this.item}) {
-    print('ExerciseRealtimeScreen ${item.videoUrl}');
+    print('ExerciseRealtimeScreen url: ${item.videoUrl}');
   }
 
   ExerciseCatalogController get controller =>
@@ -38,56 +38,53 @@ class _State extends State<ExerciseRealtimeScreen> {
   Widget _buildPlayerLoading() =>
       SizedBox(height: Size.image, child: Center(child: Loading()));
 
-  Widget _buildPlayer() => FutureBuilder<String>(
-    future: retrieveExerciseUrl(item.videoUrl),
-      builder: (_, snapshot) => !snapshot.hasData
-          ? _buildPlayerLoading()
-          : GetBuilder<VideoScreenController>(
-              init: VideoScreenController(url: snapshot.data, autoPlay: false),
-              builder: (controller) => ClipRect(
-                  child: controller.isInit
-                      ? SizedBox(
-                          height: Size.image,
-                          //width: Size.image * controller.video.value.aspectRatio,
-                          width: Size.screenWidth,
-                          child: GestureDetector(
-                              onTap: controller.toggle,
-                              child: Stack(
-                                  //clipBehavior: Clip.antiAlias,
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                        width: Size.screenWidth,
-                                        height: Size.screenWidth /
-                                            controller.video.value.aspectRatio,
-                                        child: FittedBox(
-                                            fit: BoxFit.cover,
-                                            child: SizedBox(
-                                                width: Size.screenWidth,
-                                                height: Size.screenWidth /
-                                                    controller.video.value
-                                                        .aspectRatio,
-                                                child: Hero(
-                                                    tag: item.videoUrl,
-                                                    child: VideoPlayer(
-                                                        controller.video))))),
-                                    Obx(() => AnimatedOpacity(
-                                        duration: defaultAnimationDuration,
-                                        opacity: controller.isPlaying
-                                            ? 0
-                                            : playerButtonOpacity,
-                                        child: CircularButton(
-                                            // background: Colors.transparent,
-                                            // borderColor: Colors.primary,
-                                            // color: Colors.primary,
-                                            icon: FontAwesomeIcons
-                                                .solidPlayCircle,
-                                            size: Size.buttonBig,
-                                            iconSize: .8 * Size.buttonBig,
-                                            onPressed: controller.toggle)))
-                                  ])))
-                      : _buildPlayerLoading())));
+  Widget _buildPlayer() {
+    print('ExerciseRealtimeScreen._buildPlayer');
 
+    return GetX<VideoScreenController>(
+        init: VideoScreenController(url: item.videoUrl, autoPlay: false),
+        builder: (controller) {
+          print(
+              'ExerciseRealtimeScreen._buildPlayer controller: ${controller.isInit}');
+
+          final aspectRatio = //controller.video?.value?.aspectRatio ??
+              Size.screenWidth / Size.screenHeight;
+          final width = Size.screenWidth;
+          final height = Size.screenHeight;
+
+          return controller.isInit
+              ? GestureDetector(
+                  onTap: controller.toggle,
+                  child: Stack(
+                      //clipBehavior: Clip.antiAlias,
+                      alignment: Alignment.center,
+                      children: [
+                        IgnorePointer(
+                            child: SizedBox(
+                                width: width,
+                                height: height,
+                                child: VlcPlayer(
+                                    controller: controller.video,
+                                    aspectRatio: aspectRatio))),
+                        controller.isInitPlay
+                            ? AnimatedOpacity(
+                                duration: defaultAnimationDuration,
+                                opacity: controller.isPlaying
+                                    ? 0
+                                    : playerButtonOpacity,
+                                child: CircularButton(
+                                    // background: Colors.transparent,
+                                    // borderColor: Colors.primary,
+                                    // color: Colors.primary,
+                                    icon: FontAwesomeIcons.solidPlayCircle,
+                                    size: Size.buttonBig,
+                                    iconSize: .8 * Size.buttonBig,
+                                    onPressed: controller.toggle))
+                            : Loading()
+                      ]))
+              : _buildPlayerLoading();
+        });
+  }
   // GetBuilder<VideoScreenController>(
   //     init: VideoScreenController(url: item.videoUrl),
   //     builder: (controller) => YoutubePlayer(
@@ -125,70 +122,77 @@ class _State extends State<ExerciseRealtimeScreen> {
       child: child);
 
   @override
-  Widget build(_) => Screen(
-      padding: Padding.zero,
-      shouldShowDrawer: true,
-      title: item.title,
-      child: item == null
-          ? EmptyPage()
-          : SingleChildScrollView(
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-              if (!item.videoUrl.isNullOrEmpty)
-                _buildPlayer()
-              else ...[VerticalSpace(), TextError(noDataText)],
-              Container(
-                padding: Padding.content,
-                child: Column(children: [
-                  if (!item.description.isNullOrEmpty) ...[
-                    _buildBlock(
-                        child: TextPrimary(item.description,
-                            size: Size.fontSmall)),
-                    VerticalSpace()
-                  ],
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Button(
-                        background: Colors.primary,
-                        title: exerciseStartTitle,
-                        onPressed: () async {
-                          if (item.videoUrl.isNullOrEmpty)
-                            return showConfirm(title: noDataText);
+  Widget build(_) {
+    print('ExerciseRealtimeScreen.build');
 
-                          final controller = Get.find<VideoScreenController>();
-                          if (controller == null)
-                            return showConfirm(title: errorGenericText);
+    return Screen(
+        padding: Padding.zero,
+        shouldShowDrawer: true,
+        title: item.title,
+        child: item == null
+            ? EmptyPage()
+            : SingleChildScrollView(
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                if (!item.videoUrl.isNullOrEmpty)
+                  _buildPlayer()
+                else ...[VerticalSpace(), TextError(noDataText)],
+                Container(
+                  padding: Padding.content,
+                  child: Column(children: [
+                    if (!item.description.isNullOrEmpty) ...[
+                      _buildBlock(
+                          child: TextPrimary(item.description,
+                              size: Size.fontSmall)),
+                      VerticalSpace()
+                    ],
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Button(
+                          background: Colors.primary,
+                          title: exerciseStartTitle,
+                          onPressed: () async {
+                            if (item.videoUrl.isNullOrEmpty)
+                              return showConfirm(title: noDataText);
 
-                          controller.reset();
-                          controller.play();
+                            final controller =
+                                Get.find<VideoScreenController>();
+                            if (controller == null)
+                              return showConfirm(title: errorGenericText);
 
-                          Get.toNamed(exerciseVideoRoute, arguments: item);
-                        })
-                  ]),
-                  VerticalSpace(),
-                  _buildBlock(child: StatusBlock()),
-                  if (!item.pulse.isNullOrEmpty) ...[
+                            controller.start();
+
+                            // controller.reset();
+                            // controller.play();
+
+                            // Get.toNamed(exerciseVideoRoute, arguments: item);
+                          })
+                    ]),
                     VerticalSpace(),
-                    Accordion(
-                        icon: FontAwesomeIcons.infoCircle,
-                        title: exerciseZoneTitle,
-                        child: Column(children: [
-                          VerticalMediumSpace(),
-                          for (final p in item.pulse) ...[
-                            Opacity(
-                                opacity: p.isRecommended ? 1 : .2,
-                                child: Heartbeat(
-                                    color: p.color,
-                                    title: p.title,
-                                    description: p.description,
-                                    heartbeat: p.heartRate)),
-                            if (p.title != item.pulse.last.title)
-                              VerticalSmallSpace()
-                          ],
-                          VerticalMediumSpace()
-                        ]))
-                  ]
-                ]),
-              )
-            ])));
+                    _buildBlock(child: StatusBlock()),
+                    if (!item.pulse.isNullOrEmpty) ...[
+                      VerticalSpace(),
+                      Accordion(
+                          icon: FontAwesomeIcons.infoCircle,
+                          title: exerciseZoneTitle,
+                          child: Column(children: [
+                            VerticalMediumSpace(),
+                            for (final p in item.pulse) ...[
+                              Opacity(
+                                  opacity: p.isRecommended ? 1 : .2,
+                                  child: Heartbeat(
+                                      color: p.color,
+                                      title: p.title,
+                                      description: p.description,
+                                      heartbeat: p.heartRate)),
+                              if (p.title != item.pulse.last.title)
+                                VerticalSmallSpace()
+                            ],
+                            VerticalMediumSpace()
+                          ]))
+                    ]
+                  ]),
+                )
+              ])));
+  }
 }
 
 class Heartbeat extends StatelessWidget {

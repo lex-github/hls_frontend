@@ -3,14 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:flutter/services.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/exercise_model.dart';
 import 'package:hls/theme/styles.dart';
-import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 class VideoScreen extends GetView<VideoScreenController> {
   final String url;
@@ -31,7 +35,8 @@ class VideoScreen extends GetView<VideoScreenController> {
               child: SizedBox(
                   width: Size.screenWidth,
                   height: Size.screenWidth / controller.video.value.aspectRatio,
-                  child: VideoPlayer(controller.video)))));
+                  child: VlcPlayer(
+                      controller: controller.video, aspectRatio: 16 / 9)))));
 
   // YoutubePlayer(
   //   //width: Size.screenHeight,
@@ -143,22 +148,29 @@ class VideoScreen extends GetView<VideoScreenController> {
 }
 
 class VideoScreenController extends Controller {
-  final VideoPlayerController video;
-  final bool autoPlay;
+  final String url;
+
   //final YoutubePlayerController video;
+  // final VideoPlayerController video;
+  VlcPlayerController video;
+
+  final bool autoPlay;
 
   final _isPlaying = false.obs;
 
-  VideoScreenController({@required String url, this.autoPlay = true})
-      : video = VideoPlayerController.network(url,
-            videoPlayerOptions: VideoPlayerOptions())
+  VideoScreenController({@required this.url, this.autoPlay = true});
   // video = YoutubePlayerController(
   //     //initialVideoId: 'iLnmTe5Q2Qw',
   //     initialVideoId: 'EXo_1J4nzO4',
   //     flags: YoutubePlayerFlags(autoPlay: true))
-  {
-    video.addListener(() => _isPlaying.value = video.value.isPlaying);
-  }
+
+  // : video = VideoPlayerController.network(url,
+  //       videoPlayerOptions: VideoPlayerOptions())
+
+  //     : video = VlcPlayerController.network(url,
+  //           autoPlay: autoPlay, autoInitialize: false) {
+  //   video.addListener(() => _isPlaying.value = video.value.isPlaying);
+  // }
 
   //void listener() => video.addListener(this);
 
@@ -174,15 +186,60 @@ class VideoScreenController extends Controller {
     if (duration.compareTo(position) <= 0) video.seekTo(Duration.zero);
 
     video.play();
+
+    Wakelock.enable();
   }
 
   void pause() => video.pause();
 
-  @override
-  void onInit() async {
-    await video.initialize();
+  final _isInit = false.obs;
+  bool get isInit => _isInit.value;
 
-    if (autoPlay) play();
+  final _isInitPlay = false.obs;
+  bool get isInitPlay => _isInitPlay.value;
+
+  void performInit() async {
+    // get proper url
+    final url = await retrieveExerciseUrl(this.url);
+
+    // player creation
+    video = VlcPlayerController.network(url, autoPlay: true);
+
+    video.addOnInitListener(initListener);
+    video.addListener(playListener);
+
+    // player initialization
+    // while (video.isReadyToInitialize.isNullEmptyOrFalse) {
+    //   print('IS READY: ${video.isReadyToInitialize} ${dateToString()}');
+    //   await Future.delayed(defaultAnimationDuration);
+    // }
+    // await video.initialize();
+
+    _isInit.value = true;
+  }
+
+  void initListener() {
+    //play();
+  }
+
+  void playListener() {
+    _isPlaying.value = video.value.isPlaying;
+
+    if (!isInitPlay && _isPlaying.value) {
+      _isInitPlay.value = true;
+
+      if (!autoPlay) {
+        print('WE NEED TO STOP');
+        pause();
+      }
+    }
+  }
+
+  @override
+  void onInit() {
+    performInit();
+
+    // if (autoPlay) play();
 
     //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -194,12 +251,23 @@ class VideoScreenController extends Controller {
   void onClose() {
     print('VideoScreenController.onClose');
 
-    video.pause();
+    if (video.value.isInitialized) {
+      video.pause();
+
+      video.removeOnInitListener(initListener);
+      video.removeListener(playListener);
+    }
     video.dispose();
+
+    Wakelock.disable();
 
     //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     super.onClose();
+  }
+
+  void start() {
+    play();
   }
 }

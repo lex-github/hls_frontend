@@ -215,7 +215,7 @@ class Input<T extends FormController> extends GetView<T> {
             errorMaxLines: errorMaxLines,
             leading: leading,
             trailing: trailing),
-        keyboardType: inputType,
+        //keyboardType: inputType,
         obscureText: isHidden,
         controller: controller.getController(field),
         focusNode: controller.getNode(field),
