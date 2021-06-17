@@ -38,6 +38,8 @@ dependencies:
   flutter_svg: ^0.22.0
   # image provider (background repeat)
   flutter_svg_provider: ^0.1.9-nullsafety.0
+  # video player
+  flutter_vlc_player: ^6.0.2
   # icons
   font_awesome_flutter: ^9.0.0
   # validation
@@ -75,7 +77,9 @@ dependencies:
   # share
   share: ^2.0.1
   # video player
-  video_player: ^2.1.1
+  #video_player: ^2.1.1
+  # prevents screen from sleeping
+  wakelock: ^0.5.2
   # window size for desktop
   window_size:
     git:

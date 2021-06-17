@@ -143,6 +143,9 @@ class ExerciseType extends GenericEnum<String> {
 // }
 
 Future<String> retrieveExerciseUrl(String url) async {
+  if (!url.startsWith('https://disk.yandex.ru'))
+    return url;
+
   //return 'https://getfile.dokpub.com/yandex/get/$url';
 
   final response = await HttpService.i.request(HttpRequest(
