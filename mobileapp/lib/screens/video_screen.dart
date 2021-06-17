@@ -176,7 +176,7 @@ class VideoScreenController extends Controller {
 
   bool get isPlaying => _isPlaying.value;
 
-  void toggle() => video.value.isPlaying ? pause() : play();
+  void toggle() => isPlaying ? pause() : play();
 
   void reset() => video.seekTo(Duration.zero);
 
@@ -222,16 +222,16 @@ class VideoScreenController extends Controller {
     //play();
   }
 
-  void playListener() {
+  void playListener() async {
     _isPlaying.value = video.value.isPlaying;
 
     if (!isInitPlay && _isPlaying.value) {
-      _isInitPlay.value = true;
-
       if (!autoPlay) {
-        print('WE NEED TO STOP');
+        await Future.delayed(defaultAnimationDuration);
         pause();
       }
+
+      _isInitPlay.value = true;
     }
   }
 

@@ -39,13 +39,13 @@ class _State extends State<ExerciseRealtimeScreen> {
       SizedBox(height: Size.image, child: Center(child: Loading()));
 
   Widget _buildPlayer() {
-    print('ExerciseRealtimeScreen._buildPlayer');
+    // print('ExerciseRealtimeScreen._buildPlayer');
 
     return GetX<VideoScreenController>(
         init: VideoScreenController(url: item.videoUrl, autoPlay: false),
         builder: (controller) {
-          print(
-              'ExerciseRealtimeScreen._buildPlayer controller: ${controller.isInit}');
+          // print(
+          //     'ExerciseRealtimeScreen._buildPlayer controller: ${controller.isInit}');
 
           final aspectRatio = //controller.video?.value?.aspectRatio ??
               Size.screenWidth / Size.screenHeight;
@@ -59,7 +59,7 @@ class _State extends State<ExerciseRealtimeScreen> {
                       //clipBehavior: Clip.antiAlias,
                       alignment: Alignment.center,
                       children: [
-                        IgnorePointer(
+                        AbsorbPointer(
                             child: SizedBox(
                                 width: width,
                                 height: height,
