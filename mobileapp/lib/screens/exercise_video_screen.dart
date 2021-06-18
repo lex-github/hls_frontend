@@ -5,6 +5,7 @@ import 'package:flutter/material.dart'
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
+import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/video_screen.dart';
@@ -29,44 +30,31 @@ class ExerciseVideoScreen extends VideoScreen {
           onPressed: Get.back)));
 
   @override
-  Widget build(_) => WillPopScope(
-      onWillPop: () async {
-        controller.pause();
-        controller.reset();
-        return true;
-      },
-      child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: [
-            Positioned.fill(child: Container(color: Colors.black)),
-            GestureDetector(
-                onTap: controller.toggle,
-                child: Transform.scale(
-                    scale: 1, //Size.screenHeight / Size.screenWidth,
-                    child: Transform.rotate(
-                        angle: controller.video.value.aspectRatio > 1
-                            ? pi / 2
-                            : .0,
-                        child: buildPlayer()))),
-            if (controller.video.value.aspectRatio > 1)
-              Positioned(
-                  bottom: Size.vertical,
-                  right: Size.horizontal,
-                  child:
-                      Transform.rotate(angle: pi / 2, child: buildBackButton()))
-            else
-              Positioned(
-                  top: Size.vertical,
-                  right: Size.horizontal,
-                  child: buildBackButton()),
-            Obx(() => AnimatedOpacity(
-                duration: defaultAnimationDuration,
-                opacity: controller.isPlaying ? 0 : playerButtonOpacity,
-                child: CircularButton(
-                    icon: FontAwesomeIcons.solidPlayCircle,
-                    size: Size.buttonHuge,
-                    iconSize: .8 * Size.buttonHuge,
-                    onPressed: controller.toggle)))
-          ]));
+  Widget build(_) => GetBuilder<VideoScreenController>(
+      init: VideoScreenController(url: url, autoPlay: true),
+      builder: (controller) => Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(child: Container(color: Colors.black)),
+                Obx(() => controller.isInit
+                    ? GestureDetector(
+                        onTap: controller.toggle,
+                        child: AbsorbPointer(child: buildPlayer()))
+                    : Nothing()),
+                Positioned(
+                    top: Size.vertical,
+                    right: Size.horizontal,
+                    child: buildBackButton()),
+                Obx(() => !controller.isInitPlay
+                    ? Loading()
+                    : AnimatedOpacity(
+                        duration: defaultAnimationDuration,
+                        opacity: controller.isPlaying ? 0 : playerButtonOpacity,
+                        child: CircularButton(
+                            icon: FontAwesomeIcons.solidPlayCircle,
+                            size: Size.buttonHuge,
+                            iconSize: .8 * Size.buttonHuge,
+                            onPressed: controller.toggle)))
+              ]));
 }

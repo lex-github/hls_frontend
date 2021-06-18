@@ -43,10 +43,9 @@ class PostData extends GenericData {
 
   // getters
 
-  String get imageUrl =>
-      !super.imageUrl.isNullOrEmpty && super.imageUrl.startsWith('http')
-          ? super.imageUrl
-          : '$siteUrl${super.imageUrl}';
+  String get imageUrl => super.imageUrl.isNullOrEmpty ? null : super.imageUrl.startsWith('http')
+      ? super.imageUrl
+      : '$siteUrl${super.imageUrl}';
 
   Duration get duration => Duration(seconds: durationSeconds ?? 0);
 
