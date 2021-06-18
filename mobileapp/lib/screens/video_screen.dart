@@ -26,17 +26,13 @@ class VideoScreen extends GetView<VideoScreenController> {
   // builders
 
   Widget buildPlayer() => Hero(
-      tag: url,
-      child: SizedBox(
-          width: Size.screenWidth,
-          height: Size.screenHeight,
-          child: FittedBox(
-              fit: BoxFit.contain,
-              child: SizedBox(
-                  width: Size.screenWidth,
-                  height: Size.screenWidth / controller.video.value.aspectRatio,
-                  child: VlcPlayer(
-                      controller: controller.video, aspectRatio: 16 / 9)))));
+          tag: url,
+          child: SizedBox(
+              width: Size.screenWidth,
+              height: Size.screenHeight,
+              child: VlcPlayer(
+                  controller: controller.video,
+                  aspectRatio: Size.screenWidth / Size.screenHeight)));
 
   // YoutubePlayer(
   //   //width: Size.screenHeight,
@@ -181,6 +177,9 @@ class VideoScreenController extends Controller {
   void reset() => video.seekTo(Duration.zero);
 
   void play() {
+    if (!video.value.isInitialized)
+      return;
+
     final duration = video.value.duration;
     final position = video.value.position;
     if (duration.compareTo(position) <= 0) video.seekTo(Duration.zero);

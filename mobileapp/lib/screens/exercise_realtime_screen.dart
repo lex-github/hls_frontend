@@ -39,7 +39,18 @@ class _State extends State<ExerciseRealtimeScreen> {
       SizedBox(height: Size.image, child: Center(child: Loading()));
 
   Widget _buildPlayer() {
-    // print('ExerciseRealtimeScreen._buildPlayer');
+    print('ExerciseRealtimeScreen._buildPlayer $item');
+
+    return SizedBox(
+        height: Size.image,
+        width: Size.screenWidth,
+        child: item.thumbnailUrl.isNullOrEmpty
+            ? Container(
+                color: Colors.failure,
+                child: Center(
+                    child: Icon(FontAwesomeIcons.exclamationCircle,
+                        size: Size.iconHuge)))
+            : Image(title: item.thumbnailUrl));
 
     return GetX<VideoScreenController>(
         init: VideoScreenController(url: item.videoUrl, autoPlay: false),
@@ -122,21 +133,18 @@ class _State extends State<ExerciseRealtimeScreen> {
       child: child);
 
   @override
-  Widget build(_) {
-    print('ExerciseRealtimeScreen.build');
-
-    return Screen(
-        padding: Padding.zero,
-        shouldShowDrawer: true,
-        title: item.title,
-        child: item == null
-            ? EmptyPage()
-            : SingleChildScrollView(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                if (!item.videoUrl.isNullOrEmpty)
-                  _buildPlayer()
-                else ...[VerticalSpace(), TextError(noDataText)],
-                Container(
+  Widget build(_) => Screen(
+      padding: Padding.zero,
+      shouldShowDrawer: true,
+      title: item.title,
+      child: item == null
+          ? EmptyPage()
+          : SingleChildScrollView(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+              if (!item.videoUrl.isNullOrEmpty)
+                _buildPlayer()
+              else ...[VerticalSpace(), TextError(noDataText)],
+              Container(
                   padding: Padding.content,
                   child: Column(children: [
                     if (!item.description.isNullOrEmpty) ...[
@@ -153,17 +161,17 @@ class _State extends State<ExerciseRealtimeScreen> {
                             if (item.videoUrl.isNullOrEmpty)
                               return showConfirm(title: noDataText);
 
-                            final controller =
-                                Get.find<VideoScreenController>();
-                            if (controller == null)
-                              return showConfirm(title: errorGenericText);
-
-                            controller.start();
+                            // final controller =
+                            //     Get.find<VideoScreenController>();
+                            // if (controller == null)
+                            //   return showConfirm(title: errorGenericText);
+                            //
+                            // controller.start();
 
                             // controller.reset();
                             // controller.play();
 
-                            // Get.toNamed(exerciseVideoRoute, arguments: item);
+                            Get.toNamed(exerciseVideoRoute, arguments: item);
                           })
                     ]),
                     VerticalSpace(),
@@ -189,10 +197,8 @@ class _State extends State<ExerciseRealtimeScreen> {
                             VerticalMediumSpace()
                           ]))
                     ]
-                  ]),
-                )
-              ])));
-  }
+                  ]))
+            ])));
 }
 
 class Heartbeat extends StatelessWidget {
