@@ -91,9 +91,9 @@ class Router {
         page: () => ExerciseRealtimeScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
-      name: exerciseVideoRoute,
-      page: () => ExerciseVideoScreen(),
-      transitionDuration: navigationTransitionDuration),
+        name: exerciseVideoRoute,
+        page: () => ExerciseVideoScreen(),
+        transitionDuration: navigationTransitionDuration),
     GetPage(
         name: profileRoute,
         page: () => ProfileScreen(),
@@ -117,6 +117,7 @@ class Router {
     GetPage(
         name: storyRoute,
         page: () => StoryScreen(stories: Get.arguments),
+        transition: Transition.downToUp,
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: videoRoute,

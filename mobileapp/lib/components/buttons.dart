@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -169,7 +170,7 @@ class Button extends StatelessWidget {
             },
       onLongPress: onLongPressed,
       child: AnimatedCrossFade(
-          duration: defaultAnimationDuration,
+          duration: Platform.isIOS ? Duration.zero : defaultAnimationDuration,
           crossFadeState:
               isSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           firstCurve: Curves.easeInCirc,
