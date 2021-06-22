@@ -38,7 +38,7 @@ class StoryScreen extends GetView<FoodCategoryController> {
             width: Size.iconBig,
             height: Size.iconBig,
             child: Center(
-                child: Icon(FontAwesomeIcons.times, size: Size.icon)))),
+                child: Icon(FontAwesomeIcons.times, size: Size.icon))), onPressed: Get.back),
     child: DefaultTabController(
           length: stories.length,
           child: Stack(children: [
