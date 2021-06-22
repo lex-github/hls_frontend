@@ -19,17 +19,27 @@ class StoryScreen extends GetView<FoodCategoryController> {
   Widget build(_) => Screen(
       padding: Padding.zero,
       shouldHaveAppBar: false,
-      leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
-      leadingTop: Size.vertical + Size.top, // - Size.iconBig / 2,
-      leading: Clickable(
-          borderRadius: Size.iconBig / 2,
-          child: Container(
-              width: Size.iconBig,
-              height: Size.iconBig,
-              child: Center(
-                  child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon))),
-          onPressed: Get.back),
-      child: DefaultTabController(
+      leading: Nothing(),
+      // leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
+      // leadingTop: Size.vertical + Size.top, // - Size.iconBig / 2,
+      // leading: Clickable(
+      //     borderRadius: Size.iconBig / 2,
+      //     child: Container(
+      //         width: Size.iconBig,
+      //         height: Size.iconBig,
+      //         child: Center(
+      //             child: Icon(FontAwesomeIcons.arrowLeft, size: Size.icon))),
+      //     onPressed: Get.back),
+    trailingRight: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
+    trailingTop: Size.vertical, //+ Size.top, // - Size.iconBig / 2,
+    trailing: Clickable(
+        borderRadius: Size.iconBig / 2,
+        child: Container(
+            width: Size.iconBig,
+            height: Size.iconBig,
+            child: Center(
+                child: Icon(FontAwesomeIcons.times, size: Size.icon)))),
+    child: DefaultTabController(
           length: stories.length,
           child: Stack(children: [
             TabBarView(children: [
