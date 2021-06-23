@@ -193,6 +193,8 @@ abstract class FormController extends GetxController {
   bool validate() => _key.currentState?.validate() ?? true;
 
   void submitHandler() async {
+    print('FormController.submitHandler');
+
     // hide keyboard
     if (shouldUnfocus)
       for (final field in fields) {
@@ -210,7 +212,9 @@ abstract class FormController extends GetxController {
     if (isAwaiting) return showConfirm(title: requestWaitingText);
 
     // if form is not valid abort
-    if (!validate()) return;
+    if (!validate()) {
+      print('OY VEY');
+      return;}
 
     // awaiting for server response to login attempt
     isAwaiting = true;
