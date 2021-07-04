@@ -370,22 +370,22 @@ class ScheduleAddController extends Controller
 
   DateTime get asleepTime {
     final time = _asleepTime.value;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   DateTime get wakeupTime {
     final time = _wakeupTime.value;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   DateTime get dayWakeupTime {
     final time = suggestedWakeupTime ?? wakeupTime;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   DateTime get trainingTime {
     final time = _trainingTime.value;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   DateTime get suggestedWakeupTime {
@@ -393,7 +393,7 @@ class ScheduleAddController extends Controller
         ?.firstWhere((x) => x.type == ScheduleItemType.WAKEUP,
             orElse: () => null)
         ?.time;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   DateTime get suggestedAsleepTime {
@@ -401,7 +401,7 @@ class ScheduleAddController extends Controller
         ?.firstWhere((x) => x.type == ScheduleItemType.ASLEEP,
             orElse: () => null)
         ?.time;
-    return DateTime(0, 0, 0, time.hour, time.minute);
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
   }
 
   /// state

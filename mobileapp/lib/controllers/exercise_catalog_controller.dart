@@ -14,6 +14,7 @@ class ExerciseCatalogController extends SearchController {
   /// categories
 
   List<ExerciseCategoryData> list;
+  ExerciseData detail;
 
   Future retrieve() async {
     final result = await query(trainingCategoriesQuery,
@@ -63,6 +64,18 @@ class ExerciseCatalogController extends SearchController {
     cursor = result.get<String>(['trainings', 'pageInfo', 'endCursor']);
 
     isAppending = false;
+    update();
+  }
+
+  Future retrieveItem({int exerciseId}) async {
+    final result = await query(trainingQuery, parameters: {
+      'id': exerciseId
+    });
+
+    print('ExerciseCatalogController.retrieveItem: $result');
+
+    detail = ExerciseData.fromJson(result.get('training'));
+
     update();
   }
 

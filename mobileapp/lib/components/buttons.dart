@@ -126,7 +126,7 @@ class Button extends StatelessWidget {
 
   Widget _buildChild() => isLoading
       ? Container(
-          padding: padding, child: Loading(color: color ?? Colors.primary))
+          padding: padding, child: SizedBox(child: Loading(color: color ?? Colors.primary)))
       : child ??
           icon ??
           image ??
