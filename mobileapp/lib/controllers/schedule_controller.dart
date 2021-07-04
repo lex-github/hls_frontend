@@ -368,16 +368,41 @@ class ScheduleAddController extends Controller
   final _wakeupTime = Rx<DateTime>(null);
   final _trainingTime = Rx<DateTime>(null);
 
-  DateTime get asleepTime => _asleepTime.value;
-  DateTime get wakeupTime => _wakeupTime.value;
-  DateTime get dayWakeupTime => suggestedWakeupTime ?? wakeupTime;
-  DateTime get trainingTime => _trainingTime.value;
-  DateTime get suggestedWakeupTime => dayItems
-      ?.firstWhere((x) => x.type == ScheduleItemType.WAKEUP, orElse: () => null)
-      ?.time;
-  DateTime get suggestedAsleepTime => dayItems
-      ?.firstWhere((x) => x.type == ScheduleItemType.ASLEEP, orElse: () => null)
-      ?.time;
+  DateTime get asleepTime {
+    final time = _asleepTime.value;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  DateTime get wakeupTime {
+    final time = _wakeupTime.value;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  DateTime get dayWakeupTime {
+    final time = suggestedWakeupTime ?? wakeupTime;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  DateTime get trainingTime {
+    final time = _trainingTime.value;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  DateTime get suggestedWakeupTime {
+    final time = dayItems
+        ?.firstWhere((x) => x.type == ScheduleItemType.WAKEUP,
+            orElse: () => null)
+        ?.time;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  DateTime get suggestedAsleepTime {
+    final time = dayItems
+        ?.firstWhere((x) => x.type == ScheduleItemType.ASLEEP,
+            orElse: () => null)
+        ?.time;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
 
   /// state
 
@@ -415,7 +440,9 @@ class ScheduleAddController extends Controller
 
     // print('-----');
     // print('different orbit: ${asleepTime.isInner == wakeupTime.isOuter}');
-    // print('woke up after 6: ${wakeupTime.isAfter(sixOclock)}');
+    print('woke up after 6: ${wakeupTime.isAfter(sixOclock)} '
+        '\n\t${dateToString(date: wakeupTime, output: dateTimeFull)}'
+        '\n\t${dateToString(date: sixOclock, output: dateTimeFull)}');
     // print('asleep before 6: ${asleepTime.isBefore(sixOclock)}');
 
     return asleepTime.isNightInner == wakeupTime.isNightOuter ||
