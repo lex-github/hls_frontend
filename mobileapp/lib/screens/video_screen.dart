@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart'
@@ -18,19 +19,19 @@ class VideoScreen extends GetView<VideoScreenController> {
   final String url;
 
   VideoScreen({this.url}) {
-    print('VideoScreen url: ${this.url}');
+    //print('VideoScreen url: ${this.url}');
   }
 
   // builders
 
   Widget buildPlayer() => Hero(
-          tag: url,
-          child: SizedBox(
-              width: Size.screenWidth,
-              height: Size.screenHeight,
-              child: VlcPlayer(
-                  controller: controller.video,
-                  aspectRatio: Size.screenWidth / Size.screenHeight)));
+      tag: url,
+      child: SizedBox(
+          width: Size.screenWidth,
+          height: Size.screenHeight,
+          child: VlcPlayer(
+              controller: controller.video,
+              aspectRatio: Size.screenWidth / Size.screenHeight)));
 
   // YoutubePlayer(
   //   //width: Size.screenHeight,
@@ -143,16 +144,25 @@ class VideoScreen extends GetView<VideoScreenController> {
 
 class VideoScreenController extends Controller {
   final String url;
+  final bool autoPlay;
+  final Function(Duration) onPlay;
+  final Function onReset;
+  final Function onFinish;
+
+  final Stopwatch stopwatch = Stopwatch();
 
   //final YoutubePlayerController video;
   // final VideoPlayerController video;
   VlcPlayerController video;
 
-  final bool autoPlay;
-
   final _isPlaying = false.obs;
 
-  VideoScreenController({@required this.url, this.autoPlay = true});
+  VideoScreenController(
+      {@required this.url,
+      this.autoPlay = true,
+      this.onPlay,
+      this.onReset,
+      this.onFinish});
   // video = YoutubePlayerController(
   //     //initialVideoId: 'iLnmTe5Q2Qw',
   //     initialVideoId: 'EXo_1J4nzO4',
@@ -172,22 +182,30 @@ class VideoScreenController extends Controller {
 
   void toggle() => isPlaying ? pause() : play();
 
-  void reset() => video.seekTo(Duration.zero);
+  void reset() {
+    video.seekTo(Duration.zero);
+    stopwatch.reset();
+
+    if (onReset != null) onReset();
+  }
 
   void play() {
-    if (!video.value.isInitialized)
-      return;
+    if (!video.value.isInitialized) return;
 
     final duration = video.value.duration;
     final position = video.value.position;
-    if (duration.compareTo(position) <= 0) video.seekTo(Duration.zero);
+    if (duration.compareTo(position) <= 0) reset();
 
     video.play();
+    stopwatch.start();
 
     Wakelock.enable();
   }
 
-  void pause() => video.pause();
+  void pause() {
+    video.pause();
+    stopwatch.stop();
+  }
 
   final _isInit = false.obs;
   bool get isInit => _isInit.value;
@@ -219,7 +237,12 @@ class VideoScreenController extends Controller {
     //play();
   }
 
+  Duration _prevPosition;
   void playListener() async {
+    // print(
+    //     'VideoScreenController.playListener state: ${video.value.playingState}');
+    if (video.value.isPlaying && !stopwatch.isRunning) stopwatch.start();
+
     _isPlaying.value = video.value.isPlaying;
 
     if (!isInitPlay && _isPlaying.value) {
@@ -229,6 +252,29 @@ class VideoScreenController extends Controller {
       }
 
       _isInitPlay.value = true;
+
+      if (onReset != null) onReset();
+    }
+
+    /// playback finished
+    if (video.value.playingState == PlayingState.ended) {
+      if (onFinish != null)
+        onFinish();
+
+      return;
+    }
+
+    Duration position = video.value.position;
+    if (_prevPosition != null && position.compareTo(_prevPosition) == 0)
+      position = stopwatch.elapsed;
+    else
+      _prevPosition = position;
+
+    //print('VideoScreenController.playListener $position / ${video.value.duration}');
+
+    /// playback continuing
+    if (video.value.playingState == PlayingState.playing && onPlay != null) {
+      onPlay(position);
     }
   }
 
@@ -246,14 +292,17 @@ class VideoScreenController extends Controller {
 
   @override
   void onClose() {
-    print('VideoScreenController.onClose');
+    //print('VideoScreenController.onClose');
 
     if (video.value.isInitialized) {
-      video.pause();
+      pause();
+
+      if (onReset != null) onReset();
 
       video.removeOnInitListener(initListener);
       video.removeListener(playListener);
     }
+    video.stopRendererScanning();
     video.dispose();
 
     Wakelock.disable();

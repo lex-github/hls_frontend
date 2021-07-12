@@ -10,6 +10,7 @@ ExerciseData _$ExerciseDataFromJson(Map<String, dynamic> json) {
   return ExerciseData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
+    ..thumbnailUrl = json['thumbnail'] as String
     ..description = json['description'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..input = (json['inputData'] as List<dynamic>)
@@ -19,6 +20,7 @@ ExerciseData _$ExerciseDataFromJson(Map<String, dynamic> json) {
         ?.map((e) => ExercisePulseData.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..type = ExerciseType.fromJsonValue(json['kind'])
+    ..rateChecks = toDurationList(json['videoPulseCheckTime'])
     ..videoUrl = json['videoUrl'] as String
     ..imageUrl = json['imageUrl'] as String;
 }
@@ -27,6 +29,7 @@ Map<String, dynamic> _$ExerciseDataToJson(ExerciseData instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'title': instance.title,
+    'thumbnail': instance.thumbnailUrl,
     'description': instance.description,
     'icon': instance.image,
     'inputData': instance.input,
@@ -40,6 +43,8 @@ Map<String, dynamic> _$ExerciseDataToJson(ExerciseData instance) {
   }
 
   writeNotNull('kind', ExerciseType.toJsonValue(instance.type));
+  val['videoPulseCheckTime'] =
+      instance.rateChecks?.map((e) => e.inMicroseconds)?.toList();
   val['videoUrl'] = instance.videoUrl;
   val['imageUrl'] = instance.imageUrl;
   return val;

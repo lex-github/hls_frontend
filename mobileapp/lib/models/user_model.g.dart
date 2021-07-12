@@ -193,7 +193,7 @@ Map<String, dynamic> _$HealthValueDataToJson(HealthValueData instance) {
 }
 
 HealthIndexData _$HealthIndexDataFromJson(Map<String, dynamic> json) {
-  return HealthIndexData()..percent = (json['percent'] as num).toDouble();
+  return HealthIndexData()..percent = (json['percent'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$HealthIndexDataToJson(HealthIndexData instance) =>

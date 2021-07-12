@@ -18,21 +18,21 @@ import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class ExerciseRealtimeScreen extends StatefulWidget {
+  final ExerciseData item = Get.arguments;
+
   @override
-  _State createState() => _State(item: Get.arguments);
+  _ExerciseRealtimeScreenState createState() => _ExerciseRealtimeScreenState();
 }
 
-class _State extends State<ExerciseRealtimeScreen> {
-  final ExerciseData _item;
-
-  _State({ExerciseData item}) : _item = item {
-    print('ExerciseRealtimeScreen url: ${item.videoUrl}');
+class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
+  _ExerciseRealtimeScreenState() {
+    //print('ExerciseRealtimeScreen url: ${item.videoUrl}');
   }
 
   ExerciseCatalogController get controller =>
       Get.find<ExerciseCatalogController>();
 
-  ExerciseData get item => controller.detail ?? _item;
+  ExerciseData get item => controller.detail ?? widget.item;
 
   /// handlers
 
@@ -42,7 +42,7 @@ class _State extends State<ExerciseRealtimeScreen> {
       SizedBox(height: Size.image, child: Center(child: Loading()));
 
   Widget _buildPlayer() {
-    print('ExerciseRealtimeScreen._buildPlayer $item');
+    //print('ExerciseRealtimeScreen._buildPlayer $item');
 
     return SizedBox(
         height: Size.image,
@@ -137,8 +137,10 @@ class _State extends State<ExerciseRealtimeScreen> {
 
   @override
   Widget build(_) => MixinBuilder(
-      init: controller..retrieveItem(exerciseId: item.id),
+      init: controller,
+      initState: (_) => controller..retrieveItem(exerciseId: item.id),
       autoRemove: false,
+      dispose: (_) => controller.detail = null,
       builder: (_) => Screen(
           padding: Padding.zero,
           shouldShowDrawer: true,
@@ -148,8 +150,8 @@ class _State extends State<ExerciseRealtimeScreen> {
               : SingleChildScrollView(
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                   if (controller.isAwaiting)
-                    Loading()
-                  else if (!item.videoUrl.isNullOrEmpty)
+                    Loading(),
+                  if (!item.videoUrl.isNullOrEmpty)
                     _buildPlayer()
                   else ...[VerticalSpace(), TextError(noDataText)],
                   Container(
@@ -161,32 +163,34 @@ class _State extends State<ExerciseRealtimeScreen> {
                                   size: Size.fontSmall)),
                           VerticalSpace()
                         ],
-                        CardioMonitor(),
-                        VerticalSpace(),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Button(
-                                  background: Colors.primary,
-                                  title: exerciseStartTitle,
-                                  onPressed: () async {
-                                    if (item.videoUrl.isNullOrEmpty)
-                                      return showConfirm(title: noDataText);
+                        if (!item.rateChecks.isNullOrEmpty) ...[
+                          CardioMonitor(rateChecks: item.rateChecks),
+                          VerticalSpace(),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Button(
+                                    background: Colors.primary,
+                                    title: exerciseStartTitle,
+                                    onPressed: () async {
+                                      if (item.videoUrl.isNullOrEmpty)
+                                        return showConfirm(title: noDataText);
 
-                                    // final controller =
-                                    //     Get.find<VideoScreenController>();
-                                    // if (controller == null)
-                                    //   return showConfirm(title: errorGenericText);
-                                    //
-                                    // controller.start();
+                                      // final controller =
+                                      //     Get.find<VideoScreenController>();
+                                      // if (controller == null)
+                                      //   return showConfirm(title: errorGenericText);
+                                      //
+                                      // controller.start();
 
-                                    // controller.reset();
-                                    // controller.play();
+                                      // controller.reset();
+                                      // controller.play();
 
-                                    Get.toNamed(exerciseVideoRoute,
-                                        arguments: item);
-                                  })
-                            ]),
+                                      Get.toNamed(exerciseVideoRoute,
+                                          arguments: item);
+                                    })
+                              ])
+                        ],
                         VerticalSpace(),
                         _buildBlock(child: StatusBlock()),
                         if (!item.pulse.isNullOrEmpty) ...[
