@@ -103,3 +103,27 @@ String toDateStringInternal(value) => value == null
 Color toColor(value) =>
     value == null ? null : ColorUtility.fromHex(value.toString());
 String colorToString(Color color) => color.toHex();
+
+Duration toDuration(value) {
+  if (value == null) return null;
+  int hours = 0;
+  int minutes = 0;
+  int seconds = 0;
+
+  List<String> parts = value.split(':');
+
+  if (parts.length > 2) {
+    hours = int.parse(parts[parts.length - 3]);
+  }
+
+  if (parts.length > 1) {
+    minutes = int.parse(parts[parts.length - 2]);
+    seconds = int.parse(parts[parts.length - 1]);
+  }
+
+  return Duration(hours: hours, minutes: minutes, seconds: seconds);
+}
+
+List<Duration> toDurationList(value) => value == null
+    ? null
+    : List<Duration>.from(value.map(toDuration).toList(), growable: false);

@@ -498,7 +498,7 @@ class ListItemFoodButton extends ListItemButton {
                                 i < min(filters.length, 4);
                                 i++) ...[
                               ListItemFoodIndicator(
-                                  title: filters[i].title.toLowerCase(),
+                                  title: filters[i].title,
                                   data: item.getByKey(filters[i].key),
                                   color: Colors.disabled),
                               HorizontalSmallSpace()

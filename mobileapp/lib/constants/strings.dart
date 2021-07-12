@@ -222,3 +222,4 @@ const exerciseNeedTypeText = 'Выберите тип данных тренир�
 const exerciseNeedValueText = 'Внесите данные тренировки';
 const exerciseStartTitle = 'Начать тренировку';
 const exerciseZoneTitle = 'Рекомендуемая пульсовая зона';
+const heartRateLabel = 'Пульс';
