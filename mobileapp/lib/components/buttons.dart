@@ -169,7 +169,7 @@ class Button extends StatelessWidget {
             },
       onLongPress: onLongPressed,
       child: AnimatedCrossFade(
-          duration: defaultAnimationDuration,
+          duration: Duration.zero,//defaultAnimationDuration,
           crossFadeState:
               isSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           firstCurve: Curves.easeInCirc,
