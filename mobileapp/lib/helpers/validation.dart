@@ -198,3 +198,9 @@ final timerValidator = MultiValidatorWithError([
   RequiredValidator(),
   NumericValidator()
 ]);
+
+// exercise
+final heartRateValidator = MultiValidatorWithError([
+  RequiredValidator(),
+  NumericValidator()
+]);

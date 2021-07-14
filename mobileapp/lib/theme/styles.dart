@@ -150,11 +150,12 @@ class Colors {
   static const macroNoHLS = M.Color(0xFF8E8D8E);
   static const macroStatistical = M.Color(0xFF347CFF);
 
-  static const heartbeatMaximum = M.Color(0xFF8416FF);
-  static const heartbeatHeavy = M.Color(0xFFD70010);
-  static const heartbeatMedium = M.Color(0xFFFF6600);
-  static const heartbeatLight = M.Color(0xFFCDA800);
-  static const heartbeatMinimum = M.Color(0x8899E600);
+  static const heartRate = M.Color(0xAAE1667E);
+  // static const heartbeatMaximum = M.Color(0xFF8416FF);
+  // static const heartbeatHeavy = M.Color(0xFFD70010);
+  // static const heartbeatMedium = M.Color(0xFFFF6600);
+  // static const heartbeatLight = M.Color(0xFFCDA800);
+  // static const heartbeatMinimum = M.Color(0x8899E600);
 }
 
 // padding

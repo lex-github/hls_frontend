@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class ExerciseCatalogController extends SearchController {
   /// categories
 
   List<ExerciseCategoryData> list;
+  ExerciseData detail;
 
   Future retrieve() async {
     final result = await query(trainingCategoriesQuery,
@@ -66,6 +68,18 @@ class ExerciseCatalogController extends SearchController {
     update();
   }
 
+  Future retrieveItem({int exerciseId}) async {
+    final result = await query(trainingQuery, parameters: {
+      'id': exerciseId
+    });
+
+    //print('ExerciseCatalogController.retrieveItem: $result');
+
+    detail = ExerciseData.fromJson(result.get('training'));
+
+    update();
+  }
+
   @override
   void onInit() async {
     await retrieve();
@@ -95,4 +109,20 @@ class ExerciseCatalogController extends SearchController {
     return result != null;
   }
 
+  Future<bool> addRealtime({@required int scheduleId,
+    @required int exerciseId,
+    @required Duration duration,
+    @required Map<String,int> data}) async {
+    final result = await mutation(scheduleTrainingsCreateMutation, parameters: {
+      'scheduleId': scheduleId,
+      'exerciseId': exerciseId,
+      'type': 'DURATION',
+      'value': duration.inMinutes,
+      'data': jsonEncode(data)
+    });
+
+    print('ExerciseCatalogController.add result: $result');
+
+    return result != null;
+  }
 }

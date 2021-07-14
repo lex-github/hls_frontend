@@ -14,6 +14,8 @@ const authTokenKey = 'Auth-Token';
 
 const avatarUploadPath = 'upload';
 
+const oneSignalAppId = '08f76ad3-3c2d-405a-8492-c199ff2fe398';
+
 // graphql types
 
 const pageInfoFields = ''
@@ -301,6 +303,33 @@ const trainingFields =
     '$iconFields '
     'description '
     'kind '
+    // 'videoUrl '
+    // 'inputData '
+    // '{'
+    //   'title '
+    //   'unit '
+    //   'inputType '
+    //   'max '
+    //   'min '
+    //   'step'
+    // '} '
+    // 'pulseZones '
+    // '{'
+    //   'color '
+    //   'title '
+    //   'description '
+    //   'heartRate '
+    //   'isRecommended'
+    // '}'
+  '}';
+
+const trainingDetailFields =
+  '{'
+    'id '
+    'title '
+    '$iconFields '
+    'description '
+    'kind '
     'videoUrl '
     'inputData '
     '{'
@@ -318,7 +347,8 @@ const trainingFields =
       'description '
       'heartRate '
       'isRecommended'
-    '}'
+    '} '
+    'videoPulseCheckTime'
   '}';
 
 // query
@@ -446,6 +476,17 @@ const trainingsQuery = 'query '
       'nodes $trainingFields '
       'pageInfo $pageInfoFields'
     '}'
+  '}';
+
+const trainingQuery = 'query '
+  '('
+    '\$id: ID!'
+  ')'
+  '{'
+    'training '
+    '('
+      'id: \$id'
+    ') $trainingDetailFields'
   '}';
 
 // mutations
@@ -626,6 +667,7 @@ const scheduleTrainingsCreateMutation = 'mutation'
     '\$exerciseId: ID! '
     '\$type: TrainingInputType! '
     '\$value: Int!'
+    '\$data: Json'
   ') '
   '{'
     'scheduleTrainingsCreate'
@@ -633,7 +675,8 @@ const scheduleTrainingsCreateMutation = 'mutation'
       'scheduleId: \$scheduleId '
       'trainingId: \$exerciseId '
       'inputType: \$type '
-      'inputValue: \$value'
+      'inputValue: \$value '
+      'data: \$data'
     ') '
     '{'
       'scheduleTraining '

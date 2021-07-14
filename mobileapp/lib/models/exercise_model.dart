@@ -24,6 +24,8 @@ class ExerciseData extends GenericData {
       fromJson: ExerciseType.fromJsonValue,
       toJson: ExerciseType.toJsonValue)
   ExerciseType type;
+  @JsonKey(name: 'videoPulseCheckTime', fromJson: toDurationList)
+  List<Duration> rateChecks;
   String videoUrl;
 
   ExerciseData();

@@ -37,6 +37,7 @@ class OtpRequestFormController extends FormController {
   onSubmitResponse(bool isSuccess) =>
       isSuccess ? Get.toNamed(otpVerifyRoute, arguments: phone) : null;
 
+  int prevPhoneLength = 0;
   @override
   void onChanged(String field, value,
       {bool shouldUpdate = true, bool shouldUpdateController = true}) {
@@ -44,6 +45,13 @@ class OtpRequestFormController extends FormController {
         shouldUpdate: shouldUpdate,
         shouldUpdateController: shouldUpdateController);
 
-    if (field == 'phone' && value.length == 18) submitHandler();
+    if (field == 'phone') {
+      // print('OtpRequestFormController.onChanged $prevPhoneLength -> ${value.length}');
+
+      if (value.length == 18 && prevPhoneLength != value.length)
+        Future.delayed(const Duration(milliseconds: 500), submitHandler);
+
+      prevPhoneLength = value.length;
+    }
   }
 }

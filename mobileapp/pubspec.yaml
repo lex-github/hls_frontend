@@ -30,6 +30,8 @@ dependencies:
   cached_network_image: ^3.0.0
   # analytics
   firebase_analytics: ^7.1.1
+  # bluetooth for cardio monitor
+  flutter_blue: ^0.8.0
   # date picker
   flutter_datetime_picker: ^1.5.0
   # chat animation indicator
@@ -64,6 +66,8 @@ dependencies:
   mask_text_input_formatter: ^2.0.0-nullsafety.2
   # content type
   mime: ^1.0.0
+  # push notifications
+  onesignal_flutter: ^3.1.0
   # button border gradient
   outline_gradient_button: ^2.0.0+1
   # macro graph dash

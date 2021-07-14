@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -125,7 +126,7 @@ class Button extends StatelessWidget {
 
   Widget _buildChild() => isLoading
       ? Container(
-          padding: padding, child: Loading(color: color ?? Colors.primary))
+          padding: padding, child: SizedBox(child: Loading(color: color ?? Colors.primary)))
       : child ??
           icon ??
           image ??
@@ -169,7 +170,7 @@ class Button extends StatelessWidget {
             },
       onLongPress: onLongPressed,
       child: AnimatedCrossFade(
-          duration: Duration.zero,//defaultAnimationDuration,
+          duration: Platform.isIOS ? Duration.zero : defaultAnimationDuration,
           crossFadeState:
               isSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           firstCurve: Curves.easeInCirc,
@@ -497,7 +498,7 @@ class ListItemFoodButton extends ListItemButton {
                                 i < min(filters.length, 4);
                                 i++) ...[
                               ListItemFoodIndicator(
-                                  title: filters[i].title.toLowerCase(),
+                                  title: filters[i].title,
                                   data: item.getByKey(filters[i].key),
                                   color: Colors.disabled),
                               HorizontalSmallSpace()

@@ -9,6 +9,7 @@ import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/notifications.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/screens/profile_screen.dart';
@@ -124,6 +125,7 @@ class AuthService extends GraphqlService {
     }
 
     profile = UserData.fromJson(data.get('currentUser'));
+    PushNotificationsManager().setUserId(profile.id);
     isAuthenticated = (profile?.id ?? 0) > 0;
     return profile;
   }

@@ -5,6 +5,7 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
+import 'package:hls/components/cardio_monitor.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
@@ -17,19 +18,21 @@ import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class ExerciseRealtimeScreen extends StatefulWidget {
+  final ExerciseData item = Get.arguments;
+
   @override
-  _State createState() => _State(item: Get.arguments);
+  _ExerciseRealtimeScreenState createState() => _ExerciseRealtimeScreenState();
 }
 
-class _State extends State<ExerciseRealtimeScreen> {
-  final ExerciseData item;
-
-  _State({this.item}) {
-    print('ExerciseRealtimeScreen url: ${item.videoUrl}');
+class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
+  _ExerciseRealtimeScreenState() {
+    //print('ExerciseRealtimeScreen url: ${item.videoUrl}');
   }
 
   ExerciseCatalogController get controller =>
       Get.find<ExerciseCatalogController>();
+
+  ExerciseData get item => controller.detail ?? widget.item;
 
   /// handlers
 
@@ -39,7 +42,7 @@ class _State extends State<ExerciseRealtimeScreen> {
       SizedBox(height: Size.image, child: Center(child: Loading()));
 
   Widget _buildPlayer() {
-    print('ExerciseRealtimeScreen._buildPlayer $item');
+    //print('ExerciseRealtimeScreen._buildPlayer $item');
 
     return SizedBox(
         height: Size.image,
@@ -133,72 +136,86 @@ class _State extends State<ExerciseRealtimeScreen> {
       child: child);
 
   @override
-  Widget build(_) => Screen(
-      padding: Padding.zero,
-      shouldShowDrawer: true,
-      title: item.title,
-      child: item == null
-          ? EmptyPage()
-          : SingleChildScrollView(
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-              if (!item.videoUrl.isNullOrEmpty)
-                _buildPlayer()
-              else ...[VerticalSpace(), TextError(noDataText)],
-              Container(
-                  padding: Padding.content,
-                  child: Column(children: [
-                    if (!item.description.isNullOrEmpty) ...[
-                      _buildBlock(
-                          child: TextPrimary(item.description,
-                              size: Size.fontSmall)),
-                      VerticalSpace()
-                    ],
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Button(
-                          background: Colors.primary,
-                          title: exerciseStartTitle,
-                          onPressed: () async {
-                            if (item.videoUrl.isNullOrEmpty)
-                              return showConfirm(title: noDataText);
+  Widget build(_) => MixinBuilder(
+      init: controller,
+      initState: (_) => controller..retrieveItem(exerciseId: item.id),
+      autoRemove: false,
+      dispose: (_) => controller.detail = null,
+      builder: (_) => Screen(
+          padding: Padding.zero,
+          shouldShowDrawer: true,
+          title: item.title,
+          child: item == null
+              ? EmptyPage()
+              : SingleChildScrollView(
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  if (controller.isAwaiting)
+                    Loading(),
+                  if (!item.videoUrl.isNullOrEmpty)
+                    _buildPlayer()
+                  else ...[VerticalSpace(), TextError(noDataText)],
+                  Container(
+                      padding: Padding.content,
+                      child: Column(children: [
+                        if (!item.description.isNullOrEmpty) ...[
+                          _buildBlock(
+                              child: TextPrimary(item.description,
+                                  size: Size.fontSmall)),
+                          VerticalSpace()
+                        ],
+                        if (!item.rateChecks.isNullOrEmpty) ...[
+                          CardioMonitor(rateChecks: item.rateChecks),
+                          VerticalSpace(),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Button(
+                                    background: Colors.primary,
+                                    title: exerciseStartTitle,
+                                    onPressed: () async {
+                                      if (item.videoUrl.isNullOrEmpty)
+                                        return showConfirm(title: noDataText);
 
-                            // final controller =
-                            //     Get.find<VideoScreenController>();
-                            // if (controller == null)
-                            //   return showConfirm(title: errorGenericText);
-                            //
-                            // controller.start();
+                                      // final controller =
+                                      //     Get.find<VideoScreenController>();
+                                      // if (controller == null)
+                                      //   return showConfirm(title: errorGenericText);
+                                      //
+                                      // controller.start();
 
-                            // controller.reset();
-                            // controller.play();
+                                      // controller.reset();
+                                      // controller.play();
 
-                            Get.toNamed(exerciseVideoRoute, arguments: item);
-                          })
-                    ]),
-                    VerticalSpace(),
-                    _buildBlock(child: StatusBlock()),
-                    if (!item.pulse.isNullOrEmpty) ...[
-                      VerticalSpace(),
-                      Accordion(
-                          icon: FontAwesomeIcons.infoCircle,
-                          title: exerciseZoneTitle,
-                          child: Column(children: [
-                            VerticalMediumSpace(),
-                            for (final p in item.pulse) ...[
-                              Opacity(
-                                  opacity: p.isRecommended ? 1 : .2,
-                                  child: Heartbeat(
-                                      color: p.color,
-                                      title: p.title,
-                                      description: p.description,
-                                      heartbeat: p.heartRate)),
-                              if (p.title != item.pulse.last.title)
-                                VerticalSmallSpace()
-                            ],
-                            VerticalMediumSpace()
-                          ]))
-                    ]
-                  ]))
-            ])));
+                                      Get.toNamed(exerciseVideoRoute,
+                                          arguments: item);
+                                    })
+                              ])
+                        ],
+                        VerticalSpace(),
+                        _buildBlock(child: StatusBlock()),
+                        if (!item.pulse.isNullOrEmpty) ...[
+                          VerticalSpace(),
+                          Accordion(
+                              icon: FontAwesomeIcons.infoCircle,
+                              title: exerciseZoneTitle,
+                              child: Column(children: [
+                                VerticalMediumSpace(),
+                                for (final p in item.pulse) ...[
+                                  Opacity(
+                                      opacity: p.isRecommended ? 1 : .2,
+                                      child: Heartbeat(
+                                          color: p.color,
+                                          title: p.title,
+                                          description: p.description,
+                                          heartbeat: p.heartRate)),
+                                  if (p.title != item.pulse.last.title)
+                                    VerticalSmallSpace()
+                                ],
+                                VerticalMediumSpace()
+                              ]))
+                        ]
+                      ]))
+                ]))));
 }
 
 class Heartbeat extends StatelessWidget {
