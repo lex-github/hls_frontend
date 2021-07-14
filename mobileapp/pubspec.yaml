@@ -66,6 +66,8 @@ dependencies:
   mask_text_input_formatter: ^2.0.0-nullsafety.2
   # content type
   mime: ^1.0.0
+  # push notifications
+  onesignal_flutter: ^3.1.0
   # button border gradient
   outline_gradient_button: ^2.0.0+1
   # macro graph dash

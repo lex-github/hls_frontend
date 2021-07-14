@@ -14,6 +14,8 @@ const authTokenKey = 'Auth-Token';
 
 const avatarUploadPath = 'upload';
 
+const oneSignalAppId = '08f76ad3-3c2d-405a-8492-c199ff2fe398';
+
 // graphql types
 
 const pageInfoFields = ''
