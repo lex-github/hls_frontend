@@ -33,10 +33,18 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>NO</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>NO</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Разрешите доступ к камере</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Разрешите доступ к фото галерее</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -54,13 +62,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>NO</string>
+	<string>Bluetooth peripheral usage description</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>NO</string>
+	<string>Bluetooth always usage description</string>
 	<key>NSHealthShareUsageDescription</key>
-    <string>We will sync your data with the Apple Health app to give you better insights</string>
+    <string>Health share usage description</string>
     <key>NSHealthUpdateUsageDescription</key>
-    <string>We will sync your data with the Apple Health app to give you better insights</string>
+    <string>Health update usage description</string>
 </dict>
 </plist>
