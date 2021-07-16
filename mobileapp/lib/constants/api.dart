@@ -44,7 +44,8 @@ const userCommonFields = ''
   'id '
   'photoUrl '
   'email '
-  'phoneNumber';
+  'phoneNumber '
+  'timezone';
 
 const userHealthLevelField =
   '{'
@@ -490,6 +491,23 @@ const trainingQuery = 'query '
   '}';
 
 // mutations
+
+const usersSetTimezoneMutation = 'mutation'
+  '('
+    '\$timezone: String!'
+  ') '
+  '{'
+    'usersSetTimezone'
+    '('
+      'timezone: \$timezone'
+    ') '
+    '{'
+      'user '
+      '{'
+        'id'
+      '}'
+    '}'
+  '}';
 
 const authSignInMutation = 'mutation'
     '('

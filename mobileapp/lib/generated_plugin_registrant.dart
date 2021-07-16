@@ -7,6 +7,7 @@
 import 'package:connectivity_for_web/connectivity_for_web.dart';
 import 'package:firebase_analytics_web/firebase_analytics_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:wakelock_web/wakelock_web.dart';
 
@@ -17,6 +18,7 @@ void registerPlugins(Registrar registrar) {
   ConnectivityPlugin.registerWith(registrar);
   FirebaseAnalyticsWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
+  FlutterNativeTimezonePlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   WakelockWeb.registerWith(registrar);
   registrar.registerMessageHandler();
