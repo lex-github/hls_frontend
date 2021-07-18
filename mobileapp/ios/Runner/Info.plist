@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ЗОЖ</string>
+	<string>Клуб 100+</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -33,6 +33,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>NO</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>NO</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Разрешите доступ к камере</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -54,9 +58,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>NO</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>NO</string>
 </dict>
 </plist>
