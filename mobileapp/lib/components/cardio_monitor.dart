@@ -115,7 +115,7 @@ class CardioMonitorController extends Controller {
 
     // check if available
     if (!await blue.isAvailable) {
-      //print('CardioMonitorController.scan NOT AVAILABLE');
+      print('CardioMonitorController.scan NOT AVAILABLE');
       _isAwaiting.value = false;
       _canConnect.value = false;
       _message.value = 'Bluetooth is not available';
@@ -124,7 +124,7 @@ class CardioMonitorController extends Controller {
 
     // check if on
     if (!await blue.isOn) {
-      //print('CardioMonitorController.scan NOT ON');
+      print('CardioMonitorController.scan NOT ON');
       _isAwaiting.value = false;
       _canConnect.value = false;
       _message.value = 'Bluetooth is not on';
@@ -244,7 +244,7 @@ class CardioMonitorController extends Controller {
 
       try {
         final currentTime = DateTime.now();
-        final secondAgo = currentTime.subtract(const Duration(seconds: 1));
+        final secondAgo = currentTime.subtract(const Duration(seconds: 60));
 
         /// fetch new data
         healthData =
