@@ -2,6 +2,8 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
+  - device_info (0.0.1):
+    - Flutter
   - Firebase/Analytics (7.3.0):
     - Firebase/Core
   - Firebase/Core (7.3.0):
@@ -46,6 +48,8 @@ PODS:
   - flutter_blue/Protos (0.0.1):
     - Flutter
     - Protobuf (~> 3.11.4)
+  - flutter_native_timezone (0.0.1):
+    - Flutter
   - flutter_vlc_player (3.0.2):
     - Flutter
     - MobileVLCKit (~> 3.3.15)
@@ -79,6 +83,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.3.1):
     - GoogleUtilities/Logger
+  - health (1.0.1):
+    - Flutter
   - image_picker (0.0.1):
     - Flutter
   - keyboard_visibility (0.5.0):
@@ -110,11 +116,14 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_blue (from `.symlinks/plugins/flutter_blue/ios`)
+  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_vlc_player (from `.symlinks/plugins/flutter_vlc_player/ios`)
+  - health (from `.symlinks/plugins/health/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
   - OneSignal (< 4.0, >= 3.0.0)
@@ -146,6 +155,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -154,8 +165,12 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_blue:
     :path: ".symlinks/plugins/flutter_blue/ios"
+  flutter_native_timezone:
+    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   flutter_vlc_player:
     :path: ".symlinks/plugins/flutter_vlc_player/ios"
+  health:
+    :path: ".symlinks/plugins/health/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   keyboard_visibility:
@@ -173,6 +188,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
   firebase_analytics: ee4abb07bfa857e7c95d97144efe9eb68be414cd
   firebase_core: b5d81dfd4fb2d6f700e67de34d9a633ae325c4e9
@@ -182,11 +198,13 @@ SPEC CHECKSUMS:
   FirebaseInstallations: bf2ec8dbf36ff4c91af6b9a003d15855757680c1
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_blue: eeb381dc4727a0954dede73515f683865494b370
+  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   flutter_vlc_player: bb2059d1a5833e695ec30a25864336baf065fd9f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7
   GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
+  health: 44840ad4328aa5586e77bef289898bfed644a81c
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   MobileVLCKit: 2b408a9c5cc327353afab418fafbc942780b248a
@@ -202,6 +220,6 @@ SPEC CHECKSUMS:
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: 4ebc4640c39e31f5cfac135954faf9ac9229e6fb
+PODFILE CHECKSUM: aeccc9401b4a744129adfe3ca20b50c27269f36a
 
 COCOAPODS: 1.10.1
