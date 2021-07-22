@@ -30,6 +30,7 @@ class UserData extends GenericData {
   @JsonKey(name: 'todaySchedule')
   ScheduleData schedule;
   List<GenericData> desiredFoods;
+  String timezone;
 
   UserData();
 

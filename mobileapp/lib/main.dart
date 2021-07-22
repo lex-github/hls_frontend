@@ -8,6 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/notifications.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/navigation/router.dart';
 import 'package:hls/services/_http_service.dart';
@@ -35,6 +36,8 @@ Future initServices() async {
   await Get.put(SettingsService()).init();
   await Get.put(AnalyticsService()).init();
   await Get.put(HttpService()).init();
+
+  await PushNotificationsManager().init();
 }
 
 class HLS extends StatelessWidget {

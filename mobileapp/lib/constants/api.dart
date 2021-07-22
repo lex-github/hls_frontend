@@ -14,6 +14,8 @@ const authTokenKey = 'Auth-Token';
 
 const avatarUploadPath = 'upload';
 
+const oneSignalAppId = '08f76ad3-3c2d-405a-8492-c199ff2fe398';
+
 // graphql types
 
 const pageInfoFields = ''
@@ -42,7 +44,8 @@ const userCommonFields = ''
   'id '
   'photoUrl '
   'email '
-  'phoneNumber';
+  'phoneNumber '
+  'timezone';
 
 const userHealthLevelField =
   '{'
@@ -488,6 +491,23 @@ const trainingQuery = 'query '
   '}';
 
 // mutations
+
+const usersSetTimezoneMutation = 'mutation'
+  '('
+    '\$timezone: String!'
+  ') '
+  '{'
+    'usersSetTimezone'
+    '('
+      'timezone: \$timezone'
+    ') '
+    '{'
+      'user '
+      '{'
+        'id'
+      '}'
+    '}'
+  '}';
 
 const authSignInMutation = 'mutation'
     '('

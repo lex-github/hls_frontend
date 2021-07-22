@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide Colors, Padding;
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:health/health.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
@@ -102,6 +103,7 @@ class CardioMonitorController extends Controller {
   @override
   void onInit() {
     scan();
+    health();
 
     super.onInit();
   }
@@ -221,6 +223,42 @@ class CardioMonitorController extends Controller {
     });
 
     _isConnected.value = true;
+  }
+
+  Future health() async {
+    print('CardioMonitorController.health');
+
+    HealthFactory health = HealthFactory();
+
+    /// define the types to get.
+    List<HealthDataType> types = [
+      HealthDataType.HEART_RATE
+    ];
+
+    /// you MUST request access to the data types before reading them
+    bool accessWasGranted = await health.requestAuthorization(types);
+    print('CardioMonitorController.health accessWasGranted: $accessWasGranted');
+
+    if (accessWasGranted) {
+      List<HealthDataPoint> healthData;
+
+      try {
+        final currentTime = DateTime.now();
+        final secondAgo = currentTime.subtract(const Duration(seconds: 1));
+
+        /// fetch new data
+        healthData =
+          await health.getHealthDataFromTypes(secondAgo, DateTime.now(), types);
+      } catch (e) {
+        print('Caught exception in getHealthDataFromTypes: $e');
+      }
+
+      /// filter out duplicates
+      healthData = HealthFactory.removeDuplicates(healthData);
+
+      /// Print the results
+      print('CardioMonitorController.health: $healthData');
+    }
   }
 
   void onReset() {

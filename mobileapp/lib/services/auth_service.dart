@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/notifications.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/user_model.dart';
 import 'package:hls/screens/profile_screen.dart';
@@ -125,6 +127,17 @@ class AuthService extends GraphqlService {
 
     profile = UserData.fromJson(data.get('currentUser'));
     isAuthenticated = (profile?.id ?? 0) > 0;
+
+    if (isAuthenticated) {
+      PushNotificationsManager().setUserId(profile.id);
+
+      FlutterNativeTimezone.getLocalTimezone().then((timezone) =>
+          profile.timezone != timezone
+              ? mutation(usersSetTimezoneMutation,
+                  parameters: {'timezone': timezone})
+              : null);
+    }
+
     return profile;
   }
 
@@ -167,12 +180,10 @@ class AuthService extends GraphqlService {
     profile = UserData.fromJson(data.get(['authSignIn', 'user']));
     isAuthenticated = (profile?.id ?? 0) > 0;
 
-    if (isAuthenticated)
-      AnalyticsService.i.login();
+    if (isAuthenticated) AnalyticsService.i.login();
 
-    if (profile != null)
-      AnalyticsService.i.user(profile.id.toString());
-    
+    if (profile != null) AnalyticsService.i.user(profile.id.toString());
+
     return profile != null;
   }
 
