@@ -5,7 +5,7 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
-import 'package:hls/components/cardio_monitor.dart';
+import 'package:hls/components/cardio_switch.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
@@ -149,8 +149,7 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
               ? EmptyPage()
               : SingleChildScrollView(
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  if (controller.isAwaiting)
-                    Loading(),
+                  if (controller.isAwaiting) Loading(),
                   if (!item.videoUrl.isNullOrEmpty)
                     _buildPlayer()
                   else ...[VerticalSpace(), TextError(noDataText)],
@@ -164,7 +163,9 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                           VerticalSpace()
                         ],
                         if (!item.rateChecks.isNullOrEmpty) ...[
-                          CardioMonitor(rateChecks: item.rateChecks),
+                          //CardioMonitor(rateChecks: item.rateChecks),
+                          _buildBlock(
+                              child: CardioSwitch(rateChecks: item.rateChecks)),
                           VerticalSpace(),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,

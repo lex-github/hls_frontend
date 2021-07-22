@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, Text, TextStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
-import 'package:hls/components/cardio_monitor.dart';
+import 'package:hls/components/cardio_switch.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/exercise_catalog_controller.dart';
@@ -33,8 +31,8 @@ class ExerciseVideoScreen_ extends VideoScreen {
 
   ExerciseVideoScreen_({@required this.data}) : super(url: data.videoUrl);
 
-  CardioMonitorController get cardioController =>
-      Get.find<CardioMonitorController>();
+  CardioSwitchController get cardioController =>
+      Get.find<CardioSwitchController>();
 
   // builders
 

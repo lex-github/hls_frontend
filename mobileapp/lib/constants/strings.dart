@@ -223,3 +223,7 @@ const exerciseNeedValueText = 'Внесите данные тренировки'
 const exerciseStartTitle = 'Начать тренировку';
 const exerciseZoneTitle = 'Рекомендуемая пульсовая зона';
 const heartRateLabel = 'Пульс';
+
+const cardioInputTypeManualTitle = 'Вручную';
+const cardioInputTypeMonitorTitle = 'Bluetooth кардиомонитор';
+const cardioInputTypeHealthTitle = 'Apple Health';

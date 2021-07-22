@@ -6,28 +6,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
 import 'package:hls/components/buttons.dart';
+import 'package:hls/components/cardio_switch.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
-import 'package:hls/controllers/exercise_catalog_controller.dart';
-import 'package:hls/controllers/exercise_form_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
-import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class CardioMonitor extends StatefulWidget {
-  final List<Duration> rateChecks;
-  CardioMonitor({@required this.rateChecks}) {
-    //print('CardioMonitor() rateChecks: $rateChecks');
-  }
-
   @override
   _CardioMonitorState createState() => _CardioMonitorState();
 }
 
 class _CardioMonitorState extends State<CardioMonitor> {
-  List<Duration> get rateChecks => widget.rateChecks;
   CardioMonitorController get controller => Get.find<CardioMonitorController>();
 
   Future _handler() async {
@@ -36,7 +28,7 @@ class _CardioMonitorState extends State<CardioMonitor> {
 
   @override
   Widget build(_) => GetX(
-      init: CardioMonitorController(rateChecks: rateChecks),
+      init: CardioMonitorController(),
       builder: (_) =>
           Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             if (!controller.message.isNullOrEmpty) ...[
@@ -73,17 +65,12 @@ class CardioMonitorController extends Controller {
   static const heartRateCharacteristic = '00002a37-0000-1000-8000-00805f9b34fb';
   static const locationCharacteristic = '00002a38-0000-1000-8000-00805f9b34fb';
 
-  CardioMonitorController({@required this.rateChecks})
+  CardioMonitorController()
       : guidService = Guid(heartRateService),
-        guidCharacteristic = Guid('00002a37-0000-1000-8000-00805f9b34fb') {
-    //print('CardioMonitorController() rateChecks: $rateChecks');
-  }
+        guidCharacteristic = Guid('00002a37-0000-1000-8000-00805f9b34fb');
 
   final guidService;
   final guidCharacteristic;
-  final List<Duration> rateChecks;
-  final List<Duration> rateChecksCopy = [];
-  final Map<Duration, int> results = {};
 
   final _isAwaiting = false.obs;
   final _canConnect = false.obs;
@@ -103,7 +90,6 @@ class CardioMonitorController extends Controller {
   @override
   void onInit() {
     scan();
-    health();
 
     super.onInit();
   }
@@ -207,6 +193,9 @@ class CardioMonitorController extends Controller {
 
     await characteristic.setNotifyValue(true);
     characteristic.value.listen((value) {
+      if (value.length < 3)
+        return;
+
       int firstByte = value[0];
       int secondByte = value[1];
       int thirdByte = value[2];
@@ -220,6 +209,9 @@ class CardioMonitorController extends Controller {
       //print('CardioMonitorController.connect heart rate: $heartRate');
 
       _heartRate.value = heartRate;
+      _message.value = '';
+
+      Get.find<CardioSwitchController>().heartRate = heartRate;
     });
 
     _isConnected.value = true;
@@ -259,64 +251,6 @@ class CardioMonitorController extends Controller {
       /// Print the results
       print('CardioMonitorController.health: $healthData');
     }
-  }
-
-  void onReset() {
-    if (rateChecks.isNullOrEmpty) {
-      print('CardioMonitorController.onReset rate checks null or empty!');
-
-      return;
-    }
-
-    rateChecksCopy.clear();
-    rateChecksCopy.addAll(rateChecks);
-    results.clear();
-  }
-
-  void onPlay(Duration position) {
-    //print('=====');
-    //print('CardioMonitorController.onPlay position: $position checks: $rateChecksCopy');
-
-    Duration checkToRemove;
-    for (final check in rateChecksCopy) {
-      //print('CardioMonitor.onPlay check: $check');
-
-      if (check.compareTo(position) <= 0) {
-        print('CardioMonitorController.onPlay position reached: $position');
-        readResult(check);
-
-        checkToRemove = check;
-
-        break;
-      }
-
-      // print('CardioMonitorController.onPlay $check bigger than $position');
-      // print('-----');
-    }
-
-    if (checkToRemove != null) {
-      //print('CardioMonitorController.onPlay checkToRemove: $checkToRemove');
-
-      rateChecksCopy.remove(checkToRemove);
-    }
-  }
-
-  void readResult(Duration position) async {
-    int rate = heartRate;
-    if (rate == 0) {
-      final videoController = Get.find<VideoScreenController>();
-      final formController = Get.find<ExerciseFormController>();
-
-      videoController.pause();
-
-      rate = await formController.requestRate();
-
-      print('CardioMonitorController.readResult rate: $rate');
-
-      videoController.play();
-    }
-
-    results[position] = rate;
   }
 
   @override
