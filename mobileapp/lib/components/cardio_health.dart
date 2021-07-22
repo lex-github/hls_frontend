@@ -106,7 +106,7 @@ class CardioHealthController extends Controller {
     /// Print the results
     print('CardioMonitorController.health: $healthData');
     if (healthData.length > 0) {
-      _heartRate.value = healthData.last.value;
+      _heartRate.value = healthData.last.value.toInt();
       _message.value = '';
 
       Get.find<CardioSwitchController>().heartRate = heartRate;
