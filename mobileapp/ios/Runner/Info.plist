@@ -34,11 +34,17 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>NO</string>
+	<string>Bluetooth always usage description</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>NO</string>
+	<string>Bluetooth peripheral usage description</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Разрешите доступ к камере</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Health share usage description</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Health update usage description</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Доступ к геопозиции во время использования приложения</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Разрешите доступ к фото галерее</string>
 	<key>UIBackgroundModes</key>
@@ -62,17 +68,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-<<<<<<< HEAD
-=======
-
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Bluetooth peripheral usage description</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Bluetooth always usage description</string>
-	<key>NSHealthShareUsageDescription</key>
-    <string>Health share usage description</string>
-    <key>NSHealthUpdateUsageDescription</key>
-    <string>Health update usage description</string>
->>>>>>> a2e16e13c5e06340ac2933c8995676ef97560005
 </dict>
 </plist>
