@@ -17,6 +17,10 @@
         android:label="ЗОЖ"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
+
+        <!-- OneSignal notification's accent color -->
+        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="FFC3469F" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
