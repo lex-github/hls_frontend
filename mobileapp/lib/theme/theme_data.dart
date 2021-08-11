@@ -14,6 +14,7 @@ final theme = (context) => ThemeData(
 
     // appBar
     appBarTheme: AppBarTheme(color: Colors.background, elevation: elevation),
+    scaffoldBackgroundColor: Colors.background,
 
     // icon theme
     iconTheme: IconThemeData(color: Colors.icon),

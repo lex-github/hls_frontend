@@ -97,7 +97,9 @@ class ExerciseVideoScreen_ extends VideoScreen {
                           "${duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:"
                           "${(duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}":
                               cardioController.results[duration]
-                      })) Get.back();
+                      })) {
+                    Get.toNamed(exerciseResultRoute, arguments: data);
+                  }
                 }),
             dispose: (_) => Get.delete<VideoScreenController>(),
             builder: (controller) => Stack(

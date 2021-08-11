@@ -244,14 +244,21 @@ class Heartbeat extends StatelessWidget {
 }
 
 class Accordion extends StatelessWidget {
+  final bool isOpened;
   final IconData icon;
+  final Widget iconWidget;
   final String title;
   final Widget child;
-  Accordion({this.icon, @required this.title, @required this.child});
+  Accordion({
+    this.isOpened,
+    this.icon,
+    this.iconWidget,
+    @required this.title,
+    @required this.child});
 
   @override
   Widget build(BuildContext context) => GetBuilder<AccordionController>(
-      init: AccordionController(),
+      init: AccordionController(isOpened: isOpened),
       builder: (controller) => Button(
           borderColor: Colors.disabled,
           onPressed: controller.toggle,
@@ -259,6 +266,9 @@ class Accordion extends StatelessWidget {
             Row(children: [
               if (icon != null) ...[
                 Icon(icon, size: Size.icon),
+                HorizontalSpace()
+              ] else if(iconWidget != null) ...[
+                iconWidget,
                 HorizontalSpace()
               ],
               Expanded(child: TextPrimaryHint(title)),
@@ -274,10 +284,11 @@ class Accordion extends StatelessWidget {
 
 class AccordionController extends GetxController
     with SingleGetTickerProviderMixin {
-  AccordionController() {
+  AccordionController({bool isOpened = false}) : _isOpened = isOpened {
     _animationController =
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value);
+    _animationController.value = isOpened ? 1 : 0;
   }
 
   // fields

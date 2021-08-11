@@ -615,7 +615,7 @@ class Screen extends StatelessWidget {
   Widget build(_) => LayoutBuilder(builder: (_, __) {
         Size.init();
         return Container(
-            decoration: BoxDecoration(boxShadow: [
+            decoration: BoxDecoration(color: Colors.background, boxShadow: [
               BoxShadow(
                   color: Colors.shadow,
                   blurRadius: screenShadowBlurRadius,

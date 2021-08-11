@@ -227,3 +227,6 @@ const heartRateLabel = 'Пульс';
 const cardioInputTypeManualTitle = 'Вручную';
 const cardioInputTypeMonitorTitle = 'Bluetooth кардиомонитор';
 const cardioInputTypeHealthTitle = 'Apple Health';
+
+const rateGraphTitle = 'Пульс график тренировки';
+const exerciseResultButtonTitle = 'Перейти в итоги дня';

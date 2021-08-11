@@ -48,6 +48,7 @@ const exerciseCategoryRoute = '/exercise-category';
 const exerciseRoute = '/exercise';
 const exerciseRealtimeRoute = '/exercise-realtime';
 const exerciseVideoRoute = '/exercise-video';
+const exerciseResultRoute = '/exercise-result';
 const profileRoute = '/profile';
 const profileFormRoute = '/profile-form';
 const trainingStoryRoute = '/training-story';
