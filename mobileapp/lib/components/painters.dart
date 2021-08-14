@@ -282,3 +282,81 @@ class MacroGraphPainter extends CustomPainter {
   @override
   bool shouldRepaint(_) => false;
 }
+
+class HeartRateGraphPainter extends CustomPainter {
+  final List<double> borders;
+  final List<Offset> values;
+  final double pointSize;
+
+  HeartRateGraphPainter({this.borders, this.values, this.pointSize});
+
+  @override
+  void paint(Canvas canvas, M.Size size) {
+    final width = size.width;
+    final height = size.height;
+
+    // draw borders
+    Paint paint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = Size.border
+      ..color = Colors.nutrition
+      ..style = PaintingStyle.stroke;
+
+    for (double border in borders) {
+      final pointStart = Offset(0, border * height);
+      final pointEnd = Offset(width, border * height);
+
+      canvas.drawPath(
+          dashPath(
+              Path()
+                ..moveTo(pointStart.dx, pointStart.dy)
+                ..lineTo(pointEnd.dx, pointEnd.dy),
+              dashArray: CircularIntervalList<double>(<double>[
+                1.5 * Size.horizontalTiny,
+                .8 * Size.horizontalTiny
+              ])),
+          paint);
+    }
+
+    // draw values
+    paint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = 0//.65 * Size.horizontalTiny
+      ..color = Colors.exercise
+      ..style = PaintingStyle.fill;
+
+    for (Offset offset in values) {
+      double x = offset.dx;
+      // if (x < 0)
+      //   x *= -values.indexOf(offset);
+      
+      canvas.drawCircle(Offset(x * width, (1 - offset.dy) * height), pointSize, paint);
+    }
+
+    // draw lines
+    paint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = pointSize / 2
+      ..color = Colors.exercise;
+
+    for (int i = 1; i < values.length; i++) {
+      double x = values[i].dx;
+      double xPrev = values[i-1].dx;
+
+      // if (x < 0)
+      //   x *= -i;
+      // if (xPrev < 0)
+      //   xPrev *= -(i-1);
+
+      print("x: $x xPrev: $xPrev");
+
+      final offset = Offset(x * width, (1 - values[i].dy) * height);
+      final prevOffset = Offset(xPrev * width, (1 - values[i-1].dy) * height);
+
+      canvas.drawLine(prevOffset, offset, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_) => false;
+}

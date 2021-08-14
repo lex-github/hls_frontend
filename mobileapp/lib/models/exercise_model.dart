@@ -33,6 +33,7 @@ class ExerciseData extends GenericData {
   // getters
   @override
   String get imageUrl => image?.url;
+  ExercisePulseData get recommendedPulse => pulse.firstWhere((element) => element.isRecommended);
 
   List<GenericEnum> get values => [
         for (final i in input)

@@ -171,15 +171,15 @@ class Padding {
       horizontal: Size.horizontal, vertical: Size.vertical);
   static get button => M.EdgeInsets.symmetric(
       horizontal: Size.horizontal, vertical: Size.verticalSmall);
-  static get chatButton => M.EdgeInsets.symmetric(
-      horizontal: 0, vertical: Size.verticalSmall);
+  static get chatButton =>
+      M.EdgeInsets.symmetric(horizontal: 0, vertical: Size.verticalSmall);
 
   static get tiny => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalTiny, vertical: Size.horizontalTiny);
   static get small => M.EdgeInsets.symmetric(
       horizontal: Size.horizontalSmall, vertical: Size.verticalSmall);
   static get medium => M.EdgeInsets.symmetric(
-    horizontal: Size.horizontalMedium, vertical: Size.verticalMedium);
+      horizontal: Size.horizontalMedium, vertical: Size.verticalMedium);
 }
 
 // styles
@@ -188,6 +188,10 @@ class TextStyle {
       M.TextStyle(fontSize: Size.font, color: Colors.primaryText);
   static get secondary =>
       M.TextStyle(fontSize: Size.fontSmall, color: Colors.secondaryText);
+  static get secondaryImportant => M.TextStyle(
+      fontSize: Size.fontSmall,
+      color: Colors.primaryText,
+      fontWeight: FontWeight.bold);
   static get title => M.TextStyle(
       fontSize: Size.fontBig,
       fontWeight: FontWeight.w500,
@@ -209,7 +213,7 @@ class TextStyle {
   static get error =>
       M.TextStyle(fontSize: Size.fontTiny, color: Colors.failure);
   static get version =>
-    M.TextStyle(fontSize: Size.fontTiny, color: Colors.light);
+      M.TextStyle(fontSize: Size.fontTiny, color: Colors.light);
 }
 
 final borderRadiusCircular = BorderRadius.circular(Size.borderRadius);

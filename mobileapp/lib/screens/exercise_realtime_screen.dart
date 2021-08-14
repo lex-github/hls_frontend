@@ -250,7 +250,7 @@ class Accordion extends StatelessWidget {
   final String title;
   final Widget child;
   Accordion({
-    this.isOpened,
+    this.isOpened = false,
     this.icon,
     this.iconWidget,
     @required this.title,

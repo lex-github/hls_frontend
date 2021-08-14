@@ -89,7 +89,7 @@ class Router {
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: exerciseRealtimeRoute,
-        page: () => ExerciseResultScreen(),
+        page: () => ExerciseRealtimeScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: exerciseVideoRoute,
