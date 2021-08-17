@@ -19,7 +19,10 @@ class ExerciseResultScreen extends StatefulWidget {
 }
 
 class _ExerciseResultScreen extends State<ExerciseResultScreen> {
+  final values = Get.find<CardioSwitchController>().results;
+
   ExerciseData get data => widget.data;
+  int get average => (values.values.reduce((a, b) => a + b) / values.length).round();
 
   @override
   Widget build(_) => Screen(
@@ -40,7 +43,7 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
                           children: <TextSpan>[
                         TextSpan(text: 'Средний пульс: '),
                         TextSpan(
-                            text: 150.toString(),
+                            text: average.toString(),
                             style: TextStyle.secondaryImportant),
                         TextSpan(text: ' уд./мин.')
                       ])),
@@ -53,7 +56,7 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
                       .first
                       .split('-')
                       .map(int.parse),
-                    values: Get.find<CardioSwitchController>().results)
+                    values: values)
                   // HeartRateGraph(values: {
                   //   Duration(minutes: 10): 140,
                   //   Duration(minutes: 20): 160,
