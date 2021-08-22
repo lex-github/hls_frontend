@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hls/constants/strings.dart';
@@ -23,9 +25,19 @@ class WelcomeController extends GetxController {
   int get length => _slides.length;
   SlideData get slide => _slides[index];
 
-  next() => index < _slides.length - 1
+  bool _respondToNext = true;
+  next() {
+    if (!_respondToNext)
+      return;
+
+    // throttle
+    _respondToNext = false;
+    Timer(defaultAnimationDuration, () => _respondToNext = true);
+
+    return index < _slides.length - 1
       ? index += 1
       : (AuthService.isAuth ? Get.back() : Get.offNamed(otpRequestRoute));
+  }
 }
 
 class SlideData {

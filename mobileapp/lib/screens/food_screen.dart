@@ -8,6 +8,7 @@ import 'package:hls/components/generic.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/food_add_form_controller.dart';
 import 'package:hls/controllers/food_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
@@ -16,6 +17,7 @@ import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/models/schedule_model.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/screens/_form_screen.dart' show Input;
 import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -44,25 +46,43 @@ class FoodScreen extends GetView<FoodController> {
     final portions = [
       for (int i = portionStep; i <= portionMax; i += portionStep) i
     ];
-    int portion = portionStep;
+    int portion = -1;
 
     await showConfirm(
         contentPadding: contentPadding,
         title: foodAddPortionTitle,
-        child: SizedBox(
-            height: Size.cupertinoPicker,
-            child: C.CupertinoPicker(
-                useMagnifier: true,
-                magnification: 1.1,
-                itemExtent: 1.75 * fontSize,
-                onSelectedItemChanged: (i) => portion = portions[i],
-                children: [
-                  for (final portion in portions)
-                    Center(
-                        child:
-                            TextPrimary('$portion гр', size: 1.15 * fontSize))
-                ])));
-    if (portion == null) return;
+        child: GetBuilder<FoodAddFormController>(
+            init: FoodAddFormController(onFieldChanged: (value) {
+              if (value != -1)
+                portion = value;
+            }),
+            builder: (controller) => SizedBox(
+                height: Size.cupertinoPicker,
+                child: C.Column(children: [
+                  Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: Size.horizontal),
+                      child: Input<FoodAddFormController>(
+                          inputType: TextInputType.number,
+                          field: FoodAddFormController.field)),
+                  VerticalSpace(),
+                  Expanded(
+                      child: C.CupertinoPicker(
+                          useMagnifier: true,
+                          magnification: 1.1,
+                          itemExtent: 1.75 * fontSize,
+                          onSelectedItemChanged: (i) {
+                            portion = portions[i];
+                            controller.value = portion;
+                          },
+                          children: [
+                        for (final portion in portions)
+                          Center(
+                              child: TextPrimary('$portion гр',
+                                  size: 1.15 * fontSize))
+                      ]))
+                ]))));
+    if (portion == -1) return;
 
     final schedule = AuthService.i.profile.schedule;
     final scheduleItems = [

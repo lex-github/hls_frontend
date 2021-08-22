@@ -36,7 +36,21 @@ class WelcomeScreen<Controller extends WelcomeController>
   Widget build(_) => GetBuilder<Controller>(
       init: WelcomeController() as Controller,
       dispose: (_) => Get.delete<Controller>(),
-      builder: (_) => Screen(
+      builder: (_) => GestureDetector(
+        onPanUpdate: (details) {
+          final swipe = details.delta.dx;
+
+          // Swiping in right direction.
+          if (swipe > 10) return;
+
+          // Swiping in left direction.
+          if (swipe < -10) {
+            print(details.delta.dx);
+
+            _proceedHandler();
+          }
+        },
+        child: Screen(
           fab: CircularButton(
               icon: FontAwesomeIcons.chevronRight,
               //iconSize: Size.iconSmall,
@@ -60,7 +74,8 @@ class WelcomeScreen<Controller extends WelcomeController>
                                         key: ValueKey(
                                             controller.slide.imageTitle),
                                         title:
-                                            controller.slide.imageTitle)))))))),
+                                            controller.slide.imageTitle)
+                                ))))))),
             Flexible(
                 flex: 3,
                 child: Center(
@@ -82,7 +97,7 @@ class WelcomeScreen<Controller extends WelcomeController>
                       ]
                     ]))),
             VerticalSpace()
-          ])));
+          ]))));
 }
 
 Path _path(M.Size size) {

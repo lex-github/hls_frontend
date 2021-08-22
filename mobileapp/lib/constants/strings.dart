@@ -157,6 +157,7 @@ const foodEmptyRequestSentTitle = 'Спасибо за запрос';
 const foodEmptyRequestSentText =
     'Продукт будет добавлен в систему после рассмотрения';
 const foodAddPortionTitle = 'Каков размер порции?';
+const foodAddValueLabel = 'Количество';
 const foodAddTimeTitle = 'В какое время?';
 const foodNeedScheduleText =
     'Для внесения данных о питании необходимо сначала сформировать режим';

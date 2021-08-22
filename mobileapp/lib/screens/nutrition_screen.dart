@@ -112,7 +112,7 @@ class NutritionScreen<Controller extends NutritionController> extends GetView<Co
         Container(
             padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
             child: Input<SearchFormController<Controller>>(
-                field: 'search',
+                field: SearchFormController.field,
                 leading: Icon(FontAwesomeIcons.search,
                     color: Colors.disabled, size: .9 * Size.icon))),
         VerticalMediumSpace(),

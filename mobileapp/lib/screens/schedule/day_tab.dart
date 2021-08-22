@@ -104,9 +104,9 @@ class DayTab extends ScheduleTab {
           ]),
           HorizontalSpace(),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            buildLegend(Colors.scheduleAdditionalFood, scheduleAwakeLabel),
+            buildLegend(Colors.scheduleAdditionalFood, scheduleAdditionalFoodLabel),
             VerticalSpace(),
-            buildLegend(Colors.exercise, scheduleMainFoodLabel),
+            buildLegend(Colors.exercise, scheduleExerciseLabel),
           ])
         ]),
         VerticalBigSpace(),
