@@ -18,10 +18,11 @@ import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
-  final ExerciseData item;
+  final ExerciseData _item;
 
-  ExerciseScreen({this.item});
+  ExerciseScreen({ExerciseData item}) : _item = item;
 
+  ExerciseData get item => controller.detail ?? _item;
   ExerciseFormController get form => Get.find<ExerciseFormController>();
   ExerciseCatalogController get controller =>
       Get.find<ExerciseCatalogController>();
@@ -52,8 +53,9 @@ class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
   /// builders
 
   @override
-  Widget build(_) => GetBuilder<T>(
+  Widget build(_) => MixinBuilder<T>(
       init: ExerciseFormController() as T,
+      initState: (_) => controller..retrieveItem(exerciseId: item.id),
       builder: (_) => Screen(
           padding: Padding.zero,
           shouldShowDrawer: true,
@@ -64,7 +66,7 @@ class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
               isDisabled: form.getValue('value') == null,
               isLoading: controller.isAwaiting,
               onPressed: _addHandler)),
-          child: item == null
+          child: controller.isAwaiting || false ? LoadingPage() : item == null
               ? EmptyPage()
               : SingleChildScrollView(
                   child: Container(

@@ -35,12 +35,12 @@ class GraphqlService extends Service {
     AnalyticsService.i.queryEnd(node, data: result.data);
     isAwaiting = false;
 
-    if (isDebug)
+    /*if (isDebug)
       debugPrint('GraphqlService.query'
           '\n\tnode $node'
-          //'\n\tparameters $parameters'
-          //'\n\tresult ${result.data}'
-      );
+          '\n\tparameters $parameters'
+          '\n\tresult ${result.data}'
+      );*/
 
     if (result.hasException) {
       print('GraphqlService.query EXCEPTION: ${result?.exception}');

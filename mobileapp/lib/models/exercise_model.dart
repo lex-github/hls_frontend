@@ -35,7 +35,7 @@ class ExerciseData extends GenericData {
   String get imageUrl => image?.url;
   ExercisePulseData get recommendedPulse => pulse.firstWhere((element) => element.isRecommended);
 
-  List<GenericEnum> get values => [
+  List<GenericEnum> get values => input == null ? [] : [
         for (final i in input)
           GenericEnum<String>(
               title: [i.title, if (!i.unit.isNullOrEmpty) i.unit].join(', '),
