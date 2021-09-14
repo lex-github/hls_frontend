@@ -180,9 +180,9 @@ class AuthService extends GraphqlService {
     profile = UserData.fromJson(data.get(['authSignIn', 'user']));
     isAuthenticated = (profile?.id ?? 0) > 0;
 
-    if (isAuthenticated) AnalyticsService.i.login();
+    // if (isAuthenticated) AnalyticsService.i.login();
 
-    if (profile != null) AnalyticsService.i.user(profile.id.toString());
+    // if (profile != null) AnalyticsService.i.user(profile.id.toString());
 
     return profile != null;
   }

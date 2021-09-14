@@ -28,11 +28,11 @@ class GraphqlService extends Service {
       {Map<String, dynamic> parameters, FetchPolicy fetchPolicy}) async {
 
     isAwaiting = true;
-    AnalyticsService.i.queryStart(node, parameters: parameters);
+    // AnalyticsService.i.queryStart(node, parameters: parameters);
     final client = await this.client();
     final result = await client.query(QueryOptions(
         document: gql(node), variables: parameters, fetchPolicy: fetchPolicy));
-    AnalyticsService.i.queryEnd(node, data: result.data);
+    // AnalyticsService.i.queryEnd(node, data: result.data);
     isAwaiting = false;
 
     /*if (isDebug)
@@ -72,7 +72,7 @@ class GraphqlService extends Service {
       {Map<String, dynamic> parameters}) async {
 
     isAwaiting = true;
-    AnalyticsService.i.mutationStart(node, parameters: parameters);
+    // AnalyticsService.i.mutationStart(node, parameters: parameters);
     final client = await this.client();
 
     try {
@@ -80,7 +80,7 @@ class GraphqlService extends Service {
           document: gql(node),
           variables: parameters,
           fetchPolicy: FetchPolicy.networkOnly));
-      AnalyticsService.i.mutationEnd(node, data: result.data);
+      // AnalyticsService.i.mutationEnd(node, data: result.data);
 
       isAwaiting = false;
 

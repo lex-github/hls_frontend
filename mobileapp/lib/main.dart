@@ -34,7 +34,7 @@ Future initServices() async {
   await initializeDateFormatting(null, null);
 
   await Get.put(SettingsService()).init();
-  await Get.put(AnalyticsService()).init();
+  // await Get.put(AnalyticsService()).init();
   await Get.put(HttpService()).init();
 
   await PushNotificationsManager().init();
@@ -62,7 +62,7 @@ class HLS extends StatelessWidget {
           child: GetBuilder<AuthService>(
               init: AuthService()..init(),
               builder: (_) => GetMaterialApp(
-                  navigatorObservers: [AnalyticsService.i.observer],
+                  // navigatorObservers: [AnalyticsService.i.observer],
                   smartManagement: SmartManagement.onlyBuilder,
                   theme: theme(context),
                   defaultTransition: Transition.rightToLeftWithFade,

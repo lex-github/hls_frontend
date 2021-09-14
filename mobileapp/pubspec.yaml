@@ -29,7 +29,7 @@ dependencies:
   # cached images
   cached_network_image: ^3.0.0
   # analytics
-  firebase_analytics: ^7.1.1
+  # firebase_analytics: ^7.1.1
   # bluetooth for cardio monitor
   flutter_blue: ^0.8.0
   # date picker
