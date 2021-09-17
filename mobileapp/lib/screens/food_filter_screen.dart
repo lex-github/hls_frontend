@@ -31,11 +31,11 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
     else
       to--;
 
-    print('FoodFilterScreen._filterHandler'
-        '\n\tdata: $data'
-        '\n\tvalues: $values'
-        '\n\tfrom: $from'
-        '\n\tto: $to');
+    // print('FoodFilterScreen._filterHandler'
+    //     '\n\tdata: $data'
+    //     '\n\tvalues: $values'
+    //     '\n\tfrom: $from'
+    //     '\n\tto: $to');
 
     Get.bottomSheet(Container(
         height: Size.bottomSheet,

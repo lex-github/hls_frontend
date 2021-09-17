@@ -51,7 +51,7 @@ class CardioHealthController extends Controller {
   bool get isConnected => !isAwaiting && heartRate > 0;
 
   Timer _timer;
-  final _duration = const Duration(seconds: 3);
+  final _duration = const Duration(minutes: 5);
 
   @override
   void onInit() {
