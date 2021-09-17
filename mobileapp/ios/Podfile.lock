@@ -2,45 +2,8 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
-  - device_info (0.0.1):
+  - device_info_plus (0.0.1):
     - Flutter
-  - Firebase/Analytics (7.3.0):
-    - Firebase/Core
-  - Firebase/Core (7.3.0):
-    - Firebase/CoreOnly
-    - FirebaseAnalytics (= 7.3.0)
-  - Firebase/CoreOnly (7.3.0):
-    - FirebaseCore (= 7.3.0)
-  - firebase_analytics (7.1.1):
-    - Firebase/Analytics (= 7.3.0)
-    - firebase_core
-    - Flutter
-  - firebase_core (1.0.3):
-    - Firebase/CoreOnly (= 7.3.0)
-    - Flutter
-  - FirebaseAnalytics (7.3.0):
-    - FirebaseCore (~> 7.0)
-    - FirebaseInstallations (~> 7.0)
-    - GoogleAppMeasurement (= 7.3.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/MethodSwizzler (~> 7.0)
-    - GoogleUtilities/Network (~> 7.0)
-    - "GoogleUtilities/NSData+zlib (~> 7.0)"
-    - nanopb (~> 2.30906.0)
-  - FirebaseCore (7.3.0):
-    - FirebaseCoreDiagnostics (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/Logger (~> 7.0)
-  - FirebaseCoreDiagnostics (7.3.0):
-    - GoogleDataTransport (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/Logger (~> 7.0)
-    - nanopb (~> 2.30906.0)
-  - FirebaseInstallations (7.10.0):
-    - FirebaseCore (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/UserDefaults (~> 7.0)
-    - PromisesObjC (~> 1.2)
   - Flutter (1.0.0)
   - flutter_blue (0.0.1):
     - Flutter
@@ -56,33 +19,6 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GoogleAppMeasurement (7.3.0):
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/MethodSwizzler (~> 7.0)
-    - GoogleUtilities/Network (~> 7.0)
-    - "GoogleUtilities/NSData+zlib (~> 7.0)"
-    - nanopb (~> 2.30906.0)
-  - GoogleDataTransport (8.1.0):
-    - nanopb (~> 2.30906.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.3.1):
-    - GoogleUtilities/Environment
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.3.1):
-    - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (7.3.1):
-    - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.3.1):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.3.1):
-    - GoogleUtilities/Logger
-    - "GoogleUtilities/NSData+zlib"
-    - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.3.1)"
-  - GoogleUtilities/Reachability (7.3.1):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.3.1):
-    - GoogleUtilities/Logger
   - health (1.0.1):
     - Flutter
   - image_picker (0.0.1):
@@ -90,20 +26,14 @@ PODS:
   - keyboard_visibility (0.5.0):
     - Flutter
     - Reachability
-  - MobileVLCKit (3.3.16.3)
-  - nanopb (2.30906.0):
-    - nanopb/decode (= 2.30906.0)
-    - nanopb/encode (= 2.30906.0)
-  - nanopb/decode (2.30906.0)
-  - nanopb/encode (2.30906.0)
-  - OneSignal (3.4.0)
-  - onesignal_flutter (3.1.0):
+  - MobileVLCKit (3.3.17)
+  - OneSignal (3.8.0)
+  - onesignal_flutter (3.2.0):
     - Flutter
-    - OneSignalXCFramework (= 3.5.3)
-  - OneSignalXCFramework (3.5.3)
+    - OneSignalXCFramework (= 3.6.0)
+  - OneSignalXCFramework (3.6.0)
   - path_provider (0.0.1):
     - Flutter
-  - PromisesObjC (1.2.12)
   - Protobuf (3.11.4)
   - Reachability (3.2)
   - share (0.0.1):
@@ -116,9 +46,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
-  - device_info (from `.symlinks/plugins/device_info/ios`)
-  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
-  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_blue (from `.symlinks/plugins/flutter_blue/ios`)
   - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
@@ -135,32 +63,18 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Firebase
-    - FirebaseAnalytics
-    - FirebaseCore
-    - FirebaseCoreDiagnostics
-    - FirebaseInstallations
     - FMDB
-    - GoogleAppMeasurement
-    - GoogleDataTransport
-    - GoogleUtilities
     - MobileVLCKit
-    - nanopb
     - OneSignal
     - OneSignalXCFramework
-    - PromisesObjC
     - Protobuf
     - Reachability
 
 EXTERNAL SOURCES:
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
-  device_info:
-    :path: ".symlinks/plugins/device_info/ios"
-  firebase_analytics:
-    :path: ".symlinks/plugins/firebase_analytics/ios"
-  firebase_core:
-    :path: ".symlinks/plugins/firebase_core/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
   flutter_blue:
@@ -188,32 +102,20 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
-  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  Firebase: 26223c695fe322633274198cb19dca8cb7e54416
-  firebase_analytics: ee4abb07bfa857e7c95d97144efe9eb68be414cd
-  firebase_core: b5d81dfd4fb2d6f700e67de34d9a633ae325c4e9
-  FirebaseAnalytics: 2580c2d62535ae7b644143d48941fcc239ea897a
-  FirebaseCore: 4d3c72622ce0e2106aaa07bb4b2935ba2c370972
-  FirebaseCoreDiagnostics: d50e11039e5984d92c8a512be2395f13df747350
-  FirebaseInstallations: bf2ec8dbf36ff4c91af6b9a003d15855757680c1
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_blue: eeb381dc4727a0954dede73515f683865494b370
   flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   flutter_vlc_player: bb2059d1a5833e695ec30a25864336baf065fd9f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7
-  GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
-  GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   health: 44840ad4328aa5586e77bef289898bfed644a81c
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
-  MobileVLCKit: 2b408a9c5cc327353afab418fafbc942780b248a
-  nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
-  OneSignal: 2ed41ab22799418dcac39aac01114276a89ea6d9
-  onesignal_flutter: 79eb89d25249b078d3c358fb7827b22909f7fbed
-  OneSignalXCFramework: 4e08d8353adec161c3d9174e2572c849e1225c9f
+  MobileVLCKit: c5dd1b0ae933dc9c2348099840e753496dcdd908
+  OneSignal: bb3c8da4467f2b48a89398da5ff107ba70cff06e
+  onesignal_flutter: 367950f701ad3bb25b21c15f3da6a08777f9237b
+  OneSignalXCFramework: ba3a7daeafd11bd6af8dd47e5689870911357d52
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
@@ -222,4 +124,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aeccc9401b4a744129adfe3ca20b50c27269f36a
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
