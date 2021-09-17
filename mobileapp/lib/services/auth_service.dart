@@ -52,6 +52,7 @@ class AuthService extends GraphqlService {
       _profile.value.progress = value.progress;
       _profile.value.daily = value.daily;
       _profile.value.trainings = value.trainings;
+      _profile.value.schedule = value.schedule;
     }
     _profile.refresh();
   }

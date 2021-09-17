@@ -621,8 +621,10 @@ class ScheduleAddController extends Controller
 
     final schedule = ScheduleData.fromJson(result);
     AuthService.i.profile.schedule = schedule;
-
     _dayItems.assignAll(schedule.items);
+
+    AuthService.i.retrieve();
+    //_dayItems.assignAll(AuthService.i.profile.schedule.items);
 
     return !_dayItems.isNullOrEmpty;
   }
