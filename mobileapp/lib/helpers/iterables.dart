@@ -45,3 +45,7 @@ extension ListGetter on List {
   dynamic get firstOrNull => this.isNullOrEmpty ? null : this.first;
   dynamic get lastOrNull => this.isNullOrEmpty ? null : this.last;
 }
+
+extension Average on List<int> {
+  double get average => this.reduce((sum, x) => sum + x) / this.length;
+}

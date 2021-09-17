@@ -95,6 +95,8 @@ class CardioMonitorController extends Controller {
   }
 
   Future scan() async {
+    print('CardioMonitorController.scan');
+
     _message.value = null;
     _isConnected.value = false;
     _isAwaiting.value = true;

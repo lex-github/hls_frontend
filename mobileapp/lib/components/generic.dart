@@ -553,15 +553,16 @@ class Screen extends StatelessWidget {
             : title is Widget
                 ? title
                 : SizedBox(
-                    width: Size.screenWidth -
-                        Size.horizontal * 4
-                        //Size.horizontal
-                        -
-                        Size.iconSmall * 2 -
-                        (trailing == null ? 0 : Size.horizontal * 2),
-                    child: AutoSizeText(title.toString(),
-                        style: TextStyle.title,
-                        maxLines: 2)), //TextPrimaryTitle(title.toString()),
+                      width: Size.screenWidth -
+                          Size.horizontal * 4
+                          //Size.horizontal
+                          -
+                          Size.iconSmall * 2 -
+                          (trailing == null ? 0 : Size.horizontal * 2),
+                      child: AutoSizeText(title.toString(),
+                          style: TextStyle.title,
+                          maxLines: 2)),
+                 //TextPrimaryTitle(title.toString()),
         child = footer.isNotNull
             ? Column(children: [
                 Expanded(

@@ -6,6 +6,7 @@ import 'package:hls/components/cardio_switch.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/exercise_realtime_screen.dart';
@@ -23,6 +24,29 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
 
   ExerciseData get data => widget.data;
   int get average => (values.values.reduce((a, b) => a + b) / values.length).round();
+
+  Map<Duration, int> aggregate(Map<Duration, int> input) {
+    // interval in minutes
+    final interval = 5;
+
+    // list of heartrates by interval
+    final results = Map<int, List<int>>();
+    for(final duration in input.keys) {
+      final intervalGroup = duration.inMinutes ~/ interval;
+
+      if (!results.containsKey(intervalGroup))
+        results[intervalGroup] = <int>[];
+
+      results[intervalGroup].add(input[duration]);
+    }
+
+    // average heartrate by duration
+    final output = Map<Duration, int>();
+    for(final intervalGroup in results.keys)
+      output[(intervalGroup * interval).minutes] = results[intervalGroup].average.round();
+
+    return output;
+  }
 
   @override
   Widget build(_) => Screen(
@@ -55,8 +79,9 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
                       .split(' ')
                       .first
                       .split('-')
-                      .map(int.parse),
-                    values: values)
+                      .map(int.parse)
+                      .toList(growable: false),
+                    values: aggregate(values))
                   // HeartRateGraph(values: {
                   //   Duration(minutes: 10): 140,
                   //   Duration(minutes: 20): 160,
@@ -83,11 +108,12 @@ class HeartRateGraph extends StatelessWidget {
   // Map<int, double> get values =>
   //   AuthService?.i?.profile?.progress?.healthHistory;
 
-  final minutes = [10, 20, 30, 40, 50, 60];
+  final minutes = [0, 10, 20, 30, 40, 50, 60];
   final rates = [60, 80, 100, 120, 140, 160, 180];
-  final borders;// = [70, 100];
 
+  final List<int> borders;// = [70, 100];
   final Map<Duration, int> values;
+
   HeartRateGraph({this.borders, this.values}) {
     print("HeartRateGraph borders: $borders values: $values");
   }

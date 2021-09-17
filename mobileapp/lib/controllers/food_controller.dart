@@ -10,6 +10,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_model.dart';
+import 'package:hls/services/auth_service.dart';
 
 class FoodController extends Controller with SingleGetTickerProviderMixin {
   final int id;
@@ -111,6 +112,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
     });
 
     print('FoodController.add result: $result');
+    AuthService.i.retrieve();
 
     return result != null;
   }

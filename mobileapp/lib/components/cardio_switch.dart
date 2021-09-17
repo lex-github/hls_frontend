@@ -90,27 +90,42 @@ class CardioSwitchController extends Controller {
     //print('=====');
     //print('CardioMonitorController.onPlay position: $position checks: $rateChecksCopy');
 
-    Duration checkToRemove;
-    for (final check in rateChecksCopy) {
-      //print('CardioMonitor.onPlay check: $check');
+    // for manual input type read at fixed checks
+    if (type == CardioInputType.MANUAL) {
+      Duration checkToRemove;
+      for (final check in rateChecksCopy) {
+        //print('CardioMonitor.onPlay check: $check');
 
-      if (check.compareTo(position) <= 0) {
-        print('CardioMonitorController.onPlay position reached: $position');
-        readResult(check);
+        if (check.compareTo(position) <= 0) {
+          print('CardioMonitorController.onPlay position reached: $position');
+          readResult(check);
 
-        checkToRemove = check;
+          checkToRemove = check;
 
-        break;
+          break;
+        }
+
+        // print('CardioMonitorController.onPlay $check bigger than $position');
+        // print('-----');
       }
 
-      // print('CardioMonitorController.onPlay $check bigger than $position');
-      // print('-----');
-    }
+      if (checkToRemove != null) {
+        //print('CardioMonitorController.onPlay checkToRemove: $checkToRemove');
 
-    if (checkToRemove != null) {
-      //print('CardioMonitorController.onPlay checkToRemove: $checkToRemove');
+        rateChecksCopy.remove(checkToRemove);
+      }
+    // for auto input type read each checkRate seconds
+    } else {
+      final seconds = position.inSeconds;
+      final check = seconds.seconds;
+      final checkRate = 5;
 
-      rateChecksCopy.remove(checkToRemove);
+      if (seconds % checkRate == 0) {
+        if (!results.containsKey(check)) {
+          print('CardioSwitch.onPlay seconds: $seconds');
+          readResult(check);
+        }
+      }
     }
   }
 
