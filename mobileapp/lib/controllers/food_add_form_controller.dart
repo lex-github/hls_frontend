@@ -34,7 +34,7 @@ class FoodAddFormController extends FormController {
     if (field != FoodAddFormController.field) return;
 
     if (onFieldChanged != null)
-      onFieldChanged(int.tryParse(value) ?? -1);
+      onFieldChanged(value is int ? value : int.tryParse(value) ?? -1);
 
     //Get.find<C>().search = value;
   }

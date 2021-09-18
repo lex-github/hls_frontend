@@ -10,6 +10,7 @@ import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/exercise_category_model.dart';
 import 'package:hls/models/exercise_model.dart';
+import 'package:hls/services/auth_service.dart';
 
 class ExerciseCatalogController extends SearchController {
   /// categories
@@ -104,7 +105,8 @@ class ExerciseCatalogController extends SearchController {
       'value': value
     });
 
-    print('ExerciseCatalogController.add result: $result');
+    //print('ExerciseCatalogController.add result: $result');
+    AuthService.i.retrieve();
 
     return result != null;
   }
@@ -121,7 +123,8 @@ class ExerciseCatalogController extends SearchController {
       'data': jsonEncode(data)
     });
 
-    print('ExerciseCatalogController.add result: $result');
+    //print('ExerciseCatalogController.add result: $result');
+    AuthService.i.retrieve();
 
     return result != null;
   }
