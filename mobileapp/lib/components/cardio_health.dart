@@ -51,7 +51,8 @@ class CardioHealthController extends Controller {
   bool get isConnected => !isAwaiting && heartRate > 0;
 
   Timer _timer;
-  final _duration = const Duration(minutes: 5);
+  final _duration = const Duration(seconds: 5);
+  final _backDuration = const Duration(minutes: 5);
 
   @override
   void onInit() {
@@ -91,7 +92,7 @@ class CardioHealthController extends Controller {
 
     try {
       final currentTime = DateTime.now();
-      final secondAgo = currentTime.subtract(_duration);
+      final secondAgo = currentTime.subtract(_backDuration);
 
       /// fetch new data
       healthData =
