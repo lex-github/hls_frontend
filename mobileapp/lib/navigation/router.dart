@@ -21,6 +21,8 @@ import 'package:hls/screens/profile_form_screen.dart';
 import 'package:hls/screens/profile_screen.dart';
 import 'package:hls/screens/reset_form_screen.dart';
 import 'package:hls/screens/schedule_add_screen.dart';
+import 'package:hls/screens/stats/stats_tabbar.dart';
+import 'package:hls/screens/stats_screen.dart';
 import 'package:hls/screens/story_screen.dart';
 import 'package:hls/screens/timer_screen.dart';
 import 'package:hls/screens/training_story_screen.dart';
@@ -139,6 +141,14 @@ class Router {
     GetPage(
         name: foodFilterRoute,
         page: () => FoodFilterScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: statsRoute,
+        page: () => StatsScreen(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: statsTabRoute,
+        page: () => StatsTabBar(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: trainingStoryRoute,

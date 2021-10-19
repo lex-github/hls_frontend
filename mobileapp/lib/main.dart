@@ -31,7 +31,7 @@ Future initServices() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await GetStorage.init();
-  await initializeDateFormatting(null, null);
+  await initializeDateFormatting('ru_RU', null);
 
   await Get.put(SettingsService()).init();
   // await Get.put(AnalyticsService()).init();

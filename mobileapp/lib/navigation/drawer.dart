@@ -136,7 +136,7 @@ class AppDrawer extends StatelessWidget {
               _buildItem(
                   icon: FontAwesomeIcons.chartBar,
                   title: drawerStatisticsLabel,
-                  onPressed: _devHandler),
+                  onPressed: () => Get.toNamed(statsRoute)),
               _buildItem(
                   icon: FontAwesomeIcons.camera,
                   title: drawerMeasuresLabel,

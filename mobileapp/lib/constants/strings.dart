@@ -129,9 +129,11 @@ const emailProfileLabel = 'Эл. почта';
 
 // hub
 const hubScreenTitle = 'ЗОЖ — это просто';
-const nutritionTitle = 'ПИТАНИЕ';
-const exerciseTitle = 'ДВИЖЕНИЕ';
-const scheduleTitle = 'РЕЖИМ';
+const statsScreenTitle = 'Банк здоровья';
+const nutritionTitle = 'Питание';
+const exerciseTitle = 'Движение';
+const modeTitle = 'Режим';
+const dreamTitle = 'Сон';
 const goalTitle = 'Цель';
 const macrocycleTitle = 'Макроцикл';
 const microcycleTitle = 'Микроцикл';
@@ -139,6 +141,7 @@ const weekTitle = 'Неделя';
 const trainingTitle = 'Тренировки';
 
 const categoryScreenTitle = 'Каталог';
+
 
 // food items
 const nutritionScreenTitle = 'Продукты';

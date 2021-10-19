@@ -91,6 +91,33 @@ class CircularProgress extends StatelessWidget {
       ]);
 }
 
+class TitleCircularProgress extends StatelessWidget {
+  final Widget child;
+  final Color color;
+  final double value;
+  final double border;
+  final double size;
+
+  TitleCircularProgress({this.child, this.color, this.value, this.border, double size})
+      : this.size = size ?? Size.buttonBig;
+
+  @override
+  Widget build(BuildContext context) => Stack(children: [
+        Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: Size.border, color: Colors.disabled),
+                borderRadius: BorderRadius.circular(size / 2)),
+            height: size,
+            width: size,
+            child: Center(child: child)),
+        if (!value.isNullOrZero)
+          CustomPaint(
+              size: M.Size(size, size),
+              painter: SectorPainter(
+                  color: color, endAngle: value * 2 * pi, startAngle: pi / 2 - pi,  width: border))
+      ]);
+}
+
 class Card extends StatelessWidget {
   final double width;
   final PostType type;

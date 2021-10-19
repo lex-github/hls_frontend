@@ -62,6 +62,8 @@ dependencies:
   image_picker: ^0.7.4
   # needed for serializable classes
   json_serializable: ^4.1.2
+  # date formatting
+  intl: ^0.17.0
   # bar over keyboard
   keyboard_actions: ^3.4.0
   # keyboard state
@@ -86,6 +88,8 @@ dependencies:
   share: ^2.0.1
   # video player
   #video_player: ^2.1.1
+  # stats calendar
+  table_calendar: ^3.0.2
   # prevents screen from sleeping
   wakelock: ^0.5.2
   # window size for desktop

@@ -2,6 +2,7 @@ const dateTimeInternalFormat = 'yyyy-MM-dd HH:mm:ss';
 const dateInternalFormat = 'yyyy-MM-dd';
 const dateExternalFormat = 'dd.MM.yyyy';
 const dateDayMonthLong = 'd MMM';
+const dateMonthYearLong = 'MMM yyyy';
 const dateTime = 'HH:mm';
 const dateTimeSeconds = 'mm:ss';
 const dateTimeDayMonthLong = '$dateTime, $dateDayMonthLong';

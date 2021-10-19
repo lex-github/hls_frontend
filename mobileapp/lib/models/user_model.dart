@@ -296,7 +296,7 @@ class ActivityType extends GenericEnum<String> {
 
   static const OTHER = ActivityType(value: null, color: null, title: null);
   static const SCHEDULE =
-      ActivityType(value: 'MODE', color: Colors.schedule, title: scheduleTitle);
+      ActivityType(value: 'MODE', color: Colors.schedule, title: dreamTitle);
   static const NUTRITION = ActivityType(
       value: 'EATING', color: Colors.nutrition, title: nutritionTitle);
   static const EXERCISE = ActivityType(

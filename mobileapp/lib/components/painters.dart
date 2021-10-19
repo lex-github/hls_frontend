@@ -104,20 +104,34 @@ class SectorPainter extends CustomPainter {
   final double endAngle;
   final double startAngle;
   final double width;
+  final bool background;
 
   SectorPainter(
       {@required this.color,
       @required this.endAngle,
+      this.background = false,
       this.startAngle = .0,
       this.width});
 
   @override
   void paint(Canvas canvas, M.Size size) {
     final Paint paint = Paint()
+      ..strokeCap = M.StrokeCap.round
       ..isAntiAlias = true
       ..strokeWidth = width ?? (Size.border * 2)
       ..color = color
       ..style = PaintingStyle.stroke;
+
+    if (background) {
+      final backPaint = Paint()
+        ..isAntiAlias = true
+        ..strokeWidth = width ?? (Size.border * 2)
+        ..color = color.withOpacity(.25)
+        ..style = PaintingStyle.stroke;
+      canvas.drawArc(Rect.fromLTWH(0.0, 0.0, size.width, size.height), startAngle,
+        2 * pi, false, backPaint);
+    }
+
     canvas.drawArc(Rect.fromLTWH(0.0, 0.0, size.width, size.height), startAngle,
         endAngle, false, paint);
   }
@@ -321,7 +335,7 @@ class HeartRateGraphPainter extends CustomPainter {
     // draw values
     paint = Paint()
       ..isAntiAlias = true
-      ..strokeWidth = 0//.65 * Size.horizontalTiny
+      ..strokeWidth = 0 //.65 * Size.horizontalTiny
       ..color = Colors.exercise
       ..style = PaintingStyle.fill;
 
@@ -329,8 +343,9 @@ class HeartRateGraphPainter extends CustomPainter {
       double x = offset.dx;
       // if (x < 0)
       //   x *= -values.indexOf(offset);
-      
-      canvas.drawCircle(Offset(x * width, (1 - offset.dy) * height), pointSize, paint);
+
+      canvas.drawCircle(
+          Offset(x * width, (1 - offset.dy) * height), pointSize, paint);
     }
 
     // draw lines
@@ -341,7 +356,7 @@ class HeartRateGraphPainter extends CustomPainter {
 
     for (int i = 1; i < values.length; i++) {
       double x = values[i].dx;
-      double xPrev = values[i-1].dx;
+      double xPrev = values[i - 1].dx;
 
       // if (x < 0)
       //   x *= -i;
@@ -351,7 +366,7 @@ class HeartRateGraphPainter extends CustomPainter {
       print("x: $x xPrev: $xPrev");
 
       final offset = Offset(x * width, (1 - values[i].dy) * height);
-      final prevOffset = Offset(xPrev * width, (1 - values[i-1].dy) * height);
+      final prevOffset = Offset(xPrev * width, (1 - values[i - 1].dy) * height);
 
       canvas.drawLine(prevOffset, offset, paint);
     }
