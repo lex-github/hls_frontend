@@ -13,8 +13,8 @@ class StatsScreen extends StatelessWidget {
   Widget _buildCalendarTiles({String title, Color color}) => Row(
         children: [
           Container(
-            height: 3,
-            width: 10,
+            width: Size.horizontal * 0.6,
+            height: Size.border * 2,
             color: color,
           ),
           SizedBox(
@@ -32,9 +32,7 @@ class StatsScreen extends StatelessWidget {
         child: Column(
           children: [
             // _buildCalendarItems(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: Size.vertical * 0.5),
-            ),
+            VerticalSpace(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -47,7 +45,6 @@ class StatsScreen extends StatelessWidget {
               ],
             ),
             Calendar(),
-            VerticalSpace(),
           ],
         ),
       ));

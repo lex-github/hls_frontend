@@ -62,7 +62,7 @@ class ActiveTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: Size.horizontal * 0.7,
+                width: Size.horizontal * 0.6,
                 height: Size.border * 2,
                 color: indicatorColor,
               ),

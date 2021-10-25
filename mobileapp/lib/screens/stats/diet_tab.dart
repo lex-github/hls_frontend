@@ -58,7 +58,7 @@ class DietTab extends StatelessWidget {
       Row(
         children: [
           Container(
-            width: Size.horizontal * 0.7,
+            width: Size.horizontal * 0.6,
             height: Size.border * 2,
             color: indicatorColor,
           ),
