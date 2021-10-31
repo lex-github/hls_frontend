@@ -7,8 +7,10 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/notifications.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -69,6 +71,7 @@ class AuthService extends GraphqlService {
   void onInit() async {
     super.onInit();
 
+    // otpRequest1();
     // hide or show auth form
     ever<bool>(_isAuthenticated, (isAuthenticated) {
       // final routes = [authRoute];
@@ -77,7 +80,6 @@ class AuthService extends GraphqlService {
       // print('AuthService.onInit.ever '
       //   '\n\tprofile: $profile'
       //   '\n\tisAuthenticated: $isAuthenticated');
-
       if (isAuthenticated && routes.contains(Get.currentRoute))
         Get.until(
             (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
@@ -100,6 +102,7 @@ class AuthService extends GraphqlService {
     version = result.data.get('version');
     print('AuthService.onInit $version');
 
+    // getSchedule();
     isInit = true;
   }
 
@@ -139,6 +142,7 @@ class AuthService extends GraphqlService {
               : null);
     }
 
+    print('"PROFILE: " $profile');
     return profile;
   }
 
@@ -150,6 +154,33 @@ class AuthService extends GraphqlService {
 
     return data?.get(['authSendOtp', 'status']) == 'ok';
   }
+
+  Future<dynamic> getSchedule({DateTime fromDate, DateTime toDate}) async {
+    // if (!canRequestSchedule) return false;
+
+    final response = await query(schedules,
+        parameters: {
+      'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+      'toDate': dateToString(date: toDate, output: dateInternalFormat),
+    }
+    );
+
+    // if (response == null) return false;
+
+    final result = response.get(['scheduleDate', 'dailyRating']);
+    // if (result == null) return false;
+
+    // print('"RESULT" $result');
+    // print('"RESPONSE" $response');
+    // final schedule = ScheduleData.fromJson(result);
+    // AuthService.i.profile.schedule = schedule;
+    //
+    // _dayItems.assignAll(schedule.items);
+    //
+    // return !_dayItems.isNullOrEmpty;
+    return result;
+  }
+
 
   Future<bool> otpVerify({String phone, String code}) async {
     final data = await mutation(authVerifyOtpMutation,

@@ -476,6 +476,73 @@ const trainingQuery = 'query '
     ') $trainingDetailFields'
     '}';
 
+// schedule queries
+const dailyRating = '{'
+    'mode '
+    'activity '
+    'eating '
+    '} ';
+
+const kind = '{'
+    'kind '
+    '} ';
+
+const structure = '{'
+    'key '
+    'quantity '
+    'section '
+    'title '
+    'unit '
+    '} ';
+
+const food = '{'
+    'title '
+    'portion '
+    'structure $structure'
+    '} ';
+
+const scheduleEatings = '{'
+    'scheduleItem $kind'
+    'food $food'
+    '} ';
+
+const schedules = 'query '
+    '('
+    '\$fromDate: Date '
+    '\$toDate: Date'
+    ') '
+    '{'
+    'schedules'
+    '('
+    'fromDate: \$fromDate '
+    'toDate: \$toDate'
+    ') '
+    '{'
+    'scheduleDate '
+    'yesterdayAsleepTime '
+    'dailyRating $dailyRating'
+    'scheduleEatings $scheduleEatings'
+    '}'
+    '}';
+
+
+const schedulesFood = 'query '
+    '('
+    '\$fromDate: Date '
+    '\$toDate: Date'
+    ') '
+    '{'
+    'schedules'
+    '('
+    'fromDate: \$fromDate '
+    'toDate: \$toDate'
+    ') '
+    '{'
+    'scheduleDate '
+    'scheduleEatings $scheduleEatings'
+    '}'
+    '}';
+
 // mutations
 
 const usersSetTimezoneMutation = 'mutation'
@@ -621,6 +688,7 @@ const schedulesCreateMutation = 'mutation'
     'schedule $scheduleFields'
     '}'
     '}';
+
 
 const desiredFoodsCreateMutation = 'mutation'
     '('

@@ -26,6 +26,26 @@ Map<String, dynamic> _$ScheduleDataToJson(ScheduleData instance) =>
       'items': instance.items,
     };
 
+ScheduleData _$ScheduleDateFromJson(Map<String, dynamic> json) {
+  return ScheduleData()
+    ..id = toInt(json['id'])
+    ..title = json['title'] as String
+    ..imageUrl = json['imageUrl'] as String
+    ..asleepTime = toTime(json['yesterdayAsleepTime'])
+    ..items = (json['items'] as List<dynamic>)
+        ?.map((e) => ScheduleItemData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$ScheduleDateToJson(ScheduleData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'imageUrl': instance.imageUrl,
+      'yesterdayAsleepTime': instance.asleepTime.toIso8601String(),
+      'items': instance.items,
+    };
+
 ScheduleItemData _$ScheduleItemDataFromJson(Map<String, dynamic> json) {
   return ScheduleItemData()
     ..id = json['id'] as String

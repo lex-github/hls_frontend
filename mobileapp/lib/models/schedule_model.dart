@@ -16,6 +16,8 @@ part 'schedule_model.g.dart';
 class ScheduleData extends GenericData {
   @JsonKey(name: 'yesterdayAsleepTime', fromJson: toTime)
   DateTime asleepTime;
+  // @JsonKey(name: 'scheduleDate')
+  ScheduleDate scheduleDate;
   List<ScheduleItemData> items;
 
   ScheduleData();
@@ -23,6 +25,22 @@ class ScheduleData extends GenericData {
   factory ScheduleData.fromJson(Map<String, dynamic> json) =>
       json.isNullOrEmpty ? null : _$ScheduleDataFromJson(json);
   Map<String, dynamic> toJson() => _$ScheduleDataToJson(this);
+}
+
+@JsonSerializable(includeIfNull: false)
+class ScheduleDate {
+  String title;
+
+  ScheduleDate();
+
+  // factory ScheduleDate.fromJson(Map<String, dynamic> json) =>
+  //     _$ScheduleDateFromJson(json);
+  // Map<String, dynamic> toJson() => _$ScheduleDateToJson(this);
+
+  @override
+  String toString() => 'MacroCycleData('
+      '\n\ttitle: $title'
+      ')';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -75,6 +93,57 @@ class ScheduleItemData {
       '\n\toffset: $offset'
       ')';
 }
+
+
+// @JsonSerializable(includeIfNull: false)
+// class ScheduleDate {
+//   @JsonKey(
+//       name: 'kind',
+//       fromJson: ScheduleItemType.fromJsonValue,
+//       toJson: ScheduleItemType.toJsonValue)
+//   ScheduleItemType type;
+//   @JsonKey(name: 'plannedAt', fromJson: toTime)
+//   DateTime time;
+//
+//   ScheduleDate();
+//
+//   //@override
+//   String get title => type.title;
+//
+//   Offset get offset {
+//     final coordinate = RadialCoordinate.fromTime(time);
+//     final radius = time.isDayInner ? innerDiameter / 2 : diameter / 2;
+//
+//     // constraint
+//     coordinate.radius = radius - (isSmall ? .0 * iconSmallSize : Size.fontTiny);
+//     // coordinate.degrees =
+//     //     (coordinate.degrees / degreesInHour).round() * degreesInHour;
+//     final offset = coordinate.offset;
+//
+//     // factoring in indicator size
+//     final size = isSmall ? iconSmallSize : iconSize;
+//     final resultOffset = Offset(offset.dx - (size + iconBorder) / 2,
+//         offset.dy - (size + iconBorder) / 2);
+//
+//     return resultOffset;
+//   }
+//
+//   Color get color => type.color ?? type.type.color;
+//   bool get isSmall =>
+//       type != ScheduleItemType.WAKEUP && type != ScheduleItemType.ASLEEP;
+//
+//   factory ScheduleItemData.fromJson(Map<String, dynamic> json) =>
+//       _$ScheduleItemDataFromJson(json);
+//   Map<String, dynamic> toJson() => _$ScheduleItemDataToJson(this);
+//
+//   @override
+//   String toString() => 'ScheduleItemData('
+//       '\n\tid: $id '
+//       '\n\ttype: $type'
+//       '\n\ttime: $time'
+//       '\n\toffset: $offset'
+//       ')';
+// }
 
 class ScheduleItemType extends GenericEnum<String> {
   final ActivityType type;
