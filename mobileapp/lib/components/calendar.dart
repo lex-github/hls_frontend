@@ -17,6 +17,7 @@ import 'package:table_calendar/table_calendar.dart';
 class Calendar<Controller extends StatsController> extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 7;
 
+  // final List<StatsData> data = StatsController(fromDate: DateTime.now().toString(), toDate: DateTime.now().toString()).stats;
   // Future<bool> toggle({DateTime fromDate, DateTime toDate}) async {
   //   // lastToggledType.value = type;
   //   final result = await AuthService.i.getSchedule(fromDate: DateTime(2021, 7, 1), toDate: toDate);
@@ -85,26 +86,119 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [TextSecondary(DateFormat.E('ru_RU').format(day))]);
 
-  Widget _prioritizedBuilder(_, DateTime day, DateTime focusedDay) {
-    // print("Calendar._prioritizedBuilder day: $day focused: $focusedDay");
-    final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
-    final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
-    double val = 0;
-    int date = 0;
+  // Widget _prioritizedBuilder(_, DateTime day, DateTime focusedDay) {
+  //   // print("Calendar._prioritizedBuilder day: $day focused: $focusedDay");
+  //   final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
+  //   final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
+  //   List <StatsData> stats;
+  //   double schedule = 0;
+  //   double exercise = 0;
+  //   double nutrition = 0;
+  //
+  //   if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
+  //
+  //   for (var i = 0; i < stats.length; i++) {
+  //     if (stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
+  //       schedule = stats[i].daily.schedule;
+  //       exercise = stats[i].daily.exercise;
+  //       nutrition = stats[i].daily.nutrition;
+  //     }
+  //   }
+  //   schedule = 0;
+  //   exercise = 0;
+  //   nutrition = 0;
+  //
+  //   return Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         VerticalSmallSpace(),
+  //         TextPrimaryHint(day.day.toString()),
+  //         VerticalSmallSpace(),
+  //         CalendarCell(
+  //             diameter: diameter, width: Size.horizontalTiny, schedule: schedule, exercise: exercise, nutrition: nutrition)
+  //       ]);
+  // }
 
-    if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
+  // Widget _prioritizedBuilder(_, DateTime day, List<StatsData> stats) {
+  //   // print("Calendar._prioritizedBuilder day: $day focused: $focusedDay");
+  //   // final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
+  //   // final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
+  //   // List <StatsData> stats;
+  //   double schedule = 0;
+  //   double exercise = 0;
+  //   double nutrition = 0;
+  //
+  //   // if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
+  //
+  //   for (var i = 0; i < stats.length; i++) {
+  //     if (stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
+  //       schedule = stats[i].daily.schedule;
+  //       exercise = stats[i].daily.exercise;
+  //       nutrition = stats[i].daily.nutrition;
+  //       print("DATA" + stats[i].toString());
+  //     }
+  //   }
+  //   schedule = 0;
+  //   exercise = 0;
+  //   nutrition = 0;
+  //
+  //   return Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         VerticalSmallSpace(),
+  //         TextPrimaryHint(day.day.toString()),
+  //         VerticalSmallSpace(),
+  //         CalendarCell(
+  //             diameter: diameter, width: Size.horizontalTiny, schedule: schedule, exercise: exercise, nutrition: nutrition)
+  //       ]);
+  // }
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          VerticalSmallSpace(),
-          TextPrimaryHint(day.day.toString()),
-          VerticalSmallSpace(),
-          CalendarCell(
-              diameter: diameter, width: Size.horizontalTiny, value: val)
-        ]);
-  }
+  Widget _prioritizedBuilder(_, DateTime day, DateTime focusedDay) => GetBuilder<StatsController>
+    (
+      init: StatsController(
+          fromDate: DateTime.now().subtract(90.days).toString(),
+          toDate: DateTime.now().toString()),
+      builder: (_) {
+        final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
+        final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
+
+
+        // controller.getSchedule();
+
+        double schedule = 0;
+        double exercise = 0;
+        double nutrition = 0;
+
+        if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
+        if (controller.stats != null) {
+          for (var i = 0; i < controller.stats.length; i++) {
+            if (controller.stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
+              schedule = controller.stats[i].daily.schedule / 100;
+              exercise = controller.stats[i].daily.exercise / 100;
+              nutrition = controller.stats[i].daily.nutrition /100;
+            }
+          }
+        }else{
+          return Loading();
+        }
+
+
+        return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              VerticalSmallSpace(),
+              TextPrimaryHint(day.day.toString()),
+              VerticalSmallSpace(),
+              CalendarCell(
+                  diameter: diameter, width: Size.horizontalTiny, schedule: schedule, exercise: exercise, nutrition: nutrition)
+            ]);
+      }
+  );
+  // print("Calendar._prioritizedBuilder day: $day focused: $focusedDay");
+
 
   // Widget _buildCategoryItem (StatsScheduleEatings eatings) =>
   // Container(
@@ -136,36 +230,37 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
       Container(
         // height: 300,
         // width: 200,
-          child:
-          // GetBuilder<StatsController>(
-          //   init: StatsController(
-          //       fromDate: DateTime.now().subtract(90.days).toString(),
-          //       toDate: DateTime.now().toString()), builder: (_) =>
-          //     ListView.builder(
-          //         padding: EdgeInsets.fromLTRB(
-          //             Size.horizontal, Size.verticalMedium,
-          //             Size.horizontal, Size.vertical),
-          //         itemCount: controller.stats.length * 2 - 1,
-          //         itemBuilder: (_, i) {
-          //           //if (i == 0) return _buildHeader();
-          //           if (i.isOdd) return VerticalMediumSpace();
-          //
-          //           final index = i ~/ 2;
-          //
-          //           return _buildCategoryListItem(controller.stats[index]);
-          //         }),
+        child:
+        // GetBuilder<StatsController>(
+        //   init: StatsController(
+        //       fromDate: DateTime.now().subtract(90.days).toString(),
+        //       toDate: DateTime.now().toString()), builder: (_) =>
+        //     ListView.builder(
+        //         padding: EdgeInsets.fromLTRB(
+        //             Size.horizontal, Size.verticalMedium,
+        //             Size.horizontal, Size.vertical),
+        //         itemCount: controller.stats.length * 2 - 1,
+        //         itemBuilder: (_, i) {
+        //           //if (i == 0) return _buildHeader();
+        //           if (i.isOdd) return VerticalMediumSpace();
+        //
+        //           final index = i ~/ 2;
+        //
+        //           return _buildCategoryListItem(controller.stats[index]);
+        //         }),
 
-            GetBuilder<StatsController>(
-                init: StatsController(
-                    fromDate: DateTime.now().subtract(90.days).toString(),
-                    toDate: DateTime.now().toString()),
-                builder: (_) => TableCalendar(
+        GetBuilder<StatsController>(
+            init: StatsController(
+                fromDate: DateTime.now().subtract(90.days).toString(),
+                toDate: DateTime.now().toString()),
+            builder: (_) =>
+                TableCalendar(
                     headerStyle: HeaderStyle(
                         titleCentered: true, formatButtonVisible: false),
                     startingDayOfWeek: StartingDayOfWeek.monday,
                     daysOfWeekHeight: Size.verticalSmall + Size.fontSmall,
                     rowHeight:
-                        diameter + Size.verticalSmall * 2 + Size.fontSmall,
+                    diameter + Size.verticalSmall * 2 + Size.fontSmall,
                     locale: 'ru',
                     firstDay: DateTime.now().subtract(90.days),
                     lastDay: DateTime.now(),
@@ -175,151 +270,94 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
                     },
                     focusedDay: DateTime.now(),
                     calendarBuilders: CalendarBuilders(
-                        // singleMarkerBuilder: ,
-                        headerTitleBuilder: _headerBuilder,
-                        // dowBuilder: (_, day) {
-                        //   if (day.weekday == DateTime.friday) {
-                        //     final text = DateFormat.E().format(day);
-                        //     return Center(
-                        //       child: Text(
-                        //         text,
-                        //         // style: TextStyle(color: Colors.red),
-                        //       ),
-                        //     );
-                        //   }
-                        // },
+                      // singleMarkerBuilder: ,
+                      // markerBuilder: _prioritizedBuilder,
+                      headerTitleBuilder: _headerBuilder,
+                      // dowBuilder: (_, day) {
+                      //   if (day.weekday == DateTime.friday) {
+                      //     final text = DateFormat.E().format(day);
+                      //     return Center(
+                      //       child: Text(
+                      //         text,
+                      //         // style: TextStyle(color: Colors.red),
+                      //       ),
+                      //     );
+                      //   }
+                      // },
 
-                        dowBuilder: _dowBuilder,
-                        //outsideBuilder: _outsideBuilder,
-                        //defaultBuilder: _defaultBuilder,
-                        prioritizedBuilder: _prioritizedBuilder
-                        //     (_, currentDay, focusedDay) {
-                        //   final firstDay =
-                        //       DateTime(focusedDay.year, focusedDay.month, 1);
-                        //   final lastDay =
-                        //       DateTime(focusedDay.year, focusedDay.month + 1, 1);
-                        //   double val = 0;
-                        //   var count;
-                        //
-                        //   for(count; controller.stats.length > count; count++ ){
-                        //     if(controller.stats[count].date == )
-                        //   }
-                        //   if (currentDay.isBefore(firstDay) ||
-                        //       currentDay.isAfter(lastDay)) return Nothing();
-                        //   // if (currentDay.weekday == DateTime.friday) {
-                        //   //   final text = DateFormat.E().format(currentDay);
-                        //   //   return Center(
-                        //   //     child: Text(
-                        //   //       text,
-                        //   //       // style: TextStyle(color: Colors.red),
-                        //   //     ),
-                        //   //   );
-                        //   // }
-                        //
-                        //   // return () {
-                        //   //   final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
-                        //   // final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
-                        //   // double val = 0;
-                        //   // int date = 0;
-                        //   //
-                        //   // if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
-                        //   //
-                        //   // return Column(
-                        //   //     mainAxisAlignment: MainAxisAlignment.center,
-                        //   //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //   //     children: [
-                        //   //       VerticalSmallSpace(),
-                        //   //       TextPrimaryHint(day.day.toString()),
-                        //   //       VerticalSmallSpace(),
-                        //   //       CalendarCell(
-                        //   //           diameter: diameter, width: Size.horizontalTiny, value: val)
-                        //   //     ])};
-                        //
-                        //   return Column(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                        //       children: [
-                        //         VerticalSmallSpace(),
-                        //         TextPrimaryHint(currentDay.day.toString()),
-                        //         VerticalSmallSpace(),
-                        //         CalendarCell(
-                        //             diameter: diameter,
-                        //             width: Size.horizontalTiny,
-                        //             value: val)
-                        //       ]);
-                        //   // return Center(
-                        //   //   child: Text(
-                        //   //     text,
-                        //   //     // style: TextStyle(color: Colors.red),
-                        //   //   ),
-                        //   // );
-                        // },
-                        // prioritizedBuilder: _prioritizedBuilder
-                        ))),
-          );
-          }
+                      dowBuilder: _dowBuilder,
+                      //outsideBuilder: _outsideBuilder,
+                      //defaultBuilder: _defaultBuilder,
+                      // prioritizedBuilder: _prioritizedBuilder
+                      prioritizedBuilder: _prioritizedBuilder
+                    ))),
+      );
+}
 
-          class CalendarCell extends StatelessWidget {
-      final double width;
-      final double diameter;
-      final double value;
+class CalendarCell extends StatelessWidget {
+  final double width;
+  final double diameter;
+  final double schedule;
+  final double exercise;
+  final double nutrition;
 
-      CalendarCell(
-      {@required this.width, @required this.diameter, @required this.value});
+  CalendarCell(
+      {@required this.width, @required this.diameter, @required this.schedule, @required this.exercise, @required this.nutrition});
 
-      double get diameterProper => diameter - width;
+  double get diameterProper => diameter - width;
 
-      double get widthProper => width * 2.5;
+  double get widthProper => width * 2.5;
 
-      @override
-      Widget build(_) => Stack(alignment: Alignment.center, children: [
-      CalendarCellCircle(
-      color: Colors.macroStatistical,
-      diameter: diameterProper * 0.9,
-      width: width * 0.8,
-      value: Random().nextDouble()),
-      CalendarCellCircle(
-      color: Colors.exercise,
-      diameter: (diameterProper - widthProper) * 0.85,
-      width: width * 0.8,
-      value: Random().nextDouble()),
-      CalendarCellCircle(
-      color: Colors.nutrition,
-      diameter: (diameterProper - widthProper * 2) * 0.75,
-      width: width * 0.8,
-      value: Random().nextDouble())
+  @override
+  Widget build(_) =>
+      Stack(alignment: Alignment.center, children: [
+        CalendarCellCircle(
+            color: Colors.macroStatistical,
+            diameter: diameterProper * 0.9,
+            width: width * 0.8,
+            value: schedule),
+        CalendarCellCircle(
+            color: Colors.exercise,
+            diameter: (diameterProper - widthProper) * 0.85,
+            width: width * 0.8,
+            value: exercise),
+        CalendarCellCircle(
+            color: Colors.nutrition,
+            diameter: (diameterProper - widthProper * 2) * 0.75,
+            width: width * 0.8,
+            value: nutrition)
       ]);
-      }
+}
 
-          class CalendarCellCircle extends StatelessWidget {
-      final Color color;
-      final double diameter;
-      final double width;
-      final double value;
+class CalendarCellCircle extends StatelessWidget {
+  final Color color;
+  final double diameter;
+  final double width;
+  final double value;
 
-      CalendarCellCircle(
-      {@required this.color,
-      @required this.diameter,
-      @required this.width,
-      this.value});
+  CalendarCellCircle({@required this.color,
+    @required this.diameter,
+    @required this.width,
+    this.value});
 
-      @override
-      Widget build(_) => CustomPaint(
-      size: M.Size(diameter, diameter),
-      painter: SectorPainter(
-      background: true,
-      color: color,
-      width: width,
-      startAngle: -pi / 2,
-      endAngle: value * 2 * pi));
-      }
+  @override
+  Widget build(_) =>
+      CustomPaint(
+          size: M.Size(diameter, diameter),
+          painter: SectorPainter(
+              background: true,
+              color: color,
+              width: width,
+              startAngle: -pi / 2,
+              endAngle: value * 2 * pi));
+}
 
-          void findLoop(List<StatsData> stats, DateTime day) {
+void findLoop(List<StatsData> stats, DateTime day) {
   for (var i = 0; i < stats.length; i++) {
-  if (stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
-  Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
-  }
+    if (stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
+      Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
+    }
   }
 
   Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
-  }
+}
