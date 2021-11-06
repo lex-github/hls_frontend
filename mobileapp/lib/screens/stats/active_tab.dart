@@ -7,11 +7,15 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/theme/styles.dart';
 
-class ActiveTab extends StatelessWidget {
+class ActiveTab <Controller extends StatsController>
+    extends GetView<Controller>{
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 2;
-
+  final int index;
+  final DateTime date;
+  ActiveTab({@required this.index, this.date});
   final List items = ['title'];
 
   Widget spacer() => SizedBox(

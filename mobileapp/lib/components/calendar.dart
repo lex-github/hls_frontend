@@ -17,6 +17,8 @@ import 'package:table_calendar/table_calendar.dart';
 class Calendar<Controller extends StatsController> extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 7;
 
+
+
   // final List<StatsData> data = StatsController(fromDate: DateTime.now().toString(), toDate: DateTime.now().toString()).stats;
   // Future<bool> toggle({DateTime fromDate, DateTime toDate}) async {
   //   // lastToggledType.value = type;
@@ -30,7 +32,7 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
   // }
 
   // Future toggle({DateTime fromDate, DateTime toDate}) async {
-  //   final response = await controller.getSchedule();
+  //   final response = await controller.getEat();
   //
   //
   //   print('"RESULT" $response');
@@ -266,7 +268,7 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
                     lastDay: DateTime.now(),
                     onDaySelected: (selectedDay, focusedDay) {
                       findLoop(controller.stats, selectedDay);
-                      // toggle(fromDate: selectedDay, toDate: selectedDay);
+                      // toggle(fromDate: DateTime.now().subtract(90.days), toDate: DateTime.now());
                     },
                     focusedDay: DateTime.now(),
                     calendarBuilders: CalendarBuilders(

@@ -13,7 +13,6 @@ import 'package:intl/intl.dart';
 
 class StatsTabBar<Controller extends StatsController>
     extends GetView<Controller> {
-
   final int index;
   final DateTime date;
 
@@ -22,6 +21,9 @@ class StatsTabBar<Controller extends StatsController>
         date = (Get.arguments as Map).get('date');
 
   Widget _buildTabs() => GetBuilder<StatsController>(
+        init: StatsController(
+            fromDate: date.toString(),
+            toDate: date.toString()),
         builder: (_) => DefaultTabController(
             length: 3,
             child: Screen(
@@ -47,8 +49,8 @@ class StatsTabBar<Controller extends StatsController>
                     //physics: NeverScrollableScrollPhysics(),
                     children: [
                       ModeTab(index: index, date: date),
-                      DietTab(),
-                      ActiveTab()
+                      DietTab(index: index, date: date),
+                      ActiveTab(index: index, date: date)
                     ]))),
       );
 

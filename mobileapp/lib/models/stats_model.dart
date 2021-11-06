@@ -13,8 +13,8 @@ class StatsData extends GenericData {
   String asleepTime;
   @JsonKey(name: 'dailyRating')
   StatsDailyRating daily;
-  // @JsonKey(name: 'scheduleEatings')
-  // List <StatsScheduleEatings> eatings;
+  @JsonKey(name: 'scheduleEatings')
+  List <StatsScheduleEatings> eatings;
 
 
   StatsData();
@@ -66,15 +66,19 @@ class StatsDailyRating {
 }
 
 @JsonSerializable(includeIfNull: false)
-class StatsScheduleEatings {
+class StatsScheduleEatings{
   @JsonKey(name: 'scheduleItem')
   StatsScheduleItem scheduleItem;
+  @JsonKey(name: 'food')
+  StatsScheduleFood scheduleFood;
 
 
 
   StatsScheduleEatings();
 
   // getters
+
+
 
 
   factory StatsScheduleEatings.fromJson(Map<String, dynamic> json) =>
@@ -87,6 +91,71 @@ class StatsScheduleEatings {
   //     '\n\texercise: $exercise'
   //     '\n\tnutrition: $nutrition'
   //     ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class StatsScheduleFood {
+  @JsonKey(name: 'title')
+  String title;
+  @JsonKey(name: 'portion')
+  double portion;
+  @JsonKey(name: 'structure')
+  List <StatsScheduleStructure> structure;
+
+
+
+
+  StatsScheduleFood();
+
+  // getters
+
+
+  factory StatsScheduleFood.fromJson(Map<String, dynamic> json) =>
+      _$StatsScheduleFoodFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsScheduleFoodToJson(this);
+
+  @override
+  String toString() => 'StatsScheduleFood('
+      '\n\ttitle: $title'
+      '\n\tportion: $portion'
+      ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class StatsScheduleStructure{
+  @JsonKey(name: 'key')
+  String key;
+  @JsonKey(name: 'quantity')
+  double quantity;
+  @JsonKey(name: 'section')
+  String section;
+  @JsonKey(name: 'title')
+  String title;
+  @JsonKey(name: 'unit')
+  String unit;
+
+
+
+  StatsScheduleStructure();
+
+  // getters
+
+
+
+
+  factory StatsScheduleStructure.fromJson(Map<String, dynamic> json) =>
+      _$StatsScheduleStructureFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsScheduleStructureToJson(this);
+
+@override
+String toString() => 'StatsScheduleStructure('
+    '\n\tkey: $key'
+    '\n\tquantity: $quantity'
+    '\n\tsection: $section'
+    '\n\ttitle: $title'
+    '\n\tunit: $unit'
+    ')';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -110,3 +179,4 @@ String toString() => 'StatsScheduleItem('
     '\n\tkind: $kind'
     ')';
 }
+
