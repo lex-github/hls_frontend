@@ -37,6 +37,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   // StatsScheduleItem scheduleItem;
   List<StatsScheduleEatings> eatings;
+  List<StatsScheduleComponents> components;
   FoodData item;
 
   List items;
@@ -99,7 +100,8 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
         .map((x) => StatsData.fromJson(x))
         .toList(growable: false);
 
-    eatings = stats[3].eatings;
+    // eatings = stats[3].eatings;
+    // components = stats[3].components;
 
     // eatings = response
     //       .get<List<Map>>('','schedules')
@@ -117,7 +119,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     // print("key: " + eatings[3].scheduleFood.structure[0].key.toString());
     // print("unit: " + eatings[3].scheduleFood.structure[0].unit.toString());
     // print("quantity: " + eatings[3].scheduleFood.structure[0].quantity.toString());
-    // print("section: " + eatings[3].scheduleFood.structure[0].section.toString());
+    // print("section: " + components[3].foodComponent.title.toString());
 
     // for (int j = 0; j < eatings.length; j++) {
     //   print("----------------------");

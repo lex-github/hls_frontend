@@ -506,6 +506,19 @@ const scheduleEatings = '{'
     'food $food'
     '} ';
 
+const foodComponent = '{'
+    'title '
+    'unit '
+    'section '
+    '} ';
+
+const consumedFoodComponents = '{'
+    'lowerLimit '
+    'value '
+    'upperLimit '
+    'foodComponent $foodComponent'
+    '} ';
+
 const schedules = 'query '
     '('
     '\$fromDate: Date '
@@ -520,11 +533,11 @@ const schedules = 'query '
     '{'
     'scheduleDate '
     'yesterdayAsleepTime '
+    'consumedFoodComponents $consumedFoodComponents'
     'dailyRating $dailyRating'
     'scheduleEatings $scheduleEatings'
     '}'
     '}';
-
 
 const schedulesFood = 'query '
     '('
@@ -688,7 +701,6 @@ const schedulesCreateMutation = 'mutation'
     'schedule $scheduleFields'
     '}'
     '}';
-
 
 const desiredFoodsCreateMutation = 'mutation'
     '('

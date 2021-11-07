@@ -12,6 +12,7 @@ import 'package:hls/components/painters.dart';
 import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/theme/styles.dart';
+
 class DietTab<Controller extends StatsController> extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 2;
 
@@ -105,58 +106,63 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     int energy = 0;
     if (controller.stats[index].eatings.length != null) {
       for (int j = 0; j < controller.stats[index].eatings.length; j++) {
-          controller.stats[index].eatings[j].scheduleFood.title.toString();
+        controller.stats[index].eatings[j].scheduleFood.title.toString();
 
-          for (int d = 0;
-          d <
-              controller
-                  .stats[index].eatings[j].scheduleFood.structure.length;
-          d++) {
-            if (controller.stats[index].eatings[j].scheduleFood.structure[d]
-                .section ==
-                "Углеводы") {
-              carbohydrates = controller.stats[index].eatings[j].scheduleFood
-                  .structure[d].quantity
-                  .toInt() +
-                  carbohydrates;
-            }
-            if (controller.stats[index].eatings[j].scheduleFood.structure[d]
-                .section ==
-                "Жиры") {
-              fats = controller.stats[index].eatings[j].scheduleFood
-                  .structure[d].quantity
-                  .toInt() +
-                  fats;
-            }
-            if (controller.stats[index].eatings[j].scheduleFood.structure[d]
-                .section ==
-                "Белки") {
-              proteins = controller.stats[index].eatings[j].scheduleFood
-                  .structure[d].quantity
-                  .toInt() +
-                  proteins;
-            }
-            if (controller.stats[index].eatings[j].scheduleFood.structure[d]
-                .section ==
-                "Калорийность") {
-              energy = controller.stats[index].eatings[j].scheduleFood
-                  .structure[d].quantity
-                  .toInt() +
-                  energy;
-            }
+        for (int d = 0;
+            d <
+                controller
+                    .stats[index].eatings[j].scheduleFood.structure.length;
+            d++) {
+          if (controller
+                  .stats[index].eatings[j].scheduleFood.structure[d].section ==
+              "Углеводы") {
+            carbohydrates = controller
+                    .stats[index].eatings[j].scheduleFood.structure[d].quantity
+                    .toInt() +
+                carbohydrates;
           }
-
+          if (controller
+                  .stats[index].eatings[j].scheduleFood.structure[d].section ==
+              "Жиры") {
+            fats = controller
+                    .stats[index].eatings[j].scheduleFood.structure[d].quantity
+                    .toInt() +
+                fats;
+          }
+          if (controller
+                  .stats[index].eatings[j].scheduleFood.structure[d].section ==
+              "Белки") {
+            proteins = controller
+                    .stats[index].eatings[j].scheduleFood.structure[d].quantity
+                    .toInt() +
+                proteins;
+          }
+          if (controller
+                  .stats[index].eatings[j].scheduleFood.structure[d].section ==
+              "Калорийность") {
+            energy = controller
+                    .stats[index].eatings[j].scheduleFood.structure[d].quantity
+                    .toInt() +
+                energy;
+          }
+        }
       }
     }
     totalFats = fats + totalFats;
     totalCarbohydrates = carbohydrates + totalCarbohydrates;
     totalEnergy = energy + totalEnergy;
     totalProteins = proteins + totalProteins;
-print("-------PPPP------: " + totalEnergy.toString());
+    print("-------PPPP------: " + totalEnergy.toString());
 
     return Column(
       children: [
-        StatsCell(diameter: diameter, width: Size.horizontalTiny, fatsValue: totalFats/400, carbohydratesValue: totalCarbohydrates/600, proteinsAndEnergyValue: (totalProteins/800)+(totalEnergy/600)),
+        StatsCell(
+            diameter: diameter,
+            width: Size.horizontalTiny,
+            fatsValue: totalFats / 400,
+            carbohydratesValue: totalCarbohydrates / 600,
+            proteinsAndEnergyValue:
+                (totalProteins / 800) + (totalEnergy / 600)),
         VerticalSpace(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -165,13 +171,18 @@ print("-------PPPP------: " + totalEnergy.toString());
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildStatsTitle(
-                  percent: ((totalEnergy/600)*100).toInt().isLowerThan(100) ? ((totalEnergy/600)*100).toInt() : 100,
+                  percent: ((totalEnergy / 600) * 100).toInt().isLowerThan(100)
+                      ? ((totalEnergy / 600) * 100).toInt()
+                      : 100,
                   title: "Калории",
                   indicatorColor: Colors.exercise,
                 ),
                 VerticalMediumSpace(),
                 _buildStatsTitle(
-                  percent: ((totalProteins/800)*100).toInt().isLowerThan(100) ? ((totalProteins/800)*100).toInt() : 100,
+                  percent:
+                      ((totalProteins / 800) * 100).toInt().isLowerThan(100)
+                          ? ((totalProteins / 800) * 100).toInt()
+                          : 100,
                   title: "Белки",
                   indicatorColor: Colors.exercise,
                 ),
@@ -181,13 +192,19 @@ print("-------PPPP------: " + totalEnergy.toString());
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildStatsTitle(
-                  percent: ((totalFats/400)*100).toInt().isLowerThan(100) ? ((totalFats/400)*100).toInt() : 100,
+                  percent: ((totalFats / 400) * 100).toInt().isLowerThan(100)
+                      ? ((totalFats / 400) * 100).toInt()
+                      : 100,
                   title: "Жиры",
                   indicatorColor: Colors.scheduleMainFood,
                 ),
                 VerticalMediumSpace(),
                 _buildStatsTitle(
-                  percent: ((totalCarbohydrates/600)*100).toInt().isLowerThan(100) ? ((totalCarbohydrates/600)*100).toInt() : 100,
+                  percent: ((totalCarbohydrates / 600) * 100)
+                          .toInt()
+                          .isLowerThan(100)
+                      ? ((totalCarbohydrates / 600) * 100).toInt()
+                      : 100,
                   title: "Углеводы",
                   indicatorColor: Colors.nutrition,
                 ),
@@ -200,60 +217,139 @@ print("-------PPPP------: " + totalEnergy.toString());
   }
 
   Widget _buildIndicator(
-          {double currentCount,
-          double minCount,
-          double normalCount,
-          int maxCount,
-          String title,
-          Color color}) =>
-      Align(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextSecondary(title),
-                  TextSecondary(maxCount.toString())
-                ],
-              ),
-            ),
-            VerticalSmallSpace(),
-            Stack(
-              alignment: Alignment.centerLeft,
+          {String section,
+          Color color}) {
+
+String title = "";
+String unit = "";
+double value = 0;
+double upperLimit = 0;
+double lowerLimit = 0;
+int c = 0;
+
+    final structure =
+    List<int>.filled(controller.stats[index].components.length, 0);
+
+    if (controller.stats[index].components.length != null) {
+      for (int j = 0;
+      j < controller.stats[index].components.length;
+      j++) {
+
+
+
+        if (section ==
+            controller.stats[index].components[j].foodComponent.section
+                .toString()) {
+          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
+          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
+          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
+          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
+          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
+          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+
+          title = controller.stats[index].components[j].foodComponent.title;
+          unit = controller.stats[index].components[j].foodComponent.unit;
+          value = controller.stats[index].components[j].value;
+          upperLimit = controller.stats[index].components[j].upperLimit;
+          lowerLimit = controller.stats[index].components[j].lowerLimit;
+          structure[c] = j;
+          c++;
+        }
+      }
+    }
+
+
+// print('title:  ' + title);
+// print('unit:  ' + unit);
+// print('value:  ' + value.toString());
+// print('upperLimit:  ' + upperLimit.toString());
+// print('lowerLimit:  ' + lowerLimit.toString());2
+
+int r = 0;
+    return Container(
+          width: width,
+          height: height * (c / 18),
+          child: ListView.builder(
+            itemCount: c,
+            itemBuilder: (_, index) {
+
+              final i = structure[index];
+              r++;
+
+
+              // print('unit:  ' + controller.stats[index].components[structure[index]].foodComponent.unit);
+              // print('section:  ' + controller.stats[index].components[structure[index]].foodComponent.section);
+              // print('value:  ' + controller.stats[index].components[51].value.toString());
+              // print('upperLimit:  ' + controller.stats[index].components[structure[index]].upperLimit.toString());
+              // print('lowerLimit:  ' + controller.stats[index].components[structure[index]].lowerLimit.toString());
+              //
+
+              return _buildIndicator1(color, i);
+            },
+          ));}
+
+
+          Widget _buildIndicator1 (Color color, int i){
+
+            String title = controller.stats[index].components[i].foodComponent.title;
+            String unit = controller.stats[index].components[i].foodComponent.unit;
+            double value = controller.stats[index].components[i].value;
+            double upperLimit = controller.stats[index].components[i].upperLimit;
+            double lowerLimit = controller.stats[index].components[i].lowerLimit;
+
+    return Align(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: Size.horizontal,right: Size.horizontal, ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: Size.border * 2,
-                  width: width - Size.horizontal * 4,
-                  color: Colors.darkText,
-                ),
-                Container(
-                  height: Size.border * 2,
-                  width: (width - Size.horizontal * 4) * currentCount,
-                  color: color,
-                ),
-                Container(
-                  height: Size.border * 7,
-                  width: Size.border * 2,
-                  color: Colors.white,
-                  margin: EdgeInsets.only(
-                      left: (width - Size.horizontal * 4) * minCount),
-                ),
-                Container(
-                  height: Size.border * 7,
-                  width: Size.border * 2,
-                  color: Colors.white,
-                  margin: EdgeInsets.only(
-                      left: (width - Size.horizontal * 4) * normalCount),
-                ),
+                TextSecondary(title),
+                TextSecondary(value.toString() + " " + unit)
               ],
             ),
-            VerticalSmallSpace(),
-          ],
-        ),
-      );
+          ),
+          VerticalSmallSpace(),
+          Stack(
+            alignment: Alignment.centerLeft,
+            children: [
+              Container(
+                height: Size.border * 2,
+                width: width - Size.horizontal * 4,
+                color: Colors.darkText,
+              ),
+              Container(
+                height: Size.border * 2,
+                width: ((width - Size.horizontal * 4) * (value/upperLimit > 1 ? 1 : value/upperLimit)).isNaN ? 0 : ((width - Size.horizontal * 4) * (value/upperLimit > 1 ? 1 : value/upperLimit)),
+                color: color,
+              ),
+              Container(
+                height: (Size.border * 7).isNaN ? 0 : Size.border * 7,
+                width: (Size.border * 2).isNaN ? 0 : Size.border * 2,
+                color: Colors.white,
+                margin: EdgeInsets.only(
+                    left: (width - Size.horizontal * 4) * (lowerLimit/upperLimit > 1 ? 1 : lowerLimit/upperLimit)).isNonNegative ? EdgeInsets.only(
+                    left: (width - Size.horizontal * 4) * (lowerLimit/upperLimit > 1 ? 1 : lowerLimit/upperLimit)) : EdgeInsets.only(
+                    left: 1),
+              ),
+               Container(
+                height: (Size.border * 7).isNaN ? 0 : Size.border * 7,
+                width: (Size.border * 2).isNaN ? 0 : Size.border * 2,
+                color: Colors.white,
+                margin: EdgeInsets.only(
+                    left: (width - Size.horizontal * 4) * upperLimit/upperLimit).isNonNegative ? EdgeInsets.only(
+                    left: (width - Size.horizontal * 4) * upperLimit/upperLimit) : EdgeInsets.only(
+                    left: 1),
+              ),
+            ],
+          ),
+          VerticalSmallSpace(),
+        ],
+      ),
+    );
+          }
 
   Widget _buildCircleIndicator(
           {String title, int currentCount, int maxCount, Color color}) =>
@@ -436,7 +532,7 @@ print("-------PPPP------: " + totalEnergy.toString());
                         itemCount: c,
                         itemBuilder: (_, i) {
                           // c--;
-                          final index = i + foods[c];
+                          final index = foods[i];
 
                           // index = j;
 
@@ -485,240 +581,44 @@ print("-------PPPP------: " + totalEnergy.toString());
                         VerticalSpace(),
                         buildAccordion("Калорийность",
                             child: _buildIndicator(
-                              currentCount: Random().nextDouble(),
-                              minCount: Random().nextDouble(),
-                              normalCount: Random().nextDouble(),
-                              maxCount: Random().nextInt(3000),
                               color: Colors.primary,
-                              title: "Калории",
+                              section: "Калорийность",
                             )),
                         VerticalSpace(),
                         buildAccordion("Белки",
                             child: _buildIndicator(
-                              currentCount: Random().nextDouble(),
-                              minCount: Random().nextDouble(),
-                              normalCount: Random().nextDouble(),
-                              maxCount: Random().nextInt(3000),
                               color: Colors.exercise,
-                              title: "Белки",
+                              section: "Белки",
                             )),
                         VerticalSpace(),
                         buildAccordion("Жиры",
-                            child: Column(
-                              children: [
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "НЖК",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "Холестерин",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "МНЖК/Омега-9",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "ПНЖК",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "Омега-3",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "Омега-6",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.scheduleMainFood,
-                                  title: "Трансжиры",
-                                ),
-                              ],
+                            child: _buildIndicator(
+                              color: Colors.exercise,
+                              section: "Жиры",
                             )),
                         VerticalSpace(),
                         buildAccordion("Пищевые волокна",
                             child: _buildIndicator(
-                              currentCount: Random().nextDouble(),
-                              minCount: Random().nextDouble(),
-                              normalCount: Random().nextDouble(),
-                              maxCount: Random().nextInt(3000),
                               color: Colors.schedule,
-                              title: "Пищевые волокна",
+                              section: "Пищевые волокна",
                             )),
                         VerticalSpace(),
                         buildAccordion("Углеводы",
-                            child: Column(
-                              children: [
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.heartRate,
-                                  title: "Моносахариды",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.heartRate,
-                                  title: "Крахмал",
-                                ),
-                              ],
+                            child: _buildIndicator(
+                              color: Colors.heartRate,
+                              section: "Углеводы",
                             )),
                         VerticalSpace(),
                         buildAccordion("Витамины",
-                            child: Column(
-                              children: [
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "A",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "B1",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "B2",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "B3/PP/НЭ",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "C",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "D",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.success,
-                                  title: "K",
-                                ),
-                              ],
+                            child: _buildIndicator(
+                              color: Colors.success,
+                              section: "Витамины",
                             )),
                         VerticalSpace(),
                         buildAccordion("Микроэлементы",
-                            child: Column(
-                              children: [
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Калий",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Кальций",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Кремний",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Магний",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Натрий",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Фосфор",
-                                ),
-                                _buildIndicator(
-                                  currentCount: Random().nextDouble(),
-                                  minCount: Random().nextDouble(),
-                                  normalCount: Random().nextDouble(),
-                                  maxCount: Random().nextInt(3000),
-                                  color: Colors.primary,
-                                  title: "Цинк",
-                                ),
-                              ],
+                            child: _buildIndicator(
+                              color: Colors.primary,
+                              section: "Микроэлементы",
                             )),
                       ],
                     ),
@@ -735,7 +635,12 @@ class StatsCell extends StatelessWidget {
   final double carbohydratesValue;
   final double proteinsAndEnergyValue;
 
-  StatsCell({@required this.width, @required this.diameter, @required this.fatsValue, @required this.carbohydratesValue, @required this.proteinsAndEnergyValue});
+  StatsCell(
+      {@required this.width,
+      @required this.diameter,
+      @required this.fatsValue,
+      @required this.carbohydratesValue,
+      @required this.proteinsAndEnergyValue});
 
   double get diameterProper => diameter - width;
 
