@@ -17,6 +17,9 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
         ?.toList()
     ..components = (json['consumedFoodComponents'] as List<dynamic>)
         ?.map((e) => StatsScheduleComponents.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..scheduleTrainings = (json['scheduleTrainings'] as List<dynamic>)
+        ?.map((e) => StatsScheduleTrainings.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -39,6 +42,69 @@ Map<String, dynamic> _$StatsDailyRatingToJson(StatsDailyRating instance) =>
       'mode': instance.schedule,
       'activity': instance.exercise,
       'eating': instance.nutrition,
+    };
+
+
+StatsScheduleTrainings _$StatsScheduleTrainingsFromJson(Map<String, dynamic> json) {
+  return StatsScheduleTrainings()
+    ..training =
+    StatsTraining.fromJson(json['training'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$StatsScheduleTrainingsToJson(StatsScheduleTrainings instance) =>
+    <String, dynamic>{
+      'training': instance.training,
+
+    };
+
+
+StatsTraining _$StatsTrainingFromJson(Map<String, dynamic> json) {
+  return StatsTraining()
+    ..title = json['title'] as String
+    ..trainingCategory =
+    StatsTrainingCategory.fromJson(json['trainingCategory'] as Map<String, dynamic>)
+    ..inputData = (json['inputData'] as List<dynamic>)
+        ?.map((e) => StatsInputData.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$StatsTrainingToJson(StatsTraining instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'trainingCategory': instance.trainingCategory,
+      'inputData': instance.inputData,
+    };
+
+StatsTrainingCategory _$StatsTrainingCategoryFromJson(Map<String, dynamic> json) {
+  return StatsTrainingCategory()
+    ..title = json['title'] as String;
+}
+
+Map<String, dynamic> _$StatsTrainingCategoryToJson(StatsTrainingCategory instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+    };
+
+StatsInputData _$StatsInputDataFromJson(Map<String, dynamic> json) {
+  return StatsInputData()
+    ..title = json['title'] as String
+    ..inputType = json['inputType'] as String
+    ..unit = json['unit'] as String
+    ..max = json['max'] as int
+    ..min = json['min'] as int
+    ..step = json['step'] as int
+  ;
+}
+
+Map<String, dynamic> _$StatsInputDataToJson(StatsInputData instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'inputType': instance.inputType,
+      'unit': instance.unit,
+      'max': instance.max,
+      'min': instance.min,
+      'step': instance.step,
+
     };
 
 StatsScheduleEatings _$StatsScheduleEatingsFromJson(Map<String, dynamic> json) {

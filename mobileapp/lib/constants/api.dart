@@ -519,6 +519,29 @@ const consumedFoodComponents = '{'
     'foodComponent $foodComponent'
     '} ';
 
+const inputData = '{'
+    'title '
+    'inputType '
+    'max '
+    'min '
+    'step '
+    'unit '
+    '} ';
+
+const trainingCategory = '{'
+    'title '
+    '}';
+
+const training = '{'
+    'title '
+    'inputData $inputData '
+    'trainingCategory $trainingCategory '
+    '} ';
+
+const scheduleTrainings = '{'
+    'training $training'
+    '} ';
+
 const schedules = 'query '
     '('
     '\$fromDate: Date '
@@ -533,6 +556,7 @@ const schedules = 'query '
     '{'
     'scheduleDate '
     'yesterdayAsleepTime '
+    'scheduleTrainings $scheduleTrainings '
     'consumedFoodComponents $consumedFoodComponents'
     'dailyRating $dailyRating'
     'scheduleEatings $scheduleEatings'

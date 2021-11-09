@@ -15,6 +15,8 @@ class StatsData extends GenericData {
   StatsDailyRating daily;
   @JsonKey(name: 'scheduleEatings')
   List <StatsScheduleEatings> eatings;
+  @JsonKey(name: 'scheduleTrainings')
+  List <StatsScheduleTrainings> scheduleTrainings;
   @JsonKey(name: 'consumedFoodComponents')
   List <StatsScheduleComponents> components;
 
@@ -95,6 +97,113 @@ class StatsScheduleEatings{
   //     ')';
 }
 
+@JsonSerializable(includeIfNull: false)
+class StatsScheduleTrainings{
+  @JsonKey(name: 'training')
+  StatsTraining training;
+
+
+
+  StatsScheduleTrainings();
+
+  // getters
+
+
+
+
+  factory StatsScheduleTrainings.fromJson(Map<String, dynamic> json) =>
+      _$StatsScheduleTrainingsFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsScheduleTrainingsToJson(this);
+
+  // @override
+  // String toString() => 'StatsDailyRating('
+  //     '\n\tschedule: $schedule'
+  //     '\n\texercise: $exercise'
+  //     '\n\tnutrition: $nutrition'
+  //     ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class StatsTraining {
+  @JsonKey(name: 'title')
+  String title;
+  @JsonKey(name: 'trainingCategory')
+  StatsTrainingCategory trainingCategory;
+  @JsonKey(name: 'inputData')
+  List <StatsInputData> inputData;
+
+
+
+  StatsTraining();
+
+  // getters
+
+  factory StatsTraining.fromJson(Map<String, dynamic> json) =>
+      _$StatsTrainingFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsTrainingToJson(this);
+
+  @override
+  String toString() => 'StatsTraining('
+      '\n\ttitle: $title'
+      ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class StatsInputData{
+  @JsonKey(name: 'title')
+  String title;
+  @JsonKey(name: 'inputType')
+  String inputType;
+  @JsonKey(name: 'unit')
+  String unit;
+  @JsonKey(name: 'max')
+  int max;
+  @JsonKey(name: 'min')
+  int min;
+  @JsonKey(name: 'step')
+  int step;
+
+
+
+  StatsInputData();
+
+  // getters
+
+
+
+
+  factory StatsInputData.fromJson(Map<String, dynamic> json) =>
+      _$StatsInputDataFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsInputDataToJson(this);
+
+@override
+String toString() => 'StatsDailyRating('
+    '\n\ttitle: $title'
+    '\n\tinputType: $inputType'
+    ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class StatsTrainingCategory {
+  @JsonKey(name: 'title')
+  String title;
+
+  StatsTrainingCategory();
+
+  // getters
+
+  factory StatsTrainingCategory.fromJson(Map<String, dynamic> json) =>
+      _$StatsTrainingCategoryFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsTrainingCategoryToJson(this);
+
+  @override
+  String toString() => 'StatsTrainingCategory('
+      '\n\ttitle: $title'
+      ')';
+}
 
 @JsonSerializable(includeIfNull: false)
 class StatsScheduleComponents{
