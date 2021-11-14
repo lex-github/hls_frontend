@@ -50,7 +50,7 @@ class ModeTab <Controller extends StatsController> extends GetView<Controller> {
   Widget _buildIndicator({String asleepTime, double value}) => Container(
     padding: EdgeInsets.all(Size.horizontal),
     decoration:
-    BoxDecoration(color: Colors.background, shape: BoxShape.circle),
+    BoxDecoration( shape: BoxShape.circle),
     child: TitleCircularProgress(
         color: Colors.primary,
         value: value,
@@ -59,7 +59,7 @@ class ModeTab <Controller extends StatsController> extends GetView<Controller> {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           TextPrimary(
             asleepTime,
-            size: Size.fontPercent,
+            size: Size.horizontal * 1.3,
           ),
           // TextPrimary(
           //   schedule.asleepTime.toString(),
@@ -79,7 +79,7 @@ class ModeTab <Controller extends StatsController> extends GetView<Controller> {
           // date: index.toString(),
           //   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
 
-              asleepTime: index == null ? "00:00" : controller.stats[index].asleepTime,
+              asleepTime: index == null ? "00 ч 00 мин" : controller.stats[index].asleepTime.replaceAll(':', ' ч ') + " мин",
             value: index == null ? 0 : controller.stats[index].daily.schedule / 100),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

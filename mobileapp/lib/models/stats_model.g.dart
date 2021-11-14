@@ -15,9 +15,8 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
     ..eatings = (json['scheduleEatings'] as List<dynamic>)
         ?.map((e) => StatsScheduleEatings.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..components = (json['consumedFoodComponents'] as List<dynamic>)
-        ?.map((e) => StatsScheduleComponents.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..foodRating =
+    StatsFoodRating.fromJson(json['foodRating'] as Map<String, dynamic>)
     ..scheduleTrainings = (json['scheduleTrainings'] as List<dynamic>)
         ?.map((e) => StatsScheduleTrainings.fromJson(e as Map<String, dynamic>))
         ?.toList();
@@ -44,6 +43,64 @@ Map<String, dynamic> _$StatsDailyRatingToJson(StatsDailyRating instance) =>
       'eating': instance.nutrition,
     };
 
+StatsFoodRating _$StatsFoodRatingFromJson(Map<String, dynamic> json) {
+  return StatsFoodRating()
+    ..components = (json['consumedComponents'] as List<dynamic>)
+        ?.map((e) => StatsScheduleComponents.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..componentsPerEating = (json['consumedComponentsPerEating'] as List<dynamic>)
+        ?.map((e) => StatsScheduleComponentsEatings.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..primaryStats = StatsPrimaryStats.fromJson(json['primaryStats'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$StatsFoodRatingToJson(StatsFoodRating instance) =>
+    <String, dynamic>{
+      'components': instance.components,
+      'consumedComponentsPerEating': instance.componentsPerEating,
+      'primaryStats': instance.primaryStats,
+    };
+
+StatsScheduleComponentsEatings _$StatsScheduleComponentsEatingsFromJson(Map<String, dynamic> json) {
+  return StatsScheduleComponentsEatings()
+    ..statsEatings = (json['stats'] as List<dynamic>)
+        ?.map((e) => ScheduleStats.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$StatsScheduleComponentsEatingsToJson(StatsScheduleComponentsEatings instance) =>
+    <String, dynamic>{
+      'stats': instance.statsEatings,
+
+    };
+
+
+ScheduleStats _$ScheduleStatsFromJson(Map<String, dynamic> json) {
+  return ScheduleStats()
+    ..limit = (json['limit'] as num).toDouble()
+    ..value = (json['value'] as num).toDouble();
+}
+
+Map<String, dynamic> _$ScheduleStatsToJson(ScheduleStats instance) =>
+    <String, dynamic>{
+      'limit': instance.limit,
+      'value': instance.value,
+
+    };
+
+StatsPrimaryStats _$StatsPrimaryStatsFromJson(Map<String, dynamic> json) {
+  return StatsPrimaryStats()
+    ..energyValue = (json['energyValue'] as num).toDouble()
+    ..nutrients = (json['nutrients'] as num).toDouble()
+    ..water = (json['water'] as num).toDouble();
+}
+
+Map<String, dynamic> _$StatsPrimaryStatsToJson(StatsPrimaryStats instance) =>
+    <String, dynamic>{
+      'energyValue': instance.energyValue,
+      'nutrients': instance.nutrients,
+      'water': instance.water,
+    };
 
 StatsScheduleTrainings _$StatsScheduleTrainingsFromJson(Map<String, dynamic> json) {
   return StatsScheduleTrainings()

@@ -37,7 +37,7 @@ class StatsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildCalendarTiles(
-                    title: dreamTitle, color: Colors.macroStatistical),
+                    title: modeTitle, color: Colors.macroStatistical),
                 _buildCalendarTiles(
                     title: exerciseTitle, color: Colors.macroHLS),
                 _buildCalendarTiles(

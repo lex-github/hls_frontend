@@ -15,42 +15,22 @@ import 'package:hls/theme/styles.dart';
 
 class DietTab<Controller extends StatsController> extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 2;
-
-  // final StatsController controller = Get.put(StatsController(
-  //     fromDate: DateTime.now().subtract(90.days).toString(),
-  //     toDate: DateTime.now().toString()));
   final width = Get.width;
   final height = Get.height;
   final int index;
   final DateTime date;
-  int totalFats = 0;
-  int totalCarbohydrates = 0;
-  int totalProteins = 0;
-  int totalEnergy = 0;
 
   DietTab({@required this.index, this.date});
 
-  // final List eatings = controller.stats[3].eatings;
 
   Widget buildAccordion(String title, {String text, Widget child}) =>
       GetBuilder<StatsController>(
         init:
             StatsController(fromDate: date.toString(), toDate: date.toString()),
         builder: (_) {
-          // print("kind: " + controller.stats[index].eatings[3].scheduleItem.kind.toString());
-          // print("title: " + controller.stats[index].eatings[3].scheduleFood.title.toString());
-          // print("portion: " + controller.stats[index].eatings[3].scheduleFood.portion.toString());
-          // print("title: " + controller.stats[index].eatings[3].scheduleFood.structure[0].title.toString());
-          // print("key: " + controller.stats[index].eatings[3].scheduleFood.structure[0].key.toString());
-          // print("unit: " + controller.stats[index].eatings[3].scheduleFood.structure[0].unit.toString());
-          // print("quantity: " + controller.stats[index].eatings[3].scheduleFood.structure[0].quantity.toString());
-          // print("section: " + controller.stats[index].eatings[3].scheduleFood.structure[0].section.toString());
-
           return Button(
               padding: Padding.zero,
               borderColor: Colors.disabled,
-              // onPressed: () => controller.getSchedule(),
-
               onPressed: () => controller.toggle("Ужин"),
               child: Column(children: [
                 VerticalSmallSpace(),
@@ -100,90 +80,25 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
       );
 
   Widget _buildStatsContainer() {
-    int carbohydrates = 0;
-    int fats = 0;
-    int proteins = 0;
-    int energy = 0;
-    int upCarbohydrates = 0;
-    int upFats = 0;
-    int upProteins = 0;
-    int upEnergy = 0;
-    if (controller.stats[index].components.length != null) {
-      for (int j = 0;
-      j < controller.stats[index].components.length;
-      j++) {
+    // int carbohydrates = 0;
+    double water = controller.stats[index].foodRating.primaryStats.water;
+    // int proteins = 0;
+    double energy = controller.stats[index].foodRating.primaryStats.energyValue;
+    // int upCarbohydrates = 0;
+    double nutrients = controller.stats[index].foodRating.primaryStats.nutrients;
+    // int upProteins = 0;
 
 
-
-        if ("Калории" ==
-            controller.stats[index].components[j].foodComponent.title
-                .toString()) {
-
-          upEnergy = controller.stats[index].components[j].upperLimit.toInt();
-          energy = controller.stats[index].components[j].value.toInt();
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-
-        }
-        if ("Белки" ==
-            controller.stats[index].components[j].foodComponent.title
-                .toString()) {
-
-          upProteins = controller.stats[index].components[j].upperLimit.toInt();
-          proteins = controller.stats[index].components[j].value.toInt();
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-
-        }
-        if ("Жиры" ==
-            controller.stats[index].components[j].foodComponent.title
-                .toString()) {
-
-          upFats = controller.stats[index].components[j].upperLimit.toInt();
-          fats = controller.stats[index].components[j].value.toInt();
-
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
-
-
-        }
-        if ("Углеводы" ==
-            controller.stats[index].components[j].foodComponent.title
-                .toString()) {
-
-          upCarbohydrates = controller.stats[index].components[j].upperLimit.toInt();
-          carbohydrates = controller.stats[index].components[j].value.toInt();
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
-
-        }
-      }
-    }
-
-    print('title:  ' + proteins.toString());
+    // print('title:  ' + proteins.toString());
     return Column(
       children: [
         StatsCell(
             diameter: diameter,
             width: Size.horizontalTiny,
-            fatsValue: fats / upFats,
-            carbohydratesValue: carbohydrates / upCarbohydrates,
-            proteinsAndEnergyValue:
-                (proteins / upProteins) + (energy / upEnergy)),
+            waterValue: water,
+            nutrientsValue: nutrients,
+            energyValue:
+               energy),
         VerticalSpace(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -192,20 +107,16 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildStatsTitle(
-                  percent: ((energy / upEnergy) * 100).toInt().isLowerThan(100)
-                      ? ((energy / upEnergy) * 100).toInt()
-                      : 100,
-                  title: "Калории",
+                  percent: nutrients.toInt(),
+                  title: "Нутриенты",
                   indicatorColor: Colors.exercise,
                 ),
                 VerticalMediumSpace(),
                 _buildStatsTitle(
                   percent:
-                      ((proteins / upProteins) * 100).toInt().isLowerThan(100)
-                          ? ((proteins / upProteins) * 100).toInt()
-                          : 100,
-                  title: "Белки",
-                  indicatorColor: Colors.exercise,
+                  energy.toInt(),
+                  title: "Калории",
+                  indicatorColor: Colors.heartRate,
                 ),
               ],
             ),
@@ -213,21 +124,9 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildStatsTitle(
-                  percent: ((fats / upFats) * 100).toInt().isLowerThan(100)
-                      ? ((fats / upFats) * 100).toInt()
-                      : 100,
-                  title: "Жиры",
-                  indicatorColor: Colors.scheduleMainFood,
-                ),
-                VerticalMediumSpace(),
-                _buildStatsTitle(
-                  percent: ((carbohydrates / upCarbohydrates) * 100)
-                          .toInt()
-                          .isLowerThan(100)
-                      ? ((carbohydrates / upCarbohydrates) * 100).toInt()
-                      : 100,
-                  title: "Углеводы",
-                  indicatorColor: Colors.nutrition,
+                  percent: water.toInt(),
+                  title: "Вода",
+                  indicatorColor: Colors.primary,
                 ),
               ],
             ),
@@ -244,17 +143,17 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
 int c = 0;
 
     final structure =
-    List<int>.filled(controller.stats[index].components.length, 0);
+    List<int>.filled(controller.stats[index].foodRating.components.length, 0);
 
-    if (controller.stats[index].components.length != null) {
+    if (controller.stats[index].foodRating.components.length != null) {
       for (int j = 0;
-      j < controller.stats[index].components.length;
+      j < controller.stats[index].foodRating.components.length;
       j++) {
 
 
 
         if (section ==
-            controller.stats[index].components[j].foodComponent.section
+            controller.stats[index].foodRating.components[j].foodComponent.section
                 .toString()) {
           // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
           // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
@@ -300,11 +199,11 @@ int c = 0;
 
           Widget _buildIndicator1 (Color color, int i){
 
-            String title = controller.stats[index].components[i].foodComponent.title;
-            String unit = controller.stats[index].components[i].foodComponent.unit;
-            double value = controller.stats[index].components[i].value;
-            double upperLimit = controller.stats[index].components[i].upperLimit;
-            double lowerLimit = controller.stats[index].components[i].lowerLimit;
+            String title = controller.stats[index].foodRating.components[i].foodComponent.title;
+            String unit = controller.stats[index].foodRating.components[i].foodComponent.unit;
+            double value = controller.stats[index].foodRating.components[i].value;
+            double upperLimit = controller.stats[index].foodRating.components[i].upperLimit;
+            double lowerLimit = controller.stats[index].foodRating.components[i].lowerLimit;
 
     return Align(
       alignment: Alignment.center,
@@ -382,7 +281,8 @@ int c = 0;
                 ),
                 TextSecondary(
                   title,
-                  size: Size.fontSmall * 0.7,
+                  size: Size.fontSmall * 0.6,
+                  align: TextAlign.center,
                 )
               ]));
 
@@ -407,10 +307,17 @@ int c = 0;
         ),
       );
 
-  Widget _buildCirclesContainer (int fats, int upFats, int carbohydrates, int upCarbohydrates, int proteins, int upProteins, int energy, int upEnergy, int c, List <int > foods) {
+  Widget _buildCirclesContainer (int fats, int upFats, int carbohydrates, int upCarbohydrates, int proteins, int upProteins, int energy, int upEnergy, int c, List <int > foods, int x) {
 
-    // print("por " + c.toString());
-    // print("por1 " + foods.toString());
+
+    double proteins = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[0].value;
+    double proteinsLimit = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[0].limit;
+    double fats = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[1].value;
+    double fatsLimit = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[1].limit;
+    double carbohydrates = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[2].value;
+    double carbohydratesLimit = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[2].limit;
+    double carbohydratesComplex = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[3].value;
+    double carbohydratesComplexLimit = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[3].limit;
 
     return Column(
       children: [
@@ -419,27 +326,27 @@ int c = 0;
           children: [
             _buildCircleIndicator(
               color: Colors.primary,
-              title: "углеводы",
-              currentCount: carbohydrates,
-              maxCount: upCarbohydrates,
+              title: "Белки",
+              currentCount: proteins.toInt(),
+              maxCount: proteinsLimit.toInt(),
             ),
             _buildCircleIndicator(
               color: Colors.schedule,
-              title: "калории",
-              currentCount: energy,
-              maxCount: upEnergy,
+              title: "Общие жиры",
+              currentCount: fats.toInt(),
+              maxCount: fatsLimit.toInt(),
             ),
             _buildCircleIndicator(
               color: Colors.scheduleMainFood,
-              title: "жиры",
-              currentCount: fats,
-              maxCount: upFats,
+              title: "Простые углеводы",
+              currentCount: carbohydrates.toInt(),
+              maxCount: carbohydratesLimit.toInt(),
             ),
             _buildCircleIndicator(
               color: Colors.exercise,
-              title: "белки",
-              currentCount: proteins,
-              maxCount: upProteins,
+              title: "Сложные углеводы",
+              currentCount: carbohydratesComplex.toInt(),
+              maxCount: carbohydratesComplexLimit.toInt(),
             ),
           ],
         ),
@@ -467,7 +374,55 @@ int c = 0;
   }
 
 
+
+  Widget _waterContainer ( {String section,
+    Color color}) {
+
+    double waterValue = controller.stats[index].foodRating.components[1].value;
+    double waterLower = controller.stats[index].foodRating.components[1].lowerLimit;
+    double waterUpper = controller.stats[index].foodRating.components[1].upperLimit;
+    double waterMedium = ((waterUpper + waterLower) / 2) /1000;
+
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+        child: Column(
+          children: [
+            TitleCircularProgress(
+                color: color,
+                value: waterValue / (waterMedium * 1000),
+                size: Size.vertical * 6,
+                border: Size.border,
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextPrimary(
+                            (waterValue/1000).toString() + " л",
+                            size: Size.font * 1.5,
+                          )
+                        ],
+                      ),
+                      TextSecondary(
+                        (((waterValue/(waterMedium * 1000)) * 100).toInt()).toString() + "% от нормы",
+                        size: Size.fontSmall,
+                        align: TextAlign.center,
+                      )
+                    ])),
+            VerticalSpace(),
+            TextSecondary("Ваша норма воды — $waterMedium литров. Из них на долю простой питьевой воды должно приходиться не менее 1,5 литров, а остальной объем нормы жидĸости — на чай/ĸофе/соĸ/супы/воду в составе овощей и фруĸтов"),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildFoodContainer({
+    int x,
     String kind,
   }) {
     int carbohydrates = 0;
@@ -481,61 +436,10 @@ int c = 0;
     int c = 0;
     int z = 0;
     var foods = List<int>.filled(controller.stats[index].eatings.length, 0);
-    // var breakfast = List<int>.filled(controller.stats[index].eatings.length, 0);
-    // var lunch = List<int>.filled(controller.stats[index].eatings.length, 0);
-    // var dinner = List<int>.filled(controller.stats[index].eatings.length, 0);
-    // var snack = List<int>.filled(controller.stats[index].eatings.length, 0);
-
-    // List<Map<String, int>> objects;
-
     if (controller.stats[index].eatings.length != null) {
       for (int j = 0; j < controller.stats[index].eatings.length; j++) {
         if (kind ==
             controller.stats[index].eatings[j].scheduleItem.kind.toString()) {
-
-
-
-          // for (int d = 0;
-          // d <
-          //     controller
-          //         .stats[index].eatings[j].scheduleFood.structure.length;
-          // d++) {
-          //   if (controller
-          //       .stats[index].eatings[j].scheduleFood.structure[d].section ==
-          //       "Углеводы") {
-          //     carbohydrates = controller
-          //         .stats[index].eatings[j].scheduleFood.structure[d].quantity
-          //         .toInt() +
-          //         carbohydrates;
-          //   }
-          //   if (controller
-          //       .stats[index].eatings[j].scheduleFood.structure[d].section ==
-          //       "Жиры") {
-          //     fats = controller
-          //         .stats[index].eatings[j].scheduleFood.structure[d].quantity
-          //         .toInt() +
-          //         fats;
-          //   }
-          //   if (controller
-          //       .stats[index].eatings[j].scheduleFood.structure[d].section ==
-          //       "Белки") {
-          //     proteins = controller
-          //         .stats[index].eatings[j].scheduleFood.structure[d].quantity
-          //         .toInt() +
-          //         proteins;
-          //   }
-          //   if (controller
-          //       .stats[index].eatings[j].scheduleFood.structure[d].section ==
-          //       "Калорийность") {
-          //     energy = controller
-          //         .stats[index].eatings[j].scheduleFood.structure[d].quantity
-          //         .toInt() +
-          //         energy;
-          //   }
-          // }
-
-          // print(c);
-          // objects = [{kind + c.toString() : j}];
           foods[c] = j;
 
           c++;
@@ -545,147 +449,62 @@ int c = 0;
     }
 
 
-    // if (controller.stats[index].eatings.length != null) {
-    //   for (int j = 0; j < controller.stats[index].eatings.length; j++) {
-    //     controller.stats[index].eatings[j].scheduleFood.title.toString();
-    //
-    //     for (int d = 0;
-    //     d <
-    //         controller
-    //             .stats[index].eatings[j].scheduleFood.structure.length;
-    //     d++) {
-    //       if (controller
-    //           .stats[index].eatings[j].scheduleFood.structure[d].section ==
-    //           "Углеводы") {
-    //         carbohydrates = controller
-    //             .stats[index].eatings[j].scheduleFood.structure[d].quantity
-    //             .toInt() +
-    //             carbohydrates;
-    //       }
-    //       if (controller
-    //           .stats[index].eatings[j].scheduleFood.structure[d].section ==
-    //           "Жиры") {
-    //         fats = controller
-    //             .stats[index].eatings[j].scheduleFood.structure[d].quantity
-    //             .toInt() +
-    //             fats;
-    //       }
-    //       if (controller
-    //           .stats[index].eatings[j].scheduleFood.structure[d].section ==
-    //           "Белки") {
-    //         proteins = controller
-    //             .stats[index].eatings[j].scheduleFood.structure[d].quantity
-    //             .toInt() +
-    //             proteins;
-    //       }
-    //       if (controller
-    //           .stats[index].eatings[j].scheduleFood.structure[d].section ==
-    //           "Калорийность") {
-    //         energy = controller
-    //             .stats[index].eatings[j].scheduleFood.structure[d].quantity
-    //             .toInt() +
-    //             energy;
-    //       }
-    //     }
-    //   }
-    // }
 
     final structure =
-    List<int>.filled(controller.stats[index].components.length, 0);
+    List<int>.filled(controller.stats[index].foodRating.components.length, 0);
 
-    if (controller.stats[index].components.length != null) {
+    if (controller.stats[index].foodRating.components.length != null) {
       for (int j = 0;
-      j < controller.stats[index].components.length;
+      j < controller.stats[index].foodRating.components.length;
       j++) {
 
 
 
         if ("Калории" ==
-            controller.stats[index].components[j].foodComponent.title
+            controller.stats[index].foodRating.components[j].foodComponent.title
                 .toString()) {
 
-          upEnergy = controller.stats[index].components[j].upperLimit.toInt();
-          energy = controller.stats[index].components[j].value.toInt();
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+          upEnergy = controller.stats[index].foodRating.components[j].upperLimit.toInt();
+          energy = controller.stats[index].foodRating.components[j].value.toInt();
 
           structure[z] = j;
           z++;
         }
         if ("Белки" ==
-            controller.stats[index].components[j].foodComponent.title
+            controller.stats[index].foodRating.components[j].foodComponent.title
                 .toString()) {
 
-          upProteins = controller.stats[index].components[j].upperLimit.toInt();
-          proteins = controller.stats[index].components[j].value.toInt();
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+          upProteins = controller.stats[index].foodRating.components[j].upperLimit.toInt();
+          proteins = controller.stats[index].foodRating.components[j].value.toInt();
 
           structure[z] = j;
           z++;
         }
         if ("Жиры" ==
-            controller.stats[index].components[j].foodComponent.title
+            controller.stats[index].foodRating.components[j].foodComponent.title
                 .toString()) {
 
-          upFats = controller.stats[index].components[j].upperLimit.toInt();
-          fats = controller.stats[index].components[j].value.toInt();
-
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+          upFats = controller.stats[index].foodRating.components[j].upperLimit.toInt();
+          fats = controller.stats[index].foodRating.components[j].value.toInt();
 
           structure[z] = j;
           z++;
         }
         if ("Углеводы" ==
-            controller.stats[index].components[j].foodComponent.title
+            controller.stats[index].foodRating.components[j].foodComponent.title
                 .toString()) {
 
-          upCarbohydrates = controller.stats[index].components[j].upperLimit.toInt();
-          carbohydrates = controller.stats[index].components[j].value.toInt();
-
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+          upCarbohydrates = controller.stats[index].foodRating.components[j].upperLimit.toInt();
+          carbohydrates = controller.stats[index].foodRating.components[j].value.toInt();
 
           structure[z] = j;
           z++;
         }
       }
     }
-
-
-
-    // print("tit1 " + controller.stats[3].eatings[foods[0]].scheduleFood.title.toString());
-    // print("tit1 " + objects[0].toString());
-
-    // print("por " + z.toString());
-    //
-    // totalFats = fats + totalFats;
-    // totalCarbohydrates = carbohydrates + totalCarbohydrates;
-    // totalEnergy = energy + totalEnergy;
-    // totalProteins = proteins + totalProteins;
-
     return controller.stats[index].eatings.length == null || c < 1
         ? Nothing()
-        : _buildCirclesContainer(fats, upFats, carbohydrates, upCarbohydrates, proteins, upProteins, energy, upEnergy, c, foods);
+        : _buildCirclesContainer(fats, upFats, carbohydrates, upCarbohydrates, proteins, upProteins, energy, upEnergy, c, foods, x);
   }
 
   @override
@@ -704,28 +523,44 @@ int c = 0;
                         VerticalBigSpace(),
                         buildAccordion("Завтрак",
                             child: _buildFoodContainer(
+                              x: 0,
                               kind: "BREAKFAST",
+                            )),
+                        VerticalBigSpace(),
+                        buildAccordion("Перекус",
+                            child: _buildFoodContainer(
+                              x: 1,
+                              kind: "SNACK",
                             )),
                         VerticalBigSpace(),
                         buildAccordion("Обед",
                             child: _buildFoodContainer(
+                              x: 2,
                               kind: "LUNCH",
+                            )),
+                        VerticalBigSpace(),
+                        buildAccordion("Перекус",
+                            child: _buildFoodContainer(
+                              x: 3,
+                              kind: "SNACK",
                             )),
                         VerticalBigSpace(),
                         buildAccordion("Ужин",
                             child: _buildFoodContainer(
+                              x: 4,
                               kind: "DINNER",
-                            )),
-                        VerticalBigSpace(),
-                        buildAccordion("Доп. приём 1 и/или  Доп. приём 2",
-                            child: _buildFoodContainer(
-                              kind: "SNACK",
                             )),
                         VerticalSpace(),
                         buildAccordion("Калорийность",
                             child: _buildIndicator(
                               color: Colors.primary,
                               section: "Калорийность",
+                            )),
+                        VerticalSpace(),
+                        buildAccordion("Вода",
+                            child: _waterContainer(
+                              color: Colors.primary,
+                              section: "Вода ",
                             )),
                         VerticalSpace(),
                         buildAccordion("Белки",
@@ -774,16 +609,16 @@ int c = 0;
 class StatsCell extends StatelessWidget {
   final double width;
   final double diameter;
-  final double fatsValue;
-  final double carbohydratesValue;
-  final double proteinsAndEnergyValue;
+  final double waterValue;
+  final double nutrientsValue;
+  final double energyValue;
 
   StatsCell(
       {@required this.width,
       @required this.diameter,
-      @required this.fatsValue,
-      @required this.carbohydratesValue,
-      @required this.proteinsAndEnergyValue});
+      @required this.waterValue,
+      @required this.nutrientsValue,
+      @required this.energyValue});
 
   double get diameterProper => diameter - width;
 
@@ -795,17 +630,17 @@ class StatsCell extends StatelessWidget {
             color: Colors.exercise,
             diameter: diameterProper,
             width: width,
-            value: proteinsAndEnergyValue),
+            value: nutrientsValue/100),
         StatsCellCircle(
-            color: Colors.scheduleMainFood,
+            color: Colors.heartRate,
             diameter: diameterProper - widthProper * 4,
             width: width,
-            value: fatsValue),
+            value: energyValue/100),
         StatsCellCircle(
-            color: Colors.nutrition,
+            color: Colors.primary,
             diameter: diameterProper - widthProper * 8,
             width: width,
-            value: carbohydratesValue)
+            value: waterValue/100)
       ]);
 }
 

@@ -13,12 +13,13 @@ class StatsData extends GenericData {
   String asleepTime;
   @JsonKey(name: 'dailyRating')
   StatsDailyRating daily;
+  @JsonKey(name: 'foodRating')
+  StatsFoodRating foodRating;
   @JsonKey(name: 'scheduleEatings')
   List <StatsScheduleEatings> eatings;
   @JsonKey(name: 'scheduleTrainings')
   List <StatsScheduleTrainings> scheduleTrainings;
-  @JsonKey(name: 'consumedFoodComponents')
-  List <StatsScheduleComponents> components;
+
 
 
   StatsData();
@@ -34,13 +35,10 @@ class StatsData extends GenericData {
 
 
 
-  // @override
-  // String toString() => 'FoodCategoryData('
-  //     '\n\tid: $id'
-  //     '\n\ttitle: $title'
-  //     '\n\tchildren: $children'
-  //     '\n\tfoods: $foods'
-  //     ')';
+  @override
+  String toString() => 'asleepTime('
+      '\n\tasleepTime: $asleepTime'
+      ')';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -66,6 +64,112 @@ class StatsDailyRating {
       '\n\tschedule: $schedule'
       '\n\texercise: $exercise'
       '\n\tnutrition: $nutrition'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class StatsFoodRating {
+  @JsonKey(name: 'consumedComponents')
+  List <StatsScheduleComponents> components;
+  @JsonKey(name: 'consumedComponentsPerEating')
+  List <StatsScheduleComponentsEatings> componentsPerEating;
+  @JsonKey(name: 'primaryStats')
+  StatsPrimaryStats primaryStats;
+
+
+  StatsFoodRating();
+
+  // getters
+
+  factory StatsFoodRating.fromJson(Map<String, dynamic> json) =>
+      _$StatsFoodRatingFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsFoodRatingToJson(this);
+
+  // @override
+  // String toString() => 'StatsFoodDailyRating('
+  //     '\n\tschedule: $schedule'
+  //     '\n\texercise: $exercise'
+  //     '\n\tnutrition: $nutrition'
+  //     ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class StatsScheduleComponentsEatings{
+  @JsonKey(name: 'stats')
+  List <ScheduleStats> statsEatings;
+
+
+
+  StatsScheduleComponentsEatings();
+
+  // getters
+
+
+
+
+  factory StatsScheduleComponentsEatings.fromJson(Map<String, dynamic> json) =>
+      _$StatsScheduleComponentsEatingsFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsScheduleComponentsEatingsToJson(this);
+
+// @override
+// String toString() => 'StatsDailyRating('
+//     '\n\tschedule: $schedule'
+//     '\n\texercise: $exercise'
+//     '\n\tnutrition: $nutrition'
+//     ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ScheduleStats{
+  @JsonKey(name: 'limit')
+  double limit;
+  @JsonKey(name: 'value')
+  double value;
+
+
+
+  ScheduleStats();
+
+  // getters
+
+
+
+
+  factory ScheduleStats.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleStatsFromJson(json);
+  Map<String, dynamic> toJson() => _$ScheduleStatsToJson(this);
+
+@override
+String toString() => 'ScheduleStats('
+    '\n\tlimit: $limit'
+    '\n\tvalue: $value'
+    ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class StatsPrimaryStats {
+  @JsonKey(name: 'energyValue')
+  double energyValue;
+  @JsonKey(name: 'nutrients')
+  double nutrients;
+  @JsonKey(name: 'water')
+  double water;
+
+
+  StatsPrimaryStats();
+
+  // getters
+
+  factory StatsPrimaryStats.fromJson(Map<String, dynamic> json) =>
+      _$StatsPrimaryStatsFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsPrimaryStatsToJson(this);
+
+  @override
+  String toString() => 'StatsPrimaryStats('
+      '\n\tenergyValue: $energyValue'
+      '\n\tnutrients: $nutrients'
+      '\n\twater: $water'
       ')';
 }
 
