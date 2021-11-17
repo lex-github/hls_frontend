@@ -563,6 +563,24 @@ const foodRating = '{'
     'primaryStats $primaryStats '
     '} ';
 
+
+const scheduleRating = 'query '
+    '('
+    '\$fromDate: Date '
+    '\$toDate: Date'
+    ') '
+    '{'
+    'schedules'
+    '('
+    'fromDate: \$fromDate '
+    'toDate: \$toDate'
+    ') '
+    '{'
+    'scheduleDate '
+    'dailyRating $dailyRating'
+    '}'
+    '}';
+
 const schedules = 'query '
     '('
     '\$fromDate: Date '
@@ -579,7 +597,6 @@ const schedules = 'query '
     'yesterdayAsleepTime '
     'foodRating $foodRating'
     'scheduleTrainings $scheduleTrainings '
-    'dailyRating $dailyRating'
     'scheduleEatings $scheduleEatings'
     '}'
     '}';

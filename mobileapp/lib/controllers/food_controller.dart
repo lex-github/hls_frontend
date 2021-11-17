@@ -8,6 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/services/auth_service.dart';
@@ -104,6 +105,8 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
       @required String scheduleItemId,
       @required int foodId,
       @required int portion}) async {
+    StatsController statsController;
+    statsController.update();
     final result = await mutation(scheduleEatingsCreateMutation, parameters: {
       'scheduleId': scheduleId,
       'scheduleItemId': scheduleItemId,

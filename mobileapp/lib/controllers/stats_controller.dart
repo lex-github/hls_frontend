@@ -82,23 +82,27 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   Future getSchedule() async {
     // if (!canRequestSchedule) return false;
 
-    final response = await query(
-      schedules,
-      parameters: {
-        'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-        'toDate': dateToString(date: toDate, output: dateInternalFormat),
-      },
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
 
-    // if (response == null) return false;
 
-    // final result = response.get(['scheduleDate', 'dailyRating']);
-    // if (result == null) return false;
-    stats = response
-        .get<List>('schedules')
-        .map((x) => StatsData.fromJson(x))
-        .toList(growable: false);
+      final response = await query(
+        schedules,
+        parameters: {
+          'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+          'toDate': dateToString(date: toDate, output: dateInternalFormat),
+        },
+        fetchPolicy: FetchPolicy.cacheFirst,
+      );
+
+      // if (response == null) return false;
+
+      // final result = response.get(['scheduleDate', 'dailyRating']);
+      // if (result == null) return false;
+      stats = response
+          .get<List>('schedules')
+          .map((x) => StatsData.fromJson(x))
+          .toList(growable: false);
+
+
 
     // eatings = stats[3].eatings;
     // components = stats[3].components;

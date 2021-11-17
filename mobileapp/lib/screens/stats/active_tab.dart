@@ -245,7 +245,8 @@ class ActiveTab<Controller extends StatsController>
       );
 
   @override
-  Widget build(_) => GetBuilder<StatsController>(builder: (_) {
+  Widget build(_) =>       index == null || controller.stats[index].scheduleTrainings.isEmpty ? Nothing() :
+  GetBuilder<StatsController>(builder: (_) {
         int c = 0;
         var training = List<int>.filled(
             controller.stats[index].scheduleTrainings.length, 0);

@@ -39,7 +39,8 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
     (
       init: StatsController(
           fromDate: DateTime.now().subtract(90.days).toString(),
-          toDate: DateTime.now().toString()),
+          toDate: DateTime.now().toString(),
+      ),
       builder: (_) {
         final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
         final lastDay = DateTime(focusedDay.year, focusedDay.month + 1, 1);
