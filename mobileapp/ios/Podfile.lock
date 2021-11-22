@@ -28,10 +28,10 @@ PODS:
     - Reachability
   - MobileVLCKit (3.3.17)
   - OneSignal (3.8.0)
-  - onesignal_flutter (3.2.0):
+  - onesignal_flutter (3.2.3):
     - Flutter
-    - OneSignalXCFramework (= 3.6.0)
-  - OneSignalXCFramework (3.6.0)
+    - OneSignalXCFramework (= 3.7.0)
+  - OneSignalXCFramework (3.7.0)
   - path_provider (0.0.1):
     - Flutter
   - Protobuf (3.11.4)
@@ -113,8 +113,8 @@ SPEC CHECKSUMS:
   keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   MobileVLCKit: c5dd1b0ae933dc9c2348099840e753496dcdd908
   OneSignal: bb3c8da4467f2b48a89398da5ff107ba70cff06e
-  onesignal_flutter: 367950f701ad3bb25b21c15f3da6a08777f9237b
-  OneSignalXCFramework: ba3a7daeafd11bd6af8dd47e5689870911357d52
+  onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
+  OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
