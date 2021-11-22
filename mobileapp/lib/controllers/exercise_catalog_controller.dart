@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
+import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
@@ -23,14 +24,22 @@ class ExerciseCatalogController extends SearchController {
         fetchPolicy: FetchPolicy.cacheFirst);
     //print('ExerciseCatalogController.retrieve result: $result');
 
+
     list = result
         .get<List>(['trainingCategories', 'nodes'])
         .map((x) => ExerciseCategoryData.fromJson(x))
         .toList(growable: false);
+
+
+
+    // list.sort();
+
     update();
   }
 
   /// catalog
+
+
 
   bool hasNextPage = true;
   bool isAppending = false;

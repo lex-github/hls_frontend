@@ -31,7 +31,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
           return Button(
               padding: Padding.zero,
               borderColor: Colors.disabled,
-              onPressed: () => controller.toggle("Ужин"),
+              onPressed: () => controller.toggle(title),
               child: Column(children: [
                 VerticalSmallSpace(),
                 Container(
@@ -41,12 +41,12 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                       TextPrimaryHint(title),
                       Expanded(child: HorizontalSpace()),
                       Obx(() => Transform.rotate(
-                          angle: controller.getRotationAngle("Ужин"),
+                          angle: controller.getRotationAngle(title),
                           child: Icon(FontAwesomeIcons.chevronRight,
                               color: Colors.disabled, size: Size.iconSmall)))
                     ])),
                 Obx(() => SizeTransition(
-                    sizeFactor: controller.getSizeFactor("Ужин"),
+                    sizeFactor: controller.getSizeFactor(title),
                     child: Container(
                         padding: EdgeInsets.only(top: Size.vertical),
                         child: text.isNullOrEmpty
@@ -177,8 +177,11 @@ int c = 0;
 
     return Container(
           width: width,
-          height: height * (c / 18),
+          height: height * (c / 15),
           child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: c,
             itemBuilder: (_, index) {
 
@@ -525,7 +528,8 @@ int c = 0;
                             child: _buildFoodContainer(
                               x: 0,
                               kind: "BREAKFAST",
-                            )),
+                            ),
+                        ),
                         VerticalBigSpace(),
                         buildAccordion("Перекус",
                             child: _buildFoodContainer(

@@ -29,6 +29,6 @@ class SearchFormController<C extends SearchController> extends FormController {
 
     if (field != SearchFormController.field) return;
 
-    Get.find<C>().search = value;
+    Get.find<C>().search = field;
   }
 }

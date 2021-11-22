@@ -43,45 +43,74 @@ class _State extends State<ExerciseCategoryScreen> {
         VerticalMediumSpace()
       ]);
 
-  Widget _buildCategoryListItem(ExerciseCategoryData item) => ListItemButton(
-      imageTitle: item.imageUrl,
+  Widget _buildCategoryListItem(int index) => ListItemButton(
+      imageTitle: categories[index].imageUrl,
       imageSize: Size.icon,
-      title: item.title,
-      onPressed: () => _categoryHandler(item));
+      title: categories[index].title,
+      onPressed: () => _categoryHandler(categories[index]));
 
-  Widget _buildListItem(ExerciseData item) => ListItemButton(
-      imageTitle: item.imageUrl,
+  Widget _buildListItem(int index) => ListItemButton(
+      imageTitle: items[index].imageUrl,
       imageSize: Size.icon,
-      title: item.title,
-      onPressed: () => _itemHandler(item));
+      title: items[index].title,
+      onPressed: () => _itemHandler(items[index]));
 
   Widget _buildEmpty() => EmptyPage();
 
-  Widget _buildCategories() => ListView.builder(
-      padding: EdgeInsets.fromLTRB(
-          Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
-      itemCount: categories.length * 2 - 1,
-      itemBuilder: (_, i) {
-        if (i.isOdd) return VerticalMediumSpace();
+  Widget _buildCategories() {
 
-        final index = i ~/ 2;
+    int c = 0;
+    final ex = List<int>.filled(categories.length, 0);
+    for (int j = 0; j < alphabet.length; j++) {
+      for (int i = 0; i < categories.length; i++) {
+        if (categories[i].title.startsWith(alphabet[j])) {
+          ex[c] = i;
+          c++;
+        }
+      }
+    }
 
-        return _buildCategoryListItem(categories[index]);
-      });
+    return ListView.builder(
+        padding: EdgeInsets.fromLTRB(
+            Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
+        itemCount: c,
+        itemBuilder: (_, i) {
 
-  Widget _buildItems() => ListView.builder(
-      padding: EdgeInsets.fromLTRB(
-          Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
-      itemCount: items.length * 2,
-      itemBuilder: (_, i) {
-        if (i == 0) return _buildHeader();
+          final index = ex[i];
 
-        if (i.isEven) return VerticalMediumSpace();
+          return _buildCategoryListItem(index);
+        });
+  }
 
-        final index = i ~/ 2;
+  Widget _buildItems() {
 
-        return _buildListItem(items[index]);
-      });
+    int c = 0;
+    final ex = List<int>.filled(items.length, 0);
+    for (int j = 0; j < alphabet.length; j++) {
+      for (int i = 0; i < items.length; i++) {
+        if (items[i].title.startsWith(alphabet[j])) {
+          ex[c] = i;
+          c++;
+        }
+      }
+    }
+
+    return ListView.builder(
+        padding: EdgeInsets.fromLTRB(
+            Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
+        itemCount: c,
+        itemBuilder: (_, i) {
+          if (i == 0) return _buildHeader();
+
+
+          final index = ex[i];
+
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: Size.vertical * 0.5),
+            child: _buildListItem(index),
+          );
+        });
+  }
 
   Widget _buildBody() => category == null
       ? _buildEmpty()

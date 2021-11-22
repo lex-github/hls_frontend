@@ -26,7 +26,7 @@ class ActiveTab<Controller extends StatsController>
         width: Size.horizontal * 0.3,
       );
 
-  Widget _buildButton(List<int> training, int i) {
+  Widget _buildButton(int i) {
     bool isButton = false;
 
     if (controller.stats[index].scheduleTrainings[i].training.trainingCategory
@@ -160,15 +160,16 @@ class ActiveTab<Controller extends StatsController>
               if (controller.stats[index].scheduleTrainings[j].training
                   .trainingCategory.title.isNotEmpty) {
                 if (controller.stats[index].scheduleTrainings[j].training
+                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
                         .trainingCategory.title ==
                     "Моцион") {
                   count++;
                   for(int i = 0; i < controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
                     mocion = mocion + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[i].max)*100;
-                    print(mocion.toString());
                   }
                 }
                 if (controller.stats[index].scheduleTrainings[j].training
+                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
                         .trainingCategory.title ==
                     "Тренировки со снарядами") {
                   count++;
@@ -176,20 +177,36 @@ class ActiveTab<Controller extends StatsController>
                     training = training + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[i].max)*100;
                   }
                 }
+                //
+                // if(controller.stats[index].scheduleTrainings[j].training
+                //     .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
+                //     .trainingCategory.title != "Моцион" && controller.stats[index].scheduleTrainings[j].training
+                //     .trainingCategory.title != "Тренировки со снарядами"){
+                //s
 
-                if(count < controller.stats[index].scheduleTrainings.length){
+
+                if (controller.stats[index].scheduleTrainings[j].training
+                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
+                    .trainingCategory.title !=
+                    "Тренировки со снарядами" && controller.stats[index].scheduleTrainings[j].training
+                    .trainingCategory.title !=
+                    "Моцион") {
+                  for(int i = 0; i < controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
+
+                    additional = additional + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[0].max)*100;
 
 
 
-                  for(int i = 0; i <= controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
 
-                    if(controller.stats[index].scheduleTrainings[j].training.inputData[i].step != null){
-                      additional = additional + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[i].max)*100;
-
-                    }
 
                   }
                 }
+
+
+                // }
+
+                print(additional.toString());
+
 
 
                 // training[c] = j;
@@ -280,7 +297,7 @@ class ActiveTab<Controller extends StatsController>
                       itemBuilder: (_, index) {
                         final i = training[index];
 
-                        return _buildButton(training, i);
+                        return _buildButton(i);
                       }),
                 ),
 

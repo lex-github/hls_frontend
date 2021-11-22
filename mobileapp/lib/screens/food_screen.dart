@@ -172,7 +172,7 @@ class FoodScreen extends GetView<FoodController> {
             Text(data?.quantity?.toString() ?? '0',
                 style:
                     TextStyle.primary.copyWith(fontSize: 1.1 * Size.fontTiny)),
-            Text(title ?? data?.title?.toLowerCase() ?? '',
+            Text(title ?? (data?.title?.toLowerCase() == "калории" ? "ккал." : (data?.title?.toLowerCase() == "общие жиры" ? "жиры" : data?.title?.toLowerCase())) ?? '',
                 style:
                     TextStyle.secondary.copyWith(fontSize: .9 * Size.fontTiny))
           ]));
@@ -195,16 +195,16 @@ class FoodScreen extends GetView<FoodController> {
             padding: Padding.content,
             decoration: BoxDecoration(
                 borderRadius: borderRadiusCircular,
-                color: Colors.background,
+                // color: Colors.background,
                 // border: Border.all(
                 //     width: borderWidth / 2,
                 //     color:  Colors.primary),
                 boxShadow: [
-                  BoxShadow(
-                      color: panelShadowColor,
-                      blurRadius: panelShadowBlurRadius,
-                      offset: -Offset(panelShadowHorizontalOffset,
-                          panelShadowVerticalOffset)),
+                  // BoxShadow(
+                  //     color: panelShadowColor,
+                  //     blurRadius: panelShadowBlurRadius,
+                  //     offset: -Offset(panelShadowHorizontalOffset,
+                  //         panelShadowVerticalOffset)),
                 ]),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

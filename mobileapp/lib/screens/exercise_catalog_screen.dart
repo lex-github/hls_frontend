@@ -8,8 +8,8 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/exercise_catalog_controller.dart';
 import 'package:hls/controllers/search_form_controller.dart';
 import 'package:hls/helpers/dialog.dart';
-import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/exercise_category_model.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/_form_screen.dart';
@@ -35,10 +35,10 @@ class ExerciseCatalogScreen<Controller extends ExerciseCatalogController>
   }
 
   _itemHandler(ExerciseData data) => Get.toNamed(
-    data.type == ExerciseType.REALTIME
-      ? exerciseRealtimeRoute
-      : exerciseRoute,
-    arguments: data);
+      data.type == ExerciseType.REALTIME
+          ? exerciseRealtimeRoute
+          : exerciseRoute,
+      arguments: data);
 
   /// builders
 
@@ -54,33 +54,47 @@ class ExerciseCatalogScreen<Controller extends ExerciseCatalogController>
 
   Widget _buildLatest() => Nothing();
 
-  Widget _buildCategoryListItem(ExerciseCategoryData item) => ListItemButton(
-      imageTitle: item.imageUrl,
+  Widget _buildCategoryListItem(int index) => ListItemButton(
+      imageTitle: controller.list[index].imageUrl,
       imageSize: Size.icon,
-      title: item.title,
-      onPressed: () => _categoryHandler(item));
+      title: controller.list[index].title,
+      onPressed: () => _categoryHandler(controller.list[index]));
 
   Widget _buildListItem(item) => ListItemButton(
       imageTitle: item.imageUrl,
       imageSize: Size.icon,
       title: item.title,
-      onPressed: () => _itemHandler(item)
-      );
+      onPressed: () => _itemHandler(item));
 
-  Widget _buildCategories() => controller.list.isNullOrEmpty
-      ? EmptyPage()
-      : ListView.builder(
-          padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
-              Size.horizontal, Size.vertical),
-          itemCount: controller.list.length * 2 - 1,
-          itemBuilder: (_, i) {
-            //if (i == 0) return _buildHeader();
-            if (i.isOdd) return VerticalMediumSpace();
+  Widget _buildCategories() {
+    int c = 0;
+    final ex = List<int>.filled(controller.list.length, 0);
+    for (int j = 0; j < alphabet.length; j++) {
+      for (int i = 0; i < controller.list.length; i++) {
+        if (controller.list[i].title.startsWith(alphabet[j])) {
+          ex[c] = i;
+          c++;
+        }
+      }
+    }
 
-            final index = i ~/ 2;
+    return controller.list.isNullOrEmpty
+        ? EmptyPage()
+        : ListView.builder(
+            padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalMedium,
+                Size.horizontal, Size.vertical),
+            itemCount: c,
+            itemBuilder: (_, i) {
+              //if (i == 0) return _buildHeader();
+              // if (i.isOdd) return VerticalMediumSpace();
 
-            return _buildCategoryListItem(controller.list[index]);
-          });
+              final index = ex[i];
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: Size.vertical * 0.5),
+                child: _buildCategoryListItem(index),
+              );
+            });
+  }
 
   Widget _buildEmpty() => EmptyPage();
 

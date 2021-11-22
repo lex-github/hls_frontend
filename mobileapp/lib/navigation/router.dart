@@ -87,7 +87,7 @@ class Router {
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: exerciseRoute,
-        page: () => ExerciseScreen(item: Get.arguments),
+        page: () => ExerciseScreen(data: Get.arguments),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: exerciseRealtimeRoute,

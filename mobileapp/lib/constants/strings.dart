@@ -4,6 +4,8 @@ const selectionScreenTitle = 'Выберите значение(я)';
 const selectionScreenSingleTitle = 'Выберите значение';
 const debugTitle = 'Дебаг инфо';
 
+const alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+
 // refresh control
 const idleRefreshText = '';
 const releaseRefreshText = '';
@@ -153,7 +155,7 @@ const foodScreenTitle = 'Продукт';
 const foodCarbLabel = 'углев.';
 const foodEmptyTitle = 'Продукт не найден в системе';
 const foodEmptySubtitle =
-    'Вы можете отправит запрос системе для добавления продукта в список';
+    'Вы можете отправить запрос системе для добавления продукта в список';
 const foodEmptyAlreadyRequestedText =
     'Вы уже отправили запрос для добавления данного продукта';
 const foodEmptyRequestSentTitle = 'Спасибо за запрос';
@@ -227,6 +229,7 @@ const exerciseNeedValueText = 'Внесите данные тренировки'
 const exerciseStartTitle = 'Начать тренировку';
 const exerciseZoneTitle = 'Рекомендуемая пульсовая зона';
 const heartRateLabel = 'Пульс';
+const exerciseAlert = 'Вы уверены, что хотите закончить тренировку?';
 
 const cardioInputTypeManualTitle = 'Вручную';
 const cardioInputTypeMonitorTitle = 'Bluetooth кардиомонитор';

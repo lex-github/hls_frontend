@@ -18,11 +18,17 @@ import 'package:hls/services/auth_service.dart';
 import 'package:hls/theme/styles.dart';
 
 class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
-  final ExerciseData _item;
+  // final ExerciseData _item;
+  //
+  // ExerciseScreen({ExerciseData item}) : _item = item;
 
-  ExerciseScreen({ExerciseData item}) : _item = item;
+  final ExerciseData data;
 
-  ExerciseData get item => controller.detail ?? _item;
+  ExerciseScreen({this.data}) {
+    //print('VideoScreen url: ${this.url}');
+  }
+
+  ExerciseData get item => controller.detail ?? data;
   ExerciseFormController get form => Get.find<ExerciseFormController>();
   ExerciseCatalogController get controller =>
       Get.find<ExerciseCatalogController>();
@@ -73,15 +79,15 @@ class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
                       padding: Padding.content,
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
                         VerticalMediumSpace(),
-                        TextPrimary(item.title),
-                        if (!item.imageUrl.isNullOrEmpty) ...[
+                        TextPrimary(data.title),
+                        if (!data.imageUrl.isNullOrEmpty) ...[
                           VerticalSpace(),
-                          Image(width: Size.iconBig * 2, title: item?.imageUrl)
+                          Image(width: Size.iconBig * 2, title: data?.imageUrl)
                         ],
                         VerticalBigSpace(),
-                        if (item.values.length > 1) ...[
+                        if (data.values.length > 1) ...[
                           SelectDrum<T, GenericEnum>(
-                              field: 'type', values: item.values),
+                              field: 'type', values: data.values),
                           VerticalSpace()
                         ],
                         if (form.type != null || item.values.length == 1)
