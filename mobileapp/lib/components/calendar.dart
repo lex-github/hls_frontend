@@ -9,6 +9,7 @@ import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/stats_model.dart';
 import 'package:hls/theme/styles.dart';
 import 'package:intl/intl.dart';
@@ -53,12 +54,12 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
         double nutrition = 0;
 
         if (day.isBefore(firstDay) || day.isAfter(lastDay)) return Nothing();
-        if (controller.stats != null) {
-          for (var i = 0; i < controller.stats.length; i++) {
-            if (controller.stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
-              schedule = controller.stats[i].daily.schedule / 100;
-              exercise = controller.stats[i].daily.exercise / 100;
-              nutrition = controller.stats[i].daily.nutrition /100;
+        if (controller.calendar != null) {
+          for (var i = 0; i < controller.calendar.length; i++) {
+            if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
+              schedule = controller.calendar[i].daily.schedule / 100;
+              exercise = controller.calendar[i].daily.exercise / 100;
+              nutrition = controller.calendar[i].daily.nutrition /100;
             }
           }
         }else{
@@ -98,7 +99,7 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
                     firstDay: DateTime.now().subtract(90.days),
                     lastDay: DateTime.now(),
                     onDaySelected: (selectedDay, focusedDay) {
-                      findLoop(controller.stats, selectedDay);
+                      findLoop(selectedDay);
                     },
                     focusedDay: DateTime.now(),
                     calendarBuilders: CalendarBuilders(
@@ -107,6 +108,16 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
                       prioritizedBuilder: _prioritizedBuilder
                     ))),
       );
+  void findLoop(DateTime day) {
+    for (var i = 0; i < controller.calendar.length; i++) {
+      if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
+        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
+      }
+    }
+
+    Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
+  }
+
 }
 
 class CalendarCell extends StatelessWidget {
@@ -167,12 +178,3 @@ class CalendarCellCircle extends StatelessWidget {
               endAngle: value * 2 * pi));
 }
 
-void findLoop(List<StatsData> stats, DateTime day) {
-  for (var i = 0; i < stats.length; i++) {
-    if (stats[i].date == dateToString(date: day, output: dateInternalFormat)) {
-      Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
-    }
-  }
-
-  Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
-}

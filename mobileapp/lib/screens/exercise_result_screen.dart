@@ -5,9 +5,14 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/cardio_switch.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/components/painters.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/stats_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/exercise_realtime_screen.dart';
 import 'package:hls/theme/styles.dart';
@@ -21,6 +26,7 @@ class ExerciseResultScreen extends StatefulWidget {
 
 class _ExerciseResultScreen extends State<ExerciseResultScreen> {
   final values = Get.find<CardioSwitchController>().results;
+  final c = Get.find<StatsController>();
 
   ExerciseData get data => widget.data;
   int get average => (values.values.reduce((a, b) => a + b) / values.length).round();
@@ -97,9 +103,17 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
           Button(
               background: Colors.primary,
               title: exerciseResultButtonTitle,
-              onPressed: () => null)
+              onPressed: () =>   findLoop,
+          )
         ])
       ]));
+  void findLoop() {
+    for (var i = 0; i < c.calendar.length; i++) {
+      if (c.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
+        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': dateToString(date: DateTime.now(), output: dateInternalFormat)});
+      }
+    }
+  }
 }
 
 class HeartRateGraph extends StatelessWidget {
@@ -218,4 +232,7 @@ class HeartRateGraph extends StatelessWidget {
           ])
         ]))
       ]);
+
+
 }
+

@@ -46,7 +46,7 @@ class FoodScreen extends GetView<FoodController> {
     final portions = [
       for (int i = portionStep; i <= portionMax; i += portionStep) i
     ];
-    int portion = -1;
+    int portion = 1;
 
     await showConfirm(
         contentPadding: contentPadding,
@@ -128,7 +128,7 @@ class FoodScreen extends GetView<FoodController> {
         portion: portion))
       return showConfirm(title: controller.message ?? errorGenericText);
 
-    Get.until((route) => route.settings.name == '/');
+    Get.back();
   }
 
   // builds

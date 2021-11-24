@@ -7,12 +7,12 @@ part 'stats_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class StatsData extends GenericData {
-  @JsonKey(name: 'scheduleDate')
-  String date;
+  // @JsonKey(name: 'scheduleDate')
+  // String date;
   @JsonKey(name: 'yesterdayAsleepTime')
   String asleepTime;
-  @JsonKey(name: 'dailyRating')
-  StatsDailyRating daily;
+  // @JsonKey(name: 'dailyRating')
+  // StatsDailyRating daily;
   @JsonKey(name: 'foodRating')
   StatsFoodRating foodRating;
   @JsonKey(name: 'scheduleEatings')
@@ -41,31 +41,31 @@ class StatsData extends GenericData {
       ')';
 }
 
-@JsonSerializable(includeIfNull: false)
-class StatsDailyRating {
-  @JsonKey(name: 'mode')
-  double schedule;
-  @JsonKey(name: 'activity')
-  double exercise;
-  @JsonKey(name: 'eating')
-  double nutrition;
-
-
-  StatsDailyRating();
-
-  // getters
-
-  factory StatsDailyRating.fromJson(Map<String, dynamic> json) =>
-      _$StatsDailyRatingFromJson(json);
-  Map<String, dynamic> toJson() => _$StatsDailyRatingToJson(this);
-
-  @override
-  String toString() => 'StatsDailyRating('
-      '\n\tschedule: $schedule'
-      '\n\texercise: $exercise'
-      '\n\tnutrition: $nutrition'
-      ')';
-}
+// @JsonSerializable(includeIfNull: false)
+// class StatsDailyRating {
+//   @JsonKey(name: 'mode')
+//   double schedule;
+//   @JsonKey(name: 'activity')
+//   double exercise;
+//   @JsonKey(name: 'eating')
+//   double nutrition;
+//
+//
+//   StatsDailyRating();
+//
+//   // getters
+//
+//   factory StatsDailyRating.fromJson(Map<String, dynamic> json) =>
+//       _$StatsDailyRatingFromJson(json);
+//   Map<String, dynamic> toJson() => _$StatsDailyRatingToJson(this);
+//
+//   @override
+//   String toString() => 'StatsDailyRating('
+//       '\n\tschedule: $schedule'
+//       '\n\texercise: $exercise'
+//       '\n\tnutrition: $nutrition'
+//       ')';
+// }
 
 @JsonSerializable(includeIfNull: false)
 class StatsFoodRating {
@@ -437,6 +437,8 @@ String toString() => 'StatsScheduleStructure('
 class StatsScheduleItem {
   @JsonKey(name: 'kind')
   String kind;
+  @JsonKey(name: 'plannedAt')
+  String plannedAt;
 
 
 
@@ -452,6 +454,7 @@ class StatsScheduleItem {
 @override
 String toString() => 'StatsScheduleItem('
     '\n\tkind: $kind'
+    '\n\tplannedAt: $plannedAt'
     ')';
 }
 

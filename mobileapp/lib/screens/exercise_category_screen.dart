@@ -70,6 +70,8 @@ class _State extends State<ExerciseCategoryScreen> {
       }
     }
 
+    print("LENGTH " + categories.length.toString());
+
     return ListView.builder(
         padding: EdgeInsets.fromLTRB(
             Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
@@ -100,8 +102,6 @@ class _State extends State<ExerciseCategoryScreen> {
             Size.horizontal, Size.verticalMedium, Size.horizontal, Size.vertical),
         itemCount: c,
         itemBuilder: (_, i) {
-          if (i == 0) return _buildHeader();
-
 
           final index = ex[i];
 

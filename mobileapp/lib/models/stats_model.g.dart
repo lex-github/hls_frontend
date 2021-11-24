@@ -8,10 +8,10 @@ part of 'stats_model.dart';
 
 StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
   return StatsData()
-    ..date = json['scheduleDate'] as String
+    // ..date = json['scheduleDate'] as String
     ..asleepTime = json['yesterdayAsleepTime'] as String
-    ..daily =
-        StatsDailyRating.fromJson(json['dailyRating'] as Map<String, dynamic>)
+    // ..daily =
+    //     StatsDailyRating.fromJson(json['dailyRating'] as Map<String, dynamic>)
     ..eatings = (json['scheduleEatings'] as List<dynamic>)
         ?.map((e) => StatsScheduleEatings.fromJson(e as Map<String, dynamic>))
         ?.toList()
@@ -23,25 +23,25 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$StatsDataToJson(StatsData instance) => <String, dynamic>{
-      'scheduleDate': instance.date,
+      // 'scheduleDate': instance.date,
       'yesterdayAsleepTime': instance.asleepTime,
-      'dailyRating': instance.daily,
+      // 'dailyRating': instance.daily,
       'scheduleEatings': instance.eatings,
     };
 
-StatsDailyRating _$StatsDailyRatingFromJson(Map<String, dynamic> json) {
-  return StatsDailyRating()
-    ..schedule = (json['mode'] as num).toDouble()
-    ..exercise = (json['activity'] as num).toDouble()
-    ..nutrition = (json['eating'] as num).toDouble();
-}
+// StatsDailyRating _$StatsDailyRatingFromJson(Map<String, dynamic> json) {
+//   return StatsDailyRating()
+//     ..schedule = (json['mode'] as num).toDouble()
+//     ..exercise = (json['activity'] as num).toDouble()
+//     ..nutrition = (json['eating'] as num).toDouble();
+// }
 
-Map<String, dynamic> _$StatsDailyRatingToJson(StatsDailyRating instance) =>
-    <String, dynamic>{
-      'mode': instance.schedule,
-      'activity': instance.exercise,
-      'eating': instance.nutrition,
-    };
+// Map<String, dynamic> _$StatsDailyRatingToJson(StatsDailyRating instance) =>
+//     <String, dynamic>{
+//       'mode': instance.schedule,
+//       'activity': instance.exercise,
+//       'eating': instance.nutrition,
+//     };
 
 StatsFoodRating _$StatsFoodRatingFromJson(Map<String, dynamic> json) {
   return StatsFoodRating()
@@ -212,12 +212,14 @@ Map<String, dynamic> _$StatsScheduleFoodComponentsToJson(StatsScheduleFoodCompon
 
 StatsScheduleItem _$StatsScheduleItemFromJson(Map<String, dynamic> json) {
   return StatsScheduleItem()
-    ..kind = (json['kind'] as String).toString();
+    ..kind = (json['kind'] as String).toString()
+    ..plannedAt = (json['plannedAt'] as String).toString();
 }
 
 Map<String, dynamic> _$StatsScheduleItemToJson(StatsScheduleItem instance) =>
     <String, dynamic>{
       'kind': instance.kind,
+      'plannedAt': instance.plannedAt,
     };
 
 StatsScheduleFood _$StatsScheduleFoodFromJson(Map<String, dynamic> json) {

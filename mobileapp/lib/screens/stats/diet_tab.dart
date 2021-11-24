@@ -23,7 +23,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   DietTab({@required this.index, this.date});
 
 
-  Widget buildAccordion(String title, {String text, Widget child}) =>
+  Widget buildAccordion(String title, {String id, Widget child}) =>
       GetBuilder<StatsController>(
         init:
             StatsController(fromDate: date.toString(), toDate: date.toString()),
@@ -31,7 +31,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
           return Button(
               padding: Padding.zero,
               borderColor: Colors.disabled,
-              onPressed: () => controller.toggle(title),
+              onPressed: () => controller.toggle(id.isNullEmptyFalseOrZero ? title : id),
               child: Column(children: [
                 VerticalSmallSpace(),
                 Container(
@@ -41,20 +41,15 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                       TextPrimaryHint(title),
                       Expanded(child: HorizontalSpace()),
                       Obx(() => Transform.rotate(
-                          angle: controller.getRotationAngle(title),
+                          angle: controller.getRotationAngle(id.isNullEmptyFalseOrZero ? title : id),
                           child: Icon(FontAwesomeIcons.chevronRight,
                               color: Colors.disabled, size: Size.iconSmall)))
                     ])),
                 Obx(() => SizeTransition(
-                    sizeFactor: controller.getSizeFactor(title),
+                    sizeFactor: controller.getSizeFactor(id.isNullEmptyFalseOrZero ? title : id),
                     child: Container(
                         padding: EdgeInsets.only(top: Size.vertical),
-                        child: text.isNullOrEmpty
-                            ? child ?? Nothing()
-                            : Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: Size.horizontal),
-                                child: TextSecondary(text))))),
+                        child: child))),
                 VerticalSmallSpace()
               ]));
         },
@@ -293,15 +288,14 @@ int c = 0;
         padding: EdgeInsets.symmetric(
             horizontal: Size.horizontal, vertical: Size.vertical * 0.3),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextPrimary(
+            Flexible(child: TextPrimary(
               controller.stats[index].eatings[i].scheduleFood.title,
               size: Size.fontSmall,
-            ),
-            SizedBox(
-              width: 100,
-            ),
+            ),),
+
             TextSecondary(controller
                     .stats[index].eatings[i].scheduleFood.portion
                     .toString() +
@@ -310,7 +304,7 @@ int c = 0;
         ),
       );
 
-  Widget _buildCirclesContainer (int fats, int upFats, int carbohydrates, int upCarbohydrates, int proteins, int upProteins, int energy, int upEnergy, int c, List <int > foods, int x) {
+  Widget _buildCirclesContainer ( int c, List <int > foods, int x) {
 
 
     double proteins = controller.stats[index].foodRating.componentsPerEating[x].statsEatings[0].value;
@@ -356,7 +350,7 @@ int c = 0;
         VerticalSmallSpace(),
         Container(
           width: width,
-          height: height * (c / 22),
+          height: height * (c / 18),
           child: c == 1
               ? _buildFoodItem(0)
               : ListView.builder(
@@ -426,24 +420,16 @@ int c = 0;
 
   Widget _buildFoodContainer({
     int x,
-    String kind,
+    String plannedAt,
   }) {
-    int carbohydrates = 0;
-    int fats = 0;
-    int proteins = 0;
-    int energy = 0;
-    int upCarbohydrates = 0;
-    int upFats = 0;
-    int upProteins = 0;
-    int upEnergy = 0;
     int c = 0;
-    int z = 0;
     var foods = List<int>.filled(controller.stats[index].eatings.length, 0);
     if (controller.stats[index].eatings.length != null) {
       for (int j = 0; j < controller.stats[index].eatings.length; j++) {
-        if (kind ==
-            controller.stats[index].eatings[j].scheduleItem.kind.toString()) {
+        if (plannedAt ==
+            controller.stats[index].eatings[j].scheduleItem.plannedAt.toString()) {
           foods[c] = j;
+          print("l;ogkiyvb " +  controller.stats[index].eatings[j].scheduleFood.title);
 
           c++;
 
@@ -452,62 +438,9 @@ int c = 0;
     }
 
 
-
-    final structure =
-    List<int>.filled(controller.stats[index].foodRating.components.length, 0);
-
-    if (controller.stats[index].foodRating.components.length != null) {
-      for (int j = 0;
-      j < controller.stats[index].foodRating.components.length;
-      j++) {
-
-
-
-        if ("Калории" ==
-            controller.stats[index].foodRating.components[j].foodComponent.title
-                .toString()) {
-
-          upEnergy = controller.stats[index].foodRating.components[j].upperLimit.toInt();
-          energy = controller.stats[index].foodRating.components[j].value.toInt();
-
-          structure[z] = j;
-          z++;
-        }
-        if ("Белки" ==
-            controller.stats[index].foodRating.components[j].foodComponent.title
-                .toString()) {
-
-          upProteins = controller.stats[index].foodRating.components[j].upperLimit.toInt();
-          proteins = controller.stats[index].foodRating.components[j].value.toInt();
-
-          structure[z] = j;
-          z++;
-        }
-        if ("Жиры" ==
-            controller.stats[index].foodRating.components[j].foodComponent.title
-                .toString()) {
-
-          upFats = controller.stats[index].foodRating.components[j].upperLimit.toInt();
-          fats = controller.stats[index].foodRating.components[j].value.toInt();
-
-          structure[z] = j;
-          z++;
-        }
-        if ("Углеводы" ==
-            controller.stats[index].foodRating.components[j].foodComponent.title
-                .toString()) {
-
-          upCarbohydrates = controller.stats[index].foodRating.components[j].upperLimit.toInt();
-          carbohydrates = controller.stats[index].foodRating.components[j].value.toInt();
-
-          structure[z] = j;
-          z++;
-        }
-      }
-    }
     return controller.stats[index].eatings.length == null || c < 1
         ? Nothing()
-        : _buildCirclesContainer(fats, upFats, carbohydrates, upCarbohydrates, proteins, upProteins, energy, upEnergy, c, foods, x);
+        : _buildCirclesContainer(c, foods, x);
   }
 
   @override
@@ -525,34 +458,39 @@ int c = 0;
                         _buildStatsContainer(),
                         VerticalBigSpace(),
                         buildAccordion("Завтрак",
+                          id: "08:00",
                             child: _buildFoodContainer(
                               x: 0,
-                              kind: "BREAKFAST",
+                              plannedAt: "08:00",
                             ),
                         ),
                         VerticalBigSpace(),
                         buildAccordion("Перекус",
+                            id: "11:00",
                             child: _buildFoodContainer(
                               x: 1,
-                              kind: "SNACK",
+                              plannedAt: "11:00",
                             )),
                         VerticalBigSpace(),
                         buildAccordion("Обед",
+                            id: "14:00",
                             child: _buildFoodContainer(
                               x: 2,
-                              kind: "LUNCH",
+                              plannedAt: "14:00",
                             )),
                         VerticalBigSpace(),
                         buildAccordion("Перекус",
+                            id: "16:00",
                             child: _buildFoodContainer(
                               x: 3,
-                              kind: "SNACK",
+                              plannedAt: "16:00",
                             )),
                         VerticalBigSpace(),
                         buildAccordion("Ужин",
+                            id: "19:00",
                             child: _buildFoodContainer(
                               x: 4,
-                              kind: "DINNER",
+                              plannedAt: "19:00",
                             )),
                         VerticalSpace(),
                         buildAccordion("Калорийность",

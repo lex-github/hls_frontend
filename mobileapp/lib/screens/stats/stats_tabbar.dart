@@ -24,7 +24,7 @@ class StatsTabBar<Controller extends StatsController>
         init: StatsController(
             fromDate: date.toString(),
             toDate: date.toString()),
-        builder: (_) => DefaultTabController(
+        builder: (_) => controller.stats == null ? Center(child: Loading()) : DefaultTabController(
             length: 3,
             child: Screen(
                 height: Size.bar + 2 * Size.verticalMedium + Size.font,

@@ -25,7 +25,8 @@ class ProfileFormController extends FormController {
             field: 'height', label: heightProfileLabel, value: profile.height),
         FormConfig(
             field: 'weight', label: weightProfileLabel, value: profile.weight),
-        FormConfig(field: 'email', label: emailProfileLabel, value: profile.email)
+        FormConfig(
+            field: 'email', label: emailProfileLabel, value: profile.email)
       ];
 
   // form controller implementation
@@ -44,8 +45,7 @@ class ProfileFormController extends FormController {
       request.headers[authTokenKey] = AuthService.i.token;
       request.files.add(await http.MultipartFile.fromPath(
           'photo', pickedFile.path,
-          contentType: MediaType('multipart', 'form-data')
-      ));
+          contentType: MediaType('multipart', 'form-data')));
 
       // perform upload
       final result = await request.send();
@@ -65,7 +65,8 @@ class ProfileFormController extends FormController {
     if (!await AuthService.i.edit({
       'name': getValue('name'),
       'birthDate':
-      dateToString(date: getValue('birthDate'), output: dateInternalFormat),
+          dateToString(date: getValue('birthDate'), output: dateInternalFormat),
+      // 'birthDate': getValue('birthDate'),
       'height': toInt(getValue('height')),
       'weight': toInt(getValue('weight'))
     })) {

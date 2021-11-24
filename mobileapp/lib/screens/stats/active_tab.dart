@@ -297,7 +297,10 @@ class ActiveTab<Controller extends StatsController>
                       itemBuilder: (_, index) {
                         final i = training[index];
 
-                        return _buildButton(i);
+                        return Container(
+                          padding: EdgeInsets.symmetric(vertical: Size.horizontal * 0.5),
+                          child: _buildButton(i),
+                        );
                       }),
                 ),
 

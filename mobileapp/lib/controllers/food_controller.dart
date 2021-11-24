@@ -6,11 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/constants/api.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/stats_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/food_model.dart';
+import 'package:hls/models/stats_model.dart';
 import 'package:hls/services/auth_service.dart';
 
 class FoodController extends Controller with SingleGetTickerProviderMixin {
@@ -30,6 +33,8 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   final _lastToggledItem = Rx<String>(null);
   AnimationController _animationController;
   FoodData item;
+  List<StatsData> stats;
+
 
   Map<String, List<FoodSectionData>> get list => item.sections ?? {};
   AnimationController get animationController => _animationController;
@@ -97,6 +102,25 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
     //print('FoodController.retrieve result: $result');
 
     item = FoodData.fromJson(result.get('food'));
+
+    // final response = await query(
+    //   schedules,
+    //   parameters: {
+    //     'fromDate': dateToString(date: DateTime.now().subtract(90.days), output: dateInternalFormat),
+    //     'toDate': dateToString(date: DateTime.now(), output: dateInternalFormat),
+    //   },
+    //   fetchPolicy: FetchPolicy.cacheFirst,
+    // );
+    //
+    // // if (response == null) return false;
+    //
+    // // final result = response.get(['scheduleDate', 'dailyRating']);
+    // // if (result == null) return false;
+    // stats = response
+    //     .get<List>('schedules')
+    //     .map((x) => StatsData.fromJson(x))
+    //     .toList(growable: false);
+
     update();
   }
 
@@ -105,8 +129,8 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
       @required String scheduleItemId,
       @required int foodId,
       @required int portion}) async {
-    StatsController statsController;
-    statsController.update();
+    // StatsController statsController;
+    // statsController.update();
     final result = await mutation(scheduleEatingsCreateMutation, parameters: {
       'scheduleId': scheduleId,
       'scheduleItemId': scheduleItemId,

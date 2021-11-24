@@ -43,7 +43,6 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
 
   Widget _buildPlayer() {
     //print('ExerciseRealtimeScreen._buildPlayer $item');
-
     return SizedBox(
         height: Size.image,
         width: Size.screenWidth,

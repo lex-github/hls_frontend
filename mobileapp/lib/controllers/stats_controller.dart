@@ -11,6 +11,7 @@ import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
+import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/models/stats_model.dart';
 import 'package:hls/services/auth_service.dart';
@@ -34,6 +35,8 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   final _lastToggledItem = Rx<String>(null);
   AnimationController _animationController;
   List<StatsData> stats;
+  List<CalendarData> calendar;
+
 
   // StatsScheduleItem scheduleItem;
   List<StatsScheduleEatings> eatings;
@@ -79,12 +82,26 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   //           : 0;
   // }
 
+  Future getCalendar() async {
+    final responseCalendar = await query(
+      calendarQuery,
+      parameters: {
+        'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+        'toDate': dateToString(date: toDate, output: dateInternalFormat),
+      },
+      fetchPolicy: FetchPolicy.cacheFirst,
+    );
+    calendar = responseCalendar
+        .get<List>('schedules')
+        .map((x) => CalendarData.fromJson(x))
+        .toList(growable: false);
+
+    update();
+
+  }
+
   Future getSchedule() async {
-    // if (!canRequestSchedule) return false;
-
-
-
-      final response = await query(
+      final responseStats = await query(
         schedules,
         parameters: {
           'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
@@ -93,136 +110,14 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
         fetchPolicy: FetchPolicy.cacheFirst,
       );
 
-      // if (response == null) return false;
-
-      // final result = response.get(['scheduleDate', 'dailyRating']);
-      // if (result == null) return false;
-      stats = response
+      stats = responseStats
           .get<List>('schedules')
           .map((x) => StatsData.fromJson(x))
           .toList(growable: false);
 
-
-
-    // eatings = stats[3].eatings;
-    // components = stats[3].components;
-
-    // eatings = response
-    //       .get<List<Map>>('','schedules')
-    //       .map((x) => StatsScheduleEatings.fromJson(x))
-    //       .toList(growable: false);
-    //
-    // print("fdate: " + dateToString(date: fromDate, output: dateInternalFormat));
-    // print("tdate: " + dateToString(date: toDate, output: dateInternalFormat));
-    // print("kind: " + stats[3].eatings[3].scheduleItem.kind.toString());
-    // print("titleF: " + eatings[3].scheduleFood.title.toString());
-    // print("portion: " + eatings[3].scheduleFood.portion.toString());
-    // print("length: " + eatings[3].scheduleFood.structure.length.toString());
-
-    // print("title: " + eatings[3].scheduleFood.structure[0].title.toString());
-    // print("key: " + eatings[3].scheduleFood.structure[0].key.toString());
-    // print("unit: " + eatings[3].scheduleFood.structure[0].unit.toString());
-    // print("quantity: " + eatings[3].scheduleFood.structure[0].quantity.toString());
-    // print("section: " + components[3].foodComponent.title.toString());
-
-    // for (int j = 0; j < eatings.length; j++) {
-    //   print("----------------------");
-    //   print("ID: " + j.toString());
-    //   print("----------------------");
-    //   print("kind: " + eatings[j].scheduleItem.kind.toString());
-    //   print("titleF: " + eatings[j].scheduleFood.title.toString());
-    //   print("portion: " + eatings[j].scheduleFood.portion.toString());
-    //   print("length: " + eatings[j].scheduleFood.structure.length.toString());
-    //   for (int i = 0; i < eatings[j].scheduleFood.structure.length; i++) {
-    //     print("\n");
-    //     print("title: " + eatings[j].scheduleFood.structure[i].title.toString());
-    //     print("key: " + eatings[j].scheduleFood.structure[i].key.toString());
-    //     print("unit: " + eatings[j].scheduleFood.structure[i].unit.toString());
-    //     print("quantity: " +
-    //         eatings[j].scheduleFood.structure[i].quantity.toString());
-    //     print("section: " +
-    //         eatings[j].scheduleFood.structure[i].section.toString());
-    //     print("\n");
-    //   }
-    // }
-
-
-
-    // items = response
-    //     .get<List>('scheduleEatings')
-    //     .map((x) => StatsData.fromJson(x))
-    //     .toList(growable: false);    // print('"RESULT" $result');
-    // print('"RESPONSE" $response');
-    // final schedule = ScheduleData.fromJson(result);
-    // AuthService.i.profile.schedule = schedule;
-    //
-    // _dayItems.assignAll(schedule.items);
     update();
 
-    // return !_dayItems.isNullOrEmpty;
-    // item = StatsData.fromJson(['scheduleDate', 'dailyRating']);
   }
-
-  // Future getEat() async {
-  //   // if (!canRequestSchedule) return false;
-  //
-  //   final response = await query(schedules,
-  //       parameters: {
-  //         'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-  //         'toDate': dateToString(date: toDate, output: dateInternalFormat),
-  //       },
-  //       fetchPolicy: FetchPolicy.cacheFirst,
-  //   );
-  //
-  //   // if (response == null) return false;
-  //
-  //   // final result = response.get(['scheduleDate', 'dailyRating']);
-  //   // if (result == null) return false;
-  //   eatings = response
-  //       .get<List>('scheduleEatings')
-  //       .map((x) => StatsData.fromJson(x))
-  //       .toList(growable: false);
-  //   print('"RESULT" $eatings');
-  //   // print('"RESPONSE" $response');
-  //   // final schedule = ScheduleData.fromJson(result);
-  //   // AuthService.i.profile.schedule = schedule;
-  //   //
-  //   // _dayItems.assignAll(schedule.items);
-  //   update();
-  //
-  //   // return !_dayItems.isNullOrEmpty;
-  //   // item = StatsData.fromJson(['scheduleDate', 'dailyRating']);
-  // }
-
-  // Future getEatings() async {
-  //   // if (!canRequestSchedule) return false;
-  //
-  //   final response = await query(schedulesFood,parameters: {
-  //     'fromDate': dateToString(date: DateTime.now(), output: dateInternalFormat),
-  //     'toDate': dateToString(date: DateTime.now(), output: dateInternalFormat),
-  //   },
-  //     fetchPolicy: FetchPolicy.cacheFirst,
-  //   );
-  //
-  //   // if (response == null) return false;
-  //
-  //   // final result = response.get(['scheduleDate', 'dailyRating']);
-  //   // if (result == null) return false;
-  //   eatings = response
-  //       .get<List>('scheduleEatings')
-  //       .map((x) => StatsScheduleEatings.fromJson(x))
-  //       .toList(growable: false);
-  //   print('"RESULT" $eatings');
-  //   // print('"RESPONSE" $response');
-  //   // final schedule = ScheduleData.fromJson(result);
-  //   // AuthService.i.profile.schedule = schedule;
-  //   //
-  //   // _dayItems.assignAll(schedule.items);
-  //   update();
-  //
-  //   // return !_dayItems.isNullOrEmpty;
-  //   // item = StatsData.fromJson(['scheduleDate', 'dailyRating']);
-  // }
 
   Animation<double> getSizeFactor(String title) =>
       title == _lastToggledItem.value
@@ -245,6 +140,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   @override
   void onInit() async {
+    await getCalendar();
     await getSchedule();
     // await getEat();
     super.onInit();
