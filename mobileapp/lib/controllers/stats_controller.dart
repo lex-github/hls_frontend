@@ -5,6 +5,7 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:health/health.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
@@ -25,7 +26,6 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value);
   }
-
   // fields
 
   final minRotationAngle = .0;
@@ -57,6 +57,75 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   double get rotationAngle => maxRotationAngle * animationProgress;
 
   set animationProgress(double value) => _animationProgress.value = value;
+  final HealthFactory health = HealthFactory();
+  final List<HealthDataType> types = [HealthDataType.SLEEP_ASLEEP];
+
+  final _isAwaiting = false.obs;
+  bool get isAwaiting => _isAwaiting.value;
+
+  final _message = ''.obs;
+  String get message => _message.value;
+
+  final _sleepAsleep = 0.obs;
+  int get sleepAsleep => _sleepAsleep.value;
+
+  bool get isConnected => !isAwaiting && sleepAsleep > 0;
+
+
+  final _backDuration = const Duration(minutes: 5);
+
+
+
+  Future scan() async {
+    _isAwaiting.value = true;
+
+    /// you MUST request access to the data types before reading them
+    bool accessWasGranted = await health.requestAuthorization(types);
+    print('CardioMonitorController.scan accessWasGranted: $accessWasGranted');
+
+    _isAwaiting.value = false;
+
+    if (accessWasGranted) {
+      readValue();
+    } else {
+      _message.value = 'Permission not granted';
+    }
+  }
+
+  void readValue() async {
+    List<HealthDataPoint> healthData;
+
+    try {
+      final currentTime = DateTime.now();
+      final secondAgo = currentTime.subtract(_backDuration);
+
+      /// fetch new data
+      healthData =
+      await health.getHealthDataFromTypes(secondAgo, DateTime.now(), types);
+    } catch (e) {
+      print('Caught exception in getHealthDataFromTypes: $e');
+    }
+
+    /// filter out duplicates
+    healthData = HealthFactory.removeDuplicates(healthData);
+
+    /// Print the results
+    print('CardioMonitorController.health: $healthData');
+    if (healthData.length > 0) {
+      _sleepAsleep.value = healthData.last.value.toInt();
+      _message.value = '';
+      // Get.find<CardioSwitchController>().heartRate = heartRate;
+
+      // _sleepAsleep = sleepAsleep;
+    } else {
+      _sleepAsleep.value = 0;
+      _message.value = 'No heartbeat detected';
+    }
+  }
+
+
+
+
 
   // methods
 
@@ -138,13 +207,16 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     //update();
   }
 
+
   @override
   void onInit() async {
+    scan();
     await getCalendar();
     await getSchedule();
     // await getEat();
     super.onInit();
   }
+
 
   @override
   onClose() {

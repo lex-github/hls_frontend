@@ -224,6 +224,7 @@ class FoodScreen extends GetView<FoodController> {
                               color: Colors.disabled,
                               size: .5 * Size.buttonHuge)
                           : Image(
+                              // title: food.image.url,
                               title: food.image.url,
                               width: .5 * Size.buttonHuge,
                               height: .5 * Size.buttonHuge)),
