@@ -49,7 +49,9 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   List<FoodSectionData> getSection(int index) =>
       list.values.toList(growable: false)[index];
 
-  bool isOpened(String title) => _openedItems.contains(title);
+  //default bool value for button
+  bool d;
+  bool isOpened(String title) => d==true ? true : _openedItems.contains(title);
   double getRotationAngle(String title) => title == _lastToggledItem.value
       ? rotationAngle
       : isOpened(title)
@@ -72,10 +74,10 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
 
   toggle(String title) {
     _lastToggledItem(title);
-
     if (isOpened(title)) {
       _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
+      d=false;
     } else {
       _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);
@@ -87,6 +89,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   @override
   void onInit() async {
     await retrieve();
+    d=true;
     super.onInit();
   }
 

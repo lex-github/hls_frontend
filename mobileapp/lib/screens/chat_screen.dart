@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
@@ -25,6 +26,7 @@ class ChatScreen<Controller extends ChatController>
     extends GetView<Controller> {
   final ChatDialogType type;
   final bool shouldRestart;
+
   ChatScreen({Key key, @required this.type, this.shouldRestart = false})
       : super(key: key);
 
@@ -368,52 +370,60 @@ class ChatMessage extends StatelessWidget {
               Color color,
               AlignmentGeometry alignment,
               double cornerWidth,
-              double cornerHeight}) =>
-          Column(children: [
-            Stack(clipBehavior: Clip.none, children: [
-              Align(
-                  alignment: alignment,
+              double cornerHeight}) {
+
+
+    print("IMAGE_URL!!!_  " + (message.imageUrl.isNullOrEmpty ? "" : message.imageUrl));
+
+    return  Column(children: [
+      Stack(clipBehavior: Clip.none, children: [
+        Align(
+            alignment: alignment,
+            child: Container(
+                padding: Padding.small,
+                margin: margin,
+                decoration: BoxDecoration(
+                    color: message.color ?? color,
+                    borderRadius: borderRadiusCircular),
+                child: TextPrimaryHint(message.text))),
+        if (shouldShowCorner && !message.isUser)
+          Positioned(
+              top: 0,
+              left: -Size.horizontalSmall,
+              child: ClipPath(
+                  clipper: ChatCornerClipper(),
                   child: Container(
-                      padding: Padding.small,
-                      margin: margin,
-                      decoration: BoxDecoration(
-                          color: message.color ?? color,
-                          borderRadius: borderRadiusCircular),
-                      child: TextPrimaryHint(message.text))),
-              if (shouldShowCorner && !message.isUser)
-                Positioned(
-                    top: 0,
-                    left: -Size.horizontalSmall,
-                    child: ClipPath(
-                        clipper: ChatCornerClipper(),
-                        child: Container(
-                            width: cornerWidth,
-                            height: cornerHeight,
-                            color: message.color ?? color))),
-              if (shouldShowCorner && message.isUser)
-                Positioned(
-                    top: 0,
-                    right: -Size.horizontalSmall,
-                    child: Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationY(pi),
-                        child: ClipPath(
-                            clipper: ChatCornerClipper(),
-                            child: Container(
-                                width: cornerWidth,
-                                height: cornerHeight,
-                                color: color))))
-            ]),
-            if (!message.imageUrl.isNullOrEmpty) ...[
-              VerticalMediumSpace(),
-              ClipRRect(
-                  borderRadius: borderRadiusCircular,
-                  child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxHeight: .5 * Size.screenHeight),
-                      child: ChatImage(title: message.imageUrl)))
-            ]
-          ]))(
+                      width: cornerWidth,
+                      height: cornerHeight,
+                      color: message.color ?? color))),
+        if (shouldShowCorner && message.isUser)
+          Positioned(
+              top: 0,
+              right: -Size.horizontalSmall,
+              child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(pi),
+                  child: ClipPath(
+                      clipper: ChatCornerClipper(),
+                      child: Container(
+                          width: cornerWidth,
+                          height: cornerHeight,
+                          color: color))))
+      ]),
+      if (!message.imageUrl.isNullOrEmpty) ...[
+        VerticalMediumSpace(),
+        ClipRRect(
+            borderRadius: borderRadiusCircular,
+            child: ConstrainedBox(
+                constraints:
+                BoxConstraints(maxHeight: .5 * Size.screenHeight),
+                child: ChatImage(title: message.imageUrl)))
+      ]
+    ]);
+  }
+
+  )
+    (
       margin: message.isUser
           ? EdgeInsets.only(left: Size.horizontalMedium)
           : EdgeInsets.only(right: Size.horizontalMedium),
@@ -431,6 +441,7 @@ class Checkbox<Controller extends ChatController> extends GetView<Controller> {
       {ChatAnswerData answer,
       bool isSelected,
       Function(ChatAnswerData, bool) onSelected}) buildControlButton;
+
   Checkbox(
       {@required this.tag,
       @required this.buildControlButton,
@@ -497,6 +508,7 @@ class ChatCornerClipper extends CustomClipper<Path> {
 
 class ChatImage extends StatelessWidget {
   final title;
+
   ChatImage({@required this.title});
 
   @override
