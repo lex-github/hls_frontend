@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
@@ -53,61 +54,85 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
 
   // builds
 
-  Widget _buildListItem(FoodCategoryData item) => Button(
-      borderColor: Colors.disabled,
-      onPressed: () => _categoryHandler(item),
-      child: Column(children: [
-        Row(children: [
-          Image(width: Size.iconBig, title: item.imageUrl),
-          // Container(
-          //   width: Size.iconBig,
-          //   child: CachedNetworkImage(
-          //     imageUrl: item.imageUrl,
-          //     imageBuilder: (context, imageProvider) => Container(
-          //       decoration: BoxDecoration(
-          //         image: DecorationImage(
-          //             image: imageProvider,
-          //             fit: BoxFit.cover,
-          //             colorFilter: const ColorFilter.mode(
-          //                 Colors.white, BlendMode.colorBurn)),
-          //       ),
-          //     ),
-          //     placeholder: (context, url) => const CircularProgressIndicator(),
-          //     errorWidget: (context, url, error) => const Icon(Icons.error),
-          //   ),
-          // ),
+  Widget _buildListItem(FoodCategoryData item) {
+    // print("qwerty " + item.imageUrl);
 
-          HorizontalSpace(),
-          Expanded(child: TextPrimaryHint(item.title)),
-          HorizontalSpace(),
+    return Button(
+        borderColor: Colors.disabled,
+        onPressed: () => _categoryHandler(item),
+        child: Column(children: [
+          Row(children: [
+            // Image(width: Size.iconBig, title: item.imageUrl),
+            // Container(
+            //   height: Size.iconBig,
+            //   width: Size.iconBig,
+            //   child:
+            CachedNetworkImage(
+              height: Size.iconBig,
+              width: Size.iconBig,
+              imageUrl: item.imageUrl,
+              useOldImageOnUrlChange: true,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            // ),
+
+            HorizontalSpace(),
+            Expanded(child: TextPrimaryHint(item.title)),
+            HorizontalSpace(),
+            if (item.canExpand)
+              Obx(() => Transform.rotate(
+                  angle: controller.getRotationAngle(item),
+                  child: Icon(FontAwesomeIcons.chevronRight,
+                      color: Colors.disabled, size: Size.iconSmall))),
+          ]),
           if (item.canExpand)
-            Obx(() => Transform.rotate(
-                angle: controller.getRotationAngle(item),
-                child: Icon(FontAwesomeIcons.chevronRight,
-                    color: Colors.disabled, size: Size.iconSmall))),
-        ]),
-        if (item.canExpand)
-          Obx(() => SizeTransition(
-              sizeFactor: controller.getSizeFactor(item),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    VerticalSpace(),
-                    for (final subItem in item.foods)
-                      Clickable(
-                          child: Container(
-                              padding: Padding.small,
-                              child: TextPrimaryHint(subItem.title)),
-                          onPressed: () => _foodHandler(item, subItem))
-                  ])))
-      ]));
+            Obx(() => SizeTransition(
+                sizeFactor: controller.getSizeFactor(item),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      VerticalSpace(),
+                      for (final subItem in item.foods)
+                        Clickable(
+                            child: Container(
+                                padding: Padding.small,
+                                child: TextPrimaryHint(subItem.title)),
+                            onPressed: () => _foodHandler(item, subItem))
+                    ])))
+        ]));
+  }
 
   Widget _buildFoodItem(FoodData item) => Button(
       borderColor: Colors.disabled,
       onPressed: () => _foodHandler(category, item),
       child: Row(children: [
         if (!item.imageUrl.isNullOrEmpty) ...[
-          Image(width: Size.iconBig, title: item.imageUrl),
+          CachedNetworkImage(
+            height: Size.iconBig,
+            width: Size.iconBig,
+            imageUrl: item.imageUrl,
+            // cacheManager: CacheM,
+            useOldImageOnUrlChange: true,
+            imageBuilder: (_, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
           HorizontalSpace()
         ] else
           SizedBox(height: Size.iconBig),

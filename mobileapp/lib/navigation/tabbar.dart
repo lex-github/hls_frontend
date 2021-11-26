@@ -5,6 +5,7 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/auth_service.dart';
@@ -39,6 +40,8 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   Animation _centralRotationAnimation;
 
   final _controller = Get.find<TabbarController>();
+  // final _c = Get.put(StatsController());
+
   bool isSubmenuVisible;
 
   @override
@@ -154,7 +157,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
 
   Widget _buildCentralItem() => _buildCentralGroup(
       child: CircularButton(
-          onPressed: _controller.toggleSubmenu,
+          onPressed: onPressed,
           //onLongPressed: _controller.toggleSubmenu,
           child: Transform(
               alignment: Alignment.center,
@@ -189,6 +192,12 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
             color: Colors.transparent, // not clickable without color?
             padding: Padding.content,
             child: isCentral ? _buildCentralGroup(child: child) : child));
+  }
+
+  void onPressed () {
+
+    _controller.toggleSubmenu();
+    // _c.fetchData();
   }
 
   @override

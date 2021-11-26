@@ -26,7 +26,7 @@ class ExerciseResultScreen extends StatefulWidget {
 
 class _ExerciseResultScreen extends State<ExerciseResultScreen> {
   final values = Get.find<CardioSwitchController>().results;
-  final c = Get.find<StatsController>();
+  final c = Get.put(StatsController());
 
   ExerciseData get data => widget.data;
   int get average => (values.values.reduce((a, b) => a + b) / values.length).round();

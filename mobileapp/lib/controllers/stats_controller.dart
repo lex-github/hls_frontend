@@ -11,12 +11,21 @@ import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/convert.dart';
+import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/models/stats_model.dart';
 import 'package:hls/services/auth_service.dart';
-
+// enum AppState {
+//   DATA_NOT_FETCHED,
+//   FETCHING_DATA,
+//   DATA_READY,
+//   NO_DATA,
+//   AUTH_NOT_GRANTED,
+//   DATA_ADDED,
+//   DATA_NOT_ADDED,
+// }
 class StatsController extends Controller with SingleGetTickerProviderMixin {
   final String fromDate;
   final String toDate;
@@ -28,6 +37,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   }
   // fields
 
+
   final minRotationAngle = .0;
   final maxRotationAngle = pi / 2;
   final List<String> _openedItems = [];
@@ -37,6 +47,10 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   List<StatsData> stats;
   List<CalendarData> calendar;
 
+  List<HealthDataPoint> _healthDataList = [];
+  // AppState _state = AppState.DATA_NOT_FETCHED;
+  int _nofSteps = 10;
+  double _mgdl = 10.0;
 
   // StatsScheduleItem scheduleItem;
   List<StatsScheduleEatings> eatings;
@@ -66,68 +80,97 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   final _message = ''.obs;
   String get message => _message.value;
 
-  final _sleepAsleep = 0.obs;
-  int get sleepAsleep => _sleepAsleep.value;
 
-  bool get isConnected => !isAwaiting && sleepAsleep > 0;
-
-
-  final _backDuration = const Duration(minutes: 5);
+  int sleepAsleep = 0;
 
 
 
-  Future scan() async {
-    _isAwaiting.value = true;
 
-    /// you MUST request access to the data types before reading them
-    bool accessWasGranted = await health.requestAuthorization(types);
-    print('CardioMonitorController.scan accessWasGranted: $accessWasGranted');
-
-    _isAwaiting.value = false;
-
-    if (accessWasGranted) {
-      readValue();
-    } else {
-      _message.value = 'Permission not granted';
-    }
-  }
-
-  void readValue() async {
-    List<HealthDataPoint> healthData;
-
-    try {
-      final currentTime = DateTime.now();
-      final secondAgo = currentTime.subtract(_backDuration);
-
-      /// fetch new data
-      healthData =
-      await health.getHealthDataFromTypes(secondAgo, DateTime.now(), types);
-    } catch (e) {
-      print('Caught exception in getHealthDataFromTypes: $e');
-    }
-
-    /// filter out duplicates
-    healthData = HealthFactory.removeDuplicates(healthData);
-
-    /// Print the results
-    print('CardioMonitorController.health: $healthData');
-    if (healthData.length > 0) {
-      _sleepAsleep.value = healthData.last.value.toInt();
-      _message.value = '';
-      // Get.find<CardioSwitchController>().heartRate = heartRate;
-
-      // _sleepAsleep = sleepAsleep;
-    } else {
-      _sleepAsleep.value = 0;
-      _message.value = 'No heartbeat detected';
-    }
-  }
 
 
 
 
 
   // methods
+
+  // Future addData() async {
+  //   HealthFactory health = HealthFactory();
+  //
+  //   final time = DateTime.now();
+  //   final ago = time.add(Duration(minutes: -5));
+  //
+  //   _nofSteps = Random().nextInt(10);
+  //   _mgdl = Random().nextInt(10) * 1.0;
+  //   bool success = await health.writeHealthData(
+  //       _nofSteps.toDouble(), HealthDataType.STEPS, ago, time);
+  //
+  //   if (success) {
+  //     success = await health.writeHealthData(
+  //         _mgdl, HealthDataType.BLOOD_GLUCOSE, time, time);
+  //   }
+  //
+  //   setState(() {
+  //     _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
+  //   });
+  // }
+
+  /// Fetch data from the healt plugin and print it
+  Future fetchData() async {
+    // get everything from midnight until now
+    DateTime startDate = DateTime.now().subtract(1.days);
+    DateTime endDate = DateTime.now();
+
+    HealthFactory health = HealthFactory();
+
+    // define the types to get
+    List<HealthDataType> types = [
+      HealthDataType.SLEEP_ASLEEP,
+      // HealthDataType.WEIGHT,
+      // HealthDataType.HEIGHT,
+      // HealthDataType.BLOOD_GLUCOSE,
+      // Uncomment this line on iOS. This type is supported ONLY on Android!
+      // HealthDataType.DISTANCE_WALKING_RUNNING,
+    ];
+
+     // _state = AppState.FETCHING_DATA;
+
+    // you MUST request access to the data types before reading them
+    bool accessWasGranted = await health.requestAuthorization(types);
+
+
+    if (accessWasGranted) {
+      try {
+        // fetch new data
+        List<HealthDataPoint> healthData =
+        await health.getHealthDataFromTypes(startDate, endDate, types);
+
+        // save all the new data points
+        _healthDataList.addAll(healthData);
+      } catch (e) {
+        print("Caught exception in getHealthDataFromTypes: $e");
+      }
+
+      // filter out duplicates
+      _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+
+      // print the results
+      _healthDataList.forEach((x) {
+        print("Data point: $x");
+        sleepAsleep += x.value.round();
+      });
+
+      // print("Steps: $steps");
+
+      // update the UI to display the results
+      // setState(() {
+      //   _state =
+      //   _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+      // });
+    } else {
+      print("Authorization not granted");
+      // setState(() => _state = AppState.DATA_NOT_FETCHED);
+    }
+  }
 
   // String getTitle(int index) => list.keys.toList(growable: false)[index];
 
@@ -210,7 +253,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   @override
   void onInit() async {
-    scan();
+    await fetchData();
     await getCalendar();
     await getSchedule();
     // await getEat();
@@ -251,3 +294,4 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     return result != null;
   }
 }
+
