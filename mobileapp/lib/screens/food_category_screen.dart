@@ -71,7 +71,6 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
               height: Size.iconBig,
               width: Size.iconBig,
               imageUrl: item.imageUrl,
-              useOldImageOnUrlChange: true,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -121,7 +120,6 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
             width: Size.iconBig,
             imageUrl: item.imageUrl,
             // cacheManager: CacheM,
-            useOldImageOnUrlChange: true,
             imageBuilder: (_, imageProvider) => Container(
               decoration: BoxDecoration(
                 image: DecorationImage(

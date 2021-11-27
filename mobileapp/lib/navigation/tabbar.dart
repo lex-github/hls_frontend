@@ -5,6 +5,7 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/health_controller.dart';
 import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -40,7 +41,7 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   Animation _centralRotationAnimation;
 
   final _controller = Get.find<TabbarController>();
-  // final _c = Get.put(StatsController());
+  final _c = Get.put(HealthController());
 
   bool isSubmenuVisible;
 

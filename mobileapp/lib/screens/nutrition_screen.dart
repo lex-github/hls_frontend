@@ -90,10 +90,14 @@ class NutritionScreen<Controller extends NutritionController> extends GetView<Co
   // Widget _buildFilterItem({String title}) =>
   //     Button(borderColor: Colors.disabled, child: TextSecondary(title));
 
-  Widget _buildCategoryListItem(FoodCategoryData item) => ListItemButton(
-      imageTitle: item.imageUrl,
-      title: item.title,
-      onPressed: () => _categoryHandler(item));
+  Widget _buildCategoryListItem(FoodCategoryData item) {
+
+    print("lalalaal " + item.imageUrl);
+    return ListItemButton(
+        imageTitle: item.imageUrl,
+        title: item.title,
+        onPressed: () => _categoryHandler(item));
+  }
 
   Widget _buildFoodListItem(FoodData item) => ListItemFoodButton(
       item: item,

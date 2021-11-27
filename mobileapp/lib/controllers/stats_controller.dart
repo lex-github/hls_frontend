@@ -115,62 +115,62 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   // }
 
   /// Fetch data from the healt plugin and print it
-  Future fetchData() async {
-    // get everything from midnight until now
-    DateTime startDate = DateTime.now().subtract(1.days);
-    DateTime endDate = DateTime.now();
-
-    HealthFactory health = HealthFactory();
-
-    // define the types to get
-    List<HealthDataType> types = [
-      HealthDataType.SLEEP_ASLEEP,
-      // HealthDataType.WEIGHT,
-      // HealthDataType.HEIGHT,
-      // HealthDataType.BLOOD_GLUCOSE,
-      // Uncomment this line on iOS. This type is supported ONLY on Android!
-      // HealthDataType.DISTANCE_WALKING_RUNNING,
-    ];
-
-     // _state = AppState.FETCHING_DATA;
-
-    // you MUST request access to the data types before reading them
-    bool accessWasGranted = await health.requestAuthorization(types);
-
-
-    if (accessWasGranted) {
-      try {
-        // fetch new data
-        List<HealthDataPoint> healthData =
-        await health.getHealthDataFromTypes(startDate, endDate, types);
-
-        // save all the new data points
-        _healthDataList.addAll(healthData);
-      } catch (e) {
-        print("Caught exception in getHealthDataFromTypes: $e");
-      }
-
-      // filter out duplicates
-      _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
-
-      // print the results
-      _healthDataList.forEach((x) {
-        print("Data point: $x");
-        sleepAsleep += x.value.round();
-      });
-
-      // print("Steps: $steps");
-
-      // update the UI to display the results
-      // setState(() {
-      //   _state =
-      //   _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
-      // });
-    } else {
-      print("Authorization not granted");
-      // setState(() => _state = AppState.DATA_NOT_FETCHED);
-    }
-  }
+  // Future fetchData() async {
+  //   // get everything from midnight until now
+  //   DateTime startDate = DateTime.now().subtract(1.days);
+  //   DateTime endDate = DateTime.now();
+  //
+  //   HealthFactory health = HealthFactory();
+  //
+  //   // define the types to get
+  //   List<HealthDataType> types = [
+  //     HealthDataType.SLEEP_ASLEEP,
+  //     // HealthDataType.WEIGHT,
+  //     // HealthDataType.HEIGHT,
+  //     // HealthDataType.BLOOD_GLUCOSE,
+  //     // Uncomment this line on iOS. This type is supported ONLY on Android!
+  //     // HealthDataType.DISTANCE_WALKING_RUNNING,
+  //   ];
+  //
+  //    // _state = AppState.FETCHING_DATA;
+  //
+  //   // you MUST request access to the data types before reading them
+  //   bool accessWasGranted = await health.requestAuthorization(types);
+  //
+  //
+  //   if (accessWasGranted) {
+  //     try {
+  //       // fetch new data
+  //       List<HealthDataPoint> healthData =
+  //       await health.getHealthDataFromTypes(startDate, endDate, types);
+  //
+  //       // save all the new data points
+  //       _healthDataList.addAll(healthData);
+  //     } catch (e) {
+  //       print("Caught exception in getHealthDataFromTypes: $e");
+  //     }
+  //
+  //     // filter out duplicates
+  //     _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+  //
+  //     // print the results
+  //     _healthDataList.forEach((x) {
+  //       print("Data point: $x");
+  //       sleepAsleep += x.value.round();
+  //     });
+  //
+  //     // print("Steps: $steps");
+  //
+  //     // update the UI to display the results
+  //     // setState(() {
+  //     //   _state =
+  //     //   _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+  //     // });
+  //   } else {
+  //     print("Authorization not granted");
+  //     // setState(() => _state = AppState.DATA_NOT_FETCHED);
+  //   }
+  // }
 
   // String getTitle(int index) => list.keys.toList(growable: false)[index];
 
@@ -253,10 +253,9 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   @override
   void onInit() async {
-    await fetchData();
+    // await fetchData();
     await getCalendar();
     await getSchedule();
-    // await getEat();
     super.onInit();
   }
 

@@ -208,7 +208,8 @@ class FoodFilterScreen extends GetView<FoodFilterController> {
 
   Widget _buildBody() => controller.isInit
       ? !controller.sections.isNullOrEmpty
-          ? ListView.builder(
+          ?
+  ListView.builder(
               padding: EdgeInsets.fromLTRB(Size.horizontal, Size.verticalBig,
                   Size.horizontal, Size.vertical),
               itemCount: controller.sections.length * 2 - 1,

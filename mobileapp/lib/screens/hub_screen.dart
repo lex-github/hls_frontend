@@ -15,6 +15,7 @@ import 'package:hls/components/painters.dart';
 import 'package:hls/constants/api.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/health_controller.dart';
 import 'package:hls/controllers/post_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/iterables.dart';
