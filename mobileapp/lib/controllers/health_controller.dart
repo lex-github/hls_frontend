@@ -80,7 +80,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   int steps = 0;
   int sleepAsleep = 0;
   DateTime sleepInBed;
-  DateTime sleepAwake;
+  int sleepAwake;
 
 
   // methods
@@ -151,10 +151,10 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
         steps += x.value;
         sleepAsleep += x.value;
         sleepInBed = x.dateFrom;
-        sleepAwake = x.dateTo;
+        sleepAwake = x.value;
       });
       var dt = DateTime.fromMillisecondsSinceEpoch(sleepAsleep);
-      var aSleep = DateFormat('HH:mm').format(dt);
+      var aSleep = DateFormat("YYYY-MM-DD").format(dt);
 
       if (steps != 0
       ) {
@@ -176,9 +176,9 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
 
     final response = await mutation(schedulesCreateMutation, parameters: {
       if (sleepAsleep != null)
-        'asleepTime': dateToString(date: sleepAsleep, output: dateTime),
+        'asleepTime': dateToString(date: sleepAsleep/60, output: dateTime),
       if (sleepAwake != null)
-        'wakeupTime': dateToString(date: sleepAwake, output: dateTime),
+        'wakeupTime': dateToString(date: sleepAwake/60, output: dateTime),
       // if (trainingTime != null)
       //   'trainingTime': dateToString(date: trainingTime, output: dateTime)
     });

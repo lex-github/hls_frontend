@@ -10,6 +10,7 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
   return StatsData()
     // ..date = json['scheduleDate'] as String
     ..asleepTime = json['yesterdayAsleepTime'] as String
+    ..sleepDuration = json['sleepDuration'] as int
     // ..daily =
     //     StatsDailyRating.fromJson(json['dailyRating'] as Map<String, dynamic>)
     ..eatings = (json['scheduleEatings'] as List<dynamic>)
@@ -25,6 +26,7 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$StatsDataToJson(StatsData instance) => <String, dynamic>{
       // 'scheduleDate': instance.date,
       'yesterdayAsleepTime': instance.asleepTime,
+      'sleepDuration': instance.sleepDuration,
       // 'dailyRating': instance.daily,
       'scheduleEatings': instance.eatings,
     };

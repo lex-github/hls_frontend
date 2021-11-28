@@ -62,12 +62,11 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
 
                   asleepTime: index == null
                       ? "00 ч 00 мин"
-                      : controller.stats[index].asleepTime
-                              .replaceAll(':', ' ч ') +
-                          " мин",
+                      : controller.stats[index].sleepDuration.toString() +
+                          " ч 00 мин",
                   value: index == null
                       ? 0
-                      : controller.calendar[index].daily.schedule / 100),
+                      : controller.stats[index].sleepDuration > 8 ? 1 : controller.calendar[index].daily.schedule / 100),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -12,8 +12,10 @@ import 'package:image_picker/image_picker.dart';
 class ProfileFormController extends FormController {
   UserData get profile => AuthService.i.profile;
 
+
   @override
   List<FormConfig> get config => [
+
         FormConfig(field: 'name', label: nameProfileLabel, value: profile.name),
         FormConfig(
             field: 'birthDate',

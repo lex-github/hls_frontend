@@ -11,6 +11,8 @@ class StatsData extends GenericData {
   // String date;
   @JsonKey(name: 'yesterdayAsleepTime')
   String asleepTime;
+  @JsonKey(name: 'sleepDuration')
+  int sleepDuration;
   // @JsonKey(name: 'dailyRating')
   // StatsDailyRating daily;
   @JsonKey(name: 'foodRating')
