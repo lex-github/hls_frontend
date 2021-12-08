@@ -11,12 +11,12 @@ import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/convert.dart';
-import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/food_model.dart';
 import 'package:hls/models/stats_model.dart';
 import 'package:hls/services/auth_service.dart';
+
 // enum AppState {
 //   DATA_NOT_FETCHED,
 //   FETCHING_DATA,
@@ -35,8 +35,8 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value);
   }
-  // fields
 
+  // fields
 
   final minRotationAngle = .0;
   final maxRotationAngle = pi / 2;
@@ -48,6 +48,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   List<CalendarData> calendar;
 
   List<HealthDataPoint> _healthDataList = [];
+
   // AppState _state = AppState.DATA_NOT_FETCHED;
   int _nofSteps = 10;
   double _mgdl = 10.0;
@@ -56,6 +57,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   List<StatsScheduleEatings> eatings;
   List<StatsScheduleComponents> components;
   FoodData item;
+  bool d;
 
   List items;
   Map res;
@@ -75,21 +77,14 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   final List<HealthDataType> types = [HealthDataType.SLEEP_ASLEEP];
 
   final _isAwaiting = false.obs;
+
   bool get isAwaiting => _isAwaiting.value;
 
   final _message = ''.obs;
+
   String get message => _message.value;
 
-
   int sleepAsleep = 0;
-
-
-
-
-
-
-
-
 
   // methods
 
@@ -113,6 +108,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   //     _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
   //   });
   // }
+
 
   /// Fetch data from the healt plugin and print it
   // Future fetchData() async {
@@ -209,26 +205,24 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
         .toList(growable: false);
 
     update();
-
   }
 
   Future getSchedule() async {
-      final responseStats = await query(
-        schedules,
-        parameters: {
-          'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-          'toDate': dateToString(date: toDate, output: dateInternalFormat),
-        },
-        fetchPolicy: FetchPolicy.cacheFirst,
-      );
+    final responseStats = await query(
+      schedules,
+      parameters: {
+        'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+        'toDate': dateToString(date: toDate, output: dateInternalFormat),
+      },
+      fetchPolicy: FetchPolicy.cacheFirst,
+    );
 
-      stats = responseStats
-          .get<List>('schedules')
-          .map((x) => StatsData.fromJson(x))
-          .toList(growable: false);
+    stats = responseStats
+        .get<List>('schedules')
+        .map((x) => StatsData.fromJson(x))
+        .toList(growable: false);
 
     update();
-
   }
 
   Animation<double> getSizeFactor(String title) =>
@@ -242,6 +236,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     if (isOpened(title)) {
       _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
+      d = false;
     } else {
       _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);
@@ -250,15 +245,14 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     //update();
   }
 
-
   @override
   void onInit() async {
+    d = true;
     // await fetchData();
     await getCalendar();
     await getSchedule();
     super.onInit();
   }
-
 
   @override
   onClose() {
@@ -293,4 +287,3 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     return result != null;
   }
 }
-

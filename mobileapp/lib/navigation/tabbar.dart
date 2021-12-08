@@ -3,10 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/health_controller.dart';
 import 'package:hls/controllers/stats_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/auth_service.dart';
@@ -41,7 +43,6 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   Animation _centralRotationAnimation;
 
   final _controller = Get.find<TabbarController>();
-  final _c = Get.put(HealthController());
 
   bool isSubmenuVisible;
 
@@ -196,11 +197,17 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   }
 
   void onPressed () {
-
     _controller.toggleSubmenu();
+    // _timerHandler();
     // _c.fetchData();
   }
+  _timerHandler() async {
+    final result = await Get.toNamed(timerRoute);
+    print('ChatScreen._timerHandler result: $result');
+    if (result == null) return;
 
+    // controller.post(result);
+  }
   @override
   Widget build(BuildContext context) => SafeArea(
       child: isSubmenuVisible

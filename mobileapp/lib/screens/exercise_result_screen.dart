@@ -26,7 +26,8 @@ class ExerciseResultScreen extends StatefulWidget {
 
 class _ExerciseResultScreen extends State<ExerciseResultScreen> {
   final values = Get.find<CardioSwitchController>().results;
-  final c = Get.put(StatsController());
+  final c = Get.put(StatsController(fromDate: DateTime.now().toString(),
+      toDate: DateTime.now().toString()));
 
   ExerciseData get data => widget.data;
   int get average => (values.values.reduce((a, b) => a + b) / values.length).round();
@@ -103,15 +104,18 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
           Button(
               background: Colors.primary,
               title: exerciseResultButtonTitle,
-              onPressed: () =>   findLoop,
+              onPressed: () =>   findLoop(),
           )
         ])
       ]));
   void findLoop() {
+
     for (var i = 0; i < c.calendar.length; i++) {
       if (c.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
-        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': dateToString(date: DateTime.now(), output: dateInternalFormat)});
+        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
       }
+      // Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
+
     }
   }
 }

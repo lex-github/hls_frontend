@@ -13,8 +13,10 @@ class StatsData extends GenericData {
   String asleepTime;
   @JsonKey(name: 'sleepDuration')
   int sleepDuration;
-  // @JsonKey(name: 'dailyRating')
-  // StatsDailyRating daily;
+  @JsonKey(name: 'sleepReport')
+  List<Object> sleepReport;
+  @JsonKey(name: 'activityRating')
+  StatsActivityRating activityRating;
   @JsonKey(name: 'foodRating')
   StatsFoodRating foodRating;
   @JsonKey(name: 'scheduleEatings')
@@ -40,34 +42,35 @@ class StatsData extends GenericData {
   @override
   String toString() => 'asleepTime('
       '\n\tasleepTime: $asleepTime'
+      '\n\tsleepReport: $sleepReport'
       ')';
 }
 
-// @JsonSerializable(includeIfNull: false)
-// class StatsDailyRating {
-//   @JsonKey(name: 'mode')
-//   double schedule;
-//   @JsonKey(name: 'activity')
-//   double exercise;
-//   @JsonKey(name: 'eating')
-//   double nutrition;
-//
-//
-//   StatsDailyRating();
-//
-//   // getters
-//
-//   factory StatsDailyRating.fromJson(Map<String, dynamic> json) =>
-//       _$StatsDailyRatingFromJson(json);
-//   Map<String, dynamic> toJson() => _$StatsDailyRatingToJson(this);
-//
-//   @override
-//   String toString() => 'StatsDailyRating('
-//       '\n\tschedule: $schedule'
-//       '\n\texercise: $exercise'
-//       '\n\tnutrition: $nutrition'
-//       ')';
-// }
+@JsonSerializable(includeIfNull: false)
+class StatsActivityRating {
+  @JsonKey(name: 'activeLeisureRating')
+  double activeLeisureRating;
+  @JsonKey(name: 'motionRating')
+  double motionRating;
+  @JsonKey(name: 'trainingRating')
+  double trainingRating;
+
+
+  StatsActivityRating();
+
+  // getters
+
+  factory StatsActivityRating.fromJson(Map<String, dynamic> json) =>
+      _$StatsActivityRatingFromJson(json);
+  Map<String, dynamic> toJson() => _$StatsActivityRatingToJson(this);
+
+  @override
+  String toString() => 'StatsActivityRating('
+      '\n\tactiveLeisureRating: $activeLeisureRating'
+      '\n\tmotionRating: $motionRating'
+      '\n\ttrainingRating: $trainingRating'
+      ')';
+}
 
 @JsonSerializable(includeIfNull: false)
 class StatsFoodRating {
@@ -207,6 +210,10 @@ class StatsScheduleEatings{
 class StatsScheduleTrainings{
   @JsonKey(name: 'training')
   StatsTraining training;
+  @JsonKey(name: 'inputType')
+  String inputType;
+  @JsonKey(name: 'inputValue')
+  double inputValue;
 
 
 
@@ -221,12 +228,10 @@ class StatsScheduleTrainings{
       _$StatsScheduleTrainingsFromJson(json);
   Map<String, dynamic> toJson() => _$StatsScheduleTrainingsToJson(this);
 
-  // @override
-  // String toString() => 'StatsDailyRating('
-  //     '\n\tschedule: $schedule'
-  //     '\n\texercise: $exercise'
-  //     '\n\tnutrition: $nutrition'
-  //     ')';
+  @override
+  String toString() => 'StatsScheduleTrainings('
+      '\n\tinputValue: $inputValue'
+      ')';
 }
 
 

@@ -161,7 +161,7 @@ class CardioInputType extends GenericEnum<int> {
   static const MONITOR =
       CardioInputType(value: 2, title: cardioInputTypeMonitorTitle);
   static const HEALTH =
-      CardioInputType(value: 3, title: cardioInputTypeHealthTitle);
+      CardioInputType(value: 3, title: cardioInputAppleHealthTitle);
 
   static const values = [MONITOR, HEALTH, MANUAL];
 

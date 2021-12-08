@@ -111,10 +111,11 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
   void findLoop(DateTime day) {
     for (var i = 0; i < controller.calendar.length; i++) {
       if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
+        Get.find<StatsController>().getSchedule();
         Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
       }
     }
-
+    Get.find<StatsController>().getSchedule();
     Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
   }
 

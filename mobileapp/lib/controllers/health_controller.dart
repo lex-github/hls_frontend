@@ -11,6 +11,7 @@ import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/enums.dart';
@@ -22,6 +23,7 @@ import 'package:hls/models/schedule_model.dart';
 import 'package:hls/models/stats_model.dart';
 import 'package:hls/services/auth_service.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // enum AppState {
 //   DATA_NOT_FETCHED,
@@ -78,10 +80,29 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
 
 
   int steps = 0;
-  int sleepAsleep = 0;
+  DateTime sleepFrom;
   DateTime sleepInBed;
-  int sleepAwake;
+  DateTime sleepTo;
+  int sleepDuration = 0;
+  bool isUpdated = false;
+  final scheduleId = AuthService.i.profile.schedule?.id;
 
+  void checkDay() async {
+    //checking current date
+    final currentdate = new DateTime.now().day;
+    //you need to import this Shared preferences plugin
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //getting last date
+    int lastDay = (prefs.getInt('day') ?? 0);
+
+    //check is code already display or not
+    if(currentdate!=lastDay){
+      await prefs.setInt('day', currentdate);
+      //your code will run once in day
+isUpdated = true;
+    }
+
+  }
 
   // methods
 
@@ -118,7 +139,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     List<HealthDataType> types = [
       HealthDataType.STEPS,
       HealthDataType.SLEEP_ASLEEP,
-      HealthDataType.SLEEP_IN_BED,
+      // HealthDataType.SLEEP_IN_BED,
       HealthDataType.SLEEP_AWAKE,
       // HealthDataType.BLOOD_GLUCOSE,
       // Uncomment this line on iOS. This type is supported ONLY on Android!
@@ -147,25 +168,40 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
       _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
 
       // print the results
-      _healthDataList.forEach((x) {
-        steps += x.value;
-        sleepAsleep += x.value;
-        sleepInBed = x.dateFrom;
-        sleepAwake = x.value;
-      });
-      var dt = DateTime.fromMillisecondsSinceEpoch(sleepAsleep);
-      var aSleep = DateFormat("YYYY-MM-DD").format(dt);
+      // _healthDataList.forEach((x) {
+      //   steps += x.value;
+      //   // sleepAsleep += x.value;
+      //   // sleepInBed = x.dateFrom;
+      //   // sleepAwake = x.value;
+      // });
 
-      if (steps != 0
+      for(int i = 0; i < _healthDataList.length; i++){
+        if (_healthDataList[i].typeString == "SLEEP_ASLEEP") {
+          sleepFrom = _healthDataList[i].dateFrom;
+          sleepTo = _healthDataList[i].dateTo;
+          sleepDuration = _healthDataList[i].value.toInt();
+        }
+        if (_healthDataList[i].typeString == "STEPS") {
+          steps = _healthDataList[i].value.toInt();
+        }
+      }
+
+      print("steps " + steps.toString());
+      print("sleepFrom " + sleepFrom.toString());
+      print("sleepTo " + sleepTo.toString());
+      print("sleepDuration " + (sleepDuration/60).toString());
+
+      if (steps != 0 && isUpdated
       ) {
         addSteps();
       }
-      if (sleepAsleep != 0
+      if (sleepFrom != 0 && sleepTo != 0
       ) {
         await addSchedule();
       }
     } else {
-    print("Authorization not granted");
+
+    // print("steps " + steps.toString());
     // setState(() => _state = AppState.DATA_NOT_FETCHED);
     }
   }
@@ -175,10 +211,11 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     // if (!canRequestSchedule) return false;
 
     final response = await mutation(schedulesCreateMutation, parameters: {
-      if (sleepAsleep != null)
-        'asleepTime': dateToString(date: sleepAsleep/60, output: dateTime),
-      if (sleepAwake != null)
-        'wakeupTime': dateToString(date: sleepAwake/60, output: dateTime),
+      if (sleepFrom != null)
+        'asleepTime': dateToString(date: sleepFrom, output: dateTime),
+
+      if (sleepTo != null)
+        'wakeupTime': dateToString(date: sleepTo, output: dateTime),
       // if (trainingTime != null)
       //   'trainingTime': dateToString(date: trainingTime, output: dateTime)
     });
@@ -230,6 +267,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
 
   @override
   void onInit() async {
+    checkDay();
     await fetchData();
     super.onInit();
   }
@@ -252,7 +290,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     // if (value == null) return showConfirm(title: exerciseNeedValueText);
 
     final result = await exercise(
-        scheduleId: scheduleId, exerciseId: 1, type: "DURATION", value: steps);
+        scheduleId: scheduleId, exerciseId: 1, type: "QUANTITY", value: 1000);
 
     print('ExerciseScreen._addHandler result: $result');
 

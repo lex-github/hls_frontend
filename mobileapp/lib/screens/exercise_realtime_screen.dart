@@ -161,7 +161,7 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                                   size: Size.fontSmall)),
                           VerticalSpace()
                         ],
-                        if (!item.rateChecks.isNullOrEmpty) ...[
+                        // if (!item.rateChecks.isNullOrEmpty) ...[
                           //CardioMonitor(rateChecks: item.rateChecks),
                           _buildBlock(
                               child: CardioSwitch(rateChecks: item.rateChecks)),
@@ -173,8 +173,8 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                                     background: Colors.primary,
                                     title: exerciseStartTitle,
                                     onPressed: () async {
-                                      if (item.videoUrl.isNullOrEmpty)
-                                        return showConfirm(title: noDataText);
+                                      // if (item.videoUrl.isNullOrEmpty)
+                                      //   return showConfirm(title: noDataText);
 
                                       // final controller =
                                       //     Get.find<VideoScreenController>();
@@ -189,8 +189,8 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                                       Get.toNamed(exerciseVideoRoute,
                                           arguments: item);
                                     })
-                              ])
-                        ],
+                              ]),
+                        // ],
                         VerticalSpace(),
                         _buildBlock(child: StatusBlock()),
                         if (!item.pulse.isNullOrEmpty) ...[

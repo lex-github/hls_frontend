@@ -24,13 +24,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  # stopwatch
+  stop_watch_timer:
   # resize text based on available space
   auto_size_text: ^3.0.0-nullsafety.0
   # cached images
   cached_network_image: ^3.0.0
   # analytics
   # firebase_analytics: ^7.1.1
+  #  google sign-in
+  google_sign_in:
+  #  auth for apple & google
+  firebase_auth:
   # bluetooth for cardio monitor
   flutter_blue: ^0.8.0
   # date picker
@@ -94,6 +99,8 @@ dependencies:
   # prevents screen from sleeping
   wakelock: ^0.5.2
   # window size for desktop
+  #  save data to storage
+  shared_preferences: ^2.0.9
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git

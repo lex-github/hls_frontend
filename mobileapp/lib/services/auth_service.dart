@@ -10,6 +10,8 @@ import 'package:hls/constants/api.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/health_controller.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/notifications.dart';
@@ -80,9 +82,13 @@ class AuthService extends GraphqlService {
       // print('AuthService.onInit.ever '
       //   '\n\tprofile: $profile'
       //   '\n\tisAuthenticated: $isAuthenticated');
-      if (isAuthenticated && routes.contains(Get.currentRoute))
+      if (isAuthenticated && routes.contains(Get.currentRoute)){
+        final _c = Get.put(HealthController());
+
         Get.until(
-            (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
+                (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
+      }
+
       //{ print('AuthService.onInit.ever'); Get.offAllNamed(homeRoute); }
       else if (isInit && !routes.contains(Get.currentRoute))
         Get.toNamed(routes.first);
@@ -155,31 +161,31 @@ class AuthService extends GraphqlService {
     return data?.get(['authSendOtp', 'status']) == 'ok';
   }
 
-  Future<dynamic> getSchedule({DateTime fromDate, DateTime toDate}) async {
-    // if (!canRequestSchedule) return false;
-
-    final response = await query(schedules,
-        parameters: {
-      'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-      'toDate': dateToString(date: toDate, output: dateInternalFormat),
-    }
-    );
-
-    // if (response == null) return false;
-
-    final result = response.get(['scheduleDate', 'dailyRating']);
-    // if (result == null) return false;
-
-    // print('"RESULT" $result');
-    // print('"RESPONSE" $response');
-    // final schedule = ScheduleData.fromJson(result);
-    // AuthService.i.profile.schedule = schedule;
-    //
-    // _dayItems.assignAll(schedule.items);
-    //
-    // return !_dayItems.isNullOrEmpty;
-    return result;
-  }
+  // Future<dynamic> getSchedule({DateTime fromDate, DateTime toDate}) async {
+  //   // if (!canRequestSchedule) return false;
+  //
+  //   final response = await query(schedules,
+  //       parameters: {
+  //     'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+  //     'toDate': dateToString(date: toDate, output: dateInternalFormat),
+  //   }
+  //   );
+  //
+  //   // if (response == null) return false;
+  //
+  //   final result = response.get(['scheduleDate', 'dailyRating']);
+  //   // if (result == null) return false;
+  //
+  //   // print('"RESULT" $result');
+  //   // print('"RESPONSE" $response');
+  //   // final schedule = ScheduleData.fromJson(result);
+  //   // AuthService.i.profile.schedule = schedule;
+  //   //
+  //   // _dayItems.assignAll(schedule.items);
+  //   //
+  //   // return !_dayItems.isNullOrEmpty;
+  //   return result;
+  // }
 
 
   Future<bool> otpVerify({String phone, String code}) async {

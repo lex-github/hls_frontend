@@ -2,8 +2,11 @@ import 'package:flutter/material.dart'
     hide Colors, Icon, Image, Padding, Size, TextStyle;
 import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
+import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
+import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/stats_controller.dart';
+import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/screens/stats/active_tab.dart';
 import 'package:hls/screens/stats/diet_tab.dart';

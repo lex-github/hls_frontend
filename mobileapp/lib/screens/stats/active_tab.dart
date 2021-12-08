@@ -81,17 +81,11 @@ class ActiveTab<Controller extends StatsController>
                                       2
                                   ? TextSecondary(controller
                                       .stats[index]
-                                      .scheduleTrainings[i]
-                                      .training
-                                      .inputData[2]
-                                      .step
+                                      .scheduleTrainings[i].inputValue
                                       .toString())
                                   : TextSecondary(controller
                                       .stats[index]
-                                      .scheduleTrainings[i]
-                                      .training
-                                      .inputData[0]
-                                      .step
+                                      .scheduleTrainings[i].inputValue
                                       .toString()),
                               HorizontalSmallSpace(),
                               controller.stats[index].scheduleTrainings[i]
@@ -151,72 +145,21 @@ class ActiveTab<Controller extends StatsController>
           double additional = 0;
           int count = 0;
 
-
-
-          if (controller.stats[index].scheduleTrainings.length != null) {
-            for (int j = 0;
-                j < controller.stats[index].scheduleTrainings.length;
-                j++) {
-              if (controller.stats[index].scheduleTrainings[j].training
-                  .trainingCategory.title.isNotEmpty) {
-                if (controller.stats[index].scheduleTrainings[j].training
-                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
-                        .trainingCategory.title ==
-                    "Моцион") {
-                  count++;
-                  for(int i = 0; i < controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
-                    mocion = mocion + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[i].max)*100;
-                  }
-                }
-                if (controller.stats[index].scheduleTrainings[j].training
-                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
-                        .trainingCategory.title ==
-                    "Тренировки со снарядами") {
-                  count++;
-                  for(int i = 0; i < controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
-                    training = training + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[i].max)*100;
-                  }
-                }
-                //
-                // if(controller.stats[index].scheduleTrainings[j].training
-                //     .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
-                //     .trainingCategory.title != "Моцион" && controller.stats[index].scheduleTrainings[j].training
-                //     .trainingCategory.title != "Тренировки со снарядами"){
-                //s
-
-
-                if (controller.stats[index].scheduleTrainings[j].training
-                    .trainingCategory.title.isNotEmpty && controller.stats[index].scheduleTrainings[j].training
-                    .trainingCategory.title !=
-                    "Тренировки со снарядами" && controller.stats[index].scheduleTrainings[j].training
-                    .trainingCategory.title !=
-                    "Моцион") {
-                  for(int i = 0; i < controller.stats[index].scheduleTrainings[j].training.inputData.length; i++){
-
-                    additional = additional + (controller.stats[index].scheduleTrainings[j].training.inputData[i].step/controller.stats[index].scheduleTrainings[j].training.inputData[0].max)*100;
-
-
-
-
-
-                  }
-                }
-
-
-                // }
-
-                print(additional.toString());
-
-
-
-                // training[c] = j;
-                // c++;
-              }
-            }
+          if (index != null && controller.stats[index].activityRating != null) {
+            mocion = controller.stats[index].activityRating.motionRating;
+            training = controller.stats[index].activityRating.trainingRating;
+            additional =
+                controller.stats[index].activityRating.activeLeisureRating;
           }
+
           return Column(
             children: [
-              StatsCell(diameter: diameter, width: Size.horizontalTiny, mocion: mocion, training: training, additional: additional),
+              StatsCell(
+                  diameter: diameter,
+                  width: Size.horizontalTiny,
+                  mocion: mocion,
+                  training: training,
+                  additional: additional),
               VerticalSpace(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,65 +205,73 @@ class ActiveTab<Controller extends StatsController>
       );
 
   @override
-  Widget build(_) =>       index == null || controller.stats[index].scheduleTrainings.isEmpty ? Nothing() :
-  GetBuilder<StatsController>(builder: (_) {
-        int c = 0;
-        var training = List<int>.filled(
-            controller.stats[index].scheduleTrainings.length, 0);
-
-        if (controller.stats[index].scheduleTrainings.length != null) {
-          for (int j = 0;
-              j < controller.stats[index].scheduleTrainings.length;
-              j++) {
-            if (controller.stats[index].scheduleTrainings[j].training
-                .trainingCategory.title.isNotEmpty) {
-              training[c] = j;
-              c++;
-            }
-          }
-        }
-
-        return Container(
-          padding: EdgeInsets.all(Size.horizontalBig),
-          color: Colors.background,
-          child: SingleChildScrollView(
-            child: Column(
+  Widget build(_) =>
+      index == null || controller.stats[index].scheduleTrainings.isEmpty
+          ? Column(
               children: [
-                _buildStatsContainer(),
                 VerticalSpace(),
-
-                Container(
-                  width: width,
-                  height: height * (c / 2),
-                  child: ListView.builder(
-                      itemCount: c,
-                      itemBuilder: (_, index) {
-                        final i = training[index];
-
-                        return Container(
-                          padding: EdgeInsets.symmetric(vertical: Size.horizontal * 0.5),
-                          child: _buildButton(i),
-                        );
-                      }),
-                ),
-
-                // VerticalSpace(),
-                // _buildButton(
-                //     title: "С гантелями",
-                //     count: "0,2 ч",
-                //     isButton: true,
-                //     icon: Icons.bookmark),
-                // VerticalSpace(),
-                // _buildButton(
-                //     title: "Зарядка",
-                //     count: "0,2 ч",
-                //     isButton: false,
-                //     icon: Icons.assignment_ind_outlined),
+                _buildStatsContainer(),
               ],
-            ),
-          ),
-        );
-      });
+            )
+          : GetBuilder<StatsController>(builder: (_) {
+              int c = 0;
+              var training = List<int>.filled(
+                  controller.stats[index].scheduleTrainings.length, 0);
+
+              if (controller.stats[index].scheduleTrainings.length != null) {
+                for (int j = 0;
+                    j < controller.stats[index].scheduleTrainings.length;
+                    j++) {
+                  if (controller.stats[index].scheduleTrainings[j].training
+                      .trainingCategory.title.isNotEmpty) {
+                    training[c] = j;
+                    c++;
+                  }
+                }
+              }
+
+              return Container(
+                padding: EdgeInsets.all(Size.horizontalBig),
+                color: Colors.background,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildStatsContainer(),
+                      VerticalSpace(),
+
+                      Container(
+                        width: width,
+                        height: height * (c / 2),
+                        child: ListView.builder(
+                            itemCount: c,
+                            itemBuilder: (_, index) {
+                              final i = training[index];
+
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Size.horizontal * 0.5),
+                                child: _buildButton(i),
+                              );
+                            }),
+                      ),
+
+                      // VerticalSpace(),
+                      // _buildButton(
+                      //     title: "С гантелями",
+                      //     count: "0,2 ч",
+                      //     isButton: true,
+                      //     icon: Icons.bookmark),
+                      // VerticalSpace(),
+                      // _buildButton(
+                      //     title: "Зарядка",
+                      //     count: "0,2 ч",
+                      //     isButton: false,
+                      //     icon: Icons.assignment_ind_outlined),
+                    ],
+                  ),
+                ),
+              );
+            });
 }
 
 class StatsCell extends StatelessWidget {
@@ -330,7 +281,12 @@ class StatsCell extends StatelessWidget {
   final double training;
   final double additional;
 
-  StatsCell({@required this.width, @required this.diameter, @required this.mocion, @required this.training, @required this.additional});
+  StatsCell(
+      {@required this.width,
+      @required this.diameter,
+      @required this.mocion,
+      @required this.training,
+      @required this.additional});
 
   double get diameterProper => diameter - width;
 
@@ -342,17 +298,17 @@ class StatsCell extends StatelessWidget {
             color: Colors.exercise,
             diameter: diameterProper,
             width: width,
-            value: mocion/100),
+            value: mocion / 100),
         StatsCellCircle(
             color: Colors.schedule,
             diameter: diameterProper - widthProper * 4,
             width: width,
-            value: training/100),
+            value: training / 100),
         StatsCellCircle(
             color: Colors.primary,
             diameter: diameterProper - widthProper * 8,
             width: width,
-            value: additional/100)
+            value: additional / 100)
       ]);
 }
 

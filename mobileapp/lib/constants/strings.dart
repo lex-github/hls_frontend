@@ -233,7 +233,8 @@ const exerciseAlert = 'Вы уверены, что хотите закончит
 
 const cardioInputTypeManualTitle = 'Вручную';
 const cardioInputTypeMonitorTitle = 'Bluetooth кардиомонитор';
-const cardioInputTypeHealthTitle = 'Apple Health';
+const cardioInputAppleHealthTitle = 'Apple Health';
+const cardioInputGoogleHealthTitle = 'Google fit';
 
 const heartRateGraphTitle = 'Пульс график тренировки';
 const heartRateAbscissaLabel = 'мин.';

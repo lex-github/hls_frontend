@@ -10,7 +10,8 @@ import 'package:hls/theme/styles.dart';
 
 class ModeTab<Controller extends StatsController> extends GetView<Controller> {
   final DateTime _date = DateTime.now();
-
+  final width = Get.width;
+  final height = Get.height;
   UserData get profile => AuthService.i?.profile;
 
   UserDailyData get profileDaily => profile?.daily;
@@ -46,7 +47,21 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
       );
 
   @override
-  Widget build(_) => GetBuilder<StatsController>(
+  Widget build(_) => index == null ? Container(
+    padding: EdgeInsets.all(Size.horizontalBig),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildIndicator(
+          // date: index.toString(),
+          //   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
+
+            asleepTime:"00 ч 00 мин",
+            value: 0),
+      ],
+    ),
+  ) : GetBuilder<StatsController>(
         init: StatsController(
             fromDate: DateTime.now().toString(),
             toDate: DateTime.now().toString()),
@@ -67,17 +82,20 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
                   value: index == null
                       ? 0
                       : controller.stats[index].sleepDuration > 8 ? 1 : controller.calendar[index].daily.schedule / 100),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextSecondary("Необходимо пересмотреть свой график сна"),
-                  SizedBox(
-                    height: Size.vertical,
-                  ),
-                  TextSecondary(
-                      "7-9 часов - диапазон нормы сна для человека. Сон в соответствующей зоне циркадных часов является самым оптимальным, поскольку не сбивает ритм гормональных часов организма и не создаёт гормонального конфликта между зонами активности и пассивности"),
-                ],
-              ),
+
+Container(
+  width: width,
+  height: height * (controller.stats[index].sleepReport.length / 12),
+  child: ListView.builder(
+    itemCount: controller.stats[index].sleepReport.length,
+    itemBuilder: (_, int i) {
+    return TextSecondary(controller.stats[index].sleepReport[i].toString());
+  },
+),
+
+
+
+),
             ],
           ),
         ),

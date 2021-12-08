@@ -55,7 +55,7 @@ class FoodCategoryScreen extends GetView<FoodCategoryController> {
   // builds
 
   Widget _buildListItem(FoodCategoryData item) {
-    // print("qwerty " + item.imageUrl);
+    print("qwerty " + item.imageUrl);
 
     return Button(
         borderColor: Colors.disabled,
