@@ -290,7 +290,7 @@ isUpdated = true;
     // if (value == null) return showConfirm(title: exerciseNeedValueText);
 
     final result = await exercise(
-        scheduleId: scheduleId, exerciseId: 1, type: "QUANTITY", value: 1000);
+        scheduleId: scheduleId, exerciseId: 1, type: "QUANTITY", value: steps);
 
     print('ExerciseScreen._addHandler result: $result');
 
