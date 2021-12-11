@@ -180,7 +180,6 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
             width: Size.tabbarIcon,
             height: Size.tabbarIcon,
             fit: BoxFit.contain));
-
     return GestureDetector(
         onTap: () => Future.delayed(
             Duration(
@@ -197,6 +196,12 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   }
 
   void onPressed () {
+    final scheduleId = AuthService.i.profile.progress.microCycle;
+    final _c = Get.put(HealthController());
+    if(!scheduleId.isNullEmptyFalseOrZero) {
+      _c.fetchData();
+    }
+    // _c.fetchData();
     _controller.toggleSubmenu();
     // _timerHandler();
     // _c.fetchData();

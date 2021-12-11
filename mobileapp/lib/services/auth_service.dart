@@ -83,10 +83,9 @@ class AuthService extends GraphqlService {
       //   '\n\tprofile: $profile'
       //   '\n\tisAuthenticated: $isAuthenticated');
       if (isAuthenticated && routes.contains(Get.currentRoute)){
-        final _c = Get.put(HealthController());
-
         Get.until(
                 (_) => !Get.isDialogOpen && !routes.contains(Get.currentRoute));
+
       }
 
       //{ print('AuthService.onInit.ever'); Get.offAllNamed(homeRoute); }
@@ -122,7 +121,7 @@ class AuthService extends GraphqlService {
     isAuthenticated = false;
   }
 
-  Future<UserData> retrieve() async {
+  Future<UserData>        retrieve() async {
     if (SettingsService.i.token.isNullOrEmpty) return null;
 
     final data =

@@ -259,12 +259,25 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
           ..addListener(() => animationProgress = _animationController.value)
           ..repeat(period: rotationAnimationDuration);
   }
+  @override
+  void onInit() async {
+    super.onInit();
+    check();
+  }
 
   @override
   void onClose() {
     if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
   }
 
+
+  void check(){
+    final scheduleId = AuthService.i.profile.height;
+if(!scheduleId.isNullEmptyFalseOrZero){
+  // final _c = Get.put(HealthController());
+
+}
+  }
   // tooltip
 
   final _tooltip = ''.obs;

@@ -85,7 +85,6 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   DateTime sleepTo;
   int sleepDuration = 0;
   bool isUpdated = false;
-  final scheduleId = AuthService.i.profile.schedule?.id;
 
   void checkDay() async {
     //checking current date
@@ -99,7 +98,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     if(currentdate!=lastDay){
       await prefs.setInt('day', currentdate);
       //your code will run once in day
-isUpdated = true;
+      isUpdated = true;
     }
 
   }
@@ -176,13 +175,15 @@ isUpdated = true;
       // });
 
       for(int i = 0; i < _healthDataList.length; i++){
+        print("ALLL DATA " + _healthDataList[i].typeString);
         if (_healthDataList[i].typeString == "SLEEP_ASLEEP") {
           sleepFrom = _healthDataList[i].dateFrom;
           sleepTo = _healthDataList[i].dateTo;
           sleepDuration = _healthDataList[i].value.toInt();
         }
         if (_healthDataList[i].typeString == "STEPS") {
-          steps = _healthDataList[i].value.toInt();
+            steps += _healthDataList[i].value.round();
+          // steps = _healthDataList[i].value.toInt();
         }
       }
 
@@ -190,19 +191,25 @@ isUpdated = true;
       print("sleepFrom " + sleepFrom.toString());
       print("sleepTo " + sleepTo.toString());
       print("sleepDuration " + (sleepDuration/60).toString());
+      // addSteps();
+      checkDay();
+      // addSteps();
 
-      if (steps != 0 && isUpdated
-      ) {
-        addSteps();
-      }
       if (sleepFrom != 0 && sleepTo != 0
       ) {
         await addSchedule();
+        if (steps != 0
+        ) {
+          addSteps();
+        }
       }
+      // addSteps();
+
+
     } else {
 
-    // print("steps " + steps.toString());
-    // setState(() => _state = AppState.DATA_NOT_FETCHED);
+      // print("steps " + steps.toString());
+      // setState(() => _state = AppState.DATA_NOT_FETCHED);
     }
   }
 
@@ -267,9 +274,8 @@ isUpdated = true;
 
   @override
   void onInit() async {
-    checkDay();
-    await fetchData();
     super.onInit();
+    // await fetchData();
   }
 
 
