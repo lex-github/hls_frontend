@@ -298,9 +298,18 @@ const trainingFields = '{'
 // '}'
     '}';
 
+const icon = '{'
+    'url '
+    '} ';
+
+const trainingEquipments = '{'
+    'icon $icon '
+    '} ';
+
 const trainingDetailFields = '{'
     'id '
     'title '
+'trainingEquipments $trainingEquipments '
     '$iconFields '
     'description '
     'kind '

@@ -88,7 +88,7 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
   // builders
 
   Widget buildIndicator(Offset offset, DateTime time, Color color,
-          {IconData icon, bool isSmall = false}) =>
+      {IconData icon, bool isSmall = false}) =>
       AnimatedPositioned(
           left: offset.dx,
           top: offset.dy,
@@ -104,45 +104,42 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
               child: isSmall
                   ? Nothing()
                   : Center(
-                      child: time == null
-                          ? Icon(
-                              icon ??
-                                  Icons
-                                      .error, // Icons.nightlight_round, Icons.wb_sunny,
-                              color: color,
-                              size: .75 * iconSize)
-                          : TextPrimary(format(time),
-                              weight: FontWeight.w900,
-                              size:
-                                  isSmall ? .75 * Size.fontTiny : Size.fontBig,
-                              shadow: Shadow(
-                                  offset: Offset(0.5, 0.5),
-                                  blurRadius: 2,
-                                  color: Colors.shadow.withOpacity(1))))));
+                  child: time == null
+                      ? Icon(
+                      icon ??
+                          Icons
+                              .error, // Icons.nightlight_round, Icons.wb_sunny,
+                      color: color,
+                      size: .75 * iconSize)
+                      : TextPrimary(format(time),
+                      weight: FontWeight.w900,
+                      size:
+                      isSmall ? .75 * Size.fontTiny : Size.fontBig,
+                      shadow: Shadow(
+                          offset: Offset(0.5, 0.5),
+                          blurRadius: 2,
+                          color: Colors.shadow.withOpacity(1))))));
 
   Widget _buildTabs() => DefaultTabController(
-      length: 2,
-      child: Screen(
-          height: Size.bar + 2 * Size.verticalMedium + Size.font,
-          padding: Padding.zero,
-          shouldShowDrawer: true,
-          title: scheduleScreenTitle,
-          trailing: Clickable(
-              onPressed: () => showConfirm(title: developmentText),
-              child: Image(title: 'icons/question')),
-          bottom: TabBar(
-              indicatorPadding:
-                  EdgeInsets.symmetric(horizontal: Size.horizontal),
-              indicatorColor: Colors.primary,
-              labelPadding: Padding.medium,
-              labelStyle: TextStyle.primary,
-              labelColor: Colors.primaryText,
-              unselectedLabelStyle: TextStyle.primary,
-              //unselectedLabelColor: Colors.secondaryText,
-              tabs: [Text(scheduleNightTabTitle), Text(scheduleDayTabTitle)]),
-          child: TabBarView(
-              //physics: NeverScrollableScrollPhysics(),
-              children: [NightTab(), DayTab()])));
+      length: 1,
+      child: NightTab(),
+      // Screen(
+      //     height: Size.bar + 2 * Size.verticalMedium + Size.font,
+      //     padding: Padding.zero,
+      //     shouldShowDrawer: true,
+      //     title: scheduleScreenTitle,
+      //     // bottom: TabBar(
+      //     //     indicatorPadding:
+      //     //     EdgeInsets.symmetric(horizontal: Size.horizontal),
+      //     //     indicatorColor: Colors.primary,
+      //     //     labelPadding: Padding.medium,
+      //     //     labelStyle: TextStyle.primary,
+      //     //     labelColor: Colors.primaryText,
+      //     //     unselectedLabelStyle: TextStyle.primary,
+      //     //     //unselectedLabelColor: Colors.secondaryText,
+      //     //     tabs: [Text(scheduleNightTabTitle)]),
+      //     child: NightTab())
+  );
 
   Widget _buildNight() =>
       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -150,8 +147,8 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
             asleepTime == null
                 ? scheduleNightText1
                 : wakeupTime == null
-                    ? scheduleNightText2
-                    : scheduleNightText3,
+                ? scheduleNightText2
+                : scheduleNightText3,
             weight: FontWeight.w400,
             align: TextAlign.center),
         VerticalBigSpace(),
@@ -170,9 +167,9 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                               color: Colors.black,
                               width: iconBorder,
                               numToOffset:
-                                  controller.shouldNightDisplayVerticalLine
-                                      ? 6
-                                      : 0))),
+                              controller.shouldNightDisplayVerticalLine
+                                  ? 6
+                                  : 0))),
                       CustomPaint(
                           size: M.Size(innerDiameter, innerDiameter),
                           painter: CircleDialPainter(
@@ -183,94 +180,94 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                               color: Colors.black,
                               width: iconBorder)),
                       Obx(() => asleepTime != null &&
-                              wakeupTime != null &&
-                              (asleepTime.isNightOuter ||
-                                  wakeupTime.isNightOuter)
+                          wakeupTime != null &&
+                          (asleepTime.isNightOuter ||
+                              wakeupTime.isNightOuter)
                           ? CustomPaint(
-                              size: M.Size(diameter, diameter),
-                              painter: SectorPainter(
-                                //from: asleepTime.value, to: wakeupTime.value
-                                width: iconBorder,
-                                color: Colors.scheduleNight,
-                                startAngle: (asleepTime.isNightOuter
-                                        ? asleepTime.angle
-                                        : pi) -
-                                    pi / 2,
-                                endAngle: (2 * pi -
-                                        (asleepTime.isNightInner
-                                            ? pi
-                                            : asleepTime.angle) +
-                                        (wakeupTime.isNightInner
-                                            ? pi
-                                            : wakeupTime.angle)) %
-                                    (2 * pi),
-                              ))
+                          size: M.Size(diameter, diameter),
+                          painter: SectorPainter(
+                            //from: asleepTime.value, to: wakeupTime.value
+                            width: iconBorder,
+                            color: Colors.scheduleNight,
+                            startAngle: (asleepTime.isNightOuter
+                                ? asleepTime.angle
+                                : pi) -
+                                pi / 2,
+                            endAngle: (2 * pi -
+                                (asleepTime.isNightInner
+                                    ? pi
+                                    : asleepTime.angle) +
+                                (wakeupTime.isNightInner
+                                    ? pi
+                                    : wakeupTime.angle)) %
+                                (2 * pi),
+                          ))
                           : asleepTime.isNightInner &&
-                                  wakeupTime.isNightInner &&
-                                  wakeupTime.isBefore(asleepTime)
-                              ? CustomPaint(
-                                  size: M.Size(diameter, diameter),
-                                  painter: SectorPainter(
-                                    width: iconBorder,
-                                    color: Colors.scheduleNight,
-                                    endAngle: 2 * pi,
-                                  ))
-                              : Nothing()),
-                      Obx(() => asleepTime != null &&
-                              wakeupTime != null &&
-                              (wakeupTime.isNightInner ||
-                                  asleepTime.isNightInner)
+                          wakeupTime.isNightInner &&
+                          wakeupTime.isBefore(asleepTime)
                           ? CustomPaint(
-                              size: M.Size(innerDiameter, innerDiameter),
-                              painter: SectorPainter(
-                                width: iconBorder,
-                                color: Colors.scheduleNight,
-                                startAngle: asleepTime.isNightInner
-                                    ? asleepTime.angle - pi / 2
-                                    : pi / 2,
-                                endAngle: (asleepTime.isNightOuter
-                                        ? wakeupTime.angle - pi
-                                        : -asleepTime.angle +
-                                            (wakeupTime.isNightInner
-                                                ? wakeupTime.angle
-                                                : pi)) %
-                                    (2 * pi),
-                              ))
+                          size: M.Size(diameter, diameter),
+                          painter: SectorPainter(
+                            width: iconBorder,
+                            color: Colors.scheduleNight,
+                            endAngle: 2 * pi,
+                          ))
+                          : Nothing()),
+                      Obx(() => asleepTime != null &&
+                          wakeupTime != null &&
+                          (wakeupTime.isNightInner ||
+                              asleepTime.isNightInner)
+                          ? CustomPaint(
+                          size: M.Size(innerDiameter, innerDiameter),
+                          painter: SectorPainter(
+                            width: iconBorder,
+                            color: Colors.scheduleNight,
+                            startAngle: asleepTime.isNightInner
+                                ? asleepTime.angle - pi / 2
+                                : pi / 2,
+                            endAngle: (asleepTime.isNightOuter
+                                ? wakeupTime.angle - pi
+                                : -asleepTime.angle +
+                                (wakeupTime.isNightInner
+                                    ? wakeupTime.angle
+                                    : pi)) %
+                                (2 * pi),
+                          ))
                           : wakeupTime.isNightOuter &&
-                                  asleepTime.isNightOuter &&
-                                  //wakeupTime.isBefore(asleepTime) &&
-                                  ((asleepTime.isBefore(sixOclock) &&
-                                          (wakeupTime.isAfter(sixOclock) ||
-                                              wakeupTime
-                                                  .isBefore(asleepTime))) ||
-                                      wakeupTime.isAfter(sixOclock) &&
-                                          (asleepTime.isAfter(wakeupTime)))
-                              ? CustomPaint(
-                                  size: M.Size(innerDiameter, innerDiameter),
-                                  painter: SectorPainter(
-                                    width: iconBorder,
-                                    color: Colors.scheduleNight,
-                                    endAngle: 2 * pi,
-                                  ))
-                              : Nothing()),
+                          asleepTime.isNightOuter &&
+                          //wakeupTime.isBefore(asleepTime) &&
+                          ((asleepTime.isBefore(sixOclock) &&
+                              (wakeupTime.isAfter(sixOclock) ||
+                                  wakeupTime
+                                      .isBefore(asleepTime))) ||
+                              wakeupTime.isAfter(sixOclock) &&
+                                  (asleepTime.isAfter(wakeupTime)))
+                          ? CustomPaint(
+                          size: M.Size(innerDiameter, innerDiameter),
+                          painter: SectorPainter(
+                            width: iconBorder,
+                            color: Colors.scheduleNight,
+                            endAngle: 2 * pi,
+                          ))
+                          : Nothing()),
                       Obx(() => controller.shouldNightDisplayVerticalLine
                           ? Positioned(
-                              bottom: .0,
-                              child: Container(
-                                  color: Colors.scheduleNight,
-                                  width: iconBorder,
-                                  height: (diameter - innerDiameter) / 2))
+                          bottom: .0,
+                          child: Container(
+                              color: Colors.scheduleNight,
+                              width: iconBorder,
+                              height: (diameter - innerDiameter) / 2))
                           : Nothing()),
                       Obx(() => asleepTime == null
                           ? Nothing()
                           : buildIndicator(nightAsleepOffset, asleepTime,
-                              Colors.scheduleNight,
-                              icon: FontAwesomeIcons.moon)),
+                          Colors.scheduleNight,
+                          icon: FontAwesomeIcons.moon)),
                       Obx(() => wakeupTime == null
                           ? Nothing()
                           : buildIndicator(
-                              nightWakeupOffset, wakeupTime, Colors.scheduleDay,
-                              icon: FontAwesomeIcons.sun))
+                          nightWakeupOffset, wakeupTime, Colors.scheduleDay,
+                          icon: FontAwesomeIcons.sun))
                     ]))),
         VerticalBigSpace()
       ]);
@@ -315,8 +312,8 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
                           Obx(() => trainingTime == null
                               ? Nothing()
                               : buildIndicator(dayTrainingOffset, trainingTime,
-                                  Colors.exercise,
-                                  icon: FontAwesomeIcons.dumbbell))
+                              Colors.exercise,
+                              icon: FontAwesomeIcons.dumbbell))
                       ]);
                 }))),
         VerticalBigSpace()
@@ -326,52 +323,52 @@ class ScheduleAddScreen extends GetView<ScheduleAddController> {
   Widget build(_) => GetX(
       init: ScheduleAddController(),
       builder: (_) => controller.isInit
-          ? _buildTabs()
+          ? NightTab()
           : Screen(
-              title: scheduleScreenTitle,
-              fab: CircularButton(
-                  isLoading: controller.isAwaiting,
-                  isDisabled: !controller.isNightInit &&
-                          (asleepTime == null || wakeupTime == null) ||
-                      controller.isNightInit &&
-                          controller.isTrainingDay &&
-                          trainingTime == null,
-                  icon: FontAwesomeIcons.check,
-                  //iconSize: Size.iconSmall,
-                  onPressed: _onSubmit),
-              child: controller.isAwaiting && false
-                  ? LoadingPage()
-                  : !controller.isNightInit
-                      ? _buildNight()
-                      : _buildDay()));
+          title: scheduleScreenTitle,
+          fab: CircularButton(
+              isLoading: controller.isAwaiting,
+              isDisabled: !controller.isNightInit &&
+                  (asleepTime == null || wakeupTime == null) ||
+                  controller.isNightInit &&
+                      controller.isTrainingDay &&
+                      trainingTime == null,
+              icon: FontAwesomeIcons.check,
+              //iconSize: Size.iconSmall,
+              onPressed: _onSubmit),
+          child: controller.isAwaiting && false
+              ? LoadingPage()
+              : !controller.isNightInit
+              ? _buildNight()
+              : _buildDay()));
 
-  // @override
-  // Widget build(_) => GetBuilder(
-  //     init: ScheduleController(),
-  //     builder: (_) => DefaultTabController(
-  //         length: 2,
-  //         child: Screen(
-  //             height: Size.bar + 2 * Size.verticalMedium + Size.font,
-  //             padding: Padding.zero,
-  //             shouldShowDrawer: true,
-  //             title: scheduleScreenTitle,
-  //             trailing: Clickable(
-  //                 onPressed: () => showConfirm(title: developmentText),
-  //                 child: Image(title: 'icons/question')),
-  //             bottom: TabBar(
-  //                 indicatorPadding:
-  //                     EdgeInsets.symmetric(horizontal: Size.horizontal),
-  //                 indicatorColor: Colors.primary,
-  //                 labelPadding: Padding.medium,
-  //                 labelStyle: TextStyle.primary,
-  //                 labelColor: Colors.primaryText,
-  //                 unselectedLabelStyle: TextStyle.primary,
-  //                 //unselectedLabelColor: Colors.secondaryText,
-  //                 tabs: [
-  //                   Text(scheduleNightTabTitle),
-  //                   Text(scheduleDayTabTitle)
-  //                 ]),
-  //             child: TabBarView(
-  //                 physics: NeverScrollableScrollPhysics(),
-  //                 children: [NightTab(), DayTab()]))));
+// @override
+// Widget build(_) => GetBuilder(
+//     init: ScheduleController(),
+//     builder: (_) => DefaultTabController(
+//         length: 2,
+//         child: Screen(
+//             height: Size.bar + 2 * Size.verticalMedium + Size.font,
+//             padding: Padding.zero,
+//             shouldShowDrawer: true,
+//             title: scheduleScreenTitle,
+//             trailing: Clickable(
+//                 onPressed: () => showConfirm(title: developmentText),
+//                 child: Image(title: 'icons/question')),
+//             bottom: TabBar(
+//                 indicatorPadding:
+//                     EdgeInsets.symmetric(horizontal: Size.horizontal),
+//                 indicatorColor: Colors.primary,
+//                 labelPadding: Padding.medium,
+//                 labelStyle: TextStyle.primary,
+//                 labelColor: Colors.primaryText,
+//                 unselectedLabelStyle: TextStyle.primary,
+//                 //unselectedLabelColor: Colors.secondaryText,
+//                 tabs: [
+//                   Text(scheduleNightTabTitle),
+//                   Text(scheduleDayTabTitle)
+//                 ]),
+//             child: TabBarView(
+//                 physics: NeverScrollableScrollPhysics(),
+//                 children: [NightTab(), DayTab()]))));
 }

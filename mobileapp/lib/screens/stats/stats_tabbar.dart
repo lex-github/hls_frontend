@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/strings.dart';
-import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
@@ -16,49 +15,78 @@ import 'package:intl/intl.dart';
 
 class StatsTabBar<Controller extends StatsController>
     extends GetView<Controller> {
-  final int index;
+  int index;
   final DateTime date;
+  final bool isDay;
 
   StatsTabBar()
       : index = (Get.arguments as Map).get('index'),
-        date = (Get.arguments as Map).get('date');
+        date = (Get.arguments as Map).get('date'),
+        isDay = (Get.arguments as Map).get('isDay');
 
-  Widget _buildTabs() => GetBuilder<StatsController>(
-        init: StatsController(
-            fromDate: date.toString(),
-            toDate: date.toString()),
-        builder: (_) => controller.stats == null ? Center(child: Loading()) : DefaultTabController(
-            length: 3,
-            child: Screen(
-                height: Size.bar + 2 * Size.verticalMedium + Size.font,
-                padding: Padding.zero,
-                shouldShowDrawer: true,
-                title: DateFormat.yMMMd('ru_RU').format(date).capitalize,
-                bottom: TabBar(
-                    indicatorPadding:
-                        EdgeInsets.symmetric(horizontal: Size.horizontal),
-                    indicatorColor: Colors.primary,
-                    labelPadding: Padding.medium,
-                    labelStyle: TextStyle.primary,
-                    labelColor: Colors.primaryText,
-                    unselectedLabelStyle: TextStyle.primary,
-                    //unselectedLabelColor: Colors.secondaryText,
-                    tabs: [
-                      Text(modeTitle),
-                      Text(nutritionTitle),
-                      Text(exerciseTitle)
-                    ]),
-                child: TabBarView(
-                    //physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      ModeTab(index: index, date: date),
-                      DietTab(index: index, date: date),
-                      ActiveTab(index: index, date: date)
-                    ]))),
-      );
+  Widget _buildTabs(int i) {
+    if (i != -1) {
+      index = i;
+    }
+
+    return GetBuilder<StatsController>(
+      init: StatsController(fromDate: date.toString(), toDate: date.toString()),
+      builder: (_) => controller.stats == null
+          ? Center(child: Loading())
+          : DefaultTabController(
+              length: 3,
+              child: Screen(
+                  height: Size.bar + 2 * Size.verticalMedium + Size.font,
+                  padding: Padding.zero,
+                  shouldShowDrawer: true,
+                  title: DateFormat.yMMMd('ru_RU').format(date).capitalize,
+                  bottom: TabBar(
+                      indicatorPadding:
+                          EdgeInsets.symmetric(horizontal: Size.horizontal),
+                      indicatorColor: Colors.primary,
+                      labelPadding: Padding.medium,
+                      labelStyle: TextStyle.primary,
+                      labelColor: Colors.primaryText,
+                      unselectedLabelStyle: TextStyle.primary,
+                      //unselectedLabelColor: Colors.secondaryText,
+                      tabs: [
+                        Text(modeTitle),
+                        Text(nutritionTitle),
+                        Text(exerciseTitle)
+                      ]),
+                  child: TabBarView(
+                      //physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        ModeTab(index: index, date: date),
+                        DietTab(index: index, date: date),
+                        ActiveTab(index: index, date: date)
+                      ]))),
+    );
+  }
 
   @override
-  Widget build(_) => _buildTabs();
+  Widget build(_) => GetBuilder<StatsController>(
+        init:
+            StatsController(fromDate: date.toString(), toDate: date.toString()),
+        builder: (_) {
+          {
+            if (isDay && isDay != null) {
+              if (controller.calendar != null) {
+                for (var i = 0; i < controller.calendar.length; i++) {
+                  if (controller.calendar[i].date ==
+                      dateToString(
+                          date: DateTime.now(), output: dateInternalFormat)) {
+                    _buildTabs(i);
+                  }
+                }
+              } else {
+                LoadingPage();
+              }
+            }
+            return _buildTabs(-1);
+          }
+        },
+      );
 }
 
 // Controller to change color indicator in tabBar

@@ -15,6 +15,8 @@ class ExerciseData extends GenericData {
   String description;
   @JsonKey(name: 'icon')
   ImageData image;
+  @JsonKey(name: 'trainingEquipments')
+  List <TrainingEquipments> trainingEquipments;
   @JsonKey(name: 'inputData')
   List<ExerciseInputData> input;
   @JsonKey(name: 'pulseZones')
@@ -63,6 +65,57 @@ class ExerciseData extends GenericData {
       '\n\ttitle: $title'
       '\n\ttype: $type'
       '\n\timage: $image'
+      ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class TrainingEquipments{
+  @JsonKey(name: 'icon')
+  EquipmentsIcons icon;
+
+
+
+  TrainingEquipments();
+
+  // getters
+
+
+
+
+  factory TrainingEquipments.fromJson(Map<String, dynamic> json) =>
+      _$TrainingEquipmentsFromJson(json);
+  Map<String, dynamic> toJson() => _$TrainingEquipmentsToJson(this);
+
+
+// @override
+// String toString() => 'StatsDailyRating('
+//     '\n\tschedule: $schedule'
+//     '\n\texercise: $exercise'
+//     '\n\tnutrition: $nutrition'
+//     ')';
+}
+
+
+@JsonSerializable(includeIfNull: false)
+class EquipmentsIcons {
+  @JsonKey(name: 'url')
+  String url;
+
+
+
+  EquipmentsIcons();
+
+  // getters
+
+
+  factory EquipmentsIcons.fromJson(Map<String, dynamic> json) =>
+      _$EquipmentsIconsFromJson(json);
+  Map<String, dynamic> toJson() => _$EquipmentsIconsToJson(this);
+
+  @override
+  String toString() => 'EquipmentsIcons('
+      '\n\turl: $url'
       ')';
 }
 

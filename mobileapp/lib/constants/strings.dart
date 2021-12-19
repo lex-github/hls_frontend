@@ -232,9 +232,12 @@ const heartRateLabel = 'Пульс';
 const exerciseAlert = 'Вы уверены, что хотите закончить тренировку?';
 
 const cardioInputTypeManualTitle = 'Вручную';
-const cardioInputTypeMonitorTitle = 'Bluetooth кардиомонитор';
+const cardioInputTypeMonitorTitle = 'Bluetooth';
 const cardioInputAppleHealthTitle = 'Apple Health';
-const cardioInputGoogleHealthTitle = 'Google fit';
+const cardioInputGoogleHealthTitle = 'Google Fit';
+
+const confirmAppleTitle = 'Хотите мы перенесем ваши данные о сне с Apple Health?';
+const confirmGoogleTitle = 'Хотите мы перенесем ваши данные о сне с Google Fit?';
 
 const heartRateGraphTitle = 'Пульс график тренировки';
 const heartRateAbscissaLabel = 'мин.';

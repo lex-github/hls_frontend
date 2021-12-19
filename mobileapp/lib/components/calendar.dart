@@ -87,36 +87,38 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
             init: StatsController(
                 fromDate: DateTime.now().subtract(90.days).toString(),
                 toDate: DateTime.now().toString()),
-            builder: (_) =>
-                TableCalendar(
-                    headerStyle: HeaderStyle(
-                        titleCentered: true, formatButtonVisible: false),
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    daysOfWeekHeight: Size.verticalSmall + Size.fontSmall,
-                    rowHeight:
-                    diameter + Size.verticalSmall * 2 + Size.fontSmall,
-                    locale: 'ru',
-                    firstDay: DateTime.now().subtract(90.days),
-                    lastDay: DateTime.now(),
-                    onDaySelected: (selectedDay, focusedDay) {
-                      findLoop(selectedDay);
-                    },
-                    focusedDay: DateTime.now(),
-                    calendarBuilders: CalendarBuilders(
+            builder: (_) {
+              return TableCalendar(
+                  headerStyle: HeaderStyle(
+                      titleCentered: true, formatButtonVisible: false),
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  daysOfWeekHeight: Size.verticalSmall + Size.fontSmall,
+                  rowHeight:
+                  diameter + Size.verticalSmall * 2 + Size.fontSmall,
+                  locale: 'ru',
+                  firstDay: DateTime.now().subtract(90.days),
+                  lastDay: DateTime.now(),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    findLoop(selectedDay);
+                  },
+                  focusedDay: DateTime.now(),
+                  calendarBuilders: CalendarBuilders(
                       headerTitleBuilder: _headerBuilder,
                       dowBuilder: _dowBuilder,
                       prioritizedBuilder: _prioritizedBuilder
-                    ))),
+                  ));
+              }
+            ),
       );
   void findLoop(DateTime day) {
     for (var i = 0; i < controller.calendar.length; i++) {
       if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
         Get.find<StatsController>().getSchedule();
-        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
+        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day, 'isDay' : false});
       }
     }
     Get.find<StatsController>().getSchedule();
-    Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
+    Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null, 'isDay' : false});
   }
 
 }
@@ -168,14 +170,17 @@ class CalendarCellCircle extends StatelessWidget {
     this.value});
 
   @override
-  Widget build(_) =>
-      CustomPaint(
-          size: M.Size(diameter, diameter),
-          painter: SectorPainter(
-              background: true,
-              color: color,
-              width: width,
-              startAngle: -pi / 2,
-              endAngle: value * 2 * pi));
+  Widget build(_) => GetBuilder<StatsController>(
+    init: StatsController(),
+    builder: (_) =>
+        CustomPaint(
+            size: M.Size(diameter, diameter),
+            painter: SectorPainter(
+                background: true,
+                color: color,
+                width: width,
+                startAngle: -pi / 2,
+                endAngle: value * 2 * pi)),
+  );
 }
 

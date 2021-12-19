@@ -26,8 +26,8 @@ class ExerciseResultScreen extends StatefulWidget {
 
 class _ExerciseResultScreen extends State<ExerciseResultScreen> {
   final values = Get.find<CardioSwitchController>().results;
-  final c = Get.put(StatsController(fromDate: DateTime.now().toString(),
-      toDate: DateTime.now().toString()));
+  // final c = Get.put(StatsController(fromDate: DateTime.now().toString(),
+  //     toDate: DateTime.now().toString()));
 
   ExerciseData get data => widget.data;
   int get average => (values.values.reduce((a, b) => a + b) / values.length).round();
@@ -109,14 +109,15 @@ class _ExerciseResultScreen extends State<ExerciseResultScreen> {
         ])
       ]));
   void findLoop() {
+    Get.toNamed(statsTabRoute, arguments: {'index': null, 'date': DateTime.now(), 'isDay' : true});
 
-    for (var i = 0; i < c.calendar.length; i++) {
-      if (c.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
-        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
-      }
-      // Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
-
-    }
+    // for (var i = 0; i < c.calendar.length; i++) {
+    //   if (c.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
+    //     Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
+    //   }
+    //   // Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now()});
+    //
+    // }
   }
 }
 

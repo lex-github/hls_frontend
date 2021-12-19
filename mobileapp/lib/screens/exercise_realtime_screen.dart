@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Colors, Icon, Image, Padding, Page;
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hls/components/buttons.dart';
@@ -10,11 +9,9 @@ import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/exercise_catalog_controller.dart';
-import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/hub_screen.dart';
-import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class ExerciseRealtimeScreen extends StatefulWidget {
@@ -33,6 +30,9 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
       Get.find<ExerciseCatalogController>();
 
   ExerciseData get item => controller.detail ?? widget.item;
+  bool i1;
+  bool i2;
+  bool i3;
 
   /// handlers
 
@@ -44,60 +44,123 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
   Widget _buildPlayer() {
     //print('ExerciseRealtimeScreen._buildPlayer $item');
     return SizedBox(
-        height: Size.image,
-        width: Size.screenWidth,
-        child: item.thumbnailUrl.isNullOrEmpty
-            ? Container(
-                color: Colors.failure,
-                child: Center(
-                    child: Icon(FontAwesomeIcons.exclamationCircle,
-                        size: Size.iconHuge)))
-            : Image(title: item.thumbnailUrl));
-
-    return GetX<VideoScreenController>(
-        init: VideoScreenController(url: item.videoUrl, autoPlay: false),
-        builder: (controller) {
-          // print(
-          //     'ExerciseRealtimeScreen._buildPlayer controller: ${controller.isInit}');
-
-          final aspectRatio = //controller.video?.value?.aspectRatio ??
-              Size.screenWidth / Size.screenHeight;
-          final width = Size.screenWidth;
-          final height = Size.screenHeight;
-
-          return controller.isInit
-              ? GestureDetector(
-                  onTap: controller.toggle,
-                  child: Stack(
-                      //clipBehavior: Clip.antiAlias,
+      height: Size.image,
+      width: Size.screenWidth,
+      child: item.thumbnailUrl.isNullOrEmpty
+          ? Container(
+              color: Colors.failure,
+              child: Center(
+                  child: Icon(FontAwesomeIcons.exclamationCircle,
+                      size: Size.iconHuge)))
+          : Container(
+              padding: EdgeInsets.all(Size.horizontal),
+              child: Stack(
+                children: [
+                  Align(
+                    child: Container(
+                      alignment: Alignment.center, // use aligment
+                      child: Image(
+                          title: item.thumbnailUrl,
+                          height: double.infinity,
+                          width: double.infinity,
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
                       alignment: Alignment.center,
-                      children: [
-                        AbsorbPointer(
-                            child: SizedBox(
-                                width: width,
-                                height: height,
-                                child: VlcPlayer(
-                                    controller: controller.video,
-                                    aspectRatio: aspectRatio))),
-                        controller.isInitPlay
-                            ? AnimatedOpacity(
-                                duration: defaultAnimationDuration,
-                                opacity: controller.isPlaying
-                                    ? 0
-                                    : playerButtonOpacity,
-                                child: CircularButton(
-                                    // background: Colors.transparent,
-                                    // borderColor: Colors.primary,
-                                    // color: Colors.primary,
-                                    icon: FontAwesomeIcons.solidPlayCircle,
-                                    size: Size.buttonBig,
-                                    iconSize: .8 * Size.buttonBig,
-                                    onPressed: controller.toggle))
-                            : Loading()
-                      ]))
-              : _buildPlayerLoading();
-        });
+                      width: double.infinity,
+                      height: Size.iconBig,
+                      // color: Color(0xa6ff5d05),
+                      child: (!item.pulse.isNullOrEmpty)
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  for (final p in item.pulse) ...[
+                                    if (p.isRecommended)
+                                      Container(
+                                        width: double.infinity,
+                                        height: Size.iconBig,
+                                        color: p.color.withOpacity(.6),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextPrimary(
+                                              "ПУЛЬС: ",
+                                            ),
+                                            TextPrimary(p.description + ', '),
+                                            TextPrimary(
+                                                p.heartRate.toUpperCase()),
+                                          ],
+                                        ),
+                                      ),
+
+                                    // Opacity(
+                                    //     opacity: p.isRecommended ? 1 : .2,
+                                    //     child: Heartbeat(
+                                    //         color: p.color,
+                                    //         title: p.title,
+                                    //         description: p.description,
+                                    //         heartbeat: p.heartRate)),
+                                  ],
+                                  // VerticalMediumSpace()
+                                ])
+                          : SizedBox(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+      // Image(title: item.thumbnailUrl, )
+    );
+
+    // return GetX<VideoScreenController>(
+    //     init: VideoScreenController(url: item.videoUrl, autoPlay: false),
+    //     builder: (controller) {
+    //       // print(
+    //       //     'ExerciseRealtimeScreen._buildPlayer controller: ${controller.isInit}');
+    //
+    //       final aspectRatio = //controller.video?.value?.aspectRatio ??
+    //           Size.screenWidth / Size.screenHeight;
+    //       final width = Size.screenWidth;
+    //       final height = Size.screenHeight;
+    //
+    //       return controller.isInit
+    //           ? GestureDetector(
+    //               onTap: controller.toggle,
+    //               child: Stack(
+    //                   //clipBehavior: Clip.antiAlias,
+    //                   alignment: Alignment.center,
+    //                   children: [
+    //                     AbsorbPointer(
+    //                         child: SizedBox(
+    //                             width: width,
+    //                             height: height,
+    //                             child: VlcPlayer(
+    //                                 controller: controller.video,
+    //                                 aspectRatio: aspectRatio))),
+    //                     controller.isInitPlay
+    //                         ? AnimatedOpacity(
+    //                             duration: defaultAnimationDuration,
+    //                             opacity: controller.isPlaying
+    //                                 ? 0
+    //                                 : playerButtonOpacity,
+    //                             child: CircularButton(
+    //                                 // background: Colors.transparent,
+    //                                 // borderColor: Colors.primary,
+    //                                 // color: Colors.primary,
+    //                                 icon: FontAwesomeIcons.solidPlayCircle,
+    //                                 size: Size.buttonBig,
+    //                                 iconSize: .8 * Size.buttonBig,
+    //                                 onPressed: controller.toggle))
+    //                         : Loading()
+    //                   ]))
+    //           : _buildPlayerLoading();
+    //     });
   }
+
   // GetBuilder<VideoScreenController>(
   //     init: VideoScreenController(url: item.videoUrl),
   //     builder: (controller) => YoutubePlayer(
@@ -153,67 +216,108 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                     _buildPlayer()
                   else ...[VerticalSpace(), TextError(noDataText)],
                   Container(
+                    padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextPrimary("НЕОБХОДИМЫ ИНВЕНТАРЬ:",
+                            size: Size.fontSmall),
+                        Spacer(),
+                        for (final p in item.trainingEquipments) ...[
+                          Image(
+                            title: p.icon.url, size: Size.horizontal,
+                          ),
+                          if(item.trainingEquipments.length > 1)
+                            HorizontalSpace(),
+                        ]
+                        // Icon(item.icon)
+                      ],
+                    ),
+                  ),
+                  Container(
                       padding: Padding.content,
                       child: Column(children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Button(
+                        //       isSwitch: (i2 == false && i3 == false) ? true : false,
+                        //
+                        //       child: Column(
+                        //           children: [
+                        //             Image(title: 'hands', size: Size.iconBig),
+                        //             TextPrimary(
+                        //               "Вручную",
+                        //               size: Size.fontSmall,
+                        //             )
+                        //           ],
+                        //         ),
+                        //       ),Button(
+                        //       isSwitch: (i1 == false && i3 == false) ? true : false,
+                        //       padding: EdgeInsets.all(Size.horizontal * .5),
+                        //         child: Column(
+                        //           children: [
+                        //             Image(title: 'image2vector', size: Size.iconBig),
+                        //             TextPrimary(
+                        //               "Apple Health",
+                        //               size: Size.fontSmall,
+                        //             )
+                        //           ],
+                        //         ),
+                        //       ),Button(
+                        //       isSwitch: (i1 == false && i2 == false) ? true : false,
+                        //       child: Column(
+                        //           children: [
+                        //             Image(title: 'hands', size: Size.iconBig),
+                        //             TextPrimary(
+                        //               "Вручную",
+                        //               size: Size.fontSmall,
+                        //             )
+                        //           ],
+                        //         ),
+                        //       ),
+                        //   ],
+                        // ),
+                        // if (!item.rateChecks.isNullOrEmpty) ...[
+                        //CardioMonitor(rateChecks: item.rateChecks),
+                        CardioSwitch(rateChecks: item.rateChecks),
+                        VerticalSpace(),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Button(
+                                  background: Colors.primary,
+                                  title: exerciseStartTitle,
+                                  onPressed: () async {
+                                    // if (item.videoUrl.isNullOrEmpty)
+                                    //   return showConfirm(title: noDataText);
+
+                                    // final controller =
+                                    //     Get.find<VideoScreenController>();
+                                    // if (controller == null)
+                                    //   return showConfirm(title: errorGenericText);
+                                    //
+                                    // controller.start();
+
+                                    // controller.reset();
+                                    // controller.play();
+
+                                    Get.toNamed(exerciseVideoRoute,
+                                        arguments: item);
+                                  })
+                            ]),
+                        // ],
+                        VerticalSpace(),
+                        _buildBlock(child: StatusBlock()),
+
+                        VerticalMediumSpace(),
+
                         if (!item.description.isNullOrEmpty) ...[
                           _buildBlock(
                               child: TextPrimary(item.description,
                                   size: Size.fontSmall)),
                           VerticalSpace()
                         ],
-                        // if (!item.rateChecks.isNullOrEmpty) ...[
-                          //CardioMonitor(rateChecks: item.rateChecks),
-                          _buildBlock(
-                              child: CardioSwitch(rateChecks: item.rateChecks)),
-                          VerticalSpace(),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Button(
-                                    background: Colors.primary,
-                                    title: exerciseStartTitle,
-                                    onPressed: () async {
-                                      // if (item.videoUrl.isNullOrEmpty)
-                                      //   return showConfirm(title: noDataText);
-
-                                      // final controller =
-                                      //     Get.find<VideoScreenController>();
-                                      // if (controller == null)
-                                      //   return showConfirm(title: errorGenericText);
-                                      //
-                                      // controller.start();
-
-                                      // controller.reset();
-                                      // controller.play();
-
-                                      Get.toNamed(exerciseVideoRoute,
-                                          arguments: item);
-                                    })
-                              ]),
-                        // ],
-                        VerticalSpace(),
-                        _buildBlock(child: StatusBlock()),
-                        if (!item.pulse.isNullOrEmpty) ...[
-                          VerticalSpace(),
-                          Accordion(
-                              icon: FontAwesomeIcons.infoCircle,
-                              title: exerciseZoneTitle,
-                              child: Column(children: [
-                                VerticalMediumSpace(),
-                                for (final p in item.pulse) ...[
-                                  Opacity(
-                                      opacity: p.isRecommended ? 1 : .2,
-                                      child: Heartbeat(
-                                          color: p.color,
-                                          title: p.title,
-                                          description: p.description,
-                                          heartbeat: p.heartRate)),
-                                  if (p.title != item.pulse.last.title)
-                                    VerticalSmallSpace()
-                                ],
-                                VerticalMediumSpace()
-                              ]))
-                        ]
                       ]))
                 ]))));
 }
@@ -248,12 +352,13 @@ class Accordion extends StatelessWidget {
   final Widget iconWidget;
   final String title;
   final Widget child;
-  Accordion({
-    this.isOpened = false,
-    this.icon,
-    this.iconWidget,
-    @required this.title,
-    @required this.child});
+
+  Accordion(
+      {this.isOpened = false,
+      this.icon,
+      this.iconWidget,
+      @required this.title,
+      @required this.child});
 
   @override
   Widget build(BuildContext context) => GetBuilder<AccordionController>(
@@ -266,7 +371,7 @@ class Accordion extends StatelessWidget {
               if (icon != null) ...[
                 Icon(icon, size: Size.icon),
                 HorizontalSpace()
-              ] else if(iconWidget != null) ...[
+              ] else if (iconWidget != null) ...[
                 iconWidget,
                 HorizontalSpace()
               ],
@@ -299,10 +404,13 @@ class AccordionController extends GetxController
   AnimationController _animationController;
 
   AnimationController get animationController => _animationController;
+
   double get animationProgress => _animationProgress.value;
+
   set animationProgress(double value) => _animationProgress.value = value;
 
   double get rotationAngle => maxRotationAngle * animationProgress;
+
   Animation<double> get sizeFactor =>
       Tween<double>(begin: .0, end: 1.0).animate(_animationController);
 

@@ -40,11 +40,13 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   // Offset get wakeupOffset => _wakeupOffset.value;
 
   DateTime get asleepTime => _asleepTime.value;
+
   DateTime get wakeupTime => _wakeupTime.value;
 
   Offset get nightAsleepOffset => asleepTime == null
       ? Offset.zero
       : offsetFromTime(asleepTime, isNight: true);
+
   Offset get nightWakeupOffset => wakeupTime == null
       ? Offset(diameter - iconSize - 2 * iconBorder, 0)
       : offsetFromTime(wakeupTime, isNight: true);
@@ -67,6 +69,8 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
       // once(_wakeupTime, _updateDayItems);
       // once(_trainingTime, _updateDayItems);
     }
+
+
 
     // print(
     //     'ScheduleController.onInit items: ${AuthService.i.profile?.schedule?.items}');
@@ -176,9 +180,11 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   // day dial implementation
 
   final _dayItems = RxList<ScheduleItemData>();
+
   List<ScheduleItemData> get dayItems => _dayItems.value;
 
   final _trainingTime = Rx<DateTime>(null);
+
   DateTime get trainingTime => _trainingTime.value;
 
   DateTime get suggestedAsleepTime => dayItems
@@ -190,20 +196,25 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
 
   Offset get dayAsleepOffset =>
       offsetFromTime(suggestedAsleepTime, isNight: false);
+
   Offset get dayWakeupOffset => offsetFromTime(wakeupTime, isNight: false);
+
   Offset get dayTrainingOffset => offsetFromTime(trainingTime, isNight: false);
 
   bool get shouldDayBeDisplayed => isInit && !_dayItems.isNullOrEmpty;
+
   bool get shouldDayInnerBeDisplayed =>
       isInit &&
       (wakeupTime.isDayInner ||
           suggestedAsleepTime.isDayInner ||
           shouldDayDisplayVerticalLine);
+
   bool get shouldDayOuterBeDisplayed =>
       isInit &&
       (wakeupTime.isDayOuter ||
           suggestedAsleepTime.isDayOuter ||
           shouldDayDisplayVerticalLine);
+
   bool get shouldDayDisplayVerticalLine {
     if (!isInit) return false;
 
@@ -216,6 +227,7 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
 
   double get dayOuterStartAngle =>
       -pi / 2 + (wakeupTime.isDayOuter ? wakeupTime.angle : 0);
+
   double get dayOuterEndAngle {
     final from = dayOuterStartAngle;
     final to = -pi / 2 +
@@ -232,6 +244,7 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
 
   double get dayInnerStartAngle =>
       -pi / 2 + (wakeupTime.isDayInner ? wakeupTime.angle : 0);
+
   double get dayInnerEndAngle {
     final from = dayInnerStartAngle;
     final to = -pi / 2 +
@@ -297,12 +310,15 @@ class ScheduleController extends Controller with SingleGetTickerProviderMixin {
   AnimationController _animationController;
 
   AnimationController get animationController => _animationController;
+
   double get animationProgress => _animationProgress.value;
+
   double get rotationAngle => maxRotationAngle * animationProgress;
 
   set animationProgress(double value) => _animationProgress.value = value;
 
   bool isOpened(int i) => _openedItems.contains(i);
+
   double getRotationAngle(int i) => i == _lastToggledItem.value
       ? rotationAngle
       : isOpened(i)
@@ -348,6 +364,14 @@ class ScheduleAddController extends Controller
     }
   }
 
+  @override
+  onInit() {
+    super.onInit();
+    d=true;
+    // print(
+    //     'ScheduleController.onInit items: ${AuthService.i.profile?.schedule?.items}');
+  }
+
   /// dial values
 
   final nightInnerValues = [for (int i = 7; i <= 18; i++) i];
@@ -360,6 +384,7 @@ class ScheduleAddController extends Controller
   final dayOuterValues = [for (int i = 13; i <= 24; i++) i];
 
   final _dayItems = RxList<ScheduleItemData>();
+
   List<ScheduleItemData> get dayItems => _dayItems;
 
   /// time
@@ -410,6 +435,7 @@ class ScheduleAddController extends Controller
   final _isDayInit = false.obs;
 
   bool get isTrainingDay => AuthService.i.profile.isTrainingDay;
+
   bool get canRequestSchedule {
     // always required
     if (asleepTime == null || wakeupTime == null) return false;
@@ -420,10 +446,13 @@ class ScheduleAddController extends Controller
   }
 
   bool get isNightInit => _isNightInit.value;
+
   bool get isDayInit => _isDayInit.value;
+
   bool get isInit => isNightInit && isDayInit;
 
   set isNightInit(bool value) => _isNightInit(value);
+
   set isDayInit(bool value) => _isDayInit(value);
 
   /// dial night state
@@ -431,6 +460,7 @@ class ScheduleAddController extends Controller
   Offset get nightAsleepOffset => asleepTime == null
       ? Offset.zero
       : offsetFromTime(asleepTime, isNight: true);
+
   Offset get nightWakeupOffset => wakeupTime == null
       ? Offset(diameter - iconSize - 2 * iconBorder, 0)
       : offsetFromTime(wakeupTime, isNight: true);
@@ -455,7 +485,9 @@ class ScheduleAddController extends Controller
 
   Offset get dayAsleepOffset =>
       offsetFromTime(suggestedAsleepTime, isNight: false);
+
   Offset get dayWakeupOffset => offsetFromTime(dayWakeupTime, isNight: false);
+
   Offset get dayTrainingOffset => offsetFromTime(trainingTime, isNight: false);
 
   bool get shouldDayInnerBeDisplayed =>
@@ -463,11 +495,13 @@ class ScheduleAddController extends Controller
       (dayWakeupTime.isDayInner ||
           suggestedAsleepTime.isDayInner ||
           shouldDayDisplayVerticalLine);
+
   bool get shouldDayOuterBeDisplayed =>
       isInit &&
       (dayWakeupTime.isDayOuter ||
           suggestedAsleepTime.isDayOuter ||
           shouldDayDisplayVerticalLine);
+
   bool get shouldDayDisplayVerticalLine =>
       suggestedAsleepTime.isDayInner == dayWakeupTime.isDayOuter ||
       suggestedAsleepTime.isAfter(twelveOclock) &&
@@ -477,6 +511,7 @@ class ScheduleAddController extends Controller
 
   double get dayOuterStartAngle =>
       -pi / 2 + (dayWakeupTime.isDayOuter ? dayWakeupTime.angle : 0);
+
   double get dayOuterEndAngle {
     final from = dayOuterStartAngle;
     final to = -pi / 2 +
@@ -493,6 +528,7 @@ class ScheduleAddController extends Controller
 
   double get dayInnerStartAngle =>
       -pi / 2 + (dayWakeupTime.isDayInner ? dayWakeupTime.angle : 0);
+
   double get dayInnerEndAngle {
     final from = dayInnerStartAngle;
     final to = -pi / 2 +
@@ -641,12 +677,17 @@ class ScheduleAddController extends Controller
   AnimationController _animationController;
 
   AnimationController get animationController => _animationController;
+
   double get animationProgress => _animationProgress.value;
+
   double get rotationAngle => maxRotationAngle * animationProgress;
 
   set animationProgress(double value) => _animationProgress.value = value;
 
-  bool isOpened(int i) => _openedItems.contains(i);
+  bool d;
+
+  bool isOpened(int i) => d == true ? true : _openedItems.contains(i);
+
   double getRotationAngle(int i) => i == _lastToggledItem.value
       ? rotationAngle
       : isOpened(i)
@@ -663,6 +704,8 @@ class ScheduleAddController extends Controller
     if (isOpened(i)) {
       _openedItems.remove(i);
       _animationController.reverse(from: maxRotationAngle);
+      d=false;
+
     } else {
       _openedItems.add(i);
       _animationController.forward(from: minRotationAngle);

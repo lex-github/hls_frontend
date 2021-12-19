@@ -7,6 +7,7 @@ import 'package:hls/navigation/drawer.dart';
 import 'package:hls/navigation/tabbar.dart';
 import 'package:hls/screens/_development_screen.dart';
 import 'package:hls/screens/hub_screen.dart';
+import 'package:hls/screens/knowledge_screen.dart';
 import 'package:hls/screens/stats_screen.dart';
 import 'package:hls/theme/styles.dart';
 
@@ -29,14 +30,15 @@ class _TabbarScreenState extends State<TabbarScreen>
   final List<Widget> _tabbarBodies = <Widget>[
     HubScreen(),
     //NutritionScreen(),
-    StatsScreen(),
+    // StatsScreen(),
+      KnowledgeScreen(),
     //DevelopmentScreen(shouldShowDrawer: true), //ScheduleScreen()
   ];
 
   final List<AnimatedBottomNavigationBarItem> _tabbarItems = [
     AnimatedBottomNavigationBarItem(title: 'icons/dots'),
     //AnimatedBottomNavigationBarItem(title: 'icons/cutlery'),
-    AnimatedBottomNavigationBarItem(title: 'icons/list'),
+    AnimatedBottomNavigationBarItem(title: 'icons/ruler'),
     //AnimatedBottomNavigationBarItem(title: 'icons/barbell'),
   ];
 

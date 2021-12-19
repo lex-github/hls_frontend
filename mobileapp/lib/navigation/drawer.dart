@@ -8,6 +8,7 @@ import 'package:hls/components/buttons.dart';
 import 'package:hls/components/generic.dart';
 import 'package:hls/constants/strings.dart';
 import 'package:hls/constants/values.dart';
+import 'package:hls/controllers/stats_controller.dart';
 import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/services/auth_service.dart';
@@ -136,7 +137,7 @@ class AppDrawer extends StatelessWidget {
               _buildItem(
                   icon: FontAwesomeIcons.chartBar,
                   title: drawerStatisticsLabel,
-                  onPressed: () => Get.toNamed(statsRoute)),
+                  onPressed: () => toCalendar()),
               _buildItem(
                   icon: FontAwesomeIcons.camera,
                   title: drawerMeasuresLabel,
@@ -159,4 +160,11 @@ class AppDrawer extends StatelessWidget {
                   })
             ]),
           ))));
+
+  void toCalendar () {
+    // final _cStats = Get.put(StatsController());
+    // _cStats.getCalendar();
+    Get.toNamed(statsRoute);
+  }
+
 }

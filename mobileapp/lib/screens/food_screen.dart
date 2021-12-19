@@ -212,10 +212,10 @@ class FoodScreen extends GetView<FoodController> {
                   Column(children: [
                     //_buildIndicator(food.water, color: Colors.water, value: .2),
                     _buildIndicator(food.calories,
-                        color: Colors.water, value: .2),
+                        color: Colors.water, value: 1),
                     VerticalSpace(),
                     _buildIndicator(food.proteins,
-                        color: Colors.proteins, value: .45)
+                        color: Colors.proteins, value: 1)
                   ]),
                   CircularProgress(
                       size: Size.buttonHuge,
@@ -229,10 +229,10 @@ class FoodScreen extends GetView<FoodController> {
                               width: .5 * Size.buttonHuge,
                               height: .5 * Size.buttonHuge)),
                   Column(children: [
-                    _buildIndicator(food.fats, color: Colors.fats, value: .65),
+                    _buildIndicator(food.fats, color: Colors.fats, value: 1),
                     VerticalSpace(),
                     _buildIndicator(food.carbs,
-                        title: foodCarbLabel, color: Colors.carbs, value: .35)
+                        title: foodCarbLabel, color: Colors.carbs, value: 1)
                   ])
                 ])),
         //VerticalBigSpace()

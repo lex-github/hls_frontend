@@ -21,10 +21,11 @@ import 'package:hls/helpers/dialog.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
 import 'package:hls/models/post_model.dart';
-import 'package:hls/services/auth_service.dart';
-import 'package:hls/services/_graphql_service.dart';
-import 'package:hls/theme/styles.dart';
 import 'package:hls/models/user_model.dart';
+import 'package:hls/navigation/tabbar.dart';
+import 'package:hls/services/_graphql_service.dart';
+import 'package:hls/services/auth_service.dart';
+import 'package:hls/theme/styles.dart';
 
 final radius = Size.screenWidth / 1.4;
 final outerRadius = radius + Size.vertical * 2;
@@ -33,6 +34,7 @@ final startAngle = -pi / 2;
 
 class HubScreen extends GetView<HubController> {
   UserData get profile => AuthService.i?.profile;
+
   UserDailyData get profileDaily => profile?.daily;
 
   // handlers
@@ -56,7 +58,8 @@ class HubScreen extends GetView<HubController> {
           padding: EdgeInsets.symmetric(vertical: Padding.button.top),
           title: type.title,
           borderColor: type.color,
-          onPressed: () => _tipHandler(type: type),
+          onLongPressed: () => _tipHandler(type: type),
+          onPressed: () => _router(type: type),
           titleStyle: M.TextStyle(fontSize: Size.fontTiny)));
 
   Widget _buildItem(PostData item, {bool isHalf = false}) => Card(
@@ -217,6 +220,26 @@ class HubScreen extends GetView<HubController> {
       ])));
 }
 
+void _router({ActivityType type}) {
+  switch (type.title) {
+    case dreamTitle:
+      Get.toNamed(scheduleAddRoute);
+      break;
+    case nutritionTitle:
+      if (AuthService.i.profile?.schedule?.items?.isNullOrEmpty ?? true) {
+        showConfirm(title: foodNeedScheduleText);
+      }
+      Get.toNamed(foodAddRoute);
+      break;
+    case exerciseTitle:
+      if (AuthService.i.profile?.schedule?.items?.isNullOrEmpty ?? true) {
+        showConfirm(title: exerciseNeedScheduleText);
+      }
+      Get.toNamed(exerciseCatalogRoute);
+      break;
+  }
+}
+
 class StatusBlock extends StatelessWidget {
   UserProgressData get progress => AuthService.i.profile.progress;
 
@@ -259,6 +282,7 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
           ..addListener(() => animationProgress = _animationController.value)
           ..repeat(period: rotationAnimationDuration);
   }
+
   @override
   void onInit() async {
     super.onInit();
@@ -270,34 +294,43 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
     if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
   }
 
-
-  void check(){
-    final scheduleId = AuthService.i.profile.height;
-if(!scheduleId.isNullEmptyFalseOrZero){
-  // final _c = Get.put(HealthController());
-
-}
+  void check() {
+    final scheduleId = AuthService.i.profile.progress.microCycle;
+    if (!scheduleId.isNullEmptyFalseOrZero) {
+      // final _c = Get.put(HealthController());
+      final _c = Get.put(HealthController());
+      if(!scheduleId.isNullEmptyFalseOrZero) {
+        _c.fetchData();
+      }
+    }
   }
+
   // tooltip
 
   final _tooltip = ''.obs;
+
   String get tooltip => _tooltip.value;
 
   Color _tooltipColor;
+
   Color get tooltipColor => _tooltipColor;
 
   // animation
 
   AnimationController _animationController;
+
   AnimationController get animationController => _animationController;
 
   final _animationProgress = .0.obs;
+
   double get animationProgress => _animationProgress.value;
+
   set animationProgress(double value) => _animationProgress.value = value;
 
   // methods
 
   Timer _tooltipDelayTimer;
+
   retrieveTooltip({ActivityType type}) async {
     _tooltipColor = type.color;
 

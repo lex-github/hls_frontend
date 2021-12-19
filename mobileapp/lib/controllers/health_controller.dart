@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:io' show Platform;
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
@@ -85,6 +86,22 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   DateTime sleepTo;
   int sleepDuration = 0;
   bool isUpdated = false;
+  final _trainingTime = Rx<DateTime>(null);
+  DateTime get trainingTime {
+    final time = _trainingTime.value;
+    return time == null ? null : DateTime(0, 0, 0, time.hour, time.minute);
+  }
+
+  bool get isTrainingDay => AuthService.i.profile.isTrainingDay;
+
+  bool get canRequestSchedule {
+    // always required
+    if (sleepFrom == null || sleepTo == null) return false;
+
+    // required only on day of training
+    if (isTrainingDay && trainingTime == null) return false;
+    return true;
+  }
 
   void checkDay() async {
     //checking current date
@@ -125,6 +142,9 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   //     _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
   //   });
   // }
+
+  _alert() => showConfirm(title: Platform.isIOS ? confirmAppleTitle : confirmGoogleTitle, onPressed: () => data());
+
 
   /// Fetch data from the healt plugin and print it
   Future fetchData() async {
@@ -195,16 +215,12 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
       checkDay();
       // addSteps();
 
-      if (sleepFrom != 0 && sleepTo != 0
-      ) {
-        await addSchedule();
-        if (steps != 0
-        ) {
-          addSteps();
-        }
-      }
-      // addSteps();
 
+      // addSteps();
+      if (!sleepFrom.isNullEmptyFalseOrZero && !sleepTo.isNullEmptyFalseOrZero
+      ) {
+        _alert();
+      }
 
     } else {
 
@@ -214,8 +230,20 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   }
 
 
+  void data () async {
+      await addSchedule();
+      if (steps != 0
+      ) {
+        addSteps();
+    }
+  }
+
   Future<bool> addSchedule() async {
     // if (!canRequestSchedule) return false;
+
+
+    // if (!canRequestSchedule) return false;
+
 
     final response = await mutation(schedulesCreateMutation, parameters: {
       if (sleepFrom != null)

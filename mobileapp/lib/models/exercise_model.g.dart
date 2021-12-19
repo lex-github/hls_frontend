@@ -19,6 +19,9 @@ ExerciseData _$ExerciseDataFromJson(Map<String, dynamic> json) {
     ..pulse = (json['pulseZones'] as List<dynamic>)
         ?.map((e) => ExercisePulseData.fromJson(e as Map<String, dynamic>))
         ?.toList()
+    ..trainingEquipments = (json['trainingEquipments'] as List<dynamic>)
+        ?.map((e) => TrainingEquipments.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..type = ExerciseType.fromJsonValue(json['kind'])
     ..rateChecks = toDurationList(json['videoPulseCheckTime'])
     ..videoUrl = json['videoUrl'] as String
@@ -34,6 +37,7 @@ Map<String, dynamic> _$ExerciseDataToJson(ExerciseData instance) {
     'icon': instance.image,
     'inputData': instance.input,
     'pulseZones': instance.pulse,
+    'trainingEquipments': instance.trainingEquipments,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -91,16 +95,51 @@ Map<String, dynamic> _$ExercisePulseDataToJson(ExercisePulseData instance) {
     'title': instance.title,
     'imageUrl': instance.imageUrl,
   };
+}
+  TrainingEquipments _$TrainingEquipmentsFromJson(Map<String, dynamic> json) {
+  return TrainingEquipments()
+    ..icon =
+    EquipmentsIcons.fromJson(json['icon'] as Map<String, dynamic>);
+}
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
+Map<String, dynamic> _$TrainingEquipmentsToJson(TrainingEquipments instance) {
+  final val = <String, dynamic>{
+    'icon': instance.icon,
+  };
 
-  writeNotNull('color', colorToString(instance.color));
-  val['description'] = instance.description;
-  val['heartRate'] = instance.heartRate;
-  val['isRecommended'] = instance.isRecommended;
+  // void writeNotNull(String key, dynamic value) {
+  //   if (value != null) {
+  //     val[key] = value;
+  //   }
+  // }
+  //
+  // writeNotNull('color', colorToString(instance.color));
+  // val['description'] = instance.description;
+  // val['heartRate'] = instance.heartRate;
+  // val['isRecommended'] = instance.isRecommended;
+  return val;
+}
+
+
+EquipmentsIcons _$EquipmentsIconsFromJson(Map<String, dynamic> json) {
+  return EquipmentsIcons()
+    ..url = json['url'] as String;
+}
+
+Map<String, dynamic> _$EquipmentsIconsToJson(EquipmentsIcons instance) {
+  final val = <String, dynamic>{
+    'url': instance.url,
+  };
+
+  // void writeNotNull(String key, dynamic value) {
+  //   if (value != null) {
+  //     val[key] = value;
+  //   }
+  // }
+  //
+  // writeNotNull('color', colorToString(instance.color));
+  // val['description'] = instance.description;
+  // val['heartRate'] = instance.heartRate;
+  // val['isRecommended'] = instance.isRecommended;
   return val;
 }

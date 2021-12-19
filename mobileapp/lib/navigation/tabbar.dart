@@ -33,7 +33,7 @@ class Tabbar extends StatefulWidget {
   _State createState() => _State();
 }
 
-class _State extends State<Tabbar> with TickerProviderStateMixin {
+class _State<Controller extends StatsController> extends State<Tabbar> with TickerProviderStateMixin{
   AnimationController _tabController;
   AnimationController _submenuController;
   Animation _degOneTranslationAnimation;
@@ -43,12 +43,21 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   Animation _centralRotationAnimation;
 
   final _controller = Get.find<TabbarController>();
+  // final _cStats = Get.find<StatsController>();
+  // final _cStats = Get.find<StatsController>();
+  // final _cStats = Get.put<StatsController>(StatsController());
 
-  bool isSubmenuVisible;
+  bool isSubmenuVisible; 
 
   @override
   void initState() {
     super.initState();
+
+    // final scheduleId = AuthService.i.profile.progress.microCycle;
+    // final _c = Get.put(HealthController());
+    // if(!scheduleId.isNullEmptyFalseOrZero) {
+    //   _c.fetchData();
+    // }
 
     _tabController = AnimationController(
         vsync: this,
@@ -160,13 +169,10 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
   Widget _buildCentralItem() => _buildCentralGroup(
       child: CircularButton(
           onPressed: onPressed,
-          //onLongPressed: _controller.toggleSubmenu,
-          child: Transform(
-              alignment: Alignment.center,
-              transform:
-                  Matrix4.rotationZ(radians(_centralRotationAnimation.value)),
-              child: Icon(FontAwesomeIcons.plus,
-                  color: Colors.icon, size: Size.buttonBig * .5))));
+          imageTitle: 'icons/list',
+        background: Colors.water,
+        size: 1.2 * Size.buttonBig,//onLongPressed: _controller.toggleSubmenu,
+      ));
 
   Widget _buildItem(int index, bool isSelected) {
     final item = widget.items[index];
@@ -194,15 +200,35 @@ class _State extends State<Tabbar> with TickerProviderStateMixin {
             padding: Padding.content,
             child: isCentral ? _buildCentralGroup(child: child) : child));
   }
-
+  // void findLoop(DateTime day) {
+  //   for (var i = 0; i < controller.calendar.length; i++) {
+  //     if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
+  //       Get.find<StatsController>().getSchedule();
+  //       Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day});
+  //     }
+  //   }
+  //   Get.find<StatsController>().getSchedule();
+  //   Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null});
+  // }
   void onPressed () {
-    final scheduleId = AuthService.i.profile.progress.microCycle;
-    final _c = Get.put(HealthController());
-    if(!scheduleId.isNullEmptyFalseOrZero) {
-      _c.fetchData();
-    }
+
+    // Get.find<StatsController>().getSchedule();
+    Get.toNamed(statsTabRoute, arguments: {'index': null, 'date': DateTime.now(), 'isDay' : true});
+    //
+    // for (var i = 0; i < _cStats.calendar.length; i++) {
+    //   if (_cStats.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
+    //     Get.find<StatsController>().getSchedule();
+    //     Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': DateTime.now(), 'isDay' : true});
+    //   }
+    // }
+
+    // final scheduleId = AuthService.i.profile.progress.microCycle;
+    // final _c = Get.put(HealthController());
+    // if(!scheduleId.isNullEmptyFalseOrZero) {
+    //   _c.fetchData();
+    // }
     // _c.fetchData();
-    _controller.toggleSubmenu();
+    // _controller.toggleSubmenu();
     // _timerHandler();
     // _c.fetchData();
   }

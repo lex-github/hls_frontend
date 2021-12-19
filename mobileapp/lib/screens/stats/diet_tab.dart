@@ -426,15 +426,15 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     TextPrimary(
-                      //       (waterValue/1000).toString() + " л",
-                      //       size: Size.font * 1.5,
-                      //     )
-                      //   ],
-                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextPrimary(
+                            (waterValue/1000).ceilToDouble().toString() + " л",
+                            size: Size.font * 1.5,
+                          )
+                        ],
+                      ),
                       TextSecondary(
                         (((waterValue / (waterMedium * 1000)) * 100).toInt())
                                 .toString() +

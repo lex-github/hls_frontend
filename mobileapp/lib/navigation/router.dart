@@ -15,6 +15,7 @@ import 'package:hls/screens/food_add_screen.dart';
 import 'package:hls/screens/food_category_screen.dart';
 import 'package:hls/screens/food_filter_screen.dart';
 import 'package:hls/screens/food_screen.dart';
+import 'package:hls/screens/knowledge_screen.dart';
 import 'package:hls/screens/otp_request_form_screen.dart';
 import 'package:hls/screens/otp_verify_form_screen.dart';
 import 'package:hls/screens/profile_form_screen.dart';
@@ -149,6 +150,10 @@ class Router {
     GetPage(
         name: statsTabRoute,
         page: () => StatsTabBar(),
+        transitionDuration: navigationTransitionDuration),
+    GetPage(
+        name: knowledgeRoute,
+        page: () => KnowledgeScreen(),
         transitionDuration: navigationTransitionDuration),
     GetPage(
         name: trainingStoryRoute,

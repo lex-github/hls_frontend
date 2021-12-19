@@ -16,7 +16,7 @@ const assetsDirectory = 'assets';
 const defaultItemsPerPage = 10;
 
 // time
-const chatTyperAnimationDuration = Duration(milliseconds: 20);
+const chatTyperAnimationDuration = Duration(milliseconds: 35);
 const defaultAnimationDurationValue = 150;
 const defaultAnimationDuration = Duration(milliseconds: defaultAnimationDurationValue);
 const inputWaitingDuration = Duration(milliseconds: 300);
@@ -46,6 +46,7 @@ const foodAddRoute = '/food-add';
 const exerciseCatalogRoute = '/exercise-catalog';
 const exerciseCategoryRoute = '/exercise-category';
 const exerciseRoute = '/exercise';
+const knowledgeRoute = '/knowledge';
 const exerciseRealtimeRoute = '/exercise-realtime';
 const exerciseVideoRoute = '/exercise-video';
 const exerciseResultRoute = '/exercise-result';
@@ -161,3 +162,6 @@ const submenuDistance = 200;
 // desktop window size
 const desktopWindowWidth = 540.0;
 const desktopWindowHeight = 960.0;
+
+//urls
+const googleFitUrl = "https://upload.wikimedia.org/wikipedia/commons/d/dc/Google_Fit_icon_%282018%29.svg";
