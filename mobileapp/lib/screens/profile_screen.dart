@@ -29,7 +29,16 @@ class ProfileScreen extends StatelessWidget {
   // handlers
   _debugHandler() => showConfirm(
       title: debugTitle,
-      description: prettyJson(progress?.health?.debugInfo ?? noDataText));
+      child: Container(
+        width: double.infinity,
+        height: Size.image,
+        padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+        child: SingleChildScrollView(
+          child: TextSecondary(prettyJson(progress?.health?.debugInfo ?? noDataText)),
+        ),
+      ),
+      // description: prettyJson(progress?.health?.debugInfo ?? noDataText)
+  );
 
   _resultsHandler() => Get.toNamed(chatResultsRoute);
   _restartHandler() {
@@ -65,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(_) => Screen(
       padding: Padding.zero,
-      shouldHaveAppBar: false,
+      shouldHaveAppBar: true,
       leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
       leading: Clickable(
           borderRadius: Size.iconBig / 2,

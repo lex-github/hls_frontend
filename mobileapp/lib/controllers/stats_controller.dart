@@ -193,10 +193,10 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   Future getCalendar() async {
     final responseCalendar = await query(
       calendarQuery,
-      parameters: {
-        'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-        'toDate': dateToString(date: toDate, output: dateInternalFormat),
-      },
+      // parameters: {
+      //   'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+      //   'toDate': dateToString(date: toDate, output: dateInternalFormat),
+      // },
       fetchPolicy: FetchPolicy.cacheFirst,
     );
     calendar = responseCalendar
@@ -210,10 +210,10 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   Future getSchedule() async {
     final responseStats = await query(
       schedules,
-      parameters: {
-        'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-        'toDate': dateToString(date: toDate, output: dateInternalFormat),
-      },
+      // parameters: {
+      //   'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
+      //   'toDate': dateToString(date: toDate, output: dateInternalFormat),
+      // },
       fetchPolicy: FetchPolicy.cacheFirst,
     );
 

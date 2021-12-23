@@ -90,7 +90,7 @@ class ExerciseScreen<T extends ExerciseFormController> extends StatelessWidget {
                               field: 'type', values: data.values),
                           VerticalSpace()
                         ],
-                        if (form.type != null || item.values.length == 1)
+                        // if (form.type != null || item.values.length == 1)
                           SelectExercise<T, GenericEnum>(
                               field: 'value',
                               label:

@@ -13,13 +13,15 @@ import 'package:hls/controllers/_controller.dart';
 import 'package:hls/controllers/exercise_form_controller.dart';
 import 'package:hls/helpers/enums.dart';
 import 'package:hls/helpers/null_awareness.dart';
+import 'package:hls/models/exercise_model.dart';
 import 'package:hls/screens/video_screen.dart';
 import 'package:hls/theme/styles.dart';
 
 class CardioSwitch extends StatefulWidget {
   final List<Duration> rateChecks;
+  final ExerciseData item;
 
-  CardioSwitch({@required this.rateChecks});
+  CardioSwitch({@required this.rateChecks, @required this.item});
 
   @override
   _CardioSwitchState createState() => _CardioSwitchState();
@@ -27,13 +29,18 @@ class CardioSwitch extends StatefulWidget {
 
 class _CardioSwitchState extends State<CardioSwitch> {
   List<Duration> get rateChecks => widget.rateChecks;
+  ExerciseData get item => widget.item;
 
   CardioSwitchController get controller => Get.find<CardioSwitchController>();
+
+
 
   @override
   Widget build(BuildContext context) => GetX(
       init: CardioSwitchController(rateChecks: rateChecks),
-      builder: (_) => Row(
+      builder: (_) => Column(
+        children: [
+          Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,54 +51,54 @@ class _CardioSwitchState extends State<CardioSwitch> {
                         controller.type == type
                             ? Container(
                           width: Size.horizontal * 5,
-                                decoration: BoxDecoration(
-                                    color: Colors.background,
-                                    borderRadius: borderRadiusCircular,
-                                    border: Border.all(
-                                        width: borderWidth,
-                                        color: Colors.water,
-                                        style: BorderStyle.solid)),
-                                padding: Padding.content * .4,
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      title: type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? "image2vector" : "https://upload.wikimedia.org/wikipedia/commons/d/dc/Google_Fit_icon_%282018%29.svg") : type.imageTitle,
-                                      width: Size.horizontal * 3,
-                                      height: Size.horizontal * 3,                                    ),
-                                    VerticalTinySpace(),
-                                    TextPrimary(
-                                      type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? cardioInputAppleHealthTitle : cardioInputGoogleHealthTitle) : type.title,
-                                      size: Size.fontSmall * .9,
-                                    )
-                                  ],
-                                ),
+                          decoration: BoxDecoration(
+                              color: Colors.background,
+                              borderRadius: borderRadiusCircular,
+                              border: Border.all(
+                                  width: borderWidth,
+                                  color: Colors.water,
+                                  style: BorderStyle.solid)),
+                          padding: Padding.content * .4,
+                          child: Column(
+                            children: [
+                              Image(
+                                title: type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? "image2vector" : "https://upload.wikimedia.org/wikipedia/commons/d/dc/Google_Fit_icon_%282018%29.svg") : type.imageTitle,
+                                width: Size.horizontal * 3,
+                                height: Size.horizontal * 3,                                    ),
+                              VerticalTinySpace(),
+                              TextPrimary(
+                                type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? cardioInputAppleHealthTitle : cardioInputGoogleHealthTitle) : type.title,
+                                size: Size.fontSmall * .9,
                               )
+                            ],
+                          ),
+                        )
                             : Container(
                           width: Size.horizontal * 5,
                           decoration: BoxDecoration(
-                                    color: Colors.background,
-                                    borderRadius: borderRadiusCircular,
-                                    border: Border.all(
-                                        width: borderWidth,
-                                        color: Colors.disabled,
-                                        style: BorderStyle.solid)),
+                              color: Colors.background,
+                              borderRadius: borderRadiusCircular,
+                              border: Border.all(
+                                  width: borderWidth,
+                                  color: Colors.disabled,
+                                  style: BorderStyle.solid)),
                           padding: Padding.content * .4,
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      title: type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? "apple-health" : googleFitUrl) : type.imageTitle,
-                                      // size: Size.horizontal * 3,
-                                      width: Size.horizontal * 3,
-                                      height: Size.horizontal * 3,
-                                    ),
-                                    VerticalTinySpace(),
-                                    TextPrimary(
-                                      type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? cardioInputAppleHealthTitle : cardioInputGoogleHealthTitle) : type.title,
-                                      size: Size.fontSmall * .9,
-                                    )
-                                  ],
-                                ),
+                          child: Column(
+                            children: [
+                              Image(
+                                title: type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? "apple-health" : googleFitUrl) : type.imageTitle,
+                                // size: Size.horizontal * 3,
+                                width: Size.horizontal * 3,
+                                height: Size.horizontal * 3,
                               ),
+                              VerticalTinySpace(),
+                              TextPrimary(
+                                type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? cardioInputAppleHealthTitle : cardioInputGoogleHealthTitle) : type.title,
+                                size: Size.fontSmall * .9,
+                              )
+                            ],
+                          ),
+                        ),
                         if (controller.type == type) ...[
                           if (type != CardioInputType.MANUAL)
                             VerticalMediumSpace(),
@@ -159,7 +166,39 @@ class _CardioSwitchState extends State<CardioSwitch> {
                     onPressed: () => controller.type = type,
                   ),
                 ]
-              ]));
+              ]),
+          VerticalSmallSpace(),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                controller.type.isNullEmptyFalseOrZero ? Button(
+                    background: Colors.disabled,
+                    title: exerciseStartTitle,
+                    onPressed: () async {
+                    }) :  Button(
+                    background: Colors.primary,
+                    title: exerciseStartTitle,
+                    onPressed: () async {
+                      // if (item.videoUrl.isNullOrEmpty)
+                      //   return showConfirm(title: noDataText);
+
+                      // final controller =
+                      //     Get.find<VideoScreenController>();
+                      // if (controller == null)
+                      //   return showConfirm(title: errorGenericText);
+                      //
+                      // controller.start();
+
+                      // controller.reset();
+                      // controller.play();
+
+                      Get.toNamed(exerciseVideoRoute,
+                          arguments: item);
+                    })
+              ]),
+
+        ],
+      ));
 }
 
 class CardioSwitchController extends Controller {

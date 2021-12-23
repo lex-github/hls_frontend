@@ -17,12 +17,17 @@ import 'package:hls/screens/schedule/helpers.dart';
 import 'package:hls/theme/styles.dart';
 
 class NightTab extends ScheduleTab {
+
   // builders
+
+  ScrollController scrollController = ScrollController(initialScrollOffset: Get.height);
 
   @override
   Widget build(_) => Screen(
         title: scheduleScreenTitle,
   child: SingleChildScrollView(
+
+    controller: scrollController,
             // padding: Padding.content,
             child: Column(children: [
           Stack(

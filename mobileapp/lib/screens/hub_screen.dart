@@ -295,13 +295,11 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
   }
 
   void check() {
-    final scheduleId = AuthService.i.profile.progress.microCycle;
-    if (!scheduleId.isNullEmptyFalseOrZero) {
+    final progressId = AuthService.i.profile.progress.microCycle;
+    if (!progressId.isNullEmptyFalseOrZero) {
       // final _c = Get.put(HealthController());
       final _c = Get.put(HealthController());
-      if(!scheduleId.isNullEmptyFalseOrZero) {
         _c.fetchData();
-      }
     }
   }
 

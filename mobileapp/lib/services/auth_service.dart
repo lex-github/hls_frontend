@@ -146,7 +146,6 @@ class AuthService extends GraphqlService {
                   parameters: {'timezone': timezone})
               : null);
     }
-
     print('"PROFILE: " $profile');
     return profile;
   }

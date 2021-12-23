@@ -280,32 +280,7 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                         // ),
                         // if (!item.rateChecks.isNullOrEmpty) ...[
                         //CardioMonitor(rateChecks: item.rateChecks),
-                        CardioSwitch(rateChecks: item.rateChecks),
-                        VerticalSpace(),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Button(
-                                  background: Colors.primary,
-                                  title: exerciseStartTitle,
-                                  onPressed: () async {
-                                    // if (item.videoUrl.isNullOrEmpty)
-                                    //   return showConfirm(title: noDataText);
-
-                                    // final controller =
-                                    //     Get.find<VideoScreenController>();
-                                    // if (controller == null)
-                                    //   return showConfirm(title: errorGenericText);
-                                    //
-                                    // controller.start();
-
-                                    // controller.reset();
-                                    // controller.play();
-
-                                    Get.toNamed(exerciseVideoRoute,
-                                        arguments: item);
-                                  })
-                            ]),
+                        CardioSwitch(rateChecks: item.rateChecks, item: item),
                         // ],
                         VerticalSpace(),
                         _buildBlock(child: StatusBlock()),

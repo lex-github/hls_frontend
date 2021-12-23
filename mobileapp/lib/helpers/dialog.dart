@@ -60,6 +60,7 @@ Future showConfirm(
         if (child != null) child,
         if (description != null)
           SingleChildScrollView(
+            scrollDirection: Axis.vertical,
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
                   child: TextSecondary(description))),

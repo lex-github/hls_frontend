@@ -144,6 +144,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   // }
 
   _alert() => showConfirm(title: Platform.isIOS ? confirmAppleTitle : confirmGoogleTitle, onPressed: () => data());
+  _aler() => showConfirm(title: "Хотите вручную установить часы сна?", onPressed: () => d());
 
 
   /// Fetch data from the healt plugin and print it
@@ -151,6 +152,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     // get everything from midnight until now
     DateTime startDate = DateTime.now().subtract(1.days);
     DateTime endDate = DateTime.now();
+    final scheduleId = AuthService.i.profile.schedule;
 
     HealthFactory health = HealthFactory();
 
@@ -213,14 +215,17 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
       print("sleepDuration " + (sleepDuration/60).toString());
       // addSteps();
       checkDay();
-      // addSteps();
-
-
-      // addSteps();
-      if (!sleepFrom.isNullEmptyFalseOrZero && !sleepTo.isNullEmptyFalseOrZero
-      ) {
-        _alert();
+      if (scheduleId.isNullEmptyFalseOrZero){
+        if (!sleepFrom.isNullEmptyFalseOrZero && !sleepTo.isNullEmptyFalseOrZero
+        ) {
+          _alert();
+        }else{
+          _aler();
+        }
+      }else{
+        addSteps();
       }
+
 
     } else {
 
@@ -235,6 +240,13 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
       if (steps != 0
       ) {
         addSteps();
+    }
+  }
+  void d () {
+    Get.toNamed(scheduleAddRoute);
+    if (steps != 0
+    ) {
+      addSteps();
     }
   }
 

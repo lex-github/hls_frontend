@@ -102,7 +102,7 @@ class ProfileFormScreen<T extends ProfileFormController> extends FormScreen<T> {
   Widget buildScreen({Widget child}) => Screen(
       fab: Button<T>(),
       padding: Padding.zero,
-      shouldHaveAppBar: false,
+      shouldHaveAppBar: true,
       leadingLeft: Size.horizontal - (Size.iconBig - Size.iconSmall) / 2,
       leadingTop: Size.vertical + Size.top, // - Size.iconBig / 2,
       leading: Clickable(
