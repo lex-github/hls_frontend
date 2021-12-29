@@ -81,12 +81,9 @@ class ArticleScreen extends GetView<FoodCategoryController> {
                   padding: Padding.content, child: TextSecondary(noDataText)))
         else ...[
           VerticalSpace(),
-          for (final text in article.texts) ...[
             Container(
                 padding: EdgeInsets.symmetric(horizontal: Padding.content.left),
-                child: TextPrimaryHint(text)),
-            if (text != article.texts.last) VerticalSpace()
-          ],
+                child: TextPrimaryHint(article.texts)),
           VerticalSpace()
         ]
       ])));

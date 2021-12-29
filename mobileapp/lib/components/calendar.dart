@@ -39,8 +39,8 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
   Widget _prioritizedBuilder(_, DateTime day, DateTime focusedDay) => GetBuilder<StatsController>
     (
       init: StatsController(
-          fromDate: DateTime.now().subtract(90.days).toString(),
-          toDate: DateTime.now().toString(),
+       // id : "331",
+
       ),
       builder: (_) {
         final firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
@@ -59,7 +59,7 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
             if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
               schedule = controller.calendar[i].daily.schedule / 100;
               exercise = controller.calendar[i].daily.exercise / 100;
-              nutrition = controller.calendar[i].daily.nutrition /100;
+              nutrition = controller.calendar[i].daily.nutrition / 100;
             }
           }
         }else{
@@ -85,8 +85,8 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
       Container(
         child: GetBuilder<StatsController>(
             init: StatsController(
-                fromDate: DateTime.now().subtract(90.days).toString(),
-                toDate: DateTime.now().toString()),
+              // id : "331",
+            ),
             builder: (_) {
               return TableCalendar(
                   headerStyle: HeaderStyle(
@@ -113,12 +113,12 @@ class Calendar<Controller extends StatsController> extends GetView<Controller> {
   void findLoop(DateTime day) {
     for (var i = 0; i < controller.calendar.length; i++) {
       if (controller.calendar[i].date == dateToString(date: day, output: dateInternalFormat)) {
-        Get.find<StatsController>().getSchedule();
-        Get.toNamed(statsTabRoute, arguments: {'index': i, 'date': day, 'isDay' : false});
+        // Get.find<StatsController>().getSchedule();
+        Get.toNamed(statsTabRoute, arguments: {'index': controller.calendar[i].scheduleId, 'date': day, 'isDay' : false, 'dayId' : i});
       }
     }
-    Get.find<StatsController>().getSchedule();
-    Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null, 'isDay' : false});
+    // Get.find<StatsController>().getSchedule();
+    Get.toNamed(statsTabRoute, arguments: {'date': day, 'index': null, 'isDay' : false, 'dayId' : null});
   }
 
 }
@@ -171,7 +171,10 @@ class CalendarCellCircle extends StatelessWidget {
 
   @override
   Widget build(_) => GetBuilder<StatsController>(
-    init: StatsController(),
+    init:             StatsController(
+        // id : "331"
+    ),
+
     builder: (_) =>
         CustomPaint(
             size: M.Size(diameter, diameter),

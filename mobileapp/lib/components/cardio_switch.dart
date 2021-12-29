@@ -48,6 +48,7 @@ class _CardioSwitchState extends State<CardioSwitch> {
                   Clickable(
                     child: Column(
                       children: [
+                        controller.type.isNullEmptyFalseOrZero ?
                         controller.type == type
                             ? Container(
                           width: Size.horizontal * 5,
@@ -98,7 +99,32 @@ class _CardioSwitchState extends State<CardioSwitch> {
                               )
                             ],
                           ),
-                        ),
+                        ) : controller.type == type
+                            ? Container(
+                          width: Size.horizontal * 5,
+                          decoration: BoxDecoration(
+                              color: Colors.background,
+                              borderRadius: borderRadiusCircular,
+                              border: Border.all(
+                                  width: borderWidth,
+                                  color: Colors.water,
+                                  style: BorderStyle.solid)),
+                          padding: Padding.content * .4,
+                          child: Column(
+                            children: [
+                              Image(
+                                title: type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? "image2vector" : "https://upload.wikimedia.org/wikipedia/commons/d/dc/Google_Fit_icon_%282018%29.svg") : type.imageTitle,
+                                width: Size.horizontal * 3,
+                                height: Size.horizontal * 3,                                    ),
+                              VerticalTinySpace(),
+                              TextPrimary(
+                                type.title == cardioInputAppleHealthTitle ? (Platform.isIOS ? cardioInputAppleHealthTitle : cardioInputGoogleHealthTitle) : type.title,
+                                size: Size.fontSmall * .9,
+                              )
+                            ],
+                          ),
+                        )
+                            : SizedBox(),
                         if (controller.type == type) ...[
                           if (type != CardioInputType.MANUAL)
                             VerticalMediumSpace(),
@@ -163,7 +189,7 @@ class _CardioSwitchState extends State<CardioSwitch> {
                     //   // TextPrimary(type.title)
                     // ]
                     //     ),
-                    onPressed: () => controller.type = type,
+                    onPressed: () => controller.type != type ? controller.type = type : controller.type = null,
                   ),
                 ]
               ]),
@@ -305,7 +331,7 @@ class CardioInputType extends GenericEnum<int> {
   static const MANUAL = CardioInputType(
       value: 1, title: cardioInputTypeManualTitle, imageTitle: "hands");
   static const MONITOR = CardioInputType(
-      value: 2, title: cardioInputTypeMonitorTitle, imageTitle: "blue");
+      value: 2, title: cardioInputTypeMonitorTitle, imageTitle: "https://i.dlpng.com/static/png/303522_preview.png");
   static const HEALTH = CardioInputType(
       value: 3, title: cardioInputAppleHealthTitle, imageTitle: "apple-health");
 

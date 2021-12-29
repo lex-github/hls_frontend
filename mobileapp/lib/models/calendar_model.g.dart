@@ -8,12 +8,14 @@ part of 'calendar_model.dart';
 
 CalendarData _$CalendarDataFromJson(Map<String, dynamic> json) {
   return CalendarData()
+    ..scheduleId = json['id'] as String
     ..date = json['scheduleDate'] as String
     ..daily =
     DailyRating.fromJson(json['dailyRating'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$CalendarDataToJson(CalendarData instance) => <String, dynamic>{
+  'id': instance.scheduleId,
   'scheduleDate': instance.date,
   'dailyRating': instance.daily,
 };

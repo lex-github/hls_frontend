@@ -27,10 +27,9 @@ import 'package:hls/services/auth_service.dart';
 //   DATA_NOT_ADDED,
 // }
 class StatsController extends Controller with SingleGetTickerProviderMixin {
-  final String fromDate;
-  final String toDate;
+  final String id;
 
-  StatsController({@required this.fromDate, this.toDate}) {
+  StatsController({@required this.id}) {
     _animationController =
         AnimationController(vsync: this, duration: defaultAnimationDuration)
           ..addListener(() => animationProgress = _animationController.value);
@@ -44,7 +43,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   final _animationProgress = .0.obs;
   final _lastToggledItem = Rx<String>(null);
   AnimationController _animationController;
-  List<StatsData> stats;
+  StatsData stats;
   List<CalendarData> calendar;
 
   List<HealthDataPoint> _healthDataList = [];
@@ -53,6 +52,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   int _nofSteps = 10;
   double _mgdl = 10.0;
 
+  String statsUpdate = "";
   // StatsScheduleItem scheduleItem;
   List<StatsScheduleEatings> eatings;
   List<StatsScheduleComponents> components;
@@ -207,20 +207,23 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     update();
   }
 
-  Future getSchedule() async {
-    final responseStats = await query(
-      schedules,
-      // parameters: {
-      //   'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
-      //   'toDate': dateToString(date: toDate, output: dateInternalFormat),
-      // },
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
+  Future getSchedule(String i) async {
 
-    stats = responseStats
-        .get<List>('schedules')
-        .map((x) => StatsData.fromJson(x))
-        .toList(growable: false);
+
+    if(statsUpdate != i){
+      statsUpdate = i;
+      final responseStats = await query(
+        schedule,
+        parameters: {
+          'id' : i,
+        },
+        fetchPolicy: FetchPolicy.cacheFirst,
+      );
+
+      //print('FoodController.retrieve result: $result');
+
+      stats = StatsData.fromJson(responseStats.get('schedule'));
+    }
 
     update();
   }
@@ -250,7 +253,9 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     d = true;
     // await fetchData();
     await getCalendar();
-    await getSchedule();
+
+    // await getSchedule();
+
     super.onInit();
   }
 

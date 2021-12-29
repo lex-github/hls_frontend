@@ -15,25 +15,32 @@ import 'package:intl/intl.dart';
 
 class StatsTabBar<Controller extends StatsController>
     extends GetView<Controller> {
-  int index;
+  String index;
+  int dayId;
   final DateTime date;
   final bool isDay;
 
   StatsTabBar()
       : index = (Get.arguments as Map).get('index'),
         date = (Get.arguments as Map).get('date'),
+        dayId = (Get.arguments as Map).get('dayId'),
         isDay = (Get.arguments as Map).get('isDay');
 
-  Widget _buildTabs(int i) {
-    if (i != -1) {
+  Widget _buildTabs(String i, int id) {
+    if (i != "null") {
       index = i;
+      dayId = id;
     }
 
+
     return GetBuilder<StatsController>(
-      init: StatsController(fromDate: date.toString(), toDate: date.toString()),
-      builder: (_) => controller.stats == null
+      init:             StatsController(id : "331"),
+
+      builder: (_) =>
+      controller.stats == null
           ? Center(child: Loading())
-          : DefaultTabController(
+          :
+        DefaultTabController(
               length: 3,
               child: Screen(
                   height: Size.bar + 2 * Size.verticalMedium + Size.font,
@@ -57,7 +64,7 @@ class StatsTabBar<Controller extends StatsController>
                   child: TabBarView(
                       //physics: NeverScrollableScrollPhysics(),
                       children: [
-                        ModeTab(index: index, date: date),
+                        ModeTab(index: index, dayId: dayId, date: date),
                         DietTab(index: index, date: date),
                         ActiveTab(index: index, date: date)
                       ]))),
@@ -66,24 +73,29 @@ class StatsTabBar<Controller extends StatsController>
 
   @override
   Widget build(_) => GetBuilder<StatsController>(
-        init:
-            StatsController(fromDate: date.toString(), toDate: date.toString()),
+    init:
+            StatsController(id : "331"),
         builder: (_) {
           {
+
             if (isDay && isDay != null) {
               if (controller.calendar != null) {
                 for (var i = 0; i < controller.calendar.length; i++) {
                   if (controller.calendar[i].date ==
                       dateToString(
                           date: DateTime.now(), output: dateInternalFormat)) {
-                    _buildTabs(i);
+                    controller.getSchedule(controller.calendar[i].scheduleId);
+
+                    _buildTabs(controller.calendar[i].scheduleId, i);
                   }
                 }
               } else {
                 LoadingPage();
               }
             }
-            return _buildTabs(-1);
+            controller.getSchedule(index);
+
+            return _buildTabs("null",0);
           }
         },
       );

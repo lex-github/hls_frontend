@@ -32,8 +32,8 @@ class PostData extends GenericData {
   bool isHalf = false;
   @JsonKey(name: 'publishedAt', fromJson: toDate)
   DateTime date;
-  @JsonKey(name: 'text')
-  List<String> texts;
+  @JsonKey(name: 'content')
+  String texts;
   List<StoryData> stories;
   String videoUrl;
   @JsonKey(name: 'videoDuration')

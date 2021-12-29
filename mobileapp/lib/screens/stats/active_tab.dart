@@ -13,7 +13,7 @@ import 'package:hls/theme/styles.dart';
 class ActiveTab<Controller extends StatsController>
     extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 2;
-  final int index;
+  final String index;
   final DateTime date;
 
   ActiveTab({@required this.index, this.date});
@@ -29,7 +29,7 @@ class ActiveTab<Controller extends StatsController>
   Widget _buildButton(int i) {
     bool isButton = false;
 
-    if (controller.stats[index].scheduleTrainings[i].training.trainingCategory
+    if (controller.stats.scheduleTrainings[i].training.trainingCategory
             .title ==
         "Тренировки со снарядами") {
       isButton = true;
@@ -53,7 +53,7 @@ class ActiveTab<Controller extends StatsController>
                         // Icon(icon),
                         HorizontalSmallSpace(),
                         TextPrimaryHint(controller
-                            .stats[index]
+                            .stats
                             .scheduleTrainings[i]
                             .training
                             .trainingCategory
@@ -64,7 +64,7 @@ class ActiveTab<Controller extends StatsController>
                         ? Row(
                             children: [
                               TextSecondary(controller
-                                  .stats[index]
+                                  .stats
                                   .scheduleTrainings[i]
                                   .training
                                   .inputData[0]
@@ -76,30 +76,30 @@ class ActiveTab<Controller extends StatsController>
                           )
                         : Row(
                             children: [
-                              controller.stats[index].scheduleTrainings[i]
+                              controller.stats.scheduleTrainings[i]
                                           .training.inputData.length >
                                       2
                                   ? TextSecondary(controller
-                                      .stats[index]
+                                      .stats
                                       .scheduleTrainings[i].inputValue
                                       .toString())
                                   : TextSecondary(controller
-                                      .stats[index]
+                                      .stats
                                       .scheduleTrainings[i].inputValue
                                       .toString()),
                               HorizontalSmallSpace(),
-                              controller.stats[index].scheduleTrainings[i]
+                              controller.stats.scheduleTrainings[i]
                                           .training.inputData.length >
                                       2
                                   ? TextSecondary(controller
-                                      .stats[index]
+                                      .stats
                                       .scheduleTrainings[i]
                                       .training
                                       .inputData[2]
                                       .unit
                                       .toString())
                                   : TextSecondary(controller
-                                      .stats[index]
+                                      .stats
                                       .scheduleTrainings[i]
                                       .training
                                       .inputData[0]
@@ -145,11 +145,11 @@ class ActiveTab<Controller extends StatsController>
           double additional = 0;
           int count = 0;
 
-          if (index != null && controller.stats[index].activityRating != null) {
-            mocion = controller.stats[index].activityRating.motionRating;
-            training = controller.stats[index].activityRating.trainingRating;
+          if (index != null && controller.stats.activityRating != null) {
+            mocion = controller.stats.activityRating.motionRating;
+            training = controller.stats.activityRating.trainingRating;
             additional =
-                controller.stats[index].activityRating.activeLeisureRating;
+                controller.stats.activityRating.activeLeisureRating;
           }
 
           return Column(
@@ -206,7 +206,7 @@ class ActiveTab<Controller extends StatsController>
 
   @override
   Widget build(_) =>
-      index == null || controller.stats[index].scheduleTrainings.isEmpty
+      index == null || controller.stats.scheduleTrainings.isEmpty
           ? Column(
               children: [
                 VerticalSpace(),
@@ -216,13 +216,13 @@ class ActiveTab<Controller extends StatsController>
           : GetBuilder<StatsController>(builder: (_) {
               int c = 0;
               var training = List<int>.filled(
-                  controller.stats[index].scheduleTrainings.length, 0);
+                  controller.stats.scheduleTrainings.length, 0);
 
-              if (controller.stats[index].scheduleTrainings.length != null) {
+              if (controller.stats.scheduleTrainings.length != null) {
                 for (int j = 0;
-                    j < controller.stats[index].scheduleTrainings.length;
+                    j < controller.stats.scheduleTrainings.length;
                     j++) {
-                  if (controller.stats[index].scheduleTrainings[j].training
+                  if (controller.stats.scheduleTrainings[j].training
                       .trainingCategory.title.isNotEmpty) {
                     training[c] = j;
                     c++;

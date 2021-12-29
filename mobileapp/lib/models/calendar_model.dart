@@ -7,6 +7,8 @@ part 'calendar_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class CalendarData extends GenericData {
+  @JsonKey(name: 'id')
+  String scheduleId;
   @JsonKey(name: 'scheduleDate')
   String date;
   @JsonKey(name: 'dailyRating')

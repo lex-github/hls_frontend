@@ -17,10 +17,11 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
   UserDailyData get profileDaily => profile?.daily;
 
   ScheduleData get schedule => AuthService.i.profile.schedule;
-  final int index;
+  final String index;
+  final int dayId;
   final DateTime date;
 
-  ModeTab({@required this.index, this.date});
+  ModeTab({@required this.index, this.date, this.dayId});
 
   // final schedule = AuthService.i.profile.schedule;
 
@@ -62,9 +63,7 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
       ],
     ),
   ) : GetBuilder<StatsController>(
-        init: StatsController(
-            fromDate: DateTime.now().toString(),
-            toDate: DateTime.now().toString()),
+    init:             StatsController(),
         builder: (_) => Container(
           padding: EdgeInsets.all(Size.horizontalBig),
           child: Column(
@@ -77,19 +76,19 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
 
                   asleepTime: index == null
                       ? "00 ч 00 мин"
-                      : controller.stats[index].sleepDuration.toString() +
+                      : controller.stats.sleepDuration.toString() +
                           " ч 00 мин",
                   value: index == null
                       ? 0
-                      : controller.stats[index].sleepDuration > 8 ? 1 : controller.calendar[index].daily.schedule / 100),
+                      : controller.stats.sleepDuration > 8 ? 1 : controller.calendar[dayId].daily.schedule / 100),
 
 Container(
   width: width,
-  height: height * (controller.stats[index].sleepReport.length / 12),
+  height: height * (controller.stats.sleepReport.length / 12),
   child: ListView.builder(
-    itemCount: controller.stats[index].sleepReport.length,
+    itemCount: controller.stats.sleepReport.length,
     itemBuilder: (_, int i) {
-    return TextSecondary(controller.stats[index].sleepReport[i].toString());
+    return TextSecondary(controller.stats.sleepReport[i].toString());
   },
 ),
 

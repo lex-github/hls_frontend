@@ -17,7 +17,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   double get diameter => (Size.screenWidth - Size.horizontal * 2) / 2;
   final width = Get.width;
   final height = Get.height;
-  final int index;
+  final String index;
   final DateTime date;
 
   DietTab({@required this.index, this.date});
@@ -25,7 +25,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   Widget buildAccordion(String title, {String id, Widget child}) =>
       GetBuilder<StatsController>(
         init:
-            StatsController(fromDate: date.toString(), toDate: date.toString()),
+            StatsController(),
         builder: (_) {
           return Button(
               padding: Padding.zero,
@@ -86,12 +86,12 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
         0;
    if(index != null){
      // int carbohydrates = 0;
-     water = controller.stats[index].foodRating.primaryStats.water;
+     water = controller.stats.foodRating.primaryStats.water;
      // int proteins = 0;
-      energy = controller.stats[index].foodRating.primaryStats.energyValue;
+      energy = controller.stats.foodRating.primaryStats.energyValue;
      // int upCarbohydrates = 0;
       nutrients =
-         controller.stats[index].foodRating.primaryStats.nutrients;
+         controller.stats.foodRating.primaryStats.nutrients;
    }
     // int upProteins = 0;
 
@@ -144,15 +144,15 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     int c = 0;
 
     final structure = List<int>.filled(
-        controller.stats[index].foodRating.components.length, 0);
+        controller.stats.foodRating.components.length, 0);
 
-    if (controller.stats[index].foodRating.components.length != null) {
+    if (controller.stats.foodRating.components.length != null) {
       for (int j = 0;
-          j < controller.stats[index].foodRating.components.length;
+          j < controller.stats.foodRating.components.length;
           j++) {
         if (section ==
             controller
-                .stats[index].foodRating.components[j].foodComponent.section
+                .stats.foodRating.components[j].foodComponent.section
                 .toString()) {
           // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
           // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
@@ -198,14 +198,14 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
 
   Widget _buildIndicator1(Color color, int i) {
     String title =
-        controller.stats[index].foodRating.components[i].foodComponent.title;
+        controller.stats.foodRating.components[i].foodComponent.title;
     String unit =
-        controller.stats[index].foodRating.components[i].foodComponent.unit;
-    double value = controller.stats[index].foodRating.components[i].value;
+        controller.stats.foodRating.components[i].foodComponent.unit;
+    double value = controller.stats.foodRating.components[i].value;
     double upperLimit =
-        controller.stats[index].foodRating.components[i].upperLimit;
+        controller.stats.foodRating.components[i].upperLimit;
     double lowerLimit =
-        controller.stats[index].foodRating.components[i].lowerLimit;
+        controller.stats.foodRating.components[i].lowerLimit;
 
     return Align(
       alignment: Alignment.center,
@@ -319,12 +319,12 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
           children: [
             Flexible(
               child: TextPrimary(
-                controller.stats[index].eatings[i].scheduleFood.title,
+                controller.stats.eatings[i].scheduleFood.title,
                 size: Size.fontSmall,
               ),
             ),
             TextSecondary(controller
-                    .stats[index].eatings[i].scheduleFood.portion
+                    .stats.eatings[i].scheduleFood.portion
                     .toString() +
                 " гр")
           ],
@@ -333,21 +333,21 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
 
   Widget _buildCirclesContainer(int c, List<int> foods, int x) {
     double proteins = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[0].value;
+        .stats.foodRating.componentsPerEating[x].statsEatings[0].value;
     double proteinsLimit = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[0].limit;
+        .stats.foodRating.componentsPerEating[x].statsEatings[0].limit;
     double fats = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[1].value;
+        .stats.foodRating.componentsPerEating[x].statsEatings[1].value;
     double fatsLimit = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[1].limit;
+        .stats.foodRating.componentsPerEating[x].statsEatings[1].limit;
     double carbohydrates = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[2].value;
+        .stats.foodRating.componentsPerEating[x].statsEatings[2].value;
     double carbohydratesLimit = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[2].limit;
+        .stats.foodRating.componentsPerEating[x].statsEatings[2].limit;
     double carbohydratesComplex = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[3].value;
+        .stats.foodRating.componentsPerEating[x].statsEatings[3].value;
     double carbohydratesComplexLimit = controller
-        .stats[index].foodRating.componentsPerEating[x].statsEatings[3].limit;
+        .stats.foodRating.componentsPerEating[x].statsEatings[3].limit;
 
     return Column(
       children: [
@@ -404,11 +404,11 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   }
 
   Widget _waterContainer({String section, Color color}) {
-    double waterValue = controller.stats[index].foodRating.components[1].value;
+    double waterValue = controller.stats.foodRating.components[1].value;
     double waterLower =
-        controller.stats[index].foodRating.components[1].lowerLimit;
+        controller.stats.foodRating.components[1].lowerLimit;
     double waterUpper =
-        controller.stats[index].foodRating.components[1].upperLimit;
+        controller.stats.foodRating.components[1].upperLimit;
     double waterMedium = ((waterUpper + waterLower) / 2) / 1000;
 
     return Align(
@@ -457,29 +457,29 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     String plannedAt,
   }) {
     int c = 0;
-    var foods = List<int>.filled(controller.stats[index].eatings.length, 0);
-    if (controller.stats[index].eatings.length != null) {
-      for (int j = 0; j < controller.stats[index].eatings.length; j++) {
+    var foods = List<int>.filled(controller.stats.eatings.length, 0);
+    if (controller.stats.eatings.length != null) {
+      for (int j = 0; j < controller.stats.eatings.length; j++) {
         if (plannedAt ==
-            controller.stats[index].eatings[j].scheduleItem.plannedAt
+            controller.stats.eatings[j].scheduleItem.plannedAt
                 .toString()) {
           foods[c] = j;
           print("l;ogkiyvb " +
-              controller.stats[index].eatings[j].scheduleFood.title);
+              controller.stats.eatings[j].scheduleFood.title);
 
           c++;
         }
       }
     }
 
-    return controller.stats[index].eatings.length == null || c < 1
+    return controller.stats.eatings.length == null || c < 1
         ? Nothing()
         : _buildCirclesContainer(c, foods, x);
   }
 
   @override
   Widget build(_) =>
-      index == null || controller.stats[index].eatings.isNullEmptyFalseOrZero
+      index == null || controller.stats.eatings.isNullEmptyFalseOrZero
           ?   Column(
         children: [
           VerticalBigSpace(),
