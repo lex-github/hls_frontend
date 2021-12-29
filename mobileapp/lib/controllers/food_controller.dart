@@ -92,7 +92,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
   @override
   void onInit() async {
     await retrieve();
-    d=true;
+    // d=true;
     super.onInit();
   }
 

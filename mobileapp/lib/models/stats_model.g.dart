@@ -69,12 +69,14 @@ StatsScheduleComponentsEatings _$StatsScheduleComponentsEatingsFromJson(Map<Stri
   return StatsScheduleComponentsEatings()
     ..statsEatings = (json['stats'] as List<dynamic>)
         ?.map((e) => ScheduleStats.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..eatingKind = (json['eatingKind'] as String);
 }
 
 Map<String, dynamic> _$StatsScheduleComponentsEatingsToJson(StatsScheduleComponentsEatings instance) =>
     <String, dynamic>{
       'stats': instance.statsEatings,
+      'eatingKind': instance.eatingKind,
 
     };
 
@@ -82,13 +84,15 @@ Map<String, dynamic> _$StatsScheduleComponentsEatingsToJson(StatsScheduleCompone
 ScheduleStats _$ScheduleStatsFromJson(Map<String, dynamic> json) {
   return ScheduleStats()
     ..limit = (json['limit'] as num).toDouble()
-    ..value = (json['value'] as num).toDouble();
+    ..value = (json['value'] as num).toDouble()
+    ..component = ComponentStats.fromJson(json['component'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$ScheduleStatsToJson(ScheduleStats instance) =>
     <String, dynamic>{
       'limit': instance.limit,
       'value': instance.value,
+      'component': instance.component,
 
     };
 
@@ -97,6 +101,17 @@ StatsPrimaryStats _$StatsPrimaryStatsFromJson(Map<String, dynamic> json) {
     ..energyValue = (json['energyValue'] as num).toDouble()
     ..nutrients = (json['nutrients'] as num).toDouble()
     ..water = (json['water'] as num).toDouble();
+}
+
+Map<String, dynamic> _$ComponentStatsToJson(ComponentStats instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+
+    };
+
+ComponentStats _$ComponentStatsFromJson(Map<String, dynamic> json) {
+  return ComponentStats()
+    ..title = (json['title'] as String);
 }
 
 Map<String, dynamic> _$StatsPrimaryStatsToJson(StatsPrimaryStats instance) =>

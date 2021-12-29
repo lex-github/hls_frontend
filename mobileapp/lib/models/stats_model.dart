@@ -103,6 +103,8 @@ class StatsFoodRating {
 class StatsScheduleComponentsEatings{
   @JsonKey(name: 'stats')
   List <ScheduleStats> statsEatings;
+  @JsonKey(name: 'eatingKind')
+  String eatingKind;
 
 
 
@@ -131,6 +133,8 @@ class ScheduleStats{
   double limit;
   @JsonKey(name: 'value')
   double value;
+  @JsonKey(name: 'component')
+  ComponentStats component;
 
 
 
@@ -175,6 +179,27 @@ class StatsPrimaryStats {
       '\n\tenergyValue: $energyValue'
       '\n\tnutrients: $nutrients'
       '\n\twater: $water'
+      ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ComponentStats {
+  @JsonKey(name: 'title')
+  String title;
+
+
+
+  ComponentStats();
+
+  // getters
+
+  factory ComponentStats.fromJson(Map<String, dynamic> json) =>
+      _$ComponentStatsFromJson(json);
+  Map<String, dynamic> toJson() => _$ComponentStatsToJson(this);
+
+  @override
+  String toString() => 'StatsPrimaryStats('
+      '\n\ttitle: $title'
       ')';
 }
 

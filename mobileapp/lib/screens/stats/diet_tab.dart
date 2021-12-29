@@ -19,19 +19,18 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   final height = Get.height;
   final String index;
   final DateTime date;
+  var rng = new Random();
 
   DietTab({@required this.index, this.date});
 
   Widget buildAccordion(String title, {String id, Widget child}) =>
       GetBuilder<StatsController>(
-        init:
-            StatsController(),
+        init: StatsController(),
         builder: (_) {
           return Button(
               padding: Padding.zero,
               borderColor: Colors.disabled,
-              onPressed: () =>
-                  controller.toggle(id.isNullEmptyFalseOrZero ? title : id),
+              onPressed: () => controller.toggle(id),
               child: Column(children: [
                 VerticalSmallSpace(),
                 Container(
@@ -41,14 +40,12 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                       TextPrimaryHint(title),
                       Expanded(child: HorizontalSpace()),
                       Obx(() => Transform.rotate(
-                          angle: controller.getRotationAngle(
-                              id.isNullEmptyFalseOrZero ? title : id),
+                          angle: controller.getRotationAngle(id),
                           child: Icon(FontAwesomeIcons.chevronRight,
                               color: Colors.disabled, size: Size.iconSmall)))
                     ])),
                 Obx(() => SizeTransition(
-                    sizeFactor: controller
-                        .getSizeFactor(id.isNullEmptyFalseOrZero ? title : id),
+                    sizeFactor: controller.getSizeFactor(id),
                     child: Container(
                         padding: EdgeInsets.only(top: Size.vertical),
                         child: child))),
@@ -82,17 +79,15 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     // int proteins = 0;
     double energy = 0;
     // int upCarbohydrates = 0;
-    double nutrients =
-        0;
-   if(index != null){
-     // int carbohydrates = 0;
-     water = controller.stats.foodRating.primaryStats.water;
-     // int proteins = 0;
+    double nutrients = 0;
+    if (index != null) {
+      // int carbohydrates = 0;
+      water = controller.stats.foodRating.primaryStats.water;
+      // int proteins = 0;
       energy = controller.stats.foodRating.primaryStats.energyValue;
-     // int upCarbohydrates = 0;
-      nutrients =
-         controller.stats.foodRating.primaryStats.nutrients;
-   }
+      // int upCarbohydrates = 0;
+      nutrients = controller.stats.foodRating.primaryStats.nutrients;
+    }
     // int upProteins = 0;
 
     // print('title:  ' + proteins.toString());
@@ -140,72 +135,66 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     );
   }
 
-  Widget _buildIndicator({String section, Color color}) {
-    int c = 0;
+//   Widget _buildIndicator({String section, Color color}) {
+//     int c = 0;
+//
+//     final structure =
+//         List<int>.filled(controller.stats.foodRating.components.length, 0);
+//
+//     if (controller.stats.foodRating.components.length != null) {
+//       for (int j = 0; j < controller.stats.foodRating.components.length; j++) {
+//         if (section ==
+//             controller.stats.foodRating.components[j].foodComponent.section
+//                 .toString()) {
+//           // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
+//           // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
+//           // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
+//           // print('value$j:  ' + controller.stats[index].components[j].value.toString());
+//           // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
+//           // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
+//
+//           structure[c] = j;
+//           c++;
+//         }
+//       }
+//     }
+//
+// // print('title:  ' + title);
+// // print('unit:  ' + unit);
+// // print('value:  ' + value.toString());
+// // print('upperLimit:  ' + upperLimit.toString());
+// // print('lowerLimit:  ' + lowerLimit.toString());2
+//
+//     return Container(
+//         width: width,
+//         height: height * (c / 15),
+//         child: ListView.builder(
+//           scrollDirection: Axis.vertical,
+//           shrinkWrap: true,
+//           physics: const NeverScrollableScrollPhysics(),
+//           itemCount: c,
+//           itemBuilder: (_, index) {
+//             final i = structure[index];
+//
+//             // print('unit:  ' + controller.stats[index].components[structure[index]].foodComponent.unit);
+//             // print('section:  ' + controller.stats[index].components[structure[index]].foodComponent.section);
+//             // print('value:  ' + controller.stats[index].components[51].value.toString());
+//             // print('upperLimit:  ' + controller.stats[index].components[structure[index]].upperLimit.toString());
+//             // print('lowerLimit:  ' + controller.stats[index].components[structure[index]].lowerLimit.toString());
+//             //
+//
+//             return _buildIndicator1(color, i);
+//           },
+//         ));
+//   }
 
-    final structure = List<int>.filled(
-        controller.stats.foodRating.components.length, 0);
-
-    if (controller.stats.foodRating.components.length != null) {
-      for (int j = 0;
-          j < controller.stats.foodRating.components.length;
-          j++) {
-        if (section ==
-            controller
-                .stats.foodRating.components[j].foodComponent.section
-                .toString()) {
-          // print('title$j:  ' + controller.stats[index].components[j].foodComponent.title);
-          // print('unit$j:  ' + controller.stats[index].components[j].foodComponent.unit);
-          // print('section$j:  ' + controller.stats[index].components[j].foodComponent.section);
-          // print('value$j:  ' + controller.stats[index].components[j].value.toString());
-          // print('upperLimit$j:  ' + controller.stats[index].components[j].upperLimit.toString());
-          // print('lowerLimit$j:  ' + controller.stats[index].components[j].lowerLimit.toString());
-
-          structure[c] = j;
-          c++;
-        }
-      }
-    }
-
-// print('title:  ' + title);
-// print('unit:  ' + unit);
-// print('value:  ' + value.toString());
-// print('upperLimit:  ' + upperLimit.toString());
-// print('lowerLimit:  ' + lowerLimit.toString());2
-
-    return Container(
-        width: width,
-        height: height * (c / 15),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: c,
-          itemBuilder: (_, index) {
-            final i = structure[index];
-
-            // print('unit:  ' + controller.stats[index].components[structure[index]].foodComponent.unit);
-            // print('section:  ' + controller.stats[index].components[structure[index]].foodComponent.section);
-            // print('value:  ' + controller.stats[index].components[51].value.toString());
-            // print('upperLimit:  ' + controller.stats[index].components[structure[index]].upperLimit.toString());
-            // print('lowerLimit:  ' + controller.stats[index].components[structure[index]].lowerLimit.toString());
-            //
-
-            return _buildIndicator1(color, i);
-          },
-        ));
-  }
-
-  Widget _buildIndicator1(Color color, int i) {
-    String title =
-        controller.stats.foodRating.components[i].foodComponent.title;
-    String unit =
-        controller.stats.foodRating.components[i].foodComponent.unit;
-    double value = controller.stats.foodRating.components[i].value;
-    double upperLimit =
-        controller.stats.foodRating.components[i].upperLimit;
-    double lowerLimit =
-        controller.stats.foodRating.components[i].lowerLimit;
+  Widget _buildIndicator({String title, String unit, double value, double upperLimit, double lowerLimit, Color color}) {
+    // String title =
+    //     controller.stats.foodRating.components[i].foodComponent.title;
+    // String unit = controller.stats.foodRating.components[i].foodComponent.unit;
+    // double value = controller.stats.foodRating.components[i].value;
+    // double upperLimit = controller.stats.foodRating.components[i].upperLimit;
+    // double lowerLimit = controller.stats.foodRating.components[i].lowerLimit;
 
     return Align(
       alignment: Alignment.center,
@@ -323,10 +312,9 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                 size: Size.fontSmall,
               ),
             ),
-            TextSecondary(controller
-                    .stats.eatings[i].scheduleFood.portion
-                    .toString() +
-                " гр")
+            TextSecondary(
+                controller.stats.eatings[i].scheduleFood.portion.toString() +
+                    " гр")
           ],
         ),
       );
@@ -403,13 +391,11 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     );
   }
 
-  Widget _waterContainer({String section, Color color}) {
-    double waterValue = controller.stats.foodRating.components[1].value;
-    double waterLower =
-        controller.stats.foodRating.components[1].lowerLimit;
-    double waterUpper =
-        controller.stats.foodRating.components[1].upperLimit;
-    double waterMedium = ((waterUpper + waterLower) / 2) / 1000;
+  Widget _waterContainer({double waterValue,double waterLower,double waterUpper,double waterMedium, Color color}) {
+    // double waterValue = controller.stats.foodRating.components[1].value;
+    // double waterLower = controller.stats.foodRating.components[1].lowerLimit;
+    // double waterUpper = controller.stats.foodRating.components[1].upperLimit;
+    // double waterMedium = ((waterUpper + waterLower) / 2) / 1000;
 
     return Align(
       alignment: Alignment.center,
@@ -430,7 +416,8 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextPrimary(
-                            (waterValue/1000).ceilToDouble().toString() + " л",
+                            (waterValue / 1000).ceilToDouble().toString() +
+                                " л",
                             size: Size.font * 1.5,
                           )
                         ],
@@ -461,11 +448,9 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
     if (controller.stats.eatings.length != null) {
       for (int j = 0; j < controller.stats.eatings.length; j++) {
         if (plannedAt ==
-            controller.stats.eatings[j].scheduleItem.plannedAt
-                .toString()) {
+            controller.stats.eatings[j].scheduleItem.plannedAt.toString()) {
           foods[c] = j;
-          print("l;ogkiyvb " +
-              controller.stats.eatings[j].scheduleFood.title);
+          print("l;ogkiyvb " + controller.stats.eatings[j].scheduleFood.title);
 
           c++;
         }
@@ -478,114 +463,441 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   }
 
   @override
-  Widget build(_) =>
-      index == null || controller.stats.eatings.isNullEmptyFalseOrZero
-          ?   Column(
-        children: [
-          VerticalBigSpace(),
-          _buildStatsContainer()
-        ],
-      )
-          : GetBuilder<StatsController>(
-              builder: (_) {
-                return Container(
-                  color: Colors.background,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(Size.horizontal),
-                    child: Column(
+  Widget build(_) => index == null ||
+          controller.stats.eatings.isNullEmptyFalseOrZero
+      ? Column(
+          children: [VerticalBigSpace(), _buildStatsContainer()],
+        )
+      : GetBuilder<StatsController>(
+          builder: (_) {
+            return Container(
+              color: Colors.background,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(Size.horizontal),
+                child: Column(
+                  children: [
+                    _buildStatsContainer(),
+                    VerticalBigSpace(),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        _buildStatsContainer(),
-                        VerticalBigSpace(),
-                        buildAccordion(
-                          "Завтрак",
-                          id: "08:00",
-                          child: _buildFoodContainer(
-                            x: 0,
-                            plannedAt: "08:00",
+                        for (final item in controller
+                            .stats.foodRating.componentsPerEating) ...[
+                          buildAccordion(
+                            item.eatingKind == "breakfast"
+                                ? "Завтрак"
+                                : item.eatingKind == "snack"
+                                    ? "Перекус"
+                                    : item.eatingKind == "lunch"
+                                        ? "Обед"
+                                        : item.eatingKind == "dinner"
+                                            ? "Ужин"
+                                            : "",
+                            id: item.eatingKind + rng.nextInt(10000).toString(),
+                            // margin: EdgeInsets.all(Size.horizontal),
+                            // padding: EdgeInsets.all(18),
+                            // color: Colors.water,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: Size.horizontal,
+                                  right: Size.horizontal),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Text(item.eatingKind == "breakfast"
+                                  //     ? "Завтрак"
+                                  //     : item.eatingKind == "snack"
+                                  //         ? "Перекус"
+                                  //         : item.eatingKind == "lunch"
+                                  //             ? "Обед"
+                                  //             : item.eatingKind == "dinner"
+                                  //                 ? "Ужин"
+                                  //                 : ""),
+
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      for (final components
+                                          in item.statsEatings) ...[
+                                        Stack(
+                                          alignment:
+                                              AlignmentDirectional.center,
+                                          children: [
+                                            CustomPaint(
+                                                size: M.Size(diameter * 0.4,
+                                                    diameter * 0.4),
+                                                painter: SectorPainter(
+                                                    background: true,
+                                                    color: components.component
+                                                                .title ==
+                                                            "Общие жиры"
+                                                        ? Colors.schedule
+                                                        : components.component
+                                                                    .title ==
+                                                                "Простые углеводы"
+                                                            ? Colors.fats
+                                                            : components.component
+                                                                        .title ==
+                                                                    "Сложные углеводы"
+                                                                ? Colors
+                                                                    .exercise
+                                                                : Colors.water,
+                                                    width: 2,
+                                                    startAngle: -pi / 2,
+                                                    endAngle: components
+                                                                .value ==
+                                                            0
+                                                        ? 0
+                                                        : ((components.value /
+                                                                (components.value >
+                                                                        components
+                                                                            .limit
+                                                                    ? components
+                                                                        .value
+                                                                    : components
+                                                                        .limit)) *
+                                                            2 *
+                                                            pi))),
+                                            Column(
+                                              children: [
+                                                TextPrimary(
+                                                  components.value
+                                                          .toInt()
+                                                          .toString() +
+                                                      '/' +
+                                                      components.limit
+                                                          .toInt()
+                                                          .toString(),
+                                                  size: Size.fontSmall * 0.8,
+                                                ),
+                                                TextSecondary(
+                                                  components.component.title ==
+                                                          "Общие жиры"
+                                                      ? "Общие \nжиры"
+                                                      : components.component
+                                                                  .title ==
+                                                              "Простые углеводы"
+                                                          ? "Простые \nуглеводы"
+                                                          : components.component
+                                                                      .title ==
+                                                                  "Сложные углеводы"
+                                                              ? "Сложные \nуглеводы"
+                                                              : components
+                                                                  .component
+                                                                  .title,
+                                                  size: Size.fontSmall * 0.6,
+                                                  align: TextAlign.center,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+
+                                        // _buildCircleIndicator(
+                                        //   color: Colors.primary,
+                                        //   title: "Белки",
+                                        //   currentCount: components.value.toInt(),
+                                        //   maxCount: components.limit.toInt(),
+                                        // ),
+                                        // TextSecondary("Value: " + components.value.toString()),
+                                        // TextSecondary("Limit: " + components.limit.toString()),
+                                      ],
+                                    ],
+                                  ),
+                                  VerticalSmallSpace(),
+                                  for (final eating
+                                      in controller.stats.eatings) ...[
+                                    if (eating.scheduleItem.kind
+                                            .toLowerCase() ==
+                                        item.eatingKind)
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: TextPrimary(
+                                              eating.scheduleFood.title,
+                                              size: Size.fontSmall,
+                                            ),
+                                          ),
+                                          TextSecondary(eating
+                                                  .scheduleFood.portion
+                                                  .toString() +
+                                              " гр")
+                                        ],
+                                      ),
+                                    VerticalTinySpace(),
+                                  ],
+                                ],
+                              ),
+                            ),
                           ),
+                          VerticalSmallSpace(),
+                        ],
+                        buildAccordion(
+                          "Калорийность",
+                              id: "Калорийность",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Калорийность")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.failure,
+                                      ),
+                                  ],
+                                ],
+                              ),
                         ),
-                        VerticalBigSpace(),
-                        buildAccordion("Перекус",
-                            id: "11:00",
-                            child: _buildFoodContainer(
-                              x: 1,
-                              plannedAt: "11:00",
-                            )),
-                        VerticalBigSpace(),
-                        buildAccordion("Обед",
-                            id: "14:00",
-                            child: _buildFoodContainer(
-                              x: 2,
-                              plannedAt: "14:00",
-                            )),
-                        VerticalBigSpace(),
-                        buildAccordion("Перекус",
-                            id: "16:00",
-                            child: _buildFoodContainer(
-                              x: 3,
-                              plannedAt: "16:00",
-                            )),
-                        VerticalBigSpace(),
-                        buildAccordion("Ужин",
-                            id: "19:00",
-                            child: _buildFoodContainer(
-                              x: 4,
-                              plannedAt: "19:00",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Калорийность",
-                            child: _buildIndicator(
-                              color: Colors.primary,
-                              section: "Калорийность",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Вода",
-                            child: _waterContainer(
-                              color: Colors.primary,
-                              section: "Вода ",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Белки",
-                            child: _buildIndicator(
-                              color: Colors.exercise,
-                              section: "Белки",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Жиры",
-                            child: _buildIndicator(
-                              color: Colors.exercise,
-                              section: "Жиры",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Пищевые волокна",
-                            child: _buildIndicator(
-                              color: Colors.schedule,
-                              section: "Пищевые волокна",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Углеводы",
-                            child: _buildIndicator(
-                              color: Colors.heartRate,
-                              section: "Углеводы",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Витамины",
-                            child: _buildIndicator(
-                              color: Colors.success,
-                              section: "Витамины",
-                            )),
-                        VerticalSpace(),
-                        buildAccordion("Микроэлементы",
-                            child: _buildIndicator(
-                              color: Colors.primary,
-                              section: "Микроэлементы",
-                            )),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Вода",
+                              id: "Вода",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Вода")
+                                      _waterContainer(
+                                          waterValue: structure.value,
+                                          waterLower: structure.lowerLimit,
+                                          waterUpper: structure.upperLimit,
+                                          waterMedium: ((structure.upperLimit + structure.lowerLimit) / 2) / 1000,
+                                      color: Colors.water,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Белки",
+                              id: "Белки",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Белки")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.exercise,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Жиры",
+                              id: "Жиры",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Жиры")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.fats,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Углеводы",
+                              id: "Углеводы",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Углеводы")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.nutrition,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Пищевые волокна",
+                              id: "Пищевые волокна",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Пищевые волокна")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.schedule,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Витамины",
+                              id: "Витамины",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Витамины")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Color(0xFFF0F56C),
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Микроэлементы",
+                              id: "Микроэлементы",
+                              child: Column(
+                                children: [
+                                  for (final structure
+                                  in controller.stats.foodRating.components) ...[
+                                    if (structure.foodComponent.section == "Микроэлементы")
+                                      _buildIndicator(
+                                        title: structure.foodComponent.title,
+                                        unit: structure.foodComponent.unit,
+                                        value: structure.value,
+                                        upperLimit: structure.upperLimit,
+                                        lowerLimit: structure.lowerLimit,
+                                        color: Colors.primary,
+                                      ),
+                                  ],
+                                ],
+                              ),
+                        ),
+
                       ],
                     ),
-                  ),
-                );
-              },
+
+                    // buildAccordion(
+                    //   "Завтрак",
+                    //   id: "08:00",
+                    //   child: _buildFoodContainer(
+                    //     x: 0,
+                    //     plannedAt: "08:00",
+                    //   ),
+                    // ),
+                    // VerticalBigSpace(),
+                    // buildAccordion("Перекус",
+                    //     id: "11:00",
+                    //     child: _buildFoodContainer(
+                    //       x: 1,
+                    //       plannedAt: "11:00",
+                    //     )),
+                    // VerticalBigSpace(),
+                    // buildAccordion("Обед",
+                    //     id: "14:00",
+                    //     child: _buildFoodContainer(
+                    //       x: 2,
+                    //       plannedAt: "14:00",
+                    //     )),
+                    // VerticalBigSpace(),
+                    // buildAccordion("Перекус",
+                    //     id: "16:00",
+                    //     child: _buildFoodContainer(
+                    //       x: 3,
+                    //       plannedAt: "16:00",
+                    //     )),
+                    // VerticalBigSpace(),
+                    // buildAccordion("Ужин",
+                    //     id: "19:00",
+                    //     child: _buildFoodContainer(
+                    //       x: 4,
+                    //       plannedAt: "19:00",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Калорийность",
+                    //     child: _buildIndicator(
+                    //       color: Colors.primary,
+                    //       section: "Калорийность",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Вода",
+                    //     child: _waterContainer(
+                    //       color: Colors.primary,
+                    //       section: "Вода ",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Белки",
+                    //     child: _buildIndicator(
+                    //       color: Colors.exercise,
+                    //       section: "Белки",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Жиры",
+                    //     child: _buildIndicator(
+                    //       color: Colors.exercise,
+                    //       section: "Жиры",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Пищевые волокна",
+                    //     child: _buildIndicator(
+                    //       color: Colors.schedule,
+                    //       section: "Пищевые волокна",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Углеводы",
+                    //     child: _buildIndicator(
+                    //       color: Colors.heartRate,
+                    //       section: "Углеводы",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Витамины",
+                    //     child: _buildIndicator(
+                    //       color: Colors.success,
+                    //       section: "Витамины",
+                    //     )),
+                    // VerticalSpace(),
+                    // buildAccordion("Микроэлементы",
+                    //     child: _buildIndicator(
+                    //       color: Colors.primary,
+                    //       section: "Микроэлементы",
+                    //     )),
+                  ],
+                ),
+              ),
             );
+          },
+        );
 }
 
 class StatsCell extends StatelessWidget {

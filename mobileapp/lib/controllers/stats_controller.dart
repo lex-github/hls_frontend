@@ -172,14 +172,14 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   // List<FoodSectionData> getSection(int index) =>
   //     list.values.toList(growable: false)[index];
-
-  bool isOpened(String title) => _openedItems.contains(title);
-
-  double getRotationAngle(String title) => title == _lastToggledItem.value
-      ? rotationAngle
-      : isOpened(title)
-          ? maxRotationAngle
-          : minRotationAngle;
+  //
+  // bool isOpened(String title) => _openedItems.contains(title);
+  //
+  // double getRotationAngle(String title) => title == _lastToggledItem.value
+  //     ? rotationAngle
+  //     : isOpened(title)
+  //         ? maxRotationAngle
+  //         : minRotationAngle;
 
   // double getSizeFactor(FoodCategoryData item) {
   //   final factor = animationProgress; // make sure call rxValue not to upset obx
@@ -210,7 +210,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   Future getSchedule(String i) async {
 
 
-    if(statsUpdate != i){
+    if(statsUpdate != i && i != null){
       statsUpdate = i;
       final responseStats = await query(
         schedule,
@@ -228,6 +228,23 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     update();
   }
 
+  // bool d;
+  bool isOpened(String title) => d==true ? true : _openedItems.contains(title);
+  double getRotationAngle(String title) => title == _lastToggledItem.value
+      ? rotationAngle
+      : isOpened(title)
+      ? maxRotationAngle
+      : minRotationAngle;
+
+  // double getSizeFactor(FoodCategoryData item) {
+  //   final factor = animationProgress; // make sure call rxValue not to upset obx
+  //   return item == _lastToggledItem
+  //       ? factor
+  //       : isOpened(item)
+  //           ? 1
+  //           : 0;
+  // }
+
   Animation<double> getSizeFactor(String title) =>
       title == _lastToggledItem.value
           ? Tween<double>(begin: .0, end: 1.0).animate(_animationController)
@@ -235,11 +252,10 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
   toggle(String title) {
     _lastToggledItem(title);
-
     if (isOpened(title)) {
       _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
-      d = false;
+      d=false;
     } else {
       _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);

@@ -561,13 +561,18 @@ const primaryStats = '{'
     'water '
     '} ';
 
+const component = '{'
+    'title '
+    '} ';
 const stats = '{'
     'limit '
     'value '
+    'component $component '
     '} ';
 
 const consumedComponentsPerEating = '{'
     'stats $stats '
+    'eatingKind '
     '} ';
 
 const foodRating = '{'
@@ -600,14 +605,14 @@ const activityRating = '{'
     '} ';
 
 const schedule = 'query '
-'('
-'\$id: ID! '
-') '
+    '('
+    '\$id: ID! '
+    ') '
     '{'
     'schedule'
-'('
-'id: \$id '
-') '
+    '('
+    'id: \$id '
+    ') '
     '{'
 // 'scheduleDate '
 //     'yesterdayAsleepTime '
