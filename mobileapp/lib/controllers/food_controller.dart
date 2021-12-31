@@ -143,7 +143,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
       'foodId': foodId,
       'portion': portion
     });
-    Get.find<StatsController>().getCalendar();
+    // Get.find<StatsController>().getCalendar();
     // Get.find<StatsController>().getSchedule();
 
     print('FoodController.add result: $result');

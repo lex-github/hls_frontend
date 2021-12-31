@@ -572,7 +572,11 @@ const stats = '{'
 
 const consumedComponentsPerEating = '{'
     'stats $stats '
-    'eatingKind '
+'scheduleItem'
+    '{'
+    'kind '
+    'plannedAt '
+    '} '
     '} ';
 
 const foodRating = '{'

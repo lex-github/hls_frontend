@@ -103,8 +103,9 @@ class StatsFoodRating {
 class StatsScheduleComponentsEatings{
   @JsonKey(name: 'stats')
   List <ScheduleStats> statsEatings;
-  @JsonKey(name: 'eatingKind')
-  String eatingKind;
+  @JsonKey(name: 'scheduleItem')
+  ScheduleItem scheduleItem;
+
 
 
 
@@ -154,6 +155,28 @@ String toString() => 'ScheduleStats('
     '\n\tlimit: $limit'
     '\n\tvalue: $value'
     ')';
+}
+
+@JsonSerializable(includeIfNull: false)
+class ScheduleItem{
+  @JsonKey(name: 'kind')
+  String kind;
+  @JsonKey(name: 'plannedAt')
+  String plannedAt;
+
+
+
+  ScheduleItem();
+
+  // getters
+
+
+
+
+  factory ScheduleItem.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleItemFromJson(json);
+  Map<String, dynamic> toJson() => _$ScheduleItemToJson(this);
+
 }
 
 @JsonSerializable(includeIfNull: false)

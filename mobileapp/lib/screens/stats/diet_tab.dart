@@ -20,6 +20,8 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
   final String index;
   final DateTime date;
   var rng = new Random();
+  String breakfast = r'[^\p{07:00}\p{08:00}\p{09:00}\s]+';
+
 
   DietTab({@required this.index, this.date});
 
@@ -482,162 +484,699 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        for (final item in controller
-                            .stats.foodRating.componentsPerEating) ...[
-                          buildAccordion(
-                            item.eatingKind == "breakfast"
-                                ? "Завтрак"
-                                : item.eatingKind == "snack"
-                                    ? "Перекус"
-                                    : item.eatingKind == "lunch"
-                                        ? "Обед"
-                                        : item.eatingKind == "dinner"
-                                            ? "Ужин"
-                                            : "",
-                            id: item.eatingKind + rng.nextInt(10000).toString(),
-                            // margin: EdgeInsets.all(Size.horizontal),
-                            // padding: EdgeInsets.all(18),
-                            // color: Colors.water,
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  left: Size.horizontal,
-                                  right: Size.horizontal),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  // Text(item.eatingKind == "breakfast"
-                                  //     ? "Завтрак"
-                                  //     : item.eatingKind == "snack"
-                                  //         ? "Перекус"
-                                  //         : item.eatingKind == "lunch"
-                                  //             ? "Обед"
-                                  //             : item.eatingKind == "dinner"
-                                  //                 ? "Ужин"
-                                  //                 : ""),
+                        // for (final item in controller
+                        //     .stats.foodRating.componentsPerEating) ...[
+                        //
+                        //   VerticalSmallSpace(),
+                        // ],
 
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
+                        buildAccordion(
+                          "Завтрак",
+                          id: "Завтрак" + rng.nextInt(10000).toString(),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: Size.horizontal, right: Size.horizontal),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (final component in controller.stats
+                                        .foodRating.componentsPerEating) ...[
                                       for (final components
-                                          in item.statsEatings) ...[
-                                        Stack(
-                                          alignment:
-                                              AlignmentDirectional.center,
-                                          children: [
-                                            CustomPaint(
-                                                size: M.Size(diameter * 0.4,
-                                                    diameter * 0.4),
-                                                painter: SectorPainter(
-                                                    background: true,
-                                                    color: components.component
-                                                                .title ==
-                                                            "Общие жиры"
-                                                        ? Colors.schedule
-                                                        : components.component
-                                                                    .title ==
-                                                                "Простые углеводы"
-                                                            ? Colors.fats
-                                                            : components.component
-                                                                        .title ==
-                                                                    "Сложные углеводы"
-                                                                ? Colors
-                                                                    .exercise
-                                                                : Colors.water,
-                                                    width: 2,
-                                                    startAngle: -pi / 2,
-                                                    endAngle: components
-                                                                .value ==
-                                                            0
-                                                        ? 0
-                                                        : ((components.value /
-                                                                (components.value >
-                                                                        components
-                                                                            .limit
-                                                                    ? components
-                                                                        .value
-                                                                    : components
-                                                                        .limit)) *
-                                                            2 *
-                                                            pi))),
-                                            Column(
-                                              children: [
-                                                TextPrimary(
-                                                  components.value
-                                                          .toInt()
-                                                          .toString() +
-                                                      '/' +
-                                                      components.limit
-                                                          .toInt()
-                                                          .toString(),
-                                                  size: Size.fontSmall * 0.8,
-                                                ),
-                                                TextSecondary(
-                                                  components.component.title ==
+                                      in component.statsEatings) ...[
+                                        // if (component.scheduleItem.kind == "breakfast")
+                                          if((component.scheduleItem.plannedAt == "07:00" || component.scheduleItem.plannedAt == "08:00" || component.scheduleItem.plannedAt == "09:00" || component.scheduleItem.plannedAt == "10:00") && component.scheduleItem.kind.toLowerCase() == "breakfast")
+                                          Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: [
+                                              CustomPaint(
+                                                  size: M.Size(diameter * 0.4,
+                                                      diameter * 0.4),
+                                                  painter: SectorPainter(
+                                                      background: true,
+                                                      color: components
+                                                          .component
+                                                          .title ==
                                                           "Общие жиры"
-                                                      ? "Общие \nжиры"
-                                                      : components.component
-                                                                  .title ==
-                                                              "Простые углеводы"
-                                                          ? "Простые \nуглеводы"
+                                                          ? Colors.schedule
                                                           : components.component
-                                                                      .title ==
-                                                                  "Сложные углеводы"
-                                                              ? "Сложные \nуглеводы"
+                                                          .title ==
+                                                          "Простые углеводы"
+                                                          ? Colors.fats
+                                                          : components.component
+                                                          .title ==
+                                                          "Сложные углеводы"
+                                                          ? Colors
+                                                          .exercise
+                                                          : Colors
+                                                          .water,
+                                                      width: 2,
+                                                      startAngle: -pi / 2,
+                                                      endAngle: components
+                                                          .value ==
+                                                          0
+                                                          ? 0
+                                                          : ((components.value /
+                                                          (components.value >
+                                                              components
+                                                                  .limit
+                                                              ? components
+                                                              .value
                                                               : components
-                                                                  .component
-                                                                  .title,
-                                                  size: Size.fontSmall * 0.6,
-                                                  align: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-
-                                        // _buildCircleIndicator(
-                                        //   color: Colors.primary,
-                                        //   title: "Белки",
-                                        //   currentCount: components.value.toInt(),
-                                        //   maxCount: components.limit.toInt(),
-                                        // ),
-                                        // TextSecondary("Value: " + components.value.toString()),
-                                        // TextSecondary("Limit: " + components.limit.toString()),
+                                                              .limit)) *
+                                                          2 *
+                                                          pi))),
+                                              Column(
+                                                children: [
+                                                  TextPrimary(
+                                                    components.value
+                                                        .toInt()
+                                                        .toString() +
+                                                        '/' +
+                                                        components.limit
+                                                            .toInt()
+                                                            .toString(),
+                                                    size: Size.fontSmall * 0.8,
+                                                  ),
+                                                  TextSecondary(
+                                                    components.component
+                                                        .title ==
+                                                        "Общие жиры"
+                                                        ? "Общие \nжиры"
+                                                        : components.component
+                                                        .title ==
+                                                        "Простые углеводы"
+                                                        ? "Простые \nуглеводы"
+                                                        : components.component
+                                                        .title ==
+                                                        "Сложные углеводы"
+                                                        ? "Сложные \nуглеводы"
+                                                        : components
+                                                        .component
+                                                        .title,
+                                                    size: Size.fontSmall * 0.6,
+                                                    align: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                       ],
                                     ],
-                                  ),
-                                  VerticalSmallSpace(),
-                                  for (final eating
-                                      in controller.stats.eatings) ...[
-                                    if (eating.scheduleItem.kind
-                                            .toLowerCase() ==
-                                        item.eatingKind)
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: TextPrimary(
-                                              eating.scheduleFood.title,
-                                              size: Size.fontSmall,
-                                            ),
-                                          ),
-                                          TextSecondary(eating
-                                                  .scheduleFood.portion
-                                                  .toString() +
-                                              " гр")
-                                        ],
-                                      ),
-                                    VerticalTinySpace(),
                                   ],
+                                ),
+                                VerticalSmallSpace(),
+                                for (final eating
+                                in controller.stats.eatings) ...[
+                                  if ((eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "07:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "08:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "09:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "10:00") && eating.scheduleItem.kind.toLowerCase() == "breakfast")
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: TextPrimary(
+                                            eating.scheduleFood.title,
+                                            size: Size.fontSmall,
+                                          ),
+                                        ),
+                                        TextSecondary(eating
+                                            .scheduleFood.portion
+                                            .toString() +
+                                            " гр")
+                                      ],
+                                    ),
+                                  VerticalTinySpace(),
                                 ],
-                              ),
+                              ],
                             ),
                           ),
-                          VerticalSmallSpace(),
-                        ],
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Перекус",
+                          id: "Перекус" + rng.nextInt(10000).toString(),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: Size.horizontal, right: Size.horizontal),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (final component in controller.stats
+                                        .foodRating.componentsPerEating) ...[
+                                      for (final components
+                                      in component.statsEatings) ...[
+                                        // if (component.scheduleItem.kind == "snack")
+                                        if((component.scheduleItem.plannedAt == "10:00" || component.scheduleItem.plannedAt == "11:00" || component.scheduleItem.plannedAt == "12:00" || component.scheduleItem.plannedAt == "13:00") && component.scheduleItem.kind.toLowerCase() == "snack")
+
+                                            Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: [
+                                              CustomPaint(
+                                                  size: M.Size(diameter * 0.4,
+                                                      diameter * 0.4),
+                                                  painter: SectorPainter(
+                                                      background: true,
+                                                      color: components
+                                                          .component
+                                                          .title ==
+                                                          "Общие жиры"
+                                                          ? Colors.schedule
+                                                          : components.component
+                                                          .title ==
+                                                          "Простые углеводы"
+                                                          ? Colors.fats
+                                                          : components.component
+                                                          .title ==
+                                                          "Сложные углеводы"
+                                                          ? Colors
+                                                          .exercise
+                                                          : Colors
+                                                          .water,
+                                                      width: 2,
+                                                      startAngle: -pi / 2,
+                                                      endAngle: components
+                                                          .value ==
+                                                          0
+                                                          ? 0
+                                                          : ((components.value /
+                                                          (components.value >
+                                                              components
+                                                                  .limit
+                                                              ? components
+                                                              .value
+                                                              : components
+                                                              .limit)) *
+                                                          2 *
+                                                          pi))),
+                                              Column(
+                                                children: [
+                                                  TextPrimary(
+                                                    components.value
+                                                        .toInt()
+                                                        .toString() +
+                                                        '/' +
+                                                        components.limit
+                                                            .toInt()
+                                                            .toString(),
+                                                    size: Size.fontSmall * 0.8,
+                                                  ),
+                                                  TextSecondary(
+                                                    components.component
+                                                        .title ==
+                                                        "Общие жиры"
+                                                        ? "Общие \nжиры"
+                                                        : components.component
+                                                        .title ==
+                                                        "Простые углеводы"
+                                                        ? "Простые \nуглеводы"
+                                                        : components.component
+                                                        .title ==
+                                                        "Сложные углеводы"
+                                                        ? "Сложные \nуглеводы"
+                                                        : components
+                                                        .component
+                                                        .title,
+                                                    size: Size.fontSmall * 0.6,
+                                                    align: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ],
+                                  ],
+                                ),
+                                VerticalSmallSpace(),
+                                for (final eating
+                                in controller.stats.eatings) ...[
+                                  if ((eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "10:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "11:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "12:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "13:00") && eating.scheduleItem.kind.toLowerCase() == "snack")
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: TextPrimary(
+                                            eating.scheduleFood.title,
+                                            size: Size.fontSmall,
+                                          ),
+                                        ),
+                                        TextSecondary(eating
+                                            .scheduleFood.portion
+                                            .toString() +
+                                            " гр")
+                                      ],
+                                    ),
+                                  VerticalTinySpace(),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Обед",
+                          id: "Обед" + rng.nextInt(10000).toString(),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: Size.horizontal, right: Size.horizontal),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (final component in controller.stats
+                                        .foodRating.componentsPerEating) ...[
+                                      for (final components
+                                      in component.statsEatings) ...[
+                                        // if (component.scheduleItem.kind == "lunch")
+                                        if((component.scheduleItem.plannedAt == "13:00" || component.scheduleItem.plannedAt == "14:00" || component.scheduleItem.plannedAt == "15:00" || component.scheduleItem.plannedAt == "16:00") && component.scheduleItem.kind.toLowerCase() == "lunch")
+
+                                            Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: [
+                                              CustomPaint(
+                                                  size: M.Size(diameter * 0.4,
+                                                      diameter * 0.4),
+                                                  painter: SectorPainter(
+                                                      background: true,
+                                                      color: components
+                                                          .component
+                                                          .title ==
+                                                          "Общие жиры"
+                                                          ? Colors.schedule
+                                                          : components.component
+                                                          .title ==
+                                                          "Простые углеводы"
+                                                          ? Colors.fats
+                                                          : components.component
+                                                          .title ==
+                                                          "Сложные углеводы"
+                                                          ? Colors
+                                                          .exercise
+                                                          : Colors
+                                                          .water,
+                                                      width: 2,
+                                                      startAngle: -pi / 2,
+                                                      endAngle: components
+                                                          .value ==
+                                                          0
+                                                          ? 0
+                                                          : ((components.value /
+                                                          (components.value >
+                                                              components
+                                                                  .limit
+                                                              ? components
+                                                              .value
+                                                              : components
+                                                              .limit)) *
+                                                          2 *
+                                                          pi))),
+                                              Column(
+                                                children: [
+                                                  TextPrimary(
+                                                    components.value
+                                                        .toInt()
+                                                        .toString() +
+                                                        '/' +
+                                                        components.limit
+                                                            .toInt()
+                                                            .toString(),
+                                                    size: Size.fontSmall * 0.8,
+                                                  ),
+                                                  TextSecondary(
+                                                    components.component
+                                                        .title ==
+                                                        "Общие жиры"
+                                                        ? "Общие \nжиры"
+                                                        : components.component
+                                                        .title ==
+                                                        "Простые углеводы"
+                                                        ? "Простые \nуглеводы"
+                                                        : components.component
+                                                        .title ==
+                                                        "Сложные углеводы"
+                                                        ? "Сложные \nуглеводы"
+                                                        : components
+                                                        .component
+                                                        .title,
+                                                    size: Size.fontSmall * 0.6,
+                                                    align: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ],
+                                  ],
+                                ),
+                                VerticalSmallSpace(),
+                                for (final eating
+                                in controller.stats.eatings) ...[
+                                  if ((eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "13:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "14:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "15:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "16:00") && eating.scheduleItem.kind.toLowerCase() == "lunch")
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: TextPrimary(
+                                            eating.scheduleFood.title,
+                                            size: Size.fontSmall,
+                                          ),
+                                        ),
+                                        TextSecondary(eating
+                                            .scheduleFood.portion
+                                            .toString() +
+                                            " гр")
+                                      ],
+                                    ),
+                                  VerticalTinySpace(),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Перекус",
+                          id: "Перекус" + rng.nextInt(10000).toString(),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: Size.horizontal, right: Size.horizontal),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (final component in controller.stats
+                                        .foodRating.componentsPerEating) ...[
+                                      for (final components
+                                      in component.statsEatings) ...[
+                                        // if (component.scheduleItem.kind == "snack")
+                                        if((component.scheduleItem.plannedAt == "15:00" || component.scheduleItem.plannedAt == "16:00" || component.scheduleItem.plannedAt == "17:00" || component.scheduleItem.plannedAt == "18:00") && component.scheduleItem.kind.toLowerCase() == "snack")
+
+                                            Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: [
+                                              CustomPaint(
+                                                  size: M.Size(diameter * 0.4,
+                                                      diameter * 0.4),
+                                                  painter: SectorPainter(
+                                                      background: true,
+                                                      color: components
+                                                          .component
+                                                          .title ==
+                                                          "Общие жиры"
+                                                          ? Colors.schedule
+                                                          : components.component
+                                                          .title ==
+                                                          "Простые углеводы"
+                                                          ? Colors.fats
+                                                          : components.component
+                                                          .title ==
+                                                          "Сложные углеводы"
+                                                          ? Colors
+                                                          .exercise
+                                                          : Colors
+                                                          .water,
+                                                      width: 2,
+                                                      startAngle: -pi / 2,
+                                                      endAngle: components
+                                                          .value ==
+                                                          0
+                                                          ? 0
+                                                          : ((components.value /
+                                                          (components.value >
+                                                              components
+                                                                  .limit
+                                                              ? components
+                                                              .value
+                                                              : components
+                                                              .limit)) *
+                                                          2 *
+                                                          pi))),
+                                              Column(
+                                                children: [
+                                                  TextPrimary(
+                                                    components.value
+                                                        .toInt()
+                                                        .toString() +
+                                                        '/' +
+                                                        components.limit
+                                                            .toInt()
+                                                            .toString(),
+                                                    size: Size.fontSmall * 0.8,
+                                                  ),
+                                                  TextSecondary(
+                                                    components.component
+                                                        .title ==
+                                                        "Общие жиры"
+                                                        ? "Общие \nжиры"
+                                                        : components.component
+                                                        .title ==
+                                                        "Простые углеводы"
+                                                        ? "Простые \nуглеводы"
+                                                        : components.component
+                                                        .title ==
+                                                        "Сложные углеводы"
+                                                        ? "Сложные \nуглеводы"
+                                                        : components
+                                                        .component
+                                                        .title,
+                                                    size: Size.fontSmall * 0.6,
+                                                    align: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ],
+                                  ],
+                                ),
+                                VerticalSmallSpace(),
+                                for (final eating
+                                in controller.stats.eatings) ...[
+                                  if ((eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "15:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "16:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "17:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "18:00") && eating.scheduleItem.kind.toLowerCase() == "snack")
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: TextPrimary(
+                                            eating.scheduleFood.title,
+                                            size: Size.fontSmall,
+                                          ),
+                                        ),
+                                        TextSecondary(eating
+                                            .scheduleFood.portion
+                                            .toString() +
+                                            " гр")
+                                      ],
+                                    ),
+                                  VerticalTinySpace(),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        VerticalSmallSpace(),
+                        buildAccordion(
+                          "Ужин",
+                          id: "Ужин" + rng.nextInt(10000).toString(),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: Size.horizontal, right: Size.horizontal),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    for (final component in controller.stats
+                                        .foodRating.componentsPerEating) ...[
+                                      for (final components
+                                      in component.statsEatings) ...[
+                                        // if (component.scheduleItem.kind == "dinner")
+                                        if((component.scheduleItem.plannedAt == "18:00" || component.scheduleItem.plannedAt == "19:00" || component.scheduleItem.plannedAt == "20:00" || component.scheduleItem.plannedAt == "21:00" || component.scheduleItem.plannedAt == "21:00") && component.scheduleItem.kind.toLowerCase() == "dinner")
+
+                                            Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: [
+                                              CustomPaint(
+                                                  size: M.Size(diameter * 0.4,
+                                                      diameter * 0.4),
+                                                  painter: SectorPainter(
+                                                      background: true,
+                                                      color: components
+                                                          .component
+                                                          .title ==
+                                                          "Общие жиры"
+                                                          ? Colors.schedule
+                                                          : components.component
+                                                          .title ==
+                                                          "Простые углеводы"
+                                                          ? Colors.fats
+                                                          : components.component
+                                                          .title ==
+                                                          "Сложные углеводы"
+                                                          ? Colors
+                                                          .exercise
+                                                          : Colors
+                                                          .water,
+                                                      width: 2,
+                                                      startAngle: -pi / 2,
+                                                      endAngle: components
+                                                          .value ==
+                                                          0
+                                                          ? 0
+                                                          : ((components.value /
+                                                          (components.value >
+                                                              components
+                                                                  .limit
+                                                              ? components
+                                                              .value
+                                                              : components
+                                                              .limit)) *
+                                                          2 *
+                                                          pi))),
+                                              Column(
+                                                children: [
+                                                  TextPrimary(
+                                                    components.value
+                                                        .toInt()
+                                                        .toString() +
+                                                        '/' +
+                                                        components.limit
+                                                            .toInt()
+                                                            .toString(),
+                                                    size: Size.fontSmall * 0.8,
+                                                  ),
+                                                  TextSecondary(
+                                                    components.component
+                                                        .title ==
+                                                        "Общие жиры"
+                                                        ? "Общие \nжиры"
+                                                        : components.component
+                                                        .title ==
+                                                        "Простые углеводы"
+                                                        ? "Простые \nуглеводы"
+                                                        : components.component
+                                                        .title ==
+                                                        "Сложные углеводы"
+                                                        ? "Сложные \nуглеводы"
+                                                        : components
+                                                        .component
+                                                        .title,
+                                                    size: Size.fontSmall * 0.6,
+                                                    align: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ],
+                                  ],
+                                ),
+                                VerticalSmallSpace(),
+                                for (final eating
+                                in controller.stats.eatings) ...[
+                                  if ((eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "18:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "19:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "20:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "21:00" || eating.scheduleItem.plannedAt
+                                      .toLowerCase() ==
+                                      "22:00") && eating.scheduleItem.kind.toLowerCase() == "dinner")
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: TextPrimary(
+                                            eating.scheduleFood.title,
+                                            size: Size.fontSmall,
+                                          ),
+                                        ),
+                                        TextSecondary(eating
+                                            .scheduleFood.portion
+                                            .toString() +
+                                            " гр")
+                                      ],
+                                    ),
+                                  VerticalTinySpace(),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        VerticalSmallSpace(),
+
                         buildAccordion(
                           "Калорийность",
                               id: "Калорийность",
@@ -777,7 +1316,7 @@ class DietTab<Controller extends StatsController> extends GetView<Controller> {
                                         value: structure.value,
                                         upperLimit: structure.upperLimit,
                                         lowerLimit: structure.lowerLimit,
-                                        color: Color(0xFFF0F56C),
+                                        color: Color(0xFF2F2F2F),
                                       ),
                                   ],
                                 ],

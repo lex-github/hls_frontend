@@ -70,14 +70,15 @@ StatsScheduleComponentsEatings _$StatsScheduleComponentsEatingsFromJson(Map<Stri
     ..statsEatings = (json['stats'] as List<dynamic>)
         ?.map((e) => ScheduleStats.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..eatingKind = (json['eatingKind'] as String);
+    ..scheduleItem = ScheduleItem.fromJson(json['scheduleItem'] as Map<String, dynamic>);
+
+
 }
 
 Map<String, dynamic> _$StatsScheduleComponentsEatingsToJson(StatsScheduleComponentsEatings instance) =>
     <String, dynamic>{
       'stats': instance.statsEatings,
-      'eatingKind': instance.eatingKind,
-
+      'scheduleItem': instance.scheduleItem,
     };
 
 
@@ -93,6 +94,19 @@ Map<String, dynamic> _$ScheduleStatsToJson(ScheduleStats instance) =>
       'limit': instance.limit,
       'value': instance.value,
       'component': instance.component,
+
+    };
+
+ScheduleItem _$ScheduleItemFromJson(Map<String, dynamic> json) {
+  return ScheduleItem()
+    ..plannedAt = (json['plannedAt'] as String)
+    ..kind = (json['kind'] as String);
+}
+
+Map<String, dynamic> _$ScheduleItemToJson(ScheduleItem instance) =>
+    <String, dynamic>{
+      'plannedAt': instance.plannedAt,
+      'kind': instance.kind,
 
     };
 

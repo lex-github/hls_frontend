@@ -46,7 +46,7 @@ class FoodScreen extends GetView<FoodController> {
     final portions = [
       for (int i = portionStep; i <= portionMax; i += portionStep) i
     ];
-    int portion = 50;
+    int portion = -1;
 
     await showConfirm(
         contentPadding: contentPadding,
