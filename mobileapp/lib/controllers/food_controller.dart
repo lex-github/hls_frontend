@@ -104,7 +104,7 @@ class FoodController extends Controller with SingleGetTickerProviderMixin {
 
   Future retrieve() async {
     final result = await query(foodQuery,
-        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheFirst);
+        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheAndNetwork);
     //print('FoodController.retrieve result: $result');
 
     item = FoodData.fromJson(result.get('food'));

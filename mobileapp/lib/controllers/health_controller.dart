@@ -237,17 +237,9 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
 
   void data () async {
       await addSchedule();
-      if (steps != 0
-      ) {
-        addSteps();
-    }
   }
   void d () {
     Get.toNamed(scheduleAddRoute);
-    if (steps != 0
-    ) {
-      addSteps();
-    }
   }
 
   Future<bool> addSchedule() async {
@@ -278,7 +270,10 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
 
     AuthService.i.retrieve();
     //_dayItems.assignAll(AuthService.i.profile.schedule.items);
-
+    if (steps != 0
+    ) {
+      addSteps();
+    }
     return !_dayItems.isNullOrEmpty;
   }
 
@@ -326,6 +321,7 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   }
 
   void addSteps() async {
+    print("ITSSSS STEPS: " + steps.toString());
     final scheduleId = AuthService.i.profile.schedule?.id;
     if (scheduleId == null) return showConfirm(title: exerciseNeedScheduleText);
 
@@ -350,11 +346,8 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
     @required int exerciseId,
     @required String type,
     @required int value}) async {
-    final result = await mutation(scheduleTrainingsCreateMutation, parameters: {
-      'scheduleId': scheduleId,
-      'exerciseId': exerciseId,
-      'type': type,
-      'value': value
+    final result = await mutation(appStepsMutation, parameters: {
+      'appSteps': value,
     });
 
     //print('ExerciseCatalogController.add result: $result');

@@ -7,6 +7,7 @@ import 'package:hls/constants/api.dart';
 import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart' hide iconSize;
 import 'package:hls/controllers/_controller.dart';
+import 'package:hls/controllers/health_controller.dart';
 import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/helpers/null_awareness.dart';
@@ -661,7 +662,8 @@ class ScheduleAddController extends Controller
 
     AuthService.i.retrieve();
     //_dayItems.assignAll(AuthService.i.profile.schedule.items);
-
+    final _c = Get.put(HealthController());
+    _c.fetchData();
     return !_dayItems.isNullOrEmpty;
   }
 

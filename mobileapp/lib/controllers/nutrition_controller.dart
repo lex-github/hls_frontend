@@ -26,7 +26,7 @@ class NutritionController extends SearchController {
 
   Future retrieve() async {
     final result =
-        await query(foodCategoriesQuery, fetchPolicy: FetchPolicy.cacheFirst);
+        await query(foodCategoriesQuery, fetchPolicy: FetchPolicy.cacheAndNetwork);
     //print('NutritionController.retrieve result: $result');
 
     // final categories = result.get('foodCategories');
@@ -79,7 +79,7 @@ class NutritionController extends SearchController {
         },
       'first': defaultItemsPerPage,
       if (cursor != null) 'after': cursor
-    });
+    }, fetchPolicy: FetchPolicy.cacheAndNetwork);
 
     //print('NutritionController.retrieveFoods result: $result');
     final foods = result

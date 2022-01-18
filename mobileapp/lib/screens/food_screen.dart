@@ -246,7 +246,12 @@ class FoodScreen extends GetView<FoodController> {
                   padding: Padding.content,
                   itemCount: controller.list.length * 2 + 1,
                   itemBuilder: (_, i) {
-                    if (i == 0) return _buildHeader(controller.item);
+                    if (i == 0) return Column(
+                      children: [
+                        _buildHeader(controller.item),
+                        TextSecondary(controller.item.tip.isNullEmptyFalseOrZero ? "null" : controller.item.tip),
+                      ],
+                    );
                     if (i.isOdd) return VerticalMediumSpace();
 
                     final index = i ~/ 2 - 1;

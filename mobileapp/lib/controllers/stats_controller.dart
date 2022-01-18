@@ -7,10 +7,8 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:health/health.dart';
 import 'package:hls/constants/api.dart';
-import 'package:hls/constants/formats.dart';
 import 'package:hls/constants/values.dart';
 import 'package:hls/controllers/_controller.dart';
-import 'package:hls/helpers/convert.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/food_model.dart';
@@ -53,6 +51,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   double _mgdl = 10.0;
 
   String statsUpdate = "";
+
   // StatsScheduleItem scheduleItem;
   List<StatsScheduleEatings> eatings;
   List<StatsScheduleComponents> components;
@@ -108,7 +107,6 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   //     _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
   //   });
   // }
-
 
   /// Fetch data from the healt plugin and print it
   // Future fetchData() async {
@@ -197,7 +195,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
       //   'fromDate': dateToString(date: fromDate, output: dateInternalFormat),
       //   'toDate': dateToString(date: toDate, output: dateInternalFormat),
       // },
-      fetchPolicy: FetchPolicy.cacheFirst,
+      fetchPolicy: FetchPolicy.networkOnly                                                    ,
     );
     calendar = responseCalendar
         .get<List>('schedules')
@@ -208,33 +206,39 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   }
 
   Future getSchedule(String i) async {
-
-
-    if(statsUpdate != i && i != null){
+    if (statsUpdate != i && i != null && i != "update") {
       statsUpdate = i;
       final responseStats = await query(
         schedule,
         parameters: {
-          'id' : i,
+          'id': i,
         },
-        fetchPolicy: FetchPolicy.cacheFirst,
+        fetchPolicy: FetchPolicy.networkOnly                                                    ,
       );
-
-      //print('FoodController.retrieve result: $result');
-
+      stats = StatsData.fromJson(responseStats.get('schedule'));
+      print('FoodController.retrieve result:' + stats.eatings.length.toString());
+    }else if(i == "update"){
+      final responseStats = await query(
+        schedule,
+        parameters: {
+          'id': statsUpdate,
+        },
+        fetchPolicy: FetchPolicy.networkOnly                                                    ,
+      );
       stats = StatsData.fromJson(responseStats.get('schedule'));
     }
-
     update();
   }
 
   // bool d;
-  bool isOpened(String title) => d==true ? true : _openedItems.contains(title);
+  bool isOpened(String title) =>
+      d == true ? true : _openedItems.contains(title);
+
   double getRotationAngle(String title) => title == _lastToggledItem.value
       ? rotationAngle
       : isOpened(title)
-      ? maxRotationAngle
-      : minRotationAngle;
+          ? maxRotationAngle
+          : minRotationAngle;
 
   // double getSizeFactor(FoodCategoryData item) {
   //   final factor = animationProgress; // make sure call rxValue not to upset obx
@@ -255,7 +259,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     if (isOpened(title)) {
       _openedItems.remove(title);
       _animationController.reverse(from: maxRotationAngle);
-      d=false;
+      d = false;
     } else {
       _openedItems.add(title);
       _animationController.forward(from: minRotationAngle);
@@ -290,21 +294,15 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   //   update();
   // }
 
-  Future<bool> add(
-      {@required int scheduleId,
-      @required String scheduleItemId,
-      @required int foodId,
-      @required int portion}) async {
-    final result = await mutation(scheduleEatingsCreateMutation, parameters: {
-      'scheduleId': scheduleId,
-      'scheduleItemId': scheduleItemId,
-      'foodId': foodId,
-      'portion': portion
+  Future<bool> delete({@required String id}) async {
+    final result = await mutation(scheduleEatingsDeleteMutation, parameters: {
+      'id': id,
     });
 
-    print('FoodController.add result: $result');
+    print('StatsController.delete result: $result');
     AuthService.i.retrieve();
-
+    getSchedule("update");
+    update();
     return result != null;
   }
 }

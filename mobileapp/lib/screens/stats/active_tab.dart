@@ -35,6 +35,7 @@ class ActiveTab<Controller extends StatsController>
       isButton = true;
     }
 
+
     return Button(
         padding: Padding.zero,
         borderColor: Colors.disabled,
@@ -56,7 +57,6 @@ class ActiveTab<Controller extends StatsController>
                             .stats
                             .scheduleTrainings[i]
                             .training
-                            .trainingCategory
                             .title),
                       ],
                     ),
@@ -204,16 +204,65 @@ class ActiveTab<Controller extends StatsController>
         },
       );
 
+
+  Widget _stepsContainer () {
+    return Column(
+      children: [
+        Button(
+        padding: Padding.zero,
+        borderColor: Colors.disabled,
+        child: Column(children: [
+          VerticalSmallSpace(),
+          Container(
+              height: Size.iconBig,
+              padding: EdgeInsets.symmetric(horizontal: Size.horizontal),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Container(height: Size.iconBig),
+                    Row(
+                      children: [
+                        // Icon(icon),
+                        HorizontalSmallSpace(),
+                        TextPrimaryHint("Моцион"),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        TextSecondary(controller
+                            .stats.stepsQuantity.toString()),
+                        HorizontalSmallSpace(),
+                        TextSecondary("щаг(ов)")
+                      ],
+                    ),
+                    // Expanded(child: HorizontalSpace()),
+                  ])),
+          VerticalSmallSpace()
+        ])),
+        SizedBox(
+          height: Size.horizontal * 0.5,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(_) =>
-      index == null || controller.stats.scheduleTrainings.isEmpty
+controller.stats.scheduleTrainings.isEmpty
           ? Column(
               children: [
                 VerticalSpace(),
                 _buildStatsContainer(),
+                Container(
+                  padding: EdgeInsets.all(Size.horizontalBig),
+                  child: (controller.stats.stepsQuantity != null && controller.stats.stepsQuantity != 0) ? _stepsContainer() : SizedBox(),
+                ),
+
+
               ],
             )
-          : GetBuilder<StatsController>(builder: (_) {
+          :
+      GetBuilder<StatsController>(builder: (_) {
               int c = 0;
               var training = List<int>.filled(
                   controller.stats.scheduleTrainings.length, 0);
@@ -238,35 +287,24 @@ class ActiveTab<Controller extends StatsController>
                     children: [
                       _buildStatsContainer(),
                       VerticalSpace(),
-
+                      (controller.stats.stepsQuantity != null && controller.stats.stepsQuantity != 0) ? _stepsContainer() : SizedBox(),
                       Container(
                         width: width,
                         height: height * (c / 2),
                         child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                             itemCount: c,
                             itemBuilder: (_, index) {
                               final i = training[index];
-
                               return Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical: Size.horizontal * 0.5),
-                                child: _buildButton(i),
+                                child: controller.stats.scheduleTrainings[i].training.trainingCategory
+                                    .title ==
+                                    "Моцион" ? SizedBox() : _buildButton(i),
                               );
                             }),
                       ),
-
-                      // VerticalSpace(),
-                      // _buildButton(
-                      //     title: "С гантелями",
-                      //     count: "0,2 ч",
-                      //     isButton: true,
-                      //     icon: Icons.bookmark),
-                      // VerticalSpace(),
-                      // _buildButton(
-                      //     title: "Зарядка",
-                      //     count: "0,2 ч",
-                      //     isButton: false,
-                      //     icon: Icons.assignment_ind_outlined),
                     ],
                   ),
                 ),

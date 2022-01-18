@@ -337,7 +337,7 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
 
     _tooltipColor = null;
 
-    _tooltip(data.get(['dailyRatingTip', 'text']));
+    _tooltip(data.get(['displayTip', 'content']));
 
     if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
 

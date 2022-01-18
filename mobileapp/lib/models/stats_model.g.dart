@@ -10,6 +10,7 @@ StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
   return StatsData()
     // ..date = json['scheduleDate'] as String
     ..asleepTime = json['yesterdayAsleepTime'] as String
+    ..stepsQuantity = json['stepsQuantity'] as int
     ..sleepDuration = json['sleepDuration'] as int
     ..sleepReport = json['sleepReport'] as List<Object>
     ..activityRating =
@@ -28,6 +29,7 @@ Map<String, dynamic> _$StatsDataToJson(StatsData instance) => <String, dynamic>{
       // 'scheduleDate': instance.date,
       'yesterdayAsleepTime': instance.asleepTime,
       'sleepDuration': instance.sleepDuration,
+      'stepsQuantity': instance.stepsQuantity,
       'sleepReport': instance.sleepReport,
       // 'dailyRating': instance.daily,
       'scheduleEatings': instance.eatings,
@@ -205,6 +207,8 @@ StatsScheduleEatings _$StatsScheduleEatingsFromJson(Map<String, dynamic> json) {
   return StatsScheduleEatings()
     ..scheduleItem =
     StatsScheduleItem.fromJson(json['scheduleItem'] as Map<String, dynamic>)
+    ..portion = (json['portion'] as num).toDouble()
+    ..id = json['id'] as String
     ..scheduleFood =
     StatsScheduleFood.fromJson(json['food'] as Map<String, dynamic>);
 }
@@ -212,7 +216,8 @@ StatsScheduleEatings _$StatsScheduleEatingsFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$StatsScheduleEatingsToJson(StatsScheduleEatings instance) =>
     <String, dynamic>{
       'scheduleItem': instance.scheduleItem,
-
+      'portion': instance.portion,
+      'id': instance.id,
     };
 
 
@@ -221,6 +226,7 @@ StatsScheduleComponents _$StatsScheduleComponentsFromJson(Map<String, dynamic> j
     ..value = (json['value'] as num).toDouble()
     ..lowerLimit = (json['lowerLimit'] as num).toDouble()
     ..upperLimit = (json['upperLimit'] as num).toDouble()
+    ..rating = (json['rating'] as num).toDouble()
     ..foodComponent =
     StatsScheduleFoodComponents.fromJson(json['foodComponent'] as Map<String, dynamic>);
 }
@@ -230,6 +236,7 @@ Map<String, dynamic> _$StatsScheduleComponentsToJson(StatsScheduleComponents ins
       'value': instance.value,
       'lowerLimit': instance.lowerLimit,
       'upperLimit': instance.upperLimit,
+      'rating': instance.rating,
       'foodComponent': instance.foodComponent,
 
     };

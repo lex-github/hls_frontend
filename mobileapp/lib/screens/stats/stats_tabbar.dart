@@ -34,7 +34,7 @@ class StatsTabBar<Controller extends StatsController>
 
 
     return GetBuilder<StatsController>(
-      init:             StatsController(id : "331"),
+      init:             StatsController(),
 
       builder: (_) =>
       controller.stats == null
@@ -74,7 +74,7 @@ class StatsTabBar<Controller extends StatsController>
   @override
   Widget build(_) => GetBuilder<StatsController>(
     init:
-            StatsController(id : "331"),
+            StatsController(),
         builder: (_) {
           {
 

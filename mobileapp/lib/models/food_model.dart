@@ -11,6 +11,8 @@ part 'food_model.g.dart';
 class FoodData extends GenericData {
   @JsonKey(name: 'icon')
   ImageData image;
+  @JsonKey(name: 'tip')
+  String tip;
   @JsonKey(name: 'foodCategory')
   FoodCategoryData category;
   List<FoodSectionData> structure;

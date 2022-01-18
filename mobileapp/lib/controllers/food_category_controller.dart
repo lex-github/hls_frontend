@@ -21,7 +21,7 @@ class FoodCategoryController extends Controller
           ..addListener(() => animationProgress = _animationController.value);
   }
 
-  // fields
+  // fieldsq
 
   final minRotationAngle = .0;
   final maxRotationAngle = pi / 2;
@@ -96,7 +96,7 @@ class FoodCategoryController extends Controller
 
   Future retrieve() async {
     final result = await query(foodCategoryQuery,
-        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheFirst);
+        parameters: {'id': id}, fetchPolicy: FetchPolicy.cacheAndNetwork);
     //print('FoodCategoryController.retrieve result: $result');
 
     // final subcategories = result.get(['foodCategory', 'subcategories']);

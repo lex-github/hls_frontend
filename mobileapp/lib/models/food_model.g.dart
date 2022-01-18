@@ -10,6 +10,7 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
   return FoodData()
     ..id = toInt(json['id'])
     ..title = json['title'] as String
+    ..tip = json['tip'] as String
     ..image = ImageData.fromJson(json['icon'] as Map<String, dynamic>)
     ..category =
         FoodCategoryData.fromJson(json['foodCategory'] as Map<String, dynamic>)
@@ -24,6 +25,7 @@ FoodData _$FoodDataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$FoodDataToJson(FoodData instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'tip': instance.tip,
       'icon': instance.image,
       'foodCategory': instance.category,
       'structure': instance.structure,

@@ -2,7 +2,7 @@ import 'package:hls/helpers/null_awareness.dart';
 
 extension MapGetter on Map {
   String get queryString => this.keys.fold(
-      [], (parameters, key) => parameters..add('$key=${this[key]}')).join('&');
+      [], (parameters, key) => parameters..delete('$key=${this[key]}')).join('&');
 
   T get<T>(key, {defaultValue, Function(dynamic) convert}) {
     if (this == null) return defaultValue;

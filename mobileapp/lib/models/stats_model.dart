@@ -11,6 +11,8 @@ class StatsData extends GenericData {
   // String date;
   @JsonKey(name: 'yesterdayAsleepTime')
   String asleepTime;
+  @JsonKey(name: 'stepsQuantity')
+  int stepsQuantity;
   @JsonKey(name: 'sleepDuration')
   int sleepDuration;
   @JsonKey(name: 'sleepReport')
@@ -42,6 +44,7 @@ class StatsData extends GenericData {
   @override
   String toString() => 'asleepTime('
       '\n\tasleepTime: $asleepTime'
+      '\n\tstepsQuantity: $stepsQuantity'
       '\n\tsleepReport: $sleepReport'
       ')';
 }
@@ -230,8 +233,12 @@ class ComponentStats {
 class StatsScheduleEatings{
   @JsonKey(name: 'scheduleItem')
   StatsScheduleItem scheduleItem;
+  @JsonKey(name: 'portion')
+  double portion;
   @JsonKey(name: 'food')
   StatsScheduleFood scheduleFood;
+  @JsonKey(name: 'id')
+  String id;
 
 
 
@@ -246,12 +253,10 @@ class StatsScheduleEatings{
       _$StatsScheduleEatingsFromJson(json);
   Map<String, dynamic> toJson() => _$StatsScheduleEatingsToJson(this);
 
-  // @override
-  // String toString() => 'StatsDailyRating('
-  //     '\n\tschedule: $schedule'
-  //     '\n\texercise: $exercise'
-  //     '\n\tnutrition: $nutrition'
-  //     ')';
+  @override
+  String toString() => 'StatsScheduleEatings('
+      '\n\tportion: $portion'
+      ')';
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -372,6 +377,8 @@ class StatsScheduleComponents{
   double lowerLimit;
   @JsonKey(name: 'upperLimit')
   double upperLimit;
+  @JsonKey(name: 'rating')
+  double rating;
   @JsonKey(name: 'foodComponent')
   StatsScheduleFoodComponents foodComponent;
 
