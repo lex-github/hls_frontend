@@ -12,18 +12,12 @@ import 'package:hls/controllers/_controller.dart';
 import 'package:hls/helpers/iterables.dart';
 import 'package:hls/models/calendar_model.dart';
 import 'package:hls/models/food_model.dart';
+import 'package:hls/models/stats_eatings_model.dart';
+import 'package:hls/models/stats_mode_model.dart';
 import 'package:hls/models/stats_model.dart';
+import 'package:hls/models/stats_trainings_model.dart';
 import 'package:hls/services/auth_service.dart';
 
-// enum AppState {
-//   DATA_NOT_FETCHED,
-//   FETCHING_DATA,
-//   DATA_READY,
-//   NO_DATA,
-//   AUTH_NOT_GRANTED,
-//   DATA_ADDED,
-//   DATA_NOT_ADDED,
-// }
 class StatsController extends Controller with SingleGetTickerProviderMixin {
   final String id;
 
@@ -42,6 +36,10 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   final _lastToggledItem = Rx<String>(null);
   AnimationController _animationController;
   StatsData stats;
+
+  StatsMode mode;
+  StatsEatings eatings;
+  StatsTrainings trainings;
   List<CalendarData> calendar;
 
   List<HealthDataPoint> _healthDataList = [];
@@ -53,9 +51,9 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   String statsUpdate = "";
 
   // StatsScheduleItem scheduleItem;
-  List<StatsScheduleEatings> eatings;
-  List<StatsScheduleComponents> components;
-  FoodData item;
+  // List<StatsScheduleEatings> eatings;
+  // List<StatsScheduleComponents> components;
+  // FoodData item;
   bool d;
 
   List items;
@@ -205,27 +203,81 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     update();
   }
 
-  Future getSchedule(String i) async {
-    if (statsUpdate != i && i != null && i != "update") {
+  // Future getSchedule(String i) async {
+  //   if (statsUpdate != i && i != null && i != "update") {
+  //     statsUpdate = i;
+  //     final responseStats = await query(
+  //       schedule,
+  //       parameters: {
+  //         'id': i,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     stats = StatsData.fromJson(responseStats.get('schedule'));
+  //     print('FoodController.retrieve result:' + stats.eatings.length.toString());
+  //   }else if(i == "update"){
+  //     final responseStats = await query(
+  //       schedule,
+  //       parameters: {
+  //         'id': statsUpdate,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     stats = StatsData.fromJson(responseStats.get('schedule'));
+  //   }
+  //   update();
+  // }
+
+  Future getMode(String i) async {
+    if (statsUpdate != i && i != null) {
       statsUpdate = i;
       final responseStats = await query(
-        schedule,
+        scheduleModeQuery,
         parameters: {
           'id': i,
         },
         fetchPolicy: FetchPolicy.networkOnly                                                    ,
       );
-      stats = StatsData.fromJson(responseStats.get('schedule'));
-      print('FoodController.retrieve result:' + stats.eatings.length.toString());
+      mode = StatsMode.fromJson(responseStats.get('schedule'));
+    }
+    update();
+  }
+
+  Future getEatings(String i) async {
+    if (statsUpdate != i && i != null && i != "update") {
+      statsUpdate = i;
+      final responseStats = await query(
+        scheduleEatingsQuery,
+        parameters: {
+          'id': i,
+        },
+        fetchPolicy: FetchPolicy.networkOnly                                                    ,
+      );
+      eatings = StatsEatings.fromJson(responseStats.get('schedule'));
     }else if(i == "update"){
       final responseStats = await query(
-        schedule,
+        scheduleEatingsQuery,
         parameters: {
           'id': statsUpdate,
         },
         fetchPolicy: FetchPolicy.networkOnly                                                    ,
       );
-      stats = StatsData.fromJson(responseStats.get('schedule'));
+      eatings = StatsEatings.fromJson(responseStats.get('schedule'));
+    }
+    update();
+  }
+
+  Future getTrainings(String i) async {
+    if (statsUpdate != i && i != null) {
+      statsUpdate = i;
+      final responseStats = await query(
+        scheduleTrainingsQuery,
+        parameters: {
+          'id': i,
+        },
+        fetchPolicy: FetchPolicy.networkOnly                                                    ,
+      );
+      trainings = StatsTrainings.fromJson(responseStats.get('schedule'));
     }
     update();
   }
@@ -301,7 +353,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
     print('StatsController.delete result: $result');
     AuthService.i.retrieve();
-    getSchedule("update");
+    getEatings("update");
     update();
     return result != null;
   }

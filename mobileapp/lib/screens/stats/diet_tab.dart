@@ -90,11 +90,11 @@ class DietTab extends GetView<StatsController> {
     double nutrients = 0;
     if (index != null) {
       // int carbohydrates = 0;
-      water = controller.stats.foodRating.primaryStats.water;
+      water = controller.eatings.foodRating.primaryStats.water;
       // int proteins = 0;
-      energy = controller.stats.foodRating.primaryStats.energyValue;
+      energy = controller.eatings.foodRating.primaryStats.energyValue;
       // int upCarbohydrates = 0;
-      nutrients = controller.stats.foodRating.primaryStats.nutrients;
+      nutrients = controller.eatings.foodRating.primaryStats.nutrients;
     }
     // int upProteins = 0;
 
@@ -165,7 +165,7 @@ class DietTab extends GetView<StatsController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextSecondary(title),
-                TextSecondary(value.toString() + " " + unit)
+                TextSecondary(value.ceil().toString() + "/" + upperLimit.ceil().toString() + " " + unit)
               ],
             ),
           ),
@@ -277,15 +277,15 @@ class DietTab extends GetView<StatsController> {
   }
 
   @override
-  Widget build(_) => index == null ||
-          controller.stats.eatings.isNullEmptyFalseOrZero
-      ? Column(
-          children: [VerticalBigSpace(), _buildStatsContainer()],
-        )
-      : GetBuilder<StatsController>(
+  Widget build(_) =>  GetBuilder<StatsController>(
           init: StatsController(),
           builder: (controller) {
-            return Container(
+            controller.getEatings(index);
+            return controller.eatings == null
+                ? Column(
+              children: [VerticalBigSpace(), _buildStatsContainer()],
+            )
+                : Container(
                   color: Colors.background,
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(Size.horizontal),
@@ -311,7 +311,7 @@ class DietTab extends GetView<StatsController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         for (final component in controller
-                                            .stats
+                                            .eatings
                                             .foodRating
                                             .componentsPerEating) ...[
                                           for (final components
@@ -418,7 +418,7 @@ class DietTab extends GetView<StatsController> {
                                     ),
                                     VerticalSmallSpace(),
                                     for (final eating
-                                        in controller.stats.eatings) ...[
+                                        in controller.eatings.eatings) ...[
                                       if ((eating.scheduleItem.plannedAt
                                                       .toLowerCase() ==
                                                   "07:00" ||
@@ -491,7 +491,7 @@ class DietTab extends GetView<StatsController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         for (final component in controller
-                                            .stats
+                                            .eatings
                                             .foodRating
                                             .componentsPerEating) ...[
                                           for (final components
@@ -598,7 +598,7 @@ class DietTab extends GetView<StatsController> {
                                     ),
                                     VerticalSmallSpace(),
                                     for (final eating
-                                        in controller.stats.eatings) ...[
+                                        in controller.eatings.eatings) ...[
                                       if ((eating.scheduleItem.plannedAt
                                                       .toLowerCase() ==
                                                   "10:00" ||
@@ -665,7 +665,7 @@ class DietTab extends GetView<StatsController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         for (final component in controller
-                                            .stats
+                                            .eatings
                                             .foodRating
                                             .componentsPerEating) ...[
                                           for (final components
@@ -772,7 +772,7 @@ class DietTab extends GetView<StatsController> {
                                     ),
                                     VerticalSmallSpace(),
                                     for (final eating
-                                        in controller.stats.eatings) ...[
+                                        in controller.eatings.eatings) ...[
                                       if ((eating.scheduleItem.plannedAt
                                                       .toLowerCase() ==
                                                   "13:00" ||
@@ -839,7 +839,7 @@ class DietTab extends GetView<StatsController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         for (final component in controller
-                                            .stats
+                                            .eatings
                                             .foodRating
                                             .componentsPerEating) ...[
                                           for (final components
@@ -946,7 +946,7 @@ class DietTab extends GetView<StatsController> {
                                     ),
                                     VerticalSmallSpace(),
                                     for (final eating
-                                        in controller.stats.eatings) ...[
+                                        in controller.eatings.eatings) ...[
                                       if ((eating.scheduleItem.plannedAt
                                                       .toLowerCase() ==
                                                   "15:00" ||
@@ -1013,7 +1013,7 @@ class DietTab extends GetView<StatsController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         for (final component in controller
-                                            .stats
+                                            .eatings
                                             .foodRating
                                             .componentsPerEating) ...[
                                           for (final components
@@ -1123,7 +1123,7 @@ class DietTab extends GetView<StatsController> {
                                     ),
                                     VerticalSmallSpace(),
                                     for (final eating
-                                        in controller.stats.eatings) ...[
+                                        in controller.eatings.eatings) ...[
                                       if ((eating.scheduleItem.plannedAt
                                                       .toLowerCase() ==
                                                   "18:00" ||
@@ -1184,7 +1184,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Калорийность")
                                       _buildIndicator(
@@ -1207,7 +1207,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Вода")
                                       _waterContainer(
@@ -1231,7 +1231,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Белки")
                                       _buildIndicator(
@@ -1254,7 +1254,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Жиры")
                                       _buildIndicator(
@@ -1277,7 +1277,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Углеводы")
                                       _buildIndicator(
@@ -1300,7 +1300,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Пищевые волокна")
                                       _buildIndicator(
@@ -1323,7 +1323,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Витамины")
                                       _buildIndicator(
@@ -1346,7 +1346,7 @@ class DietTab extends GetView<StatsController> {
                               child: Column(
                                 children: [
                                   for (final structure in controller
-                                      .stats.foodRating.components) ...[
+                                      .eatings.foodRating.components) ...[
                                     if (structure.foodComponent.section ==
                                         "Микроэлементы")
                                       _buildIndicator(

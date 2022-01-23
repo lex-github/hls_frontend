@@ -37,9 +37,9 @@ class StatsTabBar<Controller extends StatsController>
       init:             StatsController(),
 
       builder: (_) =>
-      controller.stats == null
-          ? Center(child: Loading())
-          :
+      // controller.stats == null
+      //     ? Center(child: SizedBox())
+      //     :
         DefaultTabController(
               length: 3,
               child: Screen(
@@ -84,16 +84,19 @@ class StatsTabBar<Controller extends StatsController>
                   if (controller.calendar[i].date ==
                       dateToString(
                           date: DateTime.now(), output: dateInternalFormat)) {
-                    controller.getSchedule(controller.calendar[i].scheduleId);
+                    // controller.getMode(controller.calendar[i].scheduleId);
+                    // controller.getEatings(controller.calendar[i].scheduleId);
+                    // controller.getTrainings(controller.calendar[i].scheduleId);
 
                     _buildTabs(controller.calendar[i].scheduleId, i);
                   }
                 }
               } else {
-                LoadingPage();
-              }
+                _buildTabs("null",0);              }
             }
-            controller.getSchedule(index);
+            // controller.getMode(index);
+            // controller.getEatings(index);
+            // controller.getTrainings(index);
 
             return _buildTabs("null",0);
           }

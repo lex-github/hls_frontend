@@ -1,53 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'stats_model.dart';
+part of 'stats_eatings_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StatsData _$StatsDataFromJson(Map<String, dynamic> json) {
-  return StatsData()
-    // ..date = json['scheduleDate'] as String
-    // ..asleepTime = json['yesterdayAsleepTime'] as String
-    ..stepsQuantity = json['stepsQuantity'] as int
-    ..sleepDuration = json['sleepDuration'] as int
-    ..sleepReport = json['sleepReport'] as List<Object>
-    ..activityRating =
-    StatsActivityRating.fromJson(json['activityRating'] as Map<String, dynamic>)
+StatsEatings _$StatsEatingsFromJson(Map<String, dynamic> json) {
+  return StatsEatings()
     ..eatings = (json['scheduleEatings'] as List<dynamic>)
         ?.map((e) => StatsScheduleEatings.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..foodRating =
-    StatsFoodRating.fromJson(json['foodRating'] as Map<String, dynamic>)
-    ..scheduleTrainings = (json['scheduleTrainings'] as List<dynamic>)
-        ?.map((e) => StatsScheduleTrainings.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    StatsFoodRating.fromJson(json['foodRating'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$StatsDataToJson(StatsData instance) => <String, dynamic>{
-      // 'scheduleDate': instance.date,
-      // 'yesterdayAsleepTime': instance.asleepTime,
-      'sleepDuration': instance.sleepDuration,
-      'stepsQuantity': instance.stepsQuantity,
-      'sleepReport': instance.sleepReport,
-      // 'dailyRating': instance.daily,
-      'scheduleEatings': instance.eatings,
-    };
+Map<String, dynamic> _$StatsEatingsToJson(StatsEatings instance) => <String, dynamic>{
+  'scheduleEatings': instance.eatings,
+};
 
-StatsActivityRating _$StatsActivityRatingFromJson(Map<String, dynamic> json) {
-  return StatsActivityRating()
-    ..activeLeisureRating = (json['activeLeisureRating'] as num).toDouble()
-    ..motionRating = (json['motionRating'] as num).toDouble()
-    ..trainingRating = (json['trainingRating'] as num).toDouble();
-}
-
-Map<String, dynamic> _$StatsActivityRatingToJson(StatsActivityRating instance) =>
-    <String, dynamic>{
-      'activeLeisureRating': instance.activeLeisureRating,
-      'motionRating': instance.motionRating,
-      'trainingRating': instance.trainingRating,
-    };
 
 StatsFoodRating _$StatsFoodRatingFromJson(Map<String, dynamic> json) {
   return StatsFoodRating()
@@ -137,71 +108,6 @@ Map<String, dynamic> _$StatsPrimaryStatsToJson(StatsPrimaryStats instance) =>
       'water': instance.water,
     };
 
-StatsScheduleTrainings _$StatsScheduleTrainingsFromJson(Map<String, dynamic> json) {
-  return StatsScheduleTrainings()
-    // ..inputType = json['inputType'] as String
-    ..inputValue = json['inputValue'] as double
-    ..training =
-    StatsTraining.fromJson(json['training'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic> _$StatsScheduleTrainingsToJson(StatsScheduleTrainings instance) =>
-    <String, dynamic>{
-      // 'inputType': instance.inputType,
-      'inputValue': instance.inputValue,
-      'training': instance.training,
-
-    };
-
-
-StatsTraining _$StatsTrainingFromJson(Map<String, dynamic> json) {
-  return StatsTraining()
-    ..title = json['title'] as String
-    ..trainingCategory =
-    StatsTrainingCategory.fromJson(json['trainingCategory'] as Map<String, dynamic>)
-    ..inputData = (json['inputData'] as List<dynamic>)
-        ?.map((e) => StatsInputData.fromJson(e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$StatsTrainingToJson(StatsTraining instance) =>
-    <String, dynamic>{
-      'title': instance.title,
-      'trainingCategory': instance.trainingCategory,
-      'inputData': instance.inputData,
-    };
-
-StatsTrainingCategory _$StatsTrainingCategoryFromJson(Map<String, dynamic> json) {
-  return StatsTrainingCategory()
-    ..title = json['title'] as String;
-}
-
-Map<String, dynamic> _$StatsTrainingCategoryToJson(StatsTrainingCategory instance) =>
-    <String, dynamic>{
-      'title': instance.title,
-    };
-
-StatsInputData _$StatsInputDataFromJson(Map<String, dynamic> json) {
-  return StatsInputData()
-    ..title = json['title'] as String
-    // ..inputType = json['inputType'] as String
-    ..unit = json['unit'] as String
-    // ..max = json['max'] as int
-    // ..min = json['min'] as int
-    // ..step = json['step'] as int
-  ;
-}
-
-Map<String, dynamic> _$StatsInputDataToJson(StatsInputData instance) =>
-    <String, dynamic>{
-      'title': instance.title,
-      // 'inputType': instance.inputType,
-      'unit': instance.unit,
-      // 'max': instance.max,
-      // 'min': instance.min,
-      // 'step': instance.step,
-
-    };
 
 StatsScheduleEatings _$StatsScheduleEatingsFromJson(Map<String, dynamic> json) {
   return StatsScheduleEatings()
@@ -269,36 +175,12 @@ Map<String, dynamic> _$StatsScheduleItemToJson(StatsScheduleItem instance) =>
 StatsScheduleFood _$StatsScheduleFoodFromJson(Map<String, dynamic> json) {
   return StatsScheduleFood()
     ..title = json['title'] as String
-    // ..portion = (json['portion'] as num).toDouble()
-    // ..structure = (json['structure'] as List<dynamic>)
-    //   ?.map((e) => StatsScheduleStructure.fromJson(e as Map<String, dynamic>))
-    //   ?.toList()
-  ;
+
+      ;
 }
 
 Map<String, dynamic> _$StatsScheduleFoodToJson(StatsScheduleFood instance) =>
     <String, dynamic>{
       'title': instance.title,
-      // 'portion': instance.portion,
-      // 'structure': instance.structure,
-    };
 
-
-StatsScheduleStructure _$StatsScheduleStructureFromJson(Map<String, dynamic> json) {
-  return StatsScheduleStructure()
-    ..key = json['key'] as String
-    ..quantity = (json['quantity'] as num).toDouble()
-    ..section = json['section'] as String
-    ..title = json['title'] as String
-    ..unit = json['unit'] as String;
-
-}
-
-Map<String, dynamic> _$StatsScheduleStructureToJson(StatsScheduleStructure instance) =>
-    <String, dynamic>{
-      'key': instance.key,
-      'quantity': instance.quantity,
-      'section': instance.section,
-      'title': instance.title,
-      'unit': instance.unit,
     };

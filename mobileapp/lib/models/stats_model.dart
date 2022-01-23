@@ -9,8 +9,8 @@ part 'stats_model.g.dart';
 class StatsData extends GenericData {
   // @JsonKey(name: 'scheduleDate')
   // String date;
-  @JsonKey(name: 'yesterdayAsleepTime')
-  String asleepTime;
+  // @JsonKey(name: 'yesterdayAsleepTime')
+  // String asleepTime;
   @JsonKey(name: 'stepsQuantity')
   int stepsQuantity;
   @JsonKey(name: 'sleepDuration')
@@ -43,7 +43,7 @@ class StatsData extends GenericData {
 
   @override
   String toString() => 'asleepTime('
-      '\n\tasleepTime: $asleepTime'
+      // '\n\tasleepTime: $asleepTime'
       '\n\tstepsQuantity: $stepsQuantity'
       '\n\tsleepReport: $sleepReport'
       ')';
@@ -263,8 +263,8 @@ class StatsScheduleEatings{
 class StatsScheduleTrainings{
   @JsonKey(name: 'training')
   StatsTraining training;
-  @JsonKey(name: 'inputType')
-  String inputType;
+  // @JsonKey(name: 'inputType')
+  // String inputType;
   @JsonKey(name: 'inputValue')
   double inputValue;
 
@@ -318,16 +318,16 @@ class StatsTraining {
 class StatsInputData{
   @JsonKey(name: 'title')
   String title;
-  @JsonKey(name: 'inputType')
-  String inputType;
+  // @JsonKey(name: 'inputType')
+  // String inputType;
   @JsonKey(name: 'unit')
   String unit;
-  @JsonKey(name: 'max')
-  int max;
-  @JsonKey(name: 'min')
-  int min;
-  @JsonKey(name: 'step')
-  int step;
+  // @JsonKey(name: 'max')
+  // int max;
+  // @JsonKey(name: 'min')
+  // int min;
+  // @JsonKey(name: 'step')
+  // int step;
 
 
 
@@ -345,7 +345,7 @@ class StatsInputData{
 @override
 String toString() => 'StatsDailyRating('
     '\n\ttitle: $title'
-    '\n\tinputType: $inputType'
+    // '\n\tinputType: $inputType'
     ')';
 }
 
@@ -434,10 +434,10 @@ class StatsScheduleFoodComponents {
 class StatsScheduleFood {
   @JsonKey(name: 'title')
   String title;
-  @JsonKey(name: 'portion')
-  double portion;
-  @JsonKey(name: 'structure')
-  List <StatsScheduleStructure> structure;
+  // @JsonKey(name: 'portion')
+  // double portion;
+  // @JsonKey(name: 'structure')
+  // List <StatsScheduleStructure> structure;
 
 
 
@@ -454,7 +454,7 @@ class StatsScheduleFood {
   @override
   String toString() => 'StatsScheduleFood('
       '\n\ttitle: $title'
-      '\n\tportion: $portion'
+      // '\n\tportion: $portion'
       ')';
 }
 

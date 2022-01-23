@@ -12,6 +12,7 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
   final DateTime _date = DateTime.now();
   final width = Get.width;
   final height = Get.height;
+
   UserData get profile => AuthService.i?.profile;
 
   UserDailyData get profileDaily => profile?.daily;
@@ -48,55 +49,60 @@ class ModeTab<Controller extends StatsController> extends GetView<Controller> {
       );
 
   @override
-  Widget build(_) => index == null ? Container(
-    padding: EdgeInsets.all(Size.horizontalBig),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildIndicator(
-          // date: index.toString(),
-          //   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
+  Widget build(_) => GetBuilder<StatsController>(
+        init: StatsController(),
+        builder: (_) {
+          controller.getMode(index);
+          return controller.mode == null
+              ? Container(
+                  padding: EdgeInsets.all(Size.horizontalBig),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildIndicator(
+                          // date: index.toString(),
+                          //   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
 
-            asleepTime:"00 ч 00 мин",
-            value: 0),
-      ],
-    ),
-  ) : GetBuilder<StatsController>(
-    init:             StatsController(),
-        builder: (_) => Container(
-          padding: EdgeInsets.all(Size.horizontalBig),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildIndicator(
-                  // date: index.toString(),
-                  //   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
+                          asleepTime: "00 ч 00 мин",
+                          value: 0),
+                    ],
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.all(Size.horizontalBig),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildIndicator(
+// date: index.toString(),
+//   asleepTime: index == null ? "00:00" : controller.stats[index].eatings[0].scheduleItem.kind,
 
-                  asleepTime: index == null
-                      ? "00 ч 00 мин"
-                      : controller.stats.sleepDuration.toString() +
-                          " ч 00 мин",
-                  value: index == null
-                      ? 0
-                      : controller.stats.sleepDuration > 8 ? 1 : controller.calendar[dayId].daily.schedule / 100),
-
-Container(
-  width: width,
-  height: height * (controller.stats.sleepReport.length / 12),
-  child: ListView.builder(
-    itemCount: controller.stats.sleepReport.length,
-    itemBuilder: (_, int i) {
-    return TextSecondary(controller.stats.sleepReport[i].toString());
-  },
-),
-
-
-
-),
-            ],
-          ),
-        ),
-      );
+                          asleepTime: index == null
+                              ? "00 ч 00 мин"
+                              : controller.mode.sleepDuration.toString() +
+                                  " ч 00 мин",
+                          value: index == null
+                              ? 0
+                              : controller.mode.sleepDuration > 8
+                                  ? 1
+                                  : controller.calendar[dayId].daily.schedule /
+                                      100),
+                      Container(
+                        width: width,
+                        height:
+                            height * (controller.mode.sleepReport.length / 12),
+                        child: ListView.builder(
+                          itemCount: controller.mode.sleepReport.length,
+                          itemBuilder: (_, int i) {
+                            return TextSecondary(
+                                controller.mode.sleepReport[i].toString());
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+        });
 }

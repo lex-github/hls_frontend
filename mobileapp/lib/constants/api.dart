@@ -509,8 +509,8 @@ const structure = '{'
 
 const food = '{'
     'title '
-    'portion '
-    'structure $structure'
+// 'portion '
+// 'structure $structure'
     '} ';
 
 const scheduleEatings = '{'
@@ -536,10 +536,10 @@ const consumedFoodComponents = '{'
 
 const inputData = '{'
     'title '
-    'inputType '
-    'max '
-    'min '
-    'step '
+// 'inputType '
+// 'max '
+// 'min '
+// 'step '
     'unit '
     '} ';
 
@@ -554,7 +554,7 @@ const training = '{'
     '} ';
 
 const scheduleTrainings = '{'
-    'inputType '
+// 'inputType '
     'inputValue '
     'training $training'
     '} ';
@@ -612,7 +612,7 @@ const activityRating = '{'
     'trainingRating '
     '} ';
 
-const schedule = 'query '
+const scheduleModeQuery = 'query '
     '('
     '\$id: ID! '
     ') '
@@ -622,16 +622,40 @@ const schedule = 'query '
     'id: \$id '
     ') '
     '{'
-// 'scheduleDate '
-//     'yesterdayAsleepTime '
+//data for mode tab
     'sleepDuration '
-    'stepsQuantity '
     'sleepReport '
+    '}'
+    '}';
+const scheduleEatingsQuery = 'query '
+    '('
+    '\$id: ID! '
+    ') '
+    '{'
+    'schedule'
+    '('
+    'id: \$id '
+    ') '
+    '{'
+//data for eating tab
     'foodRating $foodRating'
-// 'dailyRating $dailyRating'
-    'activityRating $activityRating '
-    'scheduleTrainings $scheduleTrainings '
     'scheduleEatings $scheduleEatings'
+    '}'
+    '}';
+const scheduleTrainingsQuery = 'query '
+    '('
+    '\$id: ID! '
+    ') '
+    '{'
+    'schedule'
+    '('
+    'id: \$id '
+    ') '
+    '{'
+//data for trainings
+    'activityRating $activityRating '
+    'stepsQuantity '
+    'scheduleTrainings $scheduleTrainings '
     '}'
     '}';
 

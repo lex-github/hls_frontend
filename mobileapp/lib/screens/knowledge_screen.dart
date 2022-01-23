@@ -9,7 +9,7 @@ class KnowledgeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.background,
-      child: Center(child: TextSecondary("Эта страница времено не доступна :(")),
+      child: Center(child: TextSecondary("Раздел в разработке")),
     );
   }
 }
