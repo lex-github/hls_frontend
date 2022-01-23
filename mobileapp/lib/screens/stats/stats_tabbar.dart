@@ -88,6 +88,7 @@ class StatsTabBar<Controller extends StatsController>
                     // controller.getEatings(controller.calendar[i].scheduleId);
                     // controller.getTrainings(controller.calendar[i].scheduleId);
 
+                    controller.getSchedule(controller.calendar[i].scheduleId);
                     _buildTabs(controller.calendar[i].scheduleId, i);
                   }
                 }
@@ -97,6 +98,7 @@ class StatsTabBar<Controller extends StatsController>
             // controller.getMode(index);
             // controller.getEatings(index);
             // controller.getTrainings(index);
+            controller.getSchedule(index);
 
             return _buildTabs("null",0);
           }

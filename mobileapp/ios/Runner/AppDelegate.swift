@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import Firebase  // <-- 1st add
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -9,12 +8,6 @@ import Firebase  // <-- 1st add
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-
-      if #available(iOS 13.0, *) {
-      
-      } else {
-          FirebaseApp.configure()
-      }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

@@ -286,7 +286,6 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
   @override
   void onInit() async {
     super.onInit();
-    check();
   }
 
   @override
@@ -294,14 +293,7 @@ class HubController extends GraphqlService with SingleGetTickerProviderMixin {
     if (_tooltipDelayTimer != null) _tooltipDelayTimer.cancel();
   }
 
-  void check() {
-    final progressId = AuthService.i.profile.progress.microCycle;
-    if (!progressId.isNullEmptyFalseOrZero) {
-      // final _c = Get.put(HealthController());
-      final _c = Get.put(HealthController());
-        _c.fetchData();
-    }
-  }
+
 
   // tooltip
 
