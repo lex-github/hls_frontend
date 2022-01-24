@@ -220,7 +220,7 @@ class _ExerciseRealtimeScreenState extends State<ExerciseRealtimeScreen> {
                     child: Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextPrimary("НЕОБХОДИМЫ ИНВЕНТАРЬ:",
+                        TextPrimary("НЕОБХОДИМЫЙ ИНВЕНТАРЬ:",
                             size: Size.fontSmall),
                         Spacer(),
                         for (final p in item.trainingEquipments) ...[

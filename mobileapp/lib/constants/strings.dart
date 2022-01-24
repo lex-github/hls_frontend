@@ -238,6 +238,7 @@ const cardioInputGoogleHealthTitle = 'Google Fit';
 
 const confirmAppleTitle = 'Хотите мы перенесем ваши данные о сне с Apple Health?';
 const confirmGoogleTitle = 'Хотите мы перенесем ваши данные о сне с Google Fit?';
+const addScheduleTitle = 'Для формирования статистики, нужна информация о вашем сне. \nХотите ввести вручную?';
 
 const heartRateGraphTitle = 'Пульс график тренировки';
 const heartRateAbscissaLabel = 'мин.';

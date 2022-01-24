@@ -37,9 +37,9 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
   AnimationController _animationController;
   StatsData stats;
 
-  StatsMode mode;
-  StatsEatings eatings;
-  StatsTrainings trainings;
+  // StatsMode mode;
+  // StatsEatings eatings;
+  // StatsTrainings trainings;
   List<CalendarData> calendar;
 
   List<HealthDataPoint> _healthDataList = [];
@@ -203,84 +203,84 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
     update();
   }
 
-  // Future getSchedule(String i) async {
-  //   if (statsUpdate != i && i != null && i != "update") {
-  //     statsUpdate = i;
-  //     final responseStats = await query(
-  //       schedule,
-  //       parameters: {
-  //         'id': i,
-  //       },
-  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
-  //     );
-  //     stats = StatsData.fromJson(responseStats.get('schedule'));
-  //     print('FoodController.retrieve result:' + stats.eatings.length.toString());
-  //   }else if(i == "update"){
-  //     final responseStats = await query(
-  //       schedule,
-  //       parameters: {
-  //         'id': statsUpdate,
-  //       },
-  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
-  //     );
-  //     stats = StatsData.fromJson(responseStats.get('schedule'));
-  //   }
-  //   update();
-  // }
-
-  Future getMode(String i) async {
-    if (statsUpdate != i && i != null) {
-      statsUpdate = i;
-      final responseStats = await query(
-        scheduleModeQuery,
-        parameters: {
-          'id': i,
-        },
-        fetchPolicy: FetchPolicy.networkOnly                                                    ,
-      );
-      mode = StatsMode.fromJson(responseStats.get('schedule'));
-    }
-    update();
-  }
-
-  Future getEatings(String i) async {
+  Future getSchedule(String i) async {
     if (statsUpdate != i && i != null && i != "update") {
       statsUpdate = i;
       final responseStats = await query(
-        scheduleEatingsQuery,
+        schedule,
         parameters: {
           'id': i,
         },
         fetchPolicy: FetchPolicy.networkOnly                                                    ,
       );
-      eatings = StatsEatings.fromJson(responseStats.get('schedule'));
+      stats = StatsData.fromJson(responseStats.get('schedule'));
+      print('FoodController.retrieve result:' + stats.eatings.length.toString());
     }else if(i == "update"){
       final responseStats = await query(
-        scheduleEatingsQuery,
+        schedule,
         parameters: {
           'id': statsUpdate,
         },
         fetchPolicy: FetchPolicy.networkOnly                                                    ,
       );
-      eatings = StatsEatings.fromJson(responseStats.get('schedule'));
+      stats = StatsData.fromJson(responseStats.get('schedule'));
     }
     update();
   }
 
-  Future getTrainings(String i) async {
-    if (statsUpdate != i && i != null) {
-      statsUpdate = i;
-      final responseStats = await query(
-        scheduleTrainingsQuery,
-        parameters: {
-          'id': i,
-        },
-        fetchPolicy: FetchPolicy.networkOnly                                                    ,
-      );
-      trainings = StatsTrainings.fromJson(responseStats.get('schedule'));
-    }
-    update();
-  }
+  // Future getMode(String i) async {
+  //   if (statsUpdate != i && i != null) {
+  //     statsUpdate = i;
+  //     final responseStats = await query(
+  //       scheduleModeQuery,
+  //       parameters: {
+  //         'id': i,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     mode = StatsMode.fromJson(responseStats.get('schedule'));
+  //   }
+  //   update();
+  // }
+  //
+  // Future getEatings(String i) async {
+  //   if (statsUpdate != i && i != null && i != "update") {
+  //     statsUpdate = i;
+  //     final responseStats = await query(
+  //       scheduleEatingsQuery,
+  //       parameters: {
+  //         'id': i,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     eatings = StatsEatings.fromJson(responseStats.get('schedule'));
+  //   }else if(i == "update"){
+  //     final responseStats = await query(
+  //       scheduleEatingsQuery,
+  //       parameters: {
+  //         'id': statsUpdate,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     eatings = StatsEatings.fromJson(responseStats.get('schedule'));
+  //   }
+  //   update();
+  // }
+  //
+  // Future getTrainings(String i) async {
+  //   if (statsUpdate != i && i != null) {
+  //     statsUpdate = i;
+  //     final responseStats = await query(
+  //       scheduleTrainingsQuery,
+  //       parameters: {
+  //         'id': i,
+  //       },
+  //       fetchPolicy: FetchPolicy.networkOnly                                                    ,
+  //     );
+  //     trainings = StatsTrainings.fromJson(responseStats.get('schedule'));
+  //   }
+  //   update();
+  // }
 
   // bool d;
   bool isOpened(String title) =>
@@ -353,7 +353,7 @@ class StatsController extends Controller with SingleGetTickerProviderMixin {
 
     print('StatsController.delete result: $result');
     AuthService.i.retrieve();
-    getEatings("update");
+    getSchedule("update");
     update();
     return result != null;
   }

@@ -212,8 +212,9 @@ class _State<Controller extends StatsController> extends State<Tabbar> with Tick
   // }
   void onPressed () {
 
+    check();
     // Get.find<StatsController>().getSchedule();
-    Get.toNamed(statsTabRoute, arguments: {'index': null, 'date': DateTime.now(), 'isDay' : true});
+    // Get.toNamed(statsTabRoute, arguments: {'index': null, 'date': DateTime.now(), 'isDay' : true});
     //
     // for (var i = 0; i < _cStats.calendar.length; i++) {
     //   if (_cStats.calendar[i].date == dateToString(date: DateTime.now(), output: dateInternalFormat)) {
@@ -232,6 +233,17 @@ class _State<Controller extends StatsController> extends State<Tabbar> with Tick
     // _timerHandler();
     // _c.fetchData();
   }
+
+
+  void check() {
+    final progressId = AuthService.i.profile.progress.microCycle;
+    if (!progressId.isNullEmptyFalseOrZero) {
+      // final _c = Get.put(HealthController());
+      final _c = Get.put(HealthController());
+      _c.fetchData();
+    }
+  }
+
   _timerHandler() async {
     final result = await Get.toNamed(timerRoute);
     print('ChatScreen._timerHandler result: $result');

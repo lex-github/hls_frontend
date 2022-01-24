@@ -143,8 +143,8 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   //   });
   // }
 
-  _alert() => showConfirm(title: Platform.isIOS ? confirmAppleTitle : confirmGoogleTitle, onPressed: () => data());
-  _aler() => showConfirm(title: "Хотите вручную установить часы сна?", onPressed: () => d());
+  _outsideAlert() => showConfirm(title: Platform.isIOS ? confirmAppleTitle : confirmGoogleTitle, onPressed: () => outsideAddData());
+  _inAppAlert() => showConfirm(title: addScheduleTitle, onPressed: () => inAppAddData());
 
 
   /// Fetch data from the healt plugin and print it
@@ -218,12 +218,13 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
       if (scheduleId.isNullEmptyFalseOrZero){
         if (!sleepFrom.isNullEmptyFalseOrZero && !sleepTo.isNullEmptyFalseOrZero
         ) {
-          _alert();
+          _outsideAlert();
         }else{
-          _aler();
+          _inAppAlert();
         }
       }else{
         addSteps();
+        Get.toNamed(statsTabRoute, arguments: {'index': null, 'date': DateTime.now(), 'isDay' : true});
       }
 
 
@@ -235,10 +236,10 @@ class HealthController extends Controller with SingleGetTickerProviderMixin {
   }
 
 
-  void data () async {
+  void outsideAddData () async {
       await addSchedule();
   }
-  void d () {
+  void inAppAddData () {
     Get.toNamed(scheduleAddRoute);
   }
 
